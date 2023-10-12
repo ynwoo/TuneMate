@@ -8,5 +8,6 @@
 - 프로젝트 계획서 작성
     - 개요, 요구사항, 아키텍처, 진행계획 작성
 - Spotify Web Playback SDK 살펴보기
-
+- 시장조사
+    - Spotify Jam
 ---
