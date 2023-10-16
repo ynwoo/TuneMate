@@ -290,3 +290,7 @@ moduleDetection : force
 const a = 1;
 export {};
 ```
+
+## 2023년 10월 14일
+
+와이어 프레임 제작, 발표 PPT 제작
