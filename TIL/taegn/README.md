@@ -24,3 +24,10 @@
 - React Native 환경 설정
 
 ---
+
+### 2023-10-17
+
+- 목업 제작
+- React Native, Recoil, React Query, React Navigation, Async Storage 환경 설정 & 테스트
+
+---
