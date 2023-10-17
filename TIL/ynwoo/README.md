@@ -35,7 +35,9 @@
 - 오전 스크럼 미팅
     - 오늘 해야하는 일 정리
 - MSA 아키텍처 회의 및 설계
+    - ![아키텍처__2_](/uploads/16e1284c765f8de82c61239ed5284875/아키텍처__2_.png)
 - MVP 및 화면설계기반 API명세서 작성 및 검토
+    - ![image](/uploads/bdca6a74758b6fde0fbc1fdbc79e703b/image.png)
 - 기능 세부 구현 방법 논의
     - Spotify API 실행 테스트
 ---
