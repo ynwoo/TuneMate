@@ -23,3 +23,11 @@
 - Spotify API collaborative playlist 검증
 - 마이크로 서비스 식별
 - 기술스택 논의
+
+---
+
+### 2023. 10. 17 TIL
+
+- 아키텍처 설계
+- 아키텍처 작성
+- API 명세서 작성
