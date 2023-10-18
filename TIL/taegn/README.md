@@ -31,3 +31,10 @@
 - React Native, Recoil, React Query, React Navigation, Async Storage 환경 설정 & 테스트
 
 ---
+
+### 2023-10-18
+
+- 목업 구체화
+- 기획 회의
+
+---
