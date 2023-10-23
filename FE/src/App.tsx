@@ -1,12 +1,43 @@
-import React from 'react';
-import {Text, View} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { RecoilRoot } from 'recoil';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import RootStack from './screens/RootStack';
 
-const App = () => {
+const queryClient = new QueryClient();
+
+function App(): JSX.Element {
   return (
-    <View>
-      <Text>tunemate</Text>
-    </View>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <SafeAreaView style={block}>
+          <KeyboardAvoidingView
+            behavior={Platform.select({ ios: 'padding' })}
+            style={avoid}
+          >
+            <NavigationContainer>
+              <RootStack />
+            </NavigationContainer>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
+      </QueryClientProvider>
+    </RecoilRoot>
   );
-};
+}
+
+const { block, avoid } = StyleSheet.create({
+  block: {
+    flex: 1,
+    backgroundColor: '#ececec',
+  },
+  avoid: {
+    flex: 1,
+  },
+});
 
 export default App;
