@@ -19,7 +19,8 @@ export type BottomTabNavigationProp = CompositeNavigateionProp<
 
 export type RootStackParamList = {
   Login: undefined;
-  Chat:undefined;
+  Chat: undefined;
+  Player: undefined;
   BottomTab:BottomTabNavigationScreenParams;
 };
 export type RootStackNavigationProp =
