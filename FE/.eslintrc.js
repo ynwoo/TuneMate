@@ -35,11 +35,14 @@ module.exports = {
         '*.ts',
         '*.tsx',
         '**/__tests__/**/*.[jt]s?(x)',
-        '**/?(*.)+(spec|test).[jt]s?(x)'],
+        '**/?(*.)+(spec|test).[jt]s?(x)',
+      ],
       rules: {
         '@typescript-eslint/no-shadow': ['error'],
         'no-shadow': 'off',
         'no-undef': 'off',
+
+        'react/function-component-definition': 'arrow-function',
 
         // testing-library
         'testing-library/await-async-queries': 'error',

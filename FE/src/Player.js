@@ -1,5 +1,13 @@
-import React, { useState, Component } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Easing } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Animated,
+  Easing,
+} from 'react-native';
 
 export default function Player() {
   const bgArray = [
@@ -34,12 +42,9 @@ export default function Player() {
       pointButtons.push(
         <TouchableOpacity
           key={idx}
-          style={[
-            styles.point,
-            pageNum === idx && styles.activePoint,
-          ]}
+          style={[styles.point, pageNum === idx && styles.activePoint]}
           onPress={() => setPageNum(idx)}
-        />
+        />,
       );
     }
 
@@ -55,7 +60,7 @@ export default function Player() {
         duration: 10000, // 10 seconds for one full rotation
         easing: Easing.linear,
         useNativeDriver: true,
-      })
+      }),
     ).start();
   };
 
@@ -68,13 +73,7 @@ export default function Player() {
 
   return (
     <View style={styles.contentWrap}>
-      <View
-        style={[
-          styles.album,
-          styles.albumActive,
-          styles.coverImg,
-        ]}
-      >
+      <View style={[styles.album, styles.albumActive, styles.coverImg]}>
         <View style={styles.diskContainer}>
           <Animated.View
             style={[
