@@ -1,18 +1,35 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from './types';
+import { RootStackNavigationProp, RootStackParamList } from './types';
+import { useNavigation } from '@react-navigation/core';
 
 type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
-const LoginScreen = ({navigation}:LoginScreenProps) => {
+const LoginScreen = () => {
+    const navigation = useNavigation<RootStackNavigationProp>();
 return (
-    <View>
-        <Text>LoginScreen</Text>
-        <Button title='Login' onPress={()=> navigation.push("Home")}/>
+    <View style={styles.block}>
+        <Text style={styles.title}>Tunemate</Text>
+        <View style={styles.Button}>
+        <Button title='Login' onPress={()=> navigation.navigate("BottomTab")}/>
+        </View>
     </View>
 );
 };
 
-const {} = StyleSheet.create({});
+const styles = StyleSheet.create({
+    block:{
+        flex:1,
+        alignItems:"center",
+        justifyContent:"center"
+    },
+    title:{
+fontSize:30,
+    }
+    ,Button:{
+        width:200,
+        height:50,
+    }
+});
 
 export default LoginScreen;
