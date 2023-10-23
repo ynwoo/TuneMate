@@ -8,7 +8,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import RootStack from './screens/RootStack';
-import Player from './Player';
 
 const queryClient = new QueryClient();
 
@@ -22,7 +21,6 @@ function App(): JSX.Element {
             style={avoid}
           >
             <NavigationContainer>
-              <Player />
               <RootStack />
             </NavigationContainer>
           </KeyboardAvoidingView>

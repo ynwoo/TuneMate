@@ -30,9 +30,9 @@ export default function Player() {
   };
 
   const imageSources = [
-    require('./image/iu_0.jpg'),
-    require('./image/iu_1.jpg'),
-    require('./image/iu_2.jpg'),
+    require('@/image/iu_0.jpg'),
+    require('@/image/iu_1.jpg'),
+    require('@/image/iu_2.jpg'),
   ];
 
   const renderPointButtons = () => {
