@@ -5,7 +5,7 @@ import {RouteProp} from "@react-navigation/native"
 export type BottomTabParamList = {
   Home: undefined;
   Profile: undefined;
-  Friend: undefined;
+  FriendList: undefined;
   Recommend: undefined;
 };
 
