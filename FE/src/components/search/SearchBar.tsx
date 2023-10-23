@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
     },
     textInput: {
         flex:1,
-        borderBlockColor:"gray"
     },
     searchIcon: {
         color:"gray",

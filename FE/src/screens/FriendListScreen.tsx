@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import FriendList from '@/components/friend/FriendList';
 import { useState } from 'react';
 import SearchBar from '@/components/search/SearchBar';
@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
     },
     input:{
         height:40,
-        borderColor:"gray",
-        borderWidth:2,
+        borderWidth:1,
         margin:50,
     },
     friendList: {
-        margin:50,
+        marginLeft:50,
+        marginRight:50,
     }
 });
 
