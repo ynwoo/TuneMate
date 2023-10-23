@@ -9,7 +9,7 @@ const LoginScreen = () => {
     const navigation = useNavigation<RootStackNavigationProp>();
 return (
     <View style={styles.block}>
-        <Text style={styles.title}>Tunemate</Text>
+        <Text testID='title' style={styles.title}>Tunemate</Text>
         <View style={styles.Button}>
         <Button title='Login' onPress={()=> navigation.navigate("BottomTab")}/>
         </View>
