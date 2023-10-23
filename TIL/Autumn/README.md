@@ -351,3 +351,100 @@ useState
 ## 2023년 10월 20일
 
 - 중간발표 성공적
+
+## 2023년 10월 22일
+
+react native 학습
+styledcomponent
+
+```
+App.js
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet } from "react-native";
+import Box from "./Box";
+import Shadow from "./Shadow";
+import styled, { css } from "styled-components/native";
+
+const Container = styled.View`
+  flex: 1;
+  background-color: #018291;
+  align-items: center;
+  justify-content: center;
+`;
+const cssText = css`
+  font-size: 20px;
+  font-weight: 600;
+`;
+const StyledText = styled.Text`
+  ${cssText}
+  color: white;
+`;
+
+const ErrorText = styled(StyledText)`
+  ${cssText}
+  color: red;
+`;
+
+const StyledButton = styled.Button``;
+
+export default function App() {
+  return (
+    <Container>
+      <StatusBar style="auto" />
+      <StyledText>Hi</StyledText>
+      <ErrorText>bye</ErrorText>
+      <StyledButton title="styled" onPress={() => alert("styled!!")} />
+    </Container>
+  );
+}
+```
+
+```
+Box.js
+import React from "react";
+import { View } from "react-native";
+
+const Box = ({ style }) => {
+  return <View style={[{ borderWidth: 2, width: "100%" }, style]} />;
+};
+
+export default Box;
+```
+
+```
+shadow.js
+import React from "react";
+import { StyleSheet, View, Platform, Text } from "react-native";
+
+const Shadow = () => {
+  return (
+    <View style={styles.Shadow}>
+      <Text>{Platform.OS === "ios" ? "ios" : "android"}</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  Shadow: {
+    width: 200,
+    height: 200,
+    ...Platform.select({
+      ios: {
+        backgroundColor: "blue",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 10,
+          height: 10,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+      },
+      android: {
+        backgroundColor: "skyblue",
+        elevation: 20,
+      },
+    }),
+  },
+});
+export default Shadow;
+```
