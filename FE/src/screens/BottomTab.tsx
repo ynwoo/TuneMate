@@ -7,6 +7,7 @@ import ProfileScreen from "./ProfileScreen";
 import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import FriendListScreen from "./FriendListScreen";
+import ChatScreen from "./ChatScreen";
 
 const {Navigator,Screen} = createBottomTabNavigator<BottomTabParamList>();
 
