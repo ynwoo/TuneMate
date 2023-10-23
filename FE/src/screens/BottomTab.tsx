@@ -1,8 +1,9 @@
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs"
 import React from "react"
 import { BottomTabParamList, RootStackNavigationProp } from "./types";
-import Icon from "react-native-vector-icons/MaterialIcons"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import HomeScreen from "./HomeScreen";
+import ProfileScreen from "./ProfileScreen";
 import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import FriendListScreen from "./FriendListScreen";
@@ -14,25 +15,52 @@ const BottomTab = ()=> {
     return (
         <>
             <View style={styles.topTab}>
-                <Icon color={styles.topTabItem.color} size={styles.topTabItem.size} name='arrow-back' onPress={()=>navigation.pop()}/>
-                <Icon color={styles.topTabItem.color} size={styles.topTabItem.size} name='add-alert' onPress={()=>navigation.pop()}/>
+                <MaterialCommunityIcons color={styles.topTabItem.color} size={styles.topTabItem.size} name='arrow-left' onPress={()=>navigation.pop()}/>
+                <MaterialCommunityIcons color={styles.topTabItem.color} size={styles.topTabItem.size} name='bell' onPress={()=>navigation.pop()}/>
             </View>
-            <Navigator initialRouteName="Home" screenOptions={{headerShown: false}}>
+            <Navigator initialRouteName="Home" screenOptions={{
+              headerShown: false,
+              tabBarActiveTintColor:'#1C1C1C',
+              tabBarInactiveTintColor:'#1c1c1c',
+              tabBarStyle: {
+                backgroundColor:'#E4DDFF'
+              },
+            }}>
                 <Screen name="Home" component={HomeScreen} options={{
                     title:"홈",
-                    tabBarIcon:({color,size})=> <Icon name="home" color={color} size={size}/>
+                    tabBarIcon:({focused, color, size})=> 
+                    focused ? (
+                      <MaterialCommunityIcons name="home" color={color} size={size}/>
+                    ) : (
+                      <MaterialCommunityIcons name="home-outline" color={color} size={size}/>
+                    ),
                 }}/>
-                <Screen name="Profile" component={HomeScreen} options={{
+                <Screen name="Profile" component={ProfileScreen} options={{
                     title:"프로필",
-                    tabBarIcon:({color,size})=> <Icon name="person" color={color} size={size}/>
+                    tabBarIcon:({focused, color,size})=> 
+                    focused ? (
+                      <MaterialCommunityIcons name="account" color={color} size={size}/>
+                    ) : (
+                      <MaterialCommunityIcons name="account-outline" color={color} size={size}/>
+                    ),
                 }}/>
                 <Screen name="FriendList" component={FriendListScreen} options={{
                     title:"친구",
-                    tabBarIcon:({color,size})=> <Icon name="chat" color={color} size={size}/>
+                    tabBarIcon:({focused, color,size})=> 
+                    focused ? (
+                      <MaterialCommunityIcons name="chat" color={color} size={size}/>
+                    ) : (
+                      <MaterialCommunityIcons name="chat-outline" color={color} size={size}/>
+                    ),
                 }}/>
                 <Screen name="Recommend" component={HomeScreen} options={{
                     title:"추천",
-                    tabBarIcon:({color,size})=> <Icon name="recommend" color={color} size={size}/>
+                    tabBarIcon:({focused, color,size})=> 
+                    focused ? (
+                      <MaterialCommunityIcons name="account-plus" color={color} size={size}/>
+                    ) : (
+                      <MaterialCommunityIcons name="account-plus-outline" color={color} size={size}/>
+                    ),
                 }}/>
             </Navigator>
         </>
@@ -46,11 +74,12 @@ const styles = StyleSheet.create({
       justifyContent:"space-between",
       height:50,
       padding:10,
+      backgroundColor:'#FDFDFD',
     },
     topTabItem:{
       color:"gray",
       size:30,
-    }
+    },
   })
 
 export default BottomTab;
