@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/MaterialIcons"
 import HomeScreen from "./HomeScreen";
 import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/core";
+import FriendListScreen from "./FriendListScreen";
 
 const {Navigator,Screen} = createBottomTabNavigator<BottomTabParamList>();
 
@@ -25,7 +26,7 @@ const BottomTab = ()=> {
                     title:"프로필",
                     tabBarIcon:({color,size})=> <Icon name="person" color={color} size={size}/>
                 }}/>
-                <Screen name="Friend" component={HomeScreen} options={{
+                <Screen name="FriendList" component={FriendListScreen} options={{
                     title:"친구",
                     tabBarIcon:({color,size})=> <Icon name="chat" color={color} size={size}/>
                 }}/>
