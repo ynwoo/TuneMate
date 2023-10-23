@@ -46,3 +46,11 @@
 
 - 중간 발표 진행
 - 프로젝트 초기 설정
+
+---
+
+### 2023. 10. 23. TIL
+
+- BottomTab style 변경 방식
+- 기본적인 React Native view, text, image, stylesheet 구현
+- react-native-vector-icon 사용법
