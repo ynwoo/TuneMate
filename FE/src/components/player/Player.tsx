@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,7 +7,15 @@ import {
   TouchableOpacity,
   Animated,
   Easing,
+  ImageBackground,
 } from 'react-native';
+import {
+  withSpring,
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+} from 'react-native-reanimated';
+import LP from './LP';
 
 export default function Player() {
   const bgArray = [
@@ -18,6 +26,7 @@ export default function Player() {
 
   const totalNum = 3;
   const [pageNum, setPageNum] = useState(0);
+  const spinValue = new Animated.Value(0);
 
   const handlePrev = () => {
     const newPageNum = (pageNum - 1 + totalNum) % totalNum;
@@ -35,6 +44,22 @@ export default function Player() {
     require('@/image/iu_2.jpg'),
   ];
 
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(spinValue, {
+        toValue: 1,
+        duration: 10000, // 10 seconds for one full rotation
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+    ).start();
+  }, []);
+
   const renderPointButtons = () => {
     const pointButtons = [];
 
@@ -51,45 +76,21 @@ export default function Player() {
     return pointButtons;
   };
 
-  const diskRotationValue = new Animated.Value(0);
-
-  const startDiskRotation = () => {
-    Animated.loop(
-      Animated.timing(diskRotationValue, {
-        toValue: 1,
-        duration: 10000, // 10 seconds for one full rotation
-        easing: Easing.linear,
-        useNativeDriver: true,
-      }),
-    ).start();
-  };
-
-  startDiskRotation();
-
-  const interpolatedDiskRotation = diskRotationValue.interpolate({
-    inputRange: [0, 0],
-    outputRange: ['0deg', '360deg'],
-  });
-
   return (
     <View style={styles.contentWrap}>
       <View style={[styles.album, styles.albumActive, styles.coverImg]}>
         <View style={styles.diskContainer}>
           <Animated.View
-            style={[
-              styles.disk,
-              { transform: [{ rotate: interpolatedDiskRotation }] },
-            ]}
+            style={[styles.disk, { transform: [{ rotate: spin }] }]}
           >
-            <View style={styles.diskInner}></View>
+            <ImageBackground
+              source={imageSources[pageNum]}
+              style={{ width: '100%', height: '100%' }}
+            >
+              <View style={styles.diskInner} />
+            </ImageBackground>
           </Animated.View>
         </View>
-        <TouchableOpacity style={styles.coverImg}>
-          <Image
-            style={{ width: 300, height: 300 }}
-            source={imageSources[pageNum]}
-          />
-        </TouchableOpacity>
         <Text>{pageNum}</Text>
       </View>
       <View style={styles.pointWrap}>{renderPointButtons()}</View>
@@ -141,15 +142,20 @@ const styles = StyleSheet.create({
   },
   disk: {
     position: 'absolute',
-    top: 4,
+    top: 140,
     left: 0,
-    width: 392,
-    height: 392,
+    width: 300,
+    height: 300,
     borderRadius: 196,
-    backgroundColor: 'transparent',
+    // backgroundColor: 'linear-gradient(120deg, #000, #333333, #000)',
     shadowColor: 'rgba(0, 0, 0, 0.3)',
     shadowOffset: { width: 4, height: 14 },
     shadowRadius: 40,
+    overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
   diskMobile: {
     width: 244,
@@ -160,10 +166,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: [{ translateX: 50 }, { translateY: 50 }],
-    width: 160,
-    height: 160,
-    backgroundColor: '#0473a4',
+    transform: [{ translateX: -55 }, { translateY: -50 }],
+    width: 110,
+    height: 110,
+    backgroundColor: '#000000',
     borderRadius: 80,
     borderWidth: 3,
     borderColor: 'rgba(255, 255, 255, 0.4)',
