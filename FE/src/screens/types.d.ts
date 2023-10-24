@@ -5,20 +5,11 @@ import {
   NavigatorScreenParams,
 } from '@react-navigation/native';
 
-// friendTab
-export type FriendStackParamList = {
-  FriendList: undefined;
-  Chat: undefined;
-};
-
-export type FriendStackNavigationScreenParams =
-  NavigatorScreenParams<FriendStackParamList>;
-
 // bottomTab
 export type MyBottomTabParamList = {
   Home: undefined;
   Profile: undefined;
-  Friend: FriendTabNavigationScreenParams;
+  FriendList: undefined;
   Recommend: undefined;
 };
 
@@ -29,15 +20,11 @@ export type MyBottomTabNavigationScreenParams =
 export type RootStackParamList = {
   Login: undefined;
   Player: undefined;
+  Chat: undefined;
   BottomTab: BottomTabNavigationScreenParams;
 };
 export type RootStackNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;
-
-export type FriendStackNavigationProp = CompositeNavigationProp<
-  RootStackNavigationProp,
-  NativeStackNavigationProp<FriendStackParamList>
->;
 
 export type MyBottomTabNavigationProp = CompositeNavigationProp<
   RootStackNavigationProp,
