@@ -8,12 +8,14 @@ import {
   FriendStackNavigationProp,
   MyBottomTabNavigationProp,
 } from '@/screens/types';
+import { Friend } from '@/types/friend';
 
 interface FriendItemProps {
   style?: Object;
+  item: Friend;
 }
 
-const FriendItem = ({ style }: FriendItemProps) => {
+const FriendItem = ({ style, item }: FriendItemProps) => {
   const navigation = useNavigation<FriendStackNavigationProp>();
   const bottomTabNavigation = useNavigation<MyBottomTabNavigationProp>();
   const onMoveChat = () => {
@@ -25,7 +27,7 @@ const FriendItem = ({ style }: FriendItemProps) => {
   return (
     <View style={[style, styles.friendItem]}>
       <ProfileImage style={styles.profileImage} />
-      <Text style={styles.name}>이름</Text>
+      <Text style={styles.name}>{item.name}</Text>
       <MaterialIcons
         style={styles.marginRightAuto}
         color={styles.musicIcon.color}

@@ -46,6 +46,7 @@ module.exports = {
         'react/no-unstable-nested-components': ['off'],
         '@typescript-eslint/no-use-before-define': 'off',
         'import/extensions': ['off'],
+        'import/prefer-default-export': ['off'],
         '@typescript-eslint/ban-types': 'off',
         'react/require-default-props': [
           'off',

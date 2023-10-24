@@ -7,6 +7,7 @@ import { MyBottomTabNavigationProp, MyBottomTabParamList } from './types';
 import HomeScreen from './HomeScreen';
 import ProfileScreen from './ProfileScreen';
 import FriendScreen from './FriendScreen';
+import RecommendScreen from './RecommendScreen';
 
 const Tab = createBottomTabNavigator<MyBottomTabParamList>();
 
@@ -97,7 +98,7 @@ const BottomTab = () => {
         />
         <Tab.Screen
           name="Recommend"
-          component={HomeScreen}
+          component={RecommendScreen}
           options={{
             title: '추천',
             tabBarIcon: ({ focused, color, size }) =>
