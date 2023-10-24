@@ -1,29 +1,45 @@
 import { StyleSheet, Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/core';
-import ProfileImage from '../image/ProfileImage';
-import { RootStackNavigationProp } from '@/screens/types';
 import React from 'react';
+import ProfileImage from '../image/ProfileImage';
+import {
+  FriendStackNavigationProp,
+  MyBottomTabNavigationProp,
+} from '@/screens/types';
 
 interface FriendItemProps {
   style?: Object;
 }
 
 const FriendItem = ({ style }: FriendItemProps) => {
-  const { navigate } = useNavigation<RootStackNavigationProp>();
+  const navigation = useNavigation<FriendStackNavigationProp>();
+  const bottomTabNavigation = useNavigation<MyBottomTabNavigationProp>();
   const onMoveChat = () => {
-    navigate('Chat');
+    navigation.push('Chat');
+  };
+  const onMoveSharedProfile = () => {
+    bottomTabNavigation.push('BottomTab', { screen: 'Profile' });
   };
   return (
     <View style={[style, styles.friendItem]}>
       <ProfileImage style={styles.profileImage} />
       <Text style={styles.name}>이름</Text>
-      <Icon
+      <MaterialIcons
+        style={styles.marginRightAuto}
         color={styles.musicIcon.color}
         size={styles.musicIcon.size}
         name="music-note"
       />
-      <Icon
+
+      <MaterialCommunityIcons
+        onPress={onMoveSharedProfile}
+        color={styles.accountMusicIcon.color}
+        size={styles.accountMusicIcon.size}
+        name="account-music"
+      />
+      <MaterialIcons
         onPress={onMoveChat}
         color={styles.chatIcon.color}
         size={styles.chatIcon.size}
@@ -50,15 +66,21 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
-    marginRight: 'auto',
   },
   musicIcon: {
+    size: iconSize,
+    color: 'blue',
+  },
+  accountMusicIcon: {
     size: iconSize,
     color: 'blue',
   },
   chatIcon: {
     size: iconSize,
     color: 'red',
+  },
+  marginRightAuto: {
+    marginRight: 'auto',
   },
 });
 

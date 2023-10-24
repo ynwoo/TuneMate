@@ -1,28 +1,54 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import {
+  CompositeNavigationProp,
+  NavigatorScreenParams,
+} from '@react-navigation/native';
 
-export type BottomTabParamList = {
+// friendTab
+export type FriendStackParamList = {
+  FriendList: undefined;
+  Chat: undefined;
+};
+
+export type FriendStackNavigationScreenParams =
+  NavigatorScreenParams<FriendStackParamList>;
+
+// bottomTab
+export type MyBottomTabParamList = {
   Home: undefined;
   Profile: undefined;
-  FriendList: undefined;
+  Friend: FriendTabNavigationScreenParams;
   Recommend: undefined;
 };
 
-export type BottomTabNavigationScreenParams =
-  NavigatorScreenParams<BottomTabParamList>;
+export type MyBottomTabNavigationScreenParams =
+  NavigatorScreenParams<MyBottomTabParamList>;
 
-export type BottomTabNavigationProp = CompositeNavigateionProp<
-  RootStackNavigationProp,
-  BottomTabNavigationProp<BottomTabParamList>
->;
-
+// rootStack
 export type RootStackParamList = {
   Login: undefined;
-  Chat: undefined;
   Player: undefined;
   BottomTab: BottomTabNavigationScreenParams;
 };
 export type RootStackNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;
+
+export type FriendStackNavigationProp = CompositeNavigationProp<
+  RootStackNavigationProp,
+  NativeStackNavigationProp<FriendStackParamList>
+>;
+
+export type MyBottomTabNavigationProp = CompositeNavigationProp<
+  RootStackNavigationProp,
+  BottomTabNavigationProp<MyBottomTabParamList>
+>;
+
+export type MyNavigationProp = CompositeNavigationProp<
+  RootStackNavigationProp,
+  MyBottomTabNavigationProp,
+  FriendStackNavigationProp
+>;
 
 export type HomeScreenProps = NativeStackNavigationProp<
   RootStackParamList,
