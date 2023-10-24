@@ -1,9 +1,7 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackNavigationProp, RootStackParamList } from './types';
 import { useNavigation } from '@react-navigation/core';
-
-type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
+import React from 'react';
+import { RootStackNavigationProp } from './types';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
