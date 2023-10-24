@@ -19,7 +19,9 @@ const ChatScreen = (): JSX.Element => {
 
   return (
     <>
-      {!isOpen && <ChatMain onOpenDrawer={onOpenDrawer} />}
+      {!isOpen && (
+        <ChatMain style={styles.chatMain} onOpenDrawer={onOpenDrawer} />
+      )}
       <DrawerLayoutAndroid
         onDrawerOpen={onOpenDrawer}
         onDrawerClose={onCloseDrawer}
@@ -34,7 +36,9 @@ const ChatScreen = (): JSX.Element => {
 };
 
 const styles = StyleSheet.create({
-  chatMain: {},
+  chatMain: {
+    flex: 1,
+  },
   chatMenu: {},
 });
 

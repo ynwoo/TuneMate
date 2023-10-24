@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import { Modal, StyleSheet, Text, Pressable, View } from 'react-native';
 import Props from '@/types';
 
 interface MyModalProps extends Props {
@@ -10,17 +10,11 @@ interface MyModalProps extends Props {
 
 const MyModal = ({ modalVisible, setModalVisible, message }: MyModalProps) => {
   return (
-    <Modal
-      animationType="fade"
-      transparent
-      visible={modalVisible}
-      onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
-        setModalVisible(!modalVisible);
-      }}
-    >
-      <View style={styles.centeredView}>
-        {/* <View style={styles.centeredView}> */}
+    <Modal animationType="fade" transparent visible={modalVisible}>
+      <Pressable
+        onPress={() => setModalVisible(false)}
+        style={styles.centeredView}
+      >
         <View style={styles.modalView}>
           <Text style={styles.modalText}>{message}</Text>
           <Pressable
@@ -30,7 +24,7 @@ const MyModal = ({ modalVisible, setModalVisible, message }: MyModalProps) => {
             <Text style={styles.textStyle}>닫기</Text>
           </Pressable>
         </View>
-      </View>
+      </Pressable>
     </Modal>
   );
 };
