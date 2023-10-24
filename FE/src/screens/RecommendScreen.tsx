@@ -13,9 +13,15 @@ const RecommendScreen = (): JSX.Element => {
 };
 
 const styles = StyleSheet.create({
-  recommendScreen: {},
-  searchOption: {},
-  recommendList: {},
+  recommendScreen: {
+    flex: 1,
+  },
+  searchOption: {
+    margin: 30,
+  },
+  recommendList: {
+    flex: 1,
+  },
 });
 
 export default RecommendScreen;

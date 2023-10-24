@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { MyBottomTabNavigationProp } from '@/screens/types';
+import { RootStackNavigationProp } from '@/screens/types';
 import Props from '@/types';
 
 interface ChatMainProps extends Props {
@@ -10,7 +10,7 @@ interface ChatMainProps extends Props {
 }
 
 const ChatMain = ({ onOpenDrawer }: ChatMainProps) => {
-  const navigation = useNavigation<MyBottomTabNavigationProp>();
+  const navigation = useNavigation<RootStackNavigationProp>();
   return (
     <View>
       <View style={styles.topTab}>

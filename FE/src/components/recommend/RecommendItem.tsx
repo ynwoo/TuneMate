@@ -1,19 +1,28 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/core';
 import ProfileImage from '../image/ProfileImage';
 import { Friend } from '@/types/friend';
 import Props from '@/types';
+import { RootStackNavigationProp } from '@/screens/types';
 
 interface RecommendItemProps extends Props {
   item: Friend;
 }
 
 const RecommendItem = ({ item, style }: RecommendItemProps) => {
+  const navigation = useNavigation<RootStackNavigationProp>();
+
+  // 프로필 페이지 이동
+  const onMoveProfile = useCallback(() => {
+    navigation.push('BottomTab', { screen: 'Profile' });
+  }, [navigation]);
+
   return (
     <View style={[style, styles.recommendItem]}>
       <View style={[styles.colContainer, styles.marginRightAuto]}>
-        <ProfileImage style={styles.profileImage} />
+        <ProfileImage style={styles.profileImage} onPress={onMoveProfile} />
         <Text style={styles.name}>{item.name}</Text>
       </View>
       <View style={styles.colContainer}>
