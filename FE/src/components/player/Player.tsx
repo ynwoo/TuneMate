@@ -91,18 +91,17 @@ export default function Player() {
             </ImageBackground>
           </Animated.View>
         </View>
-        <Text>{pageNum}</Text>
       </View>
-      <View style={styles.pointWrap}>{renderPointButtons()}</View>
+
       <View style={styles.buttonWrap}>
         <TouchableOpacity style={styles.button} onPress={handlePrev}>
           <Text>PREV</Text>
-          <Text>{pageNum}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleNext}>
           <Text>NEXT</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.pointWrap}>{renderPointButtons()}</View>
     </View>
   );
 }
@@ -114,7 +113,7 @@ const styles = StyleSheet.create({
   },
   album: {
     position: 'absolute',
-    transform: [{ translateX: -150 }, { translateY: 150 }],
+    transform: [{ translateX: -150 }, { translateY: 0 }],
     width: 200,
     height: 200,
     opacity: 0,
@@ -198,7 +197,7 @@ const styles = StyleSheet.create({
   button: {
     padding: 6,
     margin: 3,
-    backgroundColor: '#000',
+    // backgroundColor: '#000',
     color: '#fff',
   },
   buttonHover: {
@@ -208,6 +207,7 @@ const styles = StyleSheet.create({
   pointWrap: {
     flexDirection: 'row',
     alignItems: 'center',
+    transform: [{ translateX: 180 }, { translateY: 30 }],
   },
   point: {
     width: 10,
