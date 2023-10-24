@@ -3,15 +3,17 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/core';
-import { BottomTabParamList, RootStackNavigationProp } from './types';
+import { MyBottomTabNavigationProp, MyBottomTabParamList } from './types';
 import HomeScreen from './HomeScreen';
 import ProfileScreen from './ProfileScreen';
-import FriendListScreen from './FriendListScreen';
+import FriendScreen from './FriendScreen';
+import RecommendScreen from './RecommendScreen';
 
-const { Navigator, Screen } = createBottomTabNavigator<BottomTabParamList>();
+const Tab = createBottomTabNavigator<MyBottomTabParamList>();
 
 const BottomTab = () => {
-  const navigation = useNavigation<RootStackNavigationProp>();
+  const navigation = useNavigation<MyBottomTabNavigationProp>();
+
   return (
     <>
       <View style={styles.topTab}>
@@ -19,16 +21,16 @@ const BottomTab = () => {
           color={styles.topTabItem.color}
           size={styles.topTabItem.size}
           name="arrow-left"
-          onPress={() => navigation.pop()}
+          onPress={() => navigation.pop(1)}
         />
         <MaterialCommunityIcons
           color={styles.topTabItem.color}
           size={styles.topTabItem.size}
           name="bell"
-          onPress={() => navigation.pop()}
+          onPress={() => navigation.pop(1)}
         />
       </View>
-      <Navigator
+      <Tab.Navigator
         initialRouteName="Home"
         screenOptions={{
           headerShown: false,
@@ -39,7 +41,7 @@ const BottomTab = () => {
           },
         }}
       >
-        <Screen
+        <Tab.Screen
           name="Home"
           component={HomeScreen}
           options={{
@@ -56,7 +58,7 @@ const BottomTab = () => {
               ),
           }}
         />
-        <Screen
+        <Tab.Screen
           name="Profile"
           component={ProfileScreen}
           options={{
@@ -77,9 +79,9 @@ const BottomTab = () => {
               ),
           }}
         />
-        <Screen
-          name="FriendList"
-          component={FriendListScreen}
+        <Tab.Screen
+          name="Friend"
+          component={FriendScreen}
           options={{
             title: '친구',
             tabBarIcon: ({ focused, color, size }) =>
@@ -94,9 +96,9 @@ const BottomTab = () => {
               ),
           }}
         />
-        <Screen
+        <Tab.Screen
           name="Recommend"
-          component={HomeScreen}
+          component={RecommendScreen}
           options={{
             title: '추천',
             tabBarIcon: ({ focused, color, size }) =>
@@ -115,7 +117,7 @@ const BottomTab = () => {
               ),
           }}
         />
-      </Navigator>
+      </Tab.Navigator>
     </>
   );
 };

@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
     margin: 50,
   },
   friendList: {
-    marginLeft: 50,
-    marginRight: 50,
+    paddingLeft: 50,
+    paddingRight: 50,
   },
 });
 

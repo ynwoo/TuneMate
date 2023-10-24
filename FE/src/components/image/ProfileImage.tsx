@@ -1,9 +1,8 @@
 import { Image, StyleSheet } from 'react-native';
+import React from 'react';
+import Props from '@/types';
 
-interface ProfileImageProps {
-  style?: Object;
-  // src:string;
-}
+type ProfileImageProps = Props;
 
 const ProfileImage = ({ style }: ProfileImageProps) => {
   return (
