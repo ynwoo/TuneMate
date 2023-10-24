@@ -1,21 +1,28 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Pressable } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/core';
 import { MyBottomTabNavigationProp, MyBottomTabParamList } from './types';
 import HomeScreen from './HomeScreen';
 import ProfileScreen from './ProfileScreen';
-import FriendScreen from './FriendScreen';
 import RecommendScreen from './RecommendScreen';
+import FriendListScreen from './FriendListScreen';
+import MyModal from '@/components/modal/MyModal';
 
 const Tab = createBottomTabNavigator<MyBottomTabParamList>();
 
 const BottomTab = () => {
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const navigation = useNavigation<MyBottomTabNavigationProp>();
 
   return (
-    <>
+    <View style={[styles.bottomTab, modalVisible && styles.blackout]}>
+      <MyModal
+        message="알림 모달"
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
       <View style={styles.topTab}>
         <MaterialCommunityIcons
           color={styles.topTabItem.color}
@@ -23,12 +30,14 @@ const BottomTab = () => {
           name="arrow-left"
           onPress={() => navigation.pop(1)}
         />
-        <MaterialCommunityIcons
-          color={styles.topTabItem.color}
-          size={styles.topTabItem.size}
-          name="bell"
-          onPress={() => navigation.pop(1)}
-        />
+        <Pressable onPress={() => setModalVisible(true)}>
+          <MaterialCommunityIcons
+            color={styles.topTabItem.color}
+            size={styles.topTabItem.size}
+            name="bell"
+            // onPress={() => setModalVisible(true)}
+          />
+        </Pressable>
       </View>
       <Tab.Navigator
         initialRouteName="Home"
@@ -80,8 +89,8 @@ const BottomTab = () => {
           }}
         />
         <Tab.Screen
-          name="Friend"
-          component={FriendScreen}
+          name="FriendList"
+          component={FriendListScreen}
           options={{
             title: '친구',
             tabBarIcon: ({ focused, color, size }) =>
@@ -118,7 +127,7 @@ const BottomTab = () => {
           }}
         />
       </Tab.Navigator>
-    </>
+    </View>
   );
 };
 
@@ -133,6 +142,12 @@ const styles = StyleSheet.create({
   topTabItem: {
     color: 'gray',
     size: 30,
+  },
+  bottomTab: {
+    flex: 1,
+  },
+  blackout: {
+    opacity: 0.7,
   },
 });
 
