@@ -42,7 +42,7 @@ export default function Player() {
       pointButtons.push(
         <TouchableOpacity
           key={idx}
-          style={[styles.point, pageNum === idx && styles.activePoint]}
+          style={[styles.point, pageNum === idx && styles.pointActive]}
           onPress={() => setPageNum(idx)}
         />,
       );
