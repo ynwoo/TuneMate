@@ -9,9 +9,9 @@ import {
   MyBottomTabNavigationProp,
 } from '@/screens/types';
 import { Friend } from '@/types/friend';
+import Props from '@/types';
 
-interface FriendItemProps {
-  style?: Object;
+interface FriendItemProps extends Props {
   item: Friend;
 }
 

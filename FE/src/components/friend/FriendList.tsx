@@ -2,10 +2,9 @@ import { StyleSheet, FlatList } from 'react-native';
 import React from 'react';
 import FriendItem from './FriendItem';
 import { Friend } from '@/types/friend';
+import Props from '@/types';
 
-interface FriendListProps {
-  style?: Object;
-}
+type FriendListProps = Props;
 
 const data: Friend[] = [
   { id: '0', name: 'a' },
