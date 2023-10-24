@@ -1,18 +1,21 @@
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, Pressable } from 'react-native';
+import React from 'react';
+import Props from '@/types';
 
-interface ProfileImageProps {
-  style?: Object;
-  // src:string;
+interface ProfileImageProps extends Props {
+  onPress?: () => void;
 }
 
-const ProfileImage = ({ style }: ProfileImageProps) => {
+const ProfileImage = ({ style, onPress }: ProfileImageProps) => {
   return (
-    <Image
-      style={[style, styles.profileImage]}
-      source={{
-        uri: 'https://reactnative.dev/img/tiny_logo.png',
-      }}
-    />
+    <Pressable onPress={onPress}>
+      <Image
+        style={[style, styles.profileImage]}
+        source={{
+          uri: 'https://reactnative.dev/img/tiny_logo.png',
+        }}
+      />
+    </Pressable>
   );
 };
 

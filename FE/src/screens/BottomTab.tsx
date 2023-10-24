@@ -1,34 +1,45 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Pressable } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/core';
-import { BottomTabParamList, RootStackNavigationProp } from './types';
+import { RootStackNavigationProp, MyBottomTabParamList } from './types';
 import HomeScreen from './HomeScreen';
 import ProfileScreen from './ProfileScreen';
+import RecommendScreen from './RecommendScreen';
 import FriendListScreen from './FriendListScreen';
+import MyModal from '@/components/modal/MyModal';
 
-const { Navigator, Screen } = createBottomTabNavigator<BottomTabParamList>();
+const Tab = createBottomTabNavigator<MyBottomTabParamList>();
 
 const BottomTab = () => {
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const navigation = useNavigation<RootStackNavigationProp>();
+
   return (
-    <>
+    <View style={[styles.bottomTab, modalVisible && styles.blackout]}>
+      <MyModal
+        message="알림 모달"
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
       <View style={styles.topTab}>
         <MaterialCommunityIcons
           color={styles.topTabItem.color}
           size={styles.topTabItem.size}
           name="arrow-left"
-          onPress={() => navigation.pop()}
+          onPress={() => navigation.pop(1)}
         />
-        <MaterialCommunityIcons
-          color={styles.topTabItem.color}
-          size={styles.topTabItem.size}
-          name="bell"
-          onPress={() => navigation.pop()}
-        />
+        <Pressable onPress={() => setModalVisible(true)}>
+          <MaterialCommunityIcons
+            color={styles.topTabItem.color}
+            size={styles.topTabItem.size}
+            name="bell"
+            // onPress={() => setModalVisible(true)}
+          />
+        </Pressable>
       </View>
-      <Navigator
+      <Tab.Navigator
         initialRouteName="Home"
         screenOptions={{
           headerShown: false,
@@ -39,7 +50,7 @@ const BottomTab = () => {
           },
         }}
       >
-        <Screen
+        <Tab.Screen
           name="Home"
           component={HomeScreen}
           options={{
@@ -56,7 +67,7 @@ const BottomTab = () => {
               ),
           }}
         />
-        <Screen
+        <Tab.Screen
           name="Profile"
           component={ProfileScreen}
           options={{
@@ -77,7 +88,7 @@ const BottomTab = () => {
               ),
           }}
         />
-        <Screen
+        <Tab.Screen
           name="FriendList"
           component={FriendListScreen}
           options={{
@@ -94,9 +105,9 @@ const BottomTab = () => {
               ),
           }}
         />
-        <Screen
+        <Tab.Screen
           name="Recommend"
-          component={HomeScreen}
+          component={RecommendScreen}
           options={{
             title: '추천',
             tabBarIcon: ({ focused, color, size }) =>
@@ -115,8 +126,8 @@ const BottomTab = () => {
               ),
           }}
         />
-      </Navigator>
-    </>
+      </Tab.Navigator>
+    </View>
   );
 };
 
@@ -131,6 +142,12 @@ const styles = StyleSheet.create({
   topTabItem: {
     color: 'gray',
     size: 30,
+  },
+  bottomTab: {
+    flex: 1,
+  },
+  blackout: {
+    opacity: 0.7,
   },
 });
 

@@ -1,9 +1,9 @@
-import { Dispatch } from 'react';
+import React, { Dispatch } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Props from '@/types';
 
-interface SearchBarProps {
-  style?: Object;
+interface SearchBarProps extends Props {
   text: string;
   onChangeText: Dispatch<React.SetStateAction<string>>;
   onPress: () => void;

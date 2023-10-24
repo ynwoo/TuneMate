@@ -1,10 +1,10 @@
-import { StyleSheet, FlatList } from 'react-native';
 import React from 'react';
-import FriendItem from './FriendItem';
+import { FlatList, StyleSheet } from 'react-native';
+import RecommendItem from './RecommendItem';
 import { Friend } from '@/types/friend';
 import Props from '@/types';
 
-type FriendListProps = Props;
+type RecommendListProps = Props;
 
 const data: Friend[] = [
   { id: '0', name: 'a' },
@@ -18,23 +18,26 @@ const data: Friend[] = [
   { id: '9', name: 'e' },
 ];
 
-const FriendList = ({ style }: FriendListProps) => {
+const RecommendList = ({ style }: RecommendListProps) => {
   return (
     <FlatList
-      style={style}
+      style={[style, styles.recommendList]}
       data={data}
       renderItem={({ item }) => (
-        <FriendItem key={item.id} style={styles.friendItem} item={item} />
+        <RecommendItem key={item.id} style={styles.recommendItem} item={item} />
       )}
-      keyExtractor={(item) => item.id}
+      horizontal={false}
+      numColumns={2}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  friendItem: {
-    marginBottom: 15,
+  recommendList: {
+    marginLeft: 20,
+    marginRight: 20,
   },
+  recommendItem: { margin: 10 },
 });
 
-export default FriendList;
+export default RecommendList;
