@@ -81,7 +81,7 @@ export default function Player() {
               { transform: [{ rotate: interpolatedDiskRotation }] },
             ]}
           >
-            <View style={styles.diskInner}></View>
+            <View style={styles.diskInner} />
           </Animated.View>
         </View>
         <TouchableOpacity style={styles.coverImg}>

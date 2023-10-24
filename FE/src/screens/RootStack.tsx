@@ -3,18 +3,19 @@ import React from 'react';
 import LoginScreen from './LoginScreen';
 import { RootStackParamList } from './types';
 import BottomTab from './BottomTab';
-import ChatScreen from './ChatScreen';
 import PlayerScreen from './PlayerScreen';
 
-const { Navigator, Screen } = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootStack = () => (
-  <Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
-    <Screen name="Login" component={LoginScreen} />
-    <Screen name="Chat" component={ChatScreen} />
-    <Screen name="Player" component={PlayerScreen} />
-    <Screen name="BottomTab" component={BottomTab} />
-  </Navigator>
+  <Stack.Navigator
+    initialRouteName="Login"
+    screenOptions={{ headerShown: false }}
+  >
+    <Stack.Screen name="Login" component={LoginScreen} />
+    <Stack.Screen name="Player" component={PlayerScreen} />
+    <Stack.Screen name="BottomTab" component={BottomTab} />
+  </Stack.Navigator>
 );
 
 export default RootStack;
