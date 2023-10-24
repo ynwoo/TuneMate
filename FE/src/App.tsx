@@ -7,6 +7,7 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
 import RootStack from './screens/RootStack';
 
 const queryClient = new QueryClient();
