@@ -45,7 +45,7 @@ module.exports = {
         'react/function-component-definition': 0,
         'react/no-unstable-nested-components': ['off'],
         '@typescript-eslint/no-use-before-define': 'off',
-        'import/extensions': ['never'],
+        'import/extensions': ['off'],
         '@typescript-eslint/ban-types': 'off',
         'react/require-default-props': [
           'off',
