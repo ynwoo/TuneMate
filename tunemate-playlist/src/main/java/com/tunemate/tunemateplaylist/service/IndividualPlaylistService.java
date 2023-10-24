@@ -16,4 +16,6 @@ public interface IndividualPlaylistService {
     PlaylistResponseDto getIndividualPlaylist(long userId) throws ParseException;
 
     void setIndividualPlaylistId(long userId, PlaylistIdDto playlistIdDto);
+
+    void counting(long userId) throws ParseException;
 }
