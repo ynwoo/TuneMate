@@ -42,7 +42,17 @@ module.exports = {
         'no-shadow': 'off',
         'no-undef': 'off',
 
-        'react/function-component-definition': 'arrow-function',
+        'react/function-component-definition': 0,
+        'react/no-unstable-nested-components': ['off'],
+        '@typescript-eslint/no-use-before-define': 'off',
+        'import/extensions': ['never'],
+        '@typescript-eslint/ban-types': 'off',
+        'react/require-default-props': [
+          'off',
+          {
+            forbidDefaultForRequired: false,
+          },
+        ],
 
         // testing-library
         'testing-library/await-async-queries': 'error',

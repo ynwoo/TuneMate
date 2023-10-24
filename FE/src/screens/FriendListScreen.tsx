@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
 import FriendList from '@/components/friend/FriendList';
-import { useState } from 'react';
 import SearchBar from '@/components/search/SearchBar';
 
 const FriendListScreen = (): JSX.Element => {

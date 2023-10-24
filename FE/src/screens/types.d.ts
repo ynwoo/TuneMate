@@ -1,6 +1,4 @@
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RouteProp} from "@react-navigation/native"
-
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export type BottomTabParamList = {
   Home: undefined;
@@ -21,10 +19,16 @@ export type RootStackParamList = {
   Login: undefined;
   Chat: undefined;
   Player: undefined;
-  BottomTab:BottomTabNavigationScreenParams;
+  BottomTab: BottomTabNavigationScreenParams;
 };
 export type RootStackNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;
 
-export type HomeScreenProps = NativeStackNavigationProp<RootStackParamList,"Home">
-export type LoginScreenProps = NativeStackNavigationProp<RootStackParamList, 'Login'>;
+export type HomeScreenProps = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
+export type LoginScreenProps = NativeStackNavigationProp<
+  RootStackParamList,
+  'Login'
+>;

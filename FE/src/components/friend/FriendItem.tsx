@@ -1,14 +1,15 @@
 import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import ProfileImage from '../image/ProfileImage';
 import { useNavigation } from '@react-navigation/core';
+import ProfileImage from '../image/ProfileImage';
 import { RootStackNavigationProp } from '@/screens/types';
+import React from 'react';
 
-interface FriendItem {
+interface FriendItemProps {
   style?: Object;
 }
 
-const FriendItem = ({ style }: FriendItem) => {
+const FriendItem = ({ style }: FriendItemProps) => {
   const { navigate } = useNavigation<RootStackNavigationProp>();
   const onMoveChat = () => {
     navigate('Chat');
