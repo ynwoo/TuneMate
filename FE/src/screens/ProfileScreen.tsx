@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RootStackParamList } from './types';
+import Playlist from '@/components/playlist/Playlist';
 
 type ProfileScreenProps = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -14,17 +15,20 @@ const ProfileScreen = ({}: ProfileScreenProps): JSX.Element => {
   };
 
   return (
-    <View style={styles.block}>
-      <View style={styles.profileImgBlock}>
-        <Image
-          source={require('@/assets/images/temp-image.png')}
-          style={styles.profileImg}
-        />
+    <ScrollView>
+      <View style={styles.block}>
+        <View style={styles.profileImgBlock}>
+          <Image
+            source={require('@/assets/images/temp-image.png')}
+            style={styles.profileImg}
+          />
+        </View>
+        <View style={styles.nameBlock}>
+          <Text style={styles.nameText}>{username}</Text>
+        </View>
+        <Playlist />
       </View>
-      <View style={styles.nameBlock}>
-        <Text style={styles.nameText}>{username}</Text>
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
