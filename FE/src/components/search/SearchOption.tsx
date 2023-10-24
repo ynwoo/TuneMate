@@ -1,26 +1,30 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Pressable, Text, StyleSheet } from 'react-native';
 import Props from '@/types';
 
 type SearchOptionProps = Props;
 
 const SearchOption = ({ style }: SearchOptionProps) => {
   return (
-    <View style={[style, styles.searchOption]}>
-      <Text style={styles.text}>option</Text>
-    </View>
+    <Pressable style={[style, styles.searchOption]}>
+      <Text style={styles.text}>거리</Text>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   searchOption: {
-    height: 100,
-    width: 100,
-    flex: 1,
+    height: 50,
   },
   text: {
-    padding: 20,
     flex: 1,
+    fontSize: 20,
+    padding: 10,
+    textAlign: 'center',
+    backgroundColor: 'white',
+  },
+  hover: {
+    backgroundColor: 'violet',
   },
 });
 

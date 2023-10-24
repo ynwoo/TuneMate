@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/core';
-import { MyBottomTabNavigationProp, MyBottomTabParamList } from './types';
+import { RootStackNavigationProp, MyBottomTabParamList } from './types';
 import HomeScreen from './HomeScreen';
 import ProfileScreen from './ProfileScreen';
 import RecommendScreen from './RecommendScreen';
@@ -14,7 +14,7 @@ const Tab = createBottomTabNavigator<MyBottomTabParamList>();
 
 const BottomTab = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const navigation = useNavigation<MyBottomTabNavigationProp>();
+  const navigation = useNavigation<RootStackNavigationProp>();
 
   return (
     <View style={[styles.bottomTab, modalVisible && styles.blackout]}>

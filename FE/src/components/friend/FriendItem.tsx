@@ -4,7 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import ProfileImage from '../image/ProfileImage';
-import { MyBottomTabNavigationProp } from '@/screens/types';
+import { RootStackNavigationProp } from '@/screens/types';
 import { Friend } from '@/types/friend';
 import Props from '@/types';
 
@@ -13,16 +13,26 @@ interface FriendItemProps extends Props {
 }
 
 const FriendItem = ({ style, item }: FriendItemProps) => {
-  const bottomTabNavigation = useNavigation<MyBottomTabNavigationProp>();
+  const navigation = useNavigation<RootStackNavigationProp>();
+
+  // 채팅방 이동
   const onMoveChat = () => {
-    bottomTabNavigation.push('Chat');
+    navigation.push('Chat');
   };
+
+  // 공동 프로필 이동
   const onMoveSharedProfile = () => {
-    bottomTabNavigation.push('BottomTab', { screen: 'Profile' });
+    navigation.push('BottomTab', { screen: 'Profile' });
   };
+
+  // 친구 프로필 이동
+  const onMoveProfile = () => {
+    navigation.push('BottomTab', { screen: 'Profile' });
+  };
+
   return (
     <View style={[style, styles.friendItem]}>
-      <ProfileImage style={styles.profileImage} />
+      <ProfileImage style={styles.profileImage} onPress={onMoveProfile} />
       <Text style={styles.name}>{item.name}</Text>
       <MaterialIcons
         style={styles.marginRightAuto}
