@@ -14,17 +14,17 @@ const ProfileScreen = ({}: ProfileScreenProps): JSX.Element => {
   }
 
   return (
-      <View style={styles.block}>
-          <View style={styles.profileImgBlock}>
-            <Image
-              source={require('@/assets/images/temp-image.png')}
-              style={styles.profileImg}
-            />
-          </View>
-          <View style={styles.nameBlock}>
-            <Text style={styles.nameText}>{username}</Text>
-          </View>
+    <View style={styles.block}>
+      <View style={styles.profileImgBlock}>
+        <Image
+          source={require('@/assets/images/temp-image.png')}
+          style={styles.profileImg}
+        />
       </View>
+      <View style={styles.nameBlock}>
+        <Text style={styles.nameText}>{username}</Text>
+      </View>
+    </View>
   );
 };
 
