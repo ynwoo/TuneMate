@@ -47,6 +47,7 @@ module.exports = {
         '@typescript-eslint/no-use-before-define': 'off',
         'import/extensions': ['off'],
         'import/prefer-default-export': ['off'],
+        'import/no-extraneous-dependencies': ['off'],
         '@typescript-eslint/ban-types': 'off',
         'react/require-default-props': [
           'off',
