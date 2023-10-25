@@ -1,9 +1,11 @@
 package com.tunemate.tunemateplaylist.controller;
 
 import com.tunemate.tunemateplaylist.domain.Playlist;
+import com.tunemate.tunemateplaylist.dto.PlaylistCreateDto;
 import com.tunemate.tunemateplaylist.dto.PlaylistResponseDto;
 import com.tunemate.tunemateplaylist.service.CommonPlaylistServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,8 @@ public class CommonPlaylistController {
 
     private final CommonPlaylistServiceImpl commonPlaylistService;
     private final Map<Long, SseEmitter> SseEmitters = new ConcurrentHashMap<>();
+
+    // 공동 플레이리스트 조회
     @GetMapping("/playlist/{playlistId}")
     public ResponseEntity<SseEmitter> getCommonPlaylist(@PathVariable("playlistId") String playlistId, @RequestHeader("UserId") long userId) throws IOException {
         SseEmitter sseEmitter = new SseEmitter(1800000l);
@@ -43,5 +47,12 @@ public class CommonPlaylistController {
         sseEmitter.send(playlistResponseDto, MediaType.APPLICATION_JSON);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_EVENT_STREAM_VALUE)
                 .body(sseEmitter);
+    }
+
+    // 공동 플레이리스트 생성
+    @PostMapping("/playlists")
+    public void createCommonPlaylist(@RequestBody PlaylistCreateDto playlistCreateDto) throws ParseException {
+        commonPlaylistService.createPlaylist(playlistCreateDto);
+
     }
 }
