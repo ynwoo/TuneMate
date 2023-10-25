@@ -29,7 +29,7 @@ const ChatMenu = ({ onOpenDrawer, onCloseDrawer }: ChatMenuProps) => {
       </GestureRecognizer>
       <MaterialCommunityIcons
         name="location-exit"
-        style={styles.exitIcon}
+        style={styles.exitIconPostion}
         size={styles.exitIcon.size}
         color={styles.exitIcon.color}
         onPress={onExitChat}
@@ -52,12 +52,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
   },
-  exitIcon: {
-    size: 30,
-    color: 'gray',
+  exitIconPostion: {
     position: 'absolute',
     right: 5,
     bottom: 5,
+  },
+  exitIcon: {
+    size: 30,
+    color: 'gray',
   },
   menu: {
     height: 50,
