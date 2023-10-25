@@ -12,6 +12,7 @@ module.exports = {
     'airbnb-typescript',
     'prettier',
     'plugin:prettier/recommended',
+    'plugin:jest-dom/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -22,6 +23,7 @@ module.exports = {
   },
   plugins: [
     'testing-library',
+    'jest-dom',
     'prettier',
     'react',
     '@typescript-eslint',
