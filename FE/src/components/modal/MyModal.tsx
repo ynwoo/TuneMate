@@ -5,10 +5,15 @@ import Props from '@/types';
 interface MyModalProps extends Props {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  message: string;
+  title?: string;
 }
 
-const MyModal = ({ modalVisible, setModalVisible, message }: MyModalProps) => {
+const MyModal = ({
+  modalVisible,
+  setModalVisible,
+  title,
+  children,
+}: MyModalProps) => {
   return (
     <Modal animationType="fade" transparent visible={modalVisible}>
       <Pressable
@@ -16,7 +21,8 @@ const MyModal = ({ modalVisible, setModalVisible, message }: MyModalProps) => {
         style={styles.centeredView}
       >
         <View style={styles.modalView}>
-          <Text style={styles.modalText}>{message}</Text>
+          <Text style={styles.modalText}>{title}</Text>
+          <View style={styles.modalMain}>{children}</View>
           <Pressable
             style={[styles.button, styles.buttonClose]}
             onPress={() => setModalVisible(!modalVisible)}
@@ -52,7 +58,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 5,
     padding: 10,
     elevation: 2,
   },
@@ -70,6 +76,11 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+  },
+  modalMain: {
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
