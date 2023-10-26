@@ -1,8 +1,10 @@
 import axios, { AxiosInstance } from 'axios';
-import { API_BASE_URL, SPOTIFY_API_URL, SPOTIFY_AUTHORIZE_URL } from '@env';
-import { isString } from '@/utils/typeCheck';
-
-isString(API_BASE_URL);
+import {
+  API_BASE_URL,
+  SPOTIFY_API_URL,
+  SPOTIFY_AUTHORIZE_URL,
+  SPOTIFY_TOKEN_API_URL,
+} from '@env';
 
 const apiInstance = (): AxiosInstance => {
   const instance = axios.create({
@@ -16,8 +18,6 @@ const apiInstance = (): AxiosInstance => {
   return instance;
 };
 
-isString(SPOTIFY_AUTHORIZE_URL);
-
 const spotifyAuthApiInstance = (): AxiosInstance => {
   const instance = axios.create({
     baseURL: SPOTIFY_AUTHORIZE_URL,
@@ -30,8 +30,18 @@ const spotifyAuthApiInstance = (): AxiosInstance => {
   return instance;
 };
 
-isString(SPOTIFY_API_URL);
-
+const spotifyTokenApiInstance = (): AxiosInstance => {
+  const instance = axios.create({
+    baseURL: SPOTIFY_TOKEN_API_URL,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json;charset=UTF-8',
+      Accept: 'application/x-www-form-urlencoded',
+      // Accept: 'application/json',
+    },
+  });
+  return instance;
+};
 const spotifyApiInstance = (): AxiosInstance => {
   const instance = axios.create({
     baseURL: SPOTIFY_API_URL,
@@ -39,7 +49,7 @@ const spotifyApiInstance = (): AxiosInstance => {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json;charset=UTF-8',
       Accept: 'application/x-www-form-urlencoded',
-      //   Accept: 'application/json',
+      // Accept: 'application/json',
     },
   });
   return instance;
@@ -48,5 +58,6 @@ const spotifyApiInstance = (): AxiosInstance => {
 const api = apiInstance();
 const spotifyAuthApi = spotifyAuthApiInstance();
 const spotifyApi = spotifyApiInstance();
+const spotifyTokenApi = spotifyTokenApiInstance();
 
-export { api, spotifyAuthApi, spotifyApi };
+export { api, spotifyAuthApi, spotifyApi, spotifyTokenApi };
