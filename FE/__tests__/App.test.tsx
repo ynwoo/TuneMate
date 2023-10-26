@@ -7,6 +7,7 @@ import App from '@/App';
 
 // Note: test renderer must be required after react-native.
 import '@testing-library/jest-native';
+import '@testing-library/jest-dom';
 
 describe('App Test!!!!!', () => {
   it('renders correctly', () => {
