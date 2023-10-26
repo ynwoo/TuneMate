@@ -5,6 +5,7 @@ import { RootStackNavigationProp } from './types';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
+
   return (
     <View style={styles.block}>
       <Text testID="title" style={styles.title}>
