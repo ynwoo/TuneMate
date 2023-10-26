@@ -448,3 +448,10 @@ const styles = StyleSheet.create({
 });
 export default Shadow;
 ```
+
+## 2023년 10월 26일
+
+react-native 학습
+API까지 도달 실패
+에러에 막혔다.
+내일 해결할 것 ..
