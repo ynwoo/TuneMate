@@ -53,4 +53,10 @@ public class IndividualPlaylistController {
 
     }
 
+    // 개인 플레이리스트 트랙 순서 변경
+    @PutMapping("/playlists/{playlistId}/tracks")
+    public void changeTrack(@RequestHeader("UserID") long userId, @RequestBody TrackChangeRequestDto trackChangeRequestDto,@PathVariable("playlistId") String playlistId){
+        individualPlaylistService.changeTrack(playlistId,trackChangeRequestDto);
+    }
+
 }
