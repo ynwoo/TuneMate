@@ -54,3 +54,10 @@
 - BottomTab style 변경 방식
 - 기본적인 React Native view, text, image, stylesheet 구현
 - react-native-vector-icon 사용법
+
+---
+
+### 2023. 10.26 TIL
+
+- 스포티파이 API 사용 방법
+- 스포티파이 API용 axios intercepter 생성
