@@ -1,4 +1,4 @@
-import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '@env';
+import { SPOTIFY_CLIENT_ID } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SpotifyToken, UserProfile } from '@/types/spotify';
 import { spotifyApi, spotifyTokenApi } from '.';
