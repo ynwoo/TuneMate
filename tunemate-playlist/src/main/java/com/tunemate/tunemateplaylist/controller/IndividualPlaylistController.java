@@ -43,5 +43,10 @@ public class IndividualPlaylistController {
         individualPlaylistService.setIndividualPlaylistId(userId,playlistIdDto);
     }
 
+    //노래 재생 횟수 카운트
+    @PostMapping("count")
+    public void counting(@RequestHeader("UserId") long userId) throws ParseException {
+        individualPlaylistService.counting(userId);
+    }
 
 }
