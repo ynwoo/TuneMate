@@ -1,5 +1,5 @@
 server:
-  port: 8761
+  port: ${eureka-server-port}
 spring:
   application:
     name: discovery-service
