@@ -20,14 +20,18 @@ pipeline {
         }
         stage("Build Images") {
             steps {
-                sh "docker compose build"
+                script {
+                    // Copy Docker Compose to the remote server
+                    sh "scp -o StrictHostKeyChecking=no /usr/local/bin/docker-compose $SSH_CONNECTION:/usr/local/bin/docker-compose"
+                }
+                sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'chmod +x /usr/local/bin/docker-compose'"
+                sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker-compose -f docker-compose.yml build'"
             }
         }
         stage('Push Images'){
             steps {
-                    sh "echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin"
-                    sh "docker push $DOCKERHUB_REPOSITORY_BACK:$VERSION"
-                    sh "docker push $DOCKERHUB_REPOSITORY_FRONT:$VERSION"
+                sh "echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin"
+                sh "docker push $DOCKERHUB_REPOSITORY_BACK:$VERSION"
             }
         }
         stage('Deploy Backend Server') {
@@ -45,4 +49,3 @@ pipeline {
         }
     }
 }
-
