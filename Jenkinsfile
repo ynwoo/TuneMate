@@ -10,9 +10,9 @@ pipeline {
         PORT_BACK = "8081"
     }
     stages {
-        stage('Build Backend') {
+        stage('Build Music Backend') {
             steps {
-                dir('backend/lighthouse') {
+                dir('tunemate-playlist') {
                     sh "chmod +x gradlew"
                     sh "./gradlew clean compileJava bootJar"
                }
