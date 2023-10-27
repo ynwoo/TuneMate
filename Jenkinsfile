@@ -20,12 +20,12 @@ pipeline {
         }
         stage("Build Images") {
             steps {
-                script {
+                sshagent(credentials: ['pemKey']) {
                     // Copy Docker Compose to the remote server
                     sh "scp -o StrictHostKeyChecking=no /usr/local/bin/docker-compose $SSH_CONNECTION:/usr/local/bin/docker-compose"
+                    sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'chmod +x /usr/local/bin/docker-compose'"
+                    sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker-compose -f docker-compose.yml build'"
                 }
-                sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'chmod +x /usr/local/bin/docker-compose'"
-                sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker-compose -f docker-compose.yml build'"
             }
         }
         stage('Push Images'){
