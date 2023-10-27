@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  backend:
+    image: ynwoo/tuneMate-music:latest
+    build:
+      context: ./tunemate-playlist
+      dockerfile: Dockerfile
