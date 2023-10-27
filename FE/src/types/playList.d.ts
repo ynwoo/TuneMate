@@ -34,6 +34,10 @@ interface NewPlayList {
   open: boolean;
 }
 
+interface NewCommonPlayList extends NewPlayList {
+  relationId: number;
+}
+
 interface TotalPlayList {
   href: string;
   items: PlayListDetail[];
@@ -44,4 +48,10 @@ interface TotalPlayList {
   total: number;
 }
 
-export type { PlayList, NewPlayList, PlayListDetail, TotalPlayList };
+export type {
+  PlayList,
+  NewPlayList,
+  PlayListDetail,
+  TotalPlayList,
+  NewCommonPlayList,
+};
