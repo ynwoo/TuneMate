@@ -1,6 +1,8 @@
 package com.tunemate.tunemateplaylist.controller;
 
 import com.tunemate.tunemateplaylist.dto.PlaylistCreateDto;
+import com.tunemate.tunemateplaylist.dto.PlaylistResponseDto;
+import com.tunemate.tunemateplaylist.dto.TrackCreateDto;
 import com.tunemate.tunemateplaylist.service.IndividualPlaylistServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
@@ -19,5 +21,20 @@ public class IndividualPlaylistController {
     public void createPlaylist(@RequestHeader("UserId") long userId, @RequestBody PlaylistCreateDto playlistCreateDto) throws ParseException {
         individualPlaylistService.createPlaylist(userId,playlistCreateDto);
     }
+
+    //개인 플레이리스트 트랙 추가
+    @PostMapping("playlists/tracks")
+    public void createTrack(@RequestHeader("UserId") long userId, @RequestBody TrackCreateDto trackCreateDto){
+        individualPlaylistService.createTrack(userId, trackCreateDto);
+    }
+
+    //개인 대표 플레이리스트 조회
+    @GetMapping("playlists-representative")
+    public PlaylistResponseDto getIndividualPlaylist(@RequestHeader("UserId") long userId) throws ParseException {
+        PlaylistResponseDto playlistResponseDto = individualPlaylistService.getIndividualPlaylist(userId);
+        return playlistResponseDto;
+
+    }
+
 
 }

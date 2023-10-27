@@ -3,6 +3,9 @@ package com.tunemate.tunemateplaylist.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -12,13 +15,27 @@ public class Track {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+
     private String title;
 
-    @Column
+
     private String genre;
 
+    @Column()
+    private Integer count;
+
+    @Column(name = "snapshot_id")
+    private String snapshotId;
+
     @ManyToOne
-    @JoinColumn(name = "playlist_id")
-    private Playlist playlistId;
+    private Playlist playlist;
+
+    @Column(name = "track_spotify_id")
+    private String trackSpotifyId;
+
+    @PrePersist
+    public void setCreatedAt() {
+        this.count = 0;
+        this.genre = "없음";
+    }
 }
