@@ -3,10 +3,14 @@ package com.tunemate.tunemateplaylist.service;
 import com.tunemate.tunemateplaylist.domain.Playlist;
 import com.tunemate.tunemateplaylist.dto.PlaylistCreateDto;
 import com.tunemate.tunemateplaylist.dto.PlaylistResponseDto;
+import com.tunemate.tunemateplaylist.dto.RelationDto;
+import com.tunemate.tunemateplaylist.dto.TrackCreateDto;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -60,6 +64,28 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
         //
     }
 
+    // 공동 플레이리스트에 트랙 추가
+    public void createTrack(String playlistId, TrackCreateDto trackCreateDto){
+
+        String token = getToken();
+        String str = webClientBuilder.build().post().uri("/playlists/{playlist_id}/tracks",playlistId).header("Authorization", "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(trackCreateDto)).retrieve().bodyToMono(String.class).block();
+
+
+    }
+
+    // 공동 플레이리스트 id를 이용해서 친구관계 두명의 id를 받는 요청 => 윤우에게 요청
+    public RelationDto getRelationId(String playlistId) {
+        RelationDto relationDto = new RelationDto();
+        // 예시
+        relationDto.setUser1(1234);
+        relationDto.setUser2(12345);
+        //
+        // 윤우에게 요청
+        //
+        return relationDto;
+    }
 
 
     // 스포티파이 유저 ID 요청
@@ -69,6 +95,6 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
 
     // 토큰 요청
     private String getToken() {
-        return "BQBrIzZXc0nooGJhJDGHOPy80Z4UfyKjpgIXwFOklBVlDCvuHHiirxOKp4xwDDe22JjoSQByQtUlgoa0cAAafH8CsRd6RLqCakL2W5fc3CHMTpWIQltuZzVrxfO425Oe00p56pOIcgAKvFt6_Zp_tgXJhNHDaOqgT1DxWqlROIKE2LimoUYsr0ZU1bWcMmqmZka2mw9CDopME6Ca-Q9ygwHAETZcFfHHYVYSgV6-CxeWbicwPuTs6mjatVomfcFrGFX5Rj2empblAtf7n1YE9c-plmk4C66K3w1NW1dxEpw";
+        return "BQC1XJ0gymevTS_cGhhy68uawR77WPEL1PbZjNTjwpBPG_Pa_Vv_Q3KPb93jUHP4P3pnkYC0YGRTTKdEUg2VKh6zb578atuDy_r28PL_jgT3apXByX4c_Jth4bJNB_3jhA8X9ELzpBP13kbMn3VuS2WcLs7Cz_nlXvtlv7you2rY4AirymHf8RgwczeHoEDNN7iMY2PSwLORmDozmoJDD1ND-O6bRe-YymfiC7kKLVa0Pf0Jp3_IfsVVp8Tco0VoSOoTlzuxdMxkBuRNXKeKt0DB0BfZG5KpYEKlfz620Ek";
     }
 }

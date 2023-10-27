@@ -3,6 +3,8 @@ package com.tunemate.tunemateplaylist.controller;
 import com.tunemate.tunemateplaylist.domain.Playlist;
 import com.tunemate.tunemateplaylist.dto.PlaylistCreateDto;
 import com.tunemate.tunemateplaylist.dto.PlaylistResponseDto;
+import com.tunemate.tunemateplaylist.dto.RelationDto;
+import com.tunemate.tunemateplaylist.dto.TrackCreateDto;
 import com.tunemate.tunemateplaylist.service.CommonPlaylistServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.management.relation.Relation;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +34,7 @@ public class CommonPlaylistController {
     @GetMapping("/playlist/{playlistId}")
     public ResponseEntity<SseEmitter> getCommonPlaylist(@PathVariable("playlistId") String playlistId, @RequestHeader("UserId") long userId) throws IOException {
         SseEmitter sseEmitter = new SseEmitter(1800000l);
-        System.out.println(SseEmitters);
         SseEmitters.put(userId,sseEmitter);
-        System.out.println(SseEmitters);
-        System.out.println(SseEmitters.size());
         // sse 연결 끝나면 객체 삭제
         sseEmitter.onCompletion(() -> {
             SseEmitters.remove(userId);
@@ -53,6 +53,15 @@ public class CommonPlaylistController {
     @PostMapping("/playlists")
     public void createCommonPlaylist(@RequestBody PlaylistCreateDto playlistCreateDto) throws ParseException {
         commonPlaylistService.createPlaylist(playlistCreateDto);
+    }
 
+    // 공동 플레이리스트에 트랙 추가
+    @PostMapping("/playlists/tracks/{playlistId}")
+    public void createTrack(@PathVariable("playlistId") String playlistId, @RequestBody TrackCreateDto trackCreateDto) throws IOException {
+        commonPlaylistService.createTrack(playlistId, trackCreateDto);
+        RelationDto relationDto = commonPlaylistService.getRelationId(playlistId);
+        PlaylistResponseDto playlistResponseDto = commonPlaylistService.getIndividualPlaylist(playlistId);
+        SseEmitters.get(relationDto.getUser1()).send(playlistResponseDto, MediaType.APPLICATION_JSON);
+        SseEmitters.get(relationDto.getUser2()).send(playlistResponseDto, MediaType.APPLICATION_JSON);
     }
 }
