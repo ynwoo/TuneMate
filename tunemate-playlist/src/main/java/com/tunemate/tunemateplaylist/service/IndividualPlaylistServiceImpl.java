@@ -148,11 +148,18 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         individualPlaylistTrackRepository.deleteByTrackSpotifyId(trackDeleteRequestDto.getTracks().get(0).getUri());
     }
 
+    // 개인 플레이리스트 트랙 순서 변경
+    public void changeTrack(String playlistId, TrackChangeRequestDto trackChangeRequestDto){
+        String token = getToken();
+        webClientBuilder.build().method(HttpMethod.PUT).uri("/playlists/{playlist_id}/tracks",playlistId).header("Authorization", "Bearer " + token)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(BodyInserters.fromValue(trackChangeRequestDto)).retrieve().bodyToMono(String.class).block();
+    }
+
     private String getSpotifyUserId() {
         return "31nmxiqhjnusfymqkaki3usnsose";
     }
 
     private String getToken() {
-        return "BQCeOjj0rw8gIidFztwaSwzhhrHR12rshn1VIaf6kSVuiQNOMjuSxl_m7_-vp4VLGCQLho_X-d8wWNVogpCaqPthSqPpYBgUfTh1OMPxmCDEhwkMzsgWMgQd1tMI2DVgsA8W3bxxr6eYwkRV9MdZ2r-x2OB_qY186mT2nQEX2RQ72PJKI0S_Hk7In2bbEQKEL1yY6OHjDjSk06cxJfGyEs57ldwZx63KXHZQ0fPBlA7S72uwghylZgLJHQFSKIh-SL5si78Aw_W6S7ELkJ2_IO4JJ31Tj7oqLSMki30LQ50";
+        return "BQBMmZt3lcGyAlASUJ71ISviDSRFtUhCs21wOeJ_dG0KGcHXYQoGIH6gumzkuTzRXYSohbhZnc5KSYkUDWqSW88hIFXezBUY8wdjXuWMf2eRs9QDHezY3C6Q41u-tGqZeZtd3mXSghpOAX7NnObrXFabsRe0eGvpcvF-YqEL7cQ_ZqKjqGrHboHurPcLo7pa9tyYJouRWRFBPw5WrTuFAME6sPuANrCBwcxa9-N6aHFTX7CePmyiY8wG3sifNqaGwoBclsJtwqJDUCvzihtpQpmmUX-8ZTQogUSv9QganMM";
     }
 }
