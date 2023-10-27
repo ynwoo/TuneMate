@@ -3,13 +3,15 @@ import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import { RootStackNavigationProp } from './types';
 import { redirectToAuthCodeFlow } from '@/utils/generateCode';
+import { inAppBrower } from '@/utils/inAppBrowser';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const onLogin = async () => {
     const uri = await redirectToAuthCodeFlow();
-    navigation.navigate('Auth', { uri });
+    // navigation.navigate('Auth', { uri });
+    await inAppBrower.openLink(uri);
   };
 
   return (
@@ -19,6 +21,14 @@ const LoginScreen = () => {
       </Text>
       <View style={styles.Button}>
         <Button title="Login" onPress={onLogin} />
+      </View>
+      <View style={styles.Button}>
+        <Button
+          title="비회원"
+          onPress={() => {
+            navigation.navigate('BottomTab');
+          }}
+        />
       </View>
     </View>
   );
