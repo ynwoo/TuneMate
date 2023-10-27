@@ -30,14 +30,14 @@ const BottomTab = () => {
           color={styles.topTabItem.color}
           size={styles.topTabItem.size}
           name="arrow-left"
-          onPress={() => navigation.pop(1)}
+          onPress={() => navigation.goBack()}
         />
         <Pressable onPress={() => setModalVisible(true)}>
           <MaterialCommunityIcons
             color={styles.topTabItem.color}
             size={styles.topTabItem.size}
             name="bell"
-            // onPress={() => setModalVisible(true)}
+            onPress={() => setModalVisible(true)}
           />
         </Pressable>
       </View>
