@@ -18,4 +18,4 @@ export const SPOTIFY_SCOPES: string = [
   // "user-library-read",
   'user-read-email',
   'user-read-private',
-].join('');
+].join(' ');
