@@ -4,10 +4,13 @@ import lombok.Getter;
 
 
 @Getter
-public class PlaylistCreateDto {
+public class PlaylistRequestDto {
 
     private long relationId;
+
     private String name;
+
     private String description;
+
     private boolean open;
 }
