@@ -24,10 +24,53 @@ interface UserProfile {
   uri: string;
 }
 
+interface Item {
+  track: Track;
+}
+
+interface Track {
+  albums: Album;
+}
+
+interface Album {
+  images: Image[];
+}
+
+interface ChangeTrackIndex {
+  range_start: number;
+  insert_before: number;
+  range_length: number;
+}
+
+interface Artist {
+  name: string;
+}
+
 interface Image {
   url: string;
   height: number;
   width: number;
 }
 
-export type { SpotifyToken, UserProfile, Image };
+interface Owner {
+  display_name: string;
+  external_urls: {
+    [key: string]: string;
+  };
+  href: string;
+  id: string;
+  type: 'user';
+  uri: string;
+}
+
+export type {
+  SpotifyToken,
+  UserProfile,
+  Item,
+  Owner,
+  Album,
+  Artist,
+  Image,
+  ChangeTrackIndex,
+  Track,
+};
