@@ -5,3 +5,5 @@ services:
     build:
       context: ./tunemate-playlist
       dockerfile: Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
