@@ -51,9 +51,6 @@ public class CommonPlaylistController {
                 .body(sseEmitter);
     }
 
-//    @GetMapping("/sse/close")
-//    public void closeSSE(@)
-
     // 공동 플레이리스트 생성
     @PostMapping("/playlists")
     public void createCommonPlaylist(@RequestBody PlaylistCreateDto playlistCreateDto) throws ParseException {
@@ -96,6 +93,13 @@ public class CommonPlaylistController {
         commonPlaylistService.deleteTrack(playlistId,trackDeleteRequestDto);
         updatePlaylistAndSendResponse(playlistId);
 
+    }
+
+    // 공동 플레이리스트 트랙 순서 변경
+    @PutMapping("/playlists/{playlistId}/tracks")
+    public void changeTrack(@PathVariable("playlistId") String playlistId, @RequestBody TrackChangeRequestDto trackChangeRequestDto){
+        commonPlaylistService.changeTrack(playlistId,trackChangeRequestDto);
+        updatePlaylistAndSendResponse(playlistId);
     }
 
 }

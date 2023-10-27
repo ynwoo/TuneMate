@@ -90,6 +90,13 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(BodyInserters.fromValue(trackDeleteRequestDto)).retrieve().bodyToMono(String.class).block();
     }
 
+    // 공동 플레이리스트 트랙 순서 변경
+    public void changeTrack(String playlistId, TrackChangeRequestDto trackChangeRequestDto){
+        String token = getToken();
+        webClientBuilder.build().method(HttpMethod.PUT).uri("/playlists/{playlist_id}/tracks",playlistId).header("Authorization", "Bearer " + token)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(BodyInserters.fromValue(trackChangeRequestDto)).retrieve().bodyToMono(String.class).block();
+    }
+
 
     // 스포티파이 유저 ID 요청
     private String getSpotifyUserId() {
@@ -98,6 +105,6 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
 
     // 토큰 요청
     private String getToken() {
-        return "BQBMmZt3lcGyAlASUJ71ISviDSRFtUhCs21wOeJ_dG0KGcHXYQoGIH6gumzkuTzRXYSohbhZnc5KSYkUDWqSW88hIFXezBUY8wdjXuWMf2eRs9QDHezY3C6Q41u-tGqZeZtd3mXSghpOAX7NnObrXFabsRe0eGvpcvF-YqEL7cQ_ZqKjqGrHboHurPcLo7pa9tyYJouRWRFBPw5WrTuFAME6sPuANrCBwcxa9-N6aHFTX7CePmyiY8wG3sifNqaGwoBclsJtwqJDUCvzihtpQpmmUX-8ZTQogUSv9QganMM";
+        return "BQALNtw0eto-4YmM518C3AcZXpkeH9tR1AwYxYaCk_j01VhZnh5T1hlC5x1AjnRwIXtATEbs_aJqk2n6CXQLyFRkzEBKJmB4liNzfPKkQF-vT8gdQ1gqvsBQY5N7OkHPakPN8YN3y_m5b2w0wHnYtS9FRMerrt1Ipp7o_0LngWg72rFy_pbwDo1qwPgTk3bnggvtyf8w3f64OW9j4hMnSB90psxdNcW4Rt9ThURG63BiR1EmYPhXgqY2KXTx3PTPJ3vkQYSeK0eNi8ldnobdWWQxQnpqpSeB83plRlypzKU";
     }
 }
