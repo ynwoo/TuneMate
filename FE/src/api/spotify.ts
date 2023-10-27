@@ -1,12 +1,6 @@
-import { SPOTIFY_CLIENT_ID } from '@env';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SpotifyToken, UserProfile } from '@/types/spotify';
 import { spotifyApi, spotifyTokenApi } from '.';
 import { isString } from '@/utils/typeCheck';
-import {
-  generateCodeChallenge,
-  generateCodeVerifier,
-} from '@/utils/generateCode';
 
 const getSpotifyToken = async (
   clientId: string,
@@ -68,21 +62,4 @@ const getAccessToken = async (
   return result.data.access_token;
 };
 
-const redirectToAuthCodeFlow = async (clientId: string = SPOTIFY_CLIENT_ID) => {
-  const verifier = generateCodeVerifier(128);
-  const challenge = await generateCodeChallenge(verifier);
-
-  await AsyncStorage.setItem('verifier', verifier);
-
-  const params = new URLSearchParams();
-  params.append('client_id', clientId);
-  params.append('response_type', 'code');
-  params.append('redirect_uri', 'http://localhost:8888/callback');
-  params.append('scope', 'user-read-private user-read-email');
-  params.append('code_challenge_method', 'S256');
-  params.append('code_challenge', challenge);
-
-  return `https://accounts.spotify.com/authorize?${params.toString()}`;
-};
-
-export { getSpotifyToken, getAccessToken, getProfile, redirectToAuthCodeFlow };
+export { getSpotifyToken, getAccessToken, getProfile };

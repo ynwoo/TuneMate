@@ -2,9 +2,15 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import { RootStackNavigationProp } from './types';
+import { redirectToAuthCodeFlow } from '@/utils/generateCode';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
+
+  const onLogin = async () => {
+    const uri = await redirectToAuthCodeFlow();
+    navigation.navigate('Auth', { uri });
+  };
 
   return (
     <View style={styles.block}>
@@ -12,10 +18,7 @@ const LoginScreen = () => {
         Tunemate
       </Text>
       <View style={styles.Button}>
-        <Button
-          title="Login"
-          onPress={() => navigation.navigate('BottomTab')}
-        />
+        <Button title="Login" onPress={onLogin} />
       </View>
     </View>
   );

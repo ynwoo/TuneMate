@@ -1,25 +1,24 @@
-import crypto from 'crypto';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from '@env';
+import pkceChallenge from 'react-native-pkce-challenge';
+import { SPOTIFY_SCOPES } from '@/constants/spotify';
 
-const generateCodeVerifier = (length: number) => {
-  let text = '';
-  const possible =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+const redirectToAuthCodeFlow = async () => {
+  const { codeChallenge, codeVerifier } = pkceChallenge();
 
-  for (let i = 0; i < length; i += 1) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  console.log(text);
+  await AsyncStorage.setItem('verifier', codeVerifier);
 
-  return text;
+  const params = new URLSearchParams();
+  params.append('client_id', SPOTIFY_CLIENT_ID);
+  params.append('response_type', 'code');
+  params.append('redirect_uri', SPOTIFY_REDIRECT_URI);
+  params.append('scope', SPOTIFY_SCOPES);
+  params.append('code_challenge_method', 'S256');
+  params.append('code_challenge', codeChallenge);
+
+  console.log('redirectToAuthCodeFlow', params.toString());
+
+  return `https://accounts.spotify.com/authorize?${params.toString()}`;
 };
 
-const generateCodeChallenge = async (codeVerifier: string) => {
-  const data = new TextEncoder().encode(codeVerifier);
-  const digest = await crypto.subtle.digest('sha256', data);
-  return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '');
-};
-
-export { generateCodeVerifier, generateCodeChallenge };
+export { redirectToAuthCodeFlow };
