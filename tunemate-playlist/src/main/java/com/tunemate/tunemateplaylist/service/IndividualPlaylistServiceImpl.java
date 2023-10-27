@@ -85,15 +85,15 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
     }
 
     //  개인 대표 플레이리스트 조회
-    public PlaylistResponseDto getIndividualPlaylist(long userId,String playlistId) throws ParseException {
+    public PlaylistResponseDto getIndividualPlaylist(long userId) throws ParseException {
         // AuthService 에 Token 요청
         String token = getToken();
 
-        //Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseGet(null);
-        //if(playlist == null) return null;
+        Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseGet(null);
+        if(playlist == null) return null;
 
 
-        PlaylistResponseDto playlistResponseDto = webClientBuilder.build().get().uri(uriBuilder -> uriBuilder.path("/playlists/"+playlistId).queryParam("fields","description,id,name,images,tracks(items(track(album(images),artists(name),id,name,uri)))").build()).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
+        PlaylistResponseDto playlistResponseDto = webClientBuilder.build().get().uri(uriBuilder -> uriBuilder.path("/playlists/"+playlist.getPlaylistSpotifyId()).queryParam("fields","description,id,name,images,tracks(items(track(album(images),artists(name),id,name,uri)))").build()).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
                 .retrieve().bodyToMono(PlaylistResponseDto.class).block();
 
         return playlistResponseDto;
@@ -160,6 +160,6 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
     }
 
     private String getToken() {
-        return "BQBMmZt3lcGyAlASUJ71ISviDSRFtUhCs21wOeJ_dG0KGcHXYQoGIH6gumzkuTzRXYSohbhZnc5KSYkUDWqSW88hIFXezBUY8wdjXuWMf2eRs9QDHezY3C6Q41u-tGqZeZtd3mXSghpOAX7NnObrXFabsRe0eGvpcvF-YqEL7cQ_ZqKjqGrHboHurPcLo7pa9tyYJouRWRFBPw5WrTuFAME6sPuANrCBwcxa9-N6aHFTX7CePmyiY8wG3sifNqaGwoBclsJtwqJDUCvzihtpQpmmUX-8ZTQogUSv9QganMM";
+        return "BQALNtw0eto-4YmM518C3AcZXpkeH9tR1AwYxYaCk_j01VhZnh5T1hlC5x1AjnRwIXtATEbs_aJqk2n6CXQLyFRkzEBKJmB4liNzfPKkQF-vT8gdQ1gqvsBQY5N7OkHPakPN8YN3y_m5b2w0wHnYtS9FRMerrt1Ipp7o_0LngWg72rFy_pbwDo1qwPgTk3bnggvtyf8w3f64OW9j4hMnSB90psxdNcW4Rt9ThURG63BiR1EmYPhXgqY2KXTx3PTPJ3vkQYSeK0eNi8ldnobdWWQxQnpqpSeB83plRlypzKU";
     }
 }

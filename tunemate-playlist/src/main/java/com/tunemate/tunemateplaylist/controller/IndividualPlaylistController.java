@@ -27,9 +27,9 @@ public class IndividualPlaylistController {
     }
 
     //개인 대표 플레이리스트 조회
-    @GetMapping("playlists-representative/{playlistId}")
-    public PlaylistResponseDto getIndividualPlaylist(@RequestHeader("UserId") long userId,@PathVariable("playlistId") String playlistId) throws ParseException {
-        PlaylistResponseDto playlistResponseDto = individualPlaylistService.getIndividualPlaylist(userId,playlistId);
+    @GetMapping("playlists-representative")
+    public PlaylistResponseDto getIndividualPlaylist(@RequestHeader("UserId") long userId) throws ParseException {
+        PlaylistResponseDto playlistResponseDto = individualPlaylistService.getIndividualPlaylist(userId);
         return playlistResponseDto;
 
     }
