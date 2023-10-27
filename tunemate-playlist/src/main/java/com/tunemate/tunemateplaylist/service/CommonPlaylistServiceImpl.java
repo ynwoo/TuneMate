@@ -83,6 +83,7 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
         return relationDto;
     }
 
+    // 공동 플레이리스트에 트랙 삭제
     public void deleteTrack(String playlistId, TrackDeleteRequestDto trackDeleteRequestDto){
         String token = getToken();
         String str = webClientBuilder.build().method(HttpMethod.DELETE).uri("/playlists/{playlist_id}/tracks",playlistId).header("Authorization", "Bearer " + token)
@@ -97,6 +98,6 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
 
     // 토큰 요청
     private String getToken() {
-        return "BQDE04YqM_5fZHd73HXLXwEQN3pR2J43TIXb3z0OqJ7z8D5V9QEbw3wi697oZHhkksXpPY0xIjI7INN4O9bFwsKb5Y1HRnrGw0hNN2vhwonOWMvBdV3031Bt4kfJuQq1QZCzL6BhhVVeLlAbxwhzzYRNSoysbjundtKn9YEjNoqdOEXA6o6qMqGdmIxXW96-q1I5JFcdnB_P80e63Xxye-piGQU5ygUpIM8CoEmSGlPPlftrb5uGM2bPfHdOWFG_2TwoCcuW9BOK-U27TB3YP2IAVOA1aVdJGjNvxj5ObZE";
+        return "BQCeOjj0rw8gIidFztwaSwzhhrHR12rshn1VIaf6kSVuiQNOMjuSxl_m7_-vp4VLGCQLho_X-d8wWNVogpCaqPthSqPpYBgUfTh1OMPxmCDEhwkMzsgWMgQd1tMI2DVgsA8W3bxxr6eYwkRV9MdZ2r-x2OB_qY186mT2nQEX2RQ72PJKI0S_Hk7In2bbEQKEL1yY6OHjDjSk06cxJfGyEs57ldwZx63KXHZQ0fPBlA7S72uwghylZgLJHQFSKIh-SL5si78Aw_W6S7ELkJ2_IO4JJ31Tj7oqLSMki30LQ50";
     }
 }

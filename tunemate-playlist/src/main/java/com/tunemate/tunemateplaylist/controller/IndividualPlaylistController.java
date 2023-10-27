@@ -1,9 +1,6 @@
 package com.tunemate.tunemateplaylist.controller;
 
-import com.tunemate.tunemateplaylist.dto.PlaylistCreateDto;
-import com.tunemate.tunemateplaylist.dto.PlaylistIdDto;
-import com.tunemate.tunemateplaylist.dto.PlaylistResponseDto;
-import com.tunemate.tunemateplaylist.dto.TrackCreateDto;
+import com.tunemate.tunemateplaylist.dto.*;
 import com.tunemate.tunemateplaylist.service.IndividualPlaylistServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
@@ -24,15 +21,15 @@ public class IndividualPlaylistController {
     }
 
     //개인 플레이리스트 트랙 추가
-    @PostMapping("playlists/tracks")
-    public void createTrack(@RequestHeader("UserId") long userId, @RequestBody TrackCreateDto trackCreateDto){
-        individualPlaylistService.createTrack(userId, trackCreateDto);
+    @PostMapping("playlists/{playlistId}/tracks")
+    public void createTrack(@RequestHeader("UserId") long userId, @RequestBody TrackCreateDto trackCreateDto,@PathVariable("playlistId") String playlistId){
+        individualPlaylistService.createTrack(userId, trackCreateDto,playlistId);
     }
 
     //개인 대표 플레이리스트 조회
-    @GetMapping("playlists-representative")
-    public PlaylistResponseDto getIndividualPlaylist(@RequestHeader("UserId") long userId) throws ParseException {
-        PlaylistResponseDto playlistResponseDto = individualPlaylistService.getIndividualPlaylist(userId);
+    @GetMapping("playlists-representative/{playlistId}")
+    public PlaylistResponseDto getIndividualPlaylist(@RequestHeader("UserId") long userId,@PathVariable("playlistId") String playlistId) throws ParseException {
+        PlaylistResponseDto playlistResponseDto = individualPlaylistService.getIndividualPlaylist(userId,playlistId);
         return playlistResponseDto;
 
     }
@@ -47,6 +44,13 @@ public class IndividualPlaylistController {
     @PostMapping("count")
     public void counting(@RequestHeader("UserId") long userId) throws ParseException {
         individualPlaylistService.counting(userId);
+    }
+
+    //개인 플레이리스트 트랙 삭제
+    @DeleteMapping("playlists/{playlistId}/tracks")
+    public void deleteTrack(@RequestHeader("UserID") long userId, @RequestBody TrackDeleteRequestDto trackDeleteRequestDto,@PathVariable("playlistId") String playlistId){
+        individualPlaylistService.deleteTrack(playlistId,trackDeleteRequestDto);
+
     }
 
 }
