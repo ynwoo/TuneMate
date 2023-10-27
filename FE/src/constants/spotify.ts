@@ -1,4 +1,4 @@
-export const SPOTIFY_SCOPES = [
+export const SPOTIFY_SCOPES: string = [
   // "ugc-image-upload",
   // "user-read-recently-played",
   // "user-top-read",
@@ -18,4 +18,4 @@ export const SPOTIFY_SCOPES = [
   // "user-library-read",
   'user-read-email',
   'user-read-private',
-] as const;
+].join('');
