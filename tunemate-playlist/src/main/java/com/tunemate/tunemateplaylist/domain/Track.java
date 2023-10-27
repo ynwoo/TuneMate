@@ -24,8 +24,6 @@ public class Track {
     @Column()
     private Integer count;
 
-    @Column(name = "snapshot_id")
-    private String snapshotId;
 
     @ManyToOne
     private Playlist playlist;

@@ -15,7 +15,5 @@ public class PlaylistResponseDto {
 
     private String name;
 
-    private String snapshotId;
-
     private TracksDto tracks;
 }
