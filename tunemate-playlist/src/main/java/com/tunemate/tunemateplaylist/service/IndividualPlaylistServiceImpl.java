@@ -3,10 +3,14 @@ package com.tunemate.tunemateplaylist.service;
 import com.tunemate.tunemateplaylist.domain.Playlist;
 import com.tunemate.tunemateplaylist.domain.Track;
 import com.tunemate.tunemateplaylist.dto.PlaylistCreateDto;
+import com.tunemate.tunemateplaylist.dto.PlaylistIdDto;
 import com.tunemate.tunemateplaylist.dto.PlaylistResponseDto;
 import com.tunemate.tunemateplaylist.dto.TrackCreateDto;
+import com.tunemate.tunemateplaylist.exception.BaseException;
+import com.tunemate.tunemateplaylist.exception.NotFoundException;
 import com.tunemate.tunemateplaylist.repository.IndividualPlaylistRepository;
 import com.tunemate.tunemateplaylist.repository.IndividualPlaylistTrackRepository;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -107,11 +111,21 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         return playlistResponseDto;
     }
 
+    // 대표 플레이리스트로 설정
+    @Transactional
+    public void setIndividualPlaylistId(long userId, PlaylistIdDto playlistIdDto){
+        String playlistId = playlistIdDto.getPlaylistId();
+        Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("에러에러", HttpResponseStatus.NOT_FOUND));
+        playlist.setPlaylistSpotifyId(playlistId);
+
+    }
+
+
     private String getSpotifyUserId() {
         return "31nmxiqhjnusfymqkaki3usnsose";
     }
 
     private String getToken() {
-        return "BQCtqloyZRF-NJz821o-auZ37h300dTQd8dwlbL2IMpAjdfcD8KbVR-V45PvFNJZNIAOAZTcgdSjKqn6EODg97dPE3L1zliSGhLYLoJ6kW_-CPJOISoHJqfUAMM1SecMRFodHoM5213Db41xhE6zy4nIfVY59AN4w431kzGT2O7jy2DgScM_O_-aP6HL6c8ixWeWtuaqZaCNlPel2Rxf7ZPug4zF_N8oaeJDBZI7UsZzrM3AM1V4g5bSIBhd0w1UCoXmQvMiNF5ucs3MpZoyT2JepWy6yZkIkt-bIrJmvGA";
+        return "BQCn8fHxF33w6fYHju_D5-ojMw0iTRkU8IvlLMdiwNn49kwqmxwLD6xeaXk5E0yloy_aXIt9oJy6aPiIb_iaAjrosBBBClua644wQXfTwA8X5Yju_CgJT-2onIyebyRLKI_ls5bfZUPs7x9NqYAkGxZ8aaDR3dTrFsJsCOQ9hBTp0qC-_dINoPj5_jLCB3kO3erzA1jaMh0-4tfVZbCd8R2O4aS8pXpQqL2BghefHQNnVpCePi6AzcIC90D850TxB72MSXJHUpvEhFADz4yHs6Xv6xaKn-M0R8ECFtHkeV0";
     }
 }

@@ -1,6 +1,7 @@
 package com.tunemate.tunemateplaylist.controller;
 
 import com.tunemate.tunemateplaylist.dto.PlaylistCreateDto;
+import com.tunemate.tunemateplaylist.dto.PlaylistIdDto;
 import com.tunemate.tunemateplaylist.dto.PlaylistResponseDto;
 import com.tunemate.tunemateplaylist.dto.TrackCreateDto;
 import com.tunemate.tunemateplaylist.service.IndividualPlaylistServiceImpl;
@@ -34,6 +35,12 @@ public class IndividualPlaylistController {
         PlaylistResponseDto playlistResponseDto = individualPlaylistService.getIndividualPlaylist(userId);
         return playlistResponseDto;
 
+    }
+
+    //개인의 대표 플레이리스트 변경
+    @PutMapping("playlists")
+    public void setIndividualPlaylistId(@RequestHeader("UserId") long userId, @RequestBody PlaylistIdDto playlistIdDto){
+        individualPlaylistService.setIndividualPlaylistId(userId,playlistIdDto);
     }
 
 
