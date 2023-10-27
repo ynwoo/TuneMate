@@ -5,7 +5,6 @@ import {
   SPOTIFY_AUTHORIZE_URL,
   SPOTIFY_TOKEN_API_URL,
 } from '@env';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const apiInstance = (): AxiosInstance => {
   const instance = axios.create({

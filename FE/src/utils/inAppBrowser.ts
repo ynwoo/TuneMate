@@ -52,6 +52,9 @@ const inAppBrower = {
       Alert.alert(error.message);
     }
   },
+  close() {
+    InAppBrowser.close();
+  },
 };
 
 export { inAppBrower };
