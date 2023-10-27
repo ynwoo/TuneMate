@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface IndividualPlaylistTrackRepository extends JpaRepository<Track, Long> {
     Optional<Track> findByTrackSpotifyIdAndPlaylist(String uri, Playlist playlist);
 
+    void deleteByTrackSpotifyId(String uri);
+
 }

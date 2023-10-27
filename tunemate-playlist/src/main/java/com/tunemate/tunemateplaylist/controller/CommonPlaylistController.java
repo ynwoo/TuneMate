@@ -11,13 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.management.relation.Relation;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+
 
 @RestController
 @CrossOrigin(value = "*", allowedHeaders = "*")
@@ -80,37 +80,10 @@ public class CommonPlaylistController {
         }
 
 
-//        try{
-//            System.out.println("USER1 한테 전송");
-//            user1.send(playlistResponseDto, MediaType.APPLICATION_JSON);
-//
-//        }
-//        catch (IOException | IllegalStateException e){
-//            System.out.println("USER1 전송 실패");
-//            SseEmitters.remove(relationDto.getUser1());
-//            System.out.println(SseEmitters);
-//        }
-//        catch (NullPointerException e){
-//            System.out.println("Null");
-//        }
-//        System.out.println("USER2 ===");
-//        try{
-//            System.out.println("USER2 한테 전송");
-//            user2.send(playlistResponseDto, MediaType.APPLICATION_JSON);
-//        }
-//        catch (IOException | IllegalStateException e){
-//            System.out.println("USER2 전송 실패");
-//            SseEmitters.remove(relationDto.getUser2());
-//            System.out.println(SseEmitters);
-//        }
-//        catch (NullPointerException e){
-//            System.out.println("Null");
-//        }
-
     }
 
     // 공동 플레이리스트에 트랙 추가
-    @PostMapping("/playlists/tracks/{playlistId}")
+    @PostMapping("/playlists/{playlistId}/tracks")
     public void createTrack(@PathVariable("playlistId") String playlistId, @RequestBody TrackCreateDto trackCreateDto) throws IOException {
         commonPlaylistService.createTrack(playlistId, trackCreateDto);
         updatePlaylistAndSendResponse(playlistId);
@@ -118,7 +91,7 @@ public class CommonPlaylistController {
     }
 
     // 공동 플레이리스트에 트랙 삭제
-    @DeleteMapping("/playlists/tracks/{playlistId}")
+    @DeleteMapping("/playlists/{playlistId}/tracks")
     public void deleteTrack(@PathVariable("playlistId") String playlistId, @RequestBody TrackDeleteRequestDto trackDeleteRequestDto) throws IOException {
         commonPlaylistService.deleteTrack(playlistId,trackDeleteRequestDto);
         updatePlaylistAndSendResponse(playlistId);

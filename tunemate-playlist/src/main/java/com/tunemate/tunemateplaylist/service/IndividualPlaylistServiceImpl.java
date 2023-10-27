@@ -11,6 +11,8 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,11 +66,11 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
     }
 
     // 개인 플레이리스트 노래 추가
-    public void createTrack(long userId, TrackCreateDto trackCreateDto){
+    public void createTrack(long userId, TrackCreateDto trackCreateDto, String playlistId){
         // AuthService 에 Token 요청
         String token = getToken();
         Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("에러에러", HttpResponseStatus.NOT_FOUND));
-        individualPlaylistTrackRepository.findByTrackSpotifyIdAndPlaylist(trackCreateDto.getUris().get(0),playlist).ifPresentOrElse(track -> {throw new NotFoundException("dfsdf",HttpResponseStatus.FORBIDDEN);},() -> {
+        individualPlaylistTrackRepository.findByTrackSpotifyIdAndPlaylist(trackCreateDto.getUris().get(0),playlist).ifPresentOrElse(track -> {throw new NotFoundException("dfsdf",HttpResponseStatus.FORBIDDEN);},() -> { // 중복 노래가 있는 경우 처리(나중에 에러 핸들링 해야함)
             String str = webClientBuilder.build().post().uri("/playlists/{playlist_id}/tracks",playlist.getPlaylistSpotifyId()).header("Authorization", "Bearer " + token)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(BodyInserters.fromValue(trackCreateDto)).retrieve().bodyToMono(String.class).block();
@@ -83,13 +85,13 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
     }
 
     //  개인 대표 플레이리스트 조회
-    public PlaylistResponseDto getIndividualPlaylist(long userId) throws ParseException {
+    public PlaylistResponseDto getIndividualPlaylist(long userId,String playlistId) throws ParseException {
         // AuthService 에 Token 요청
         String token = getToken();
 
-        Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseGet(null);
-        if(playlist == null) return null;
-        String playlistId = playlist.getPlaylistSpotifyId();
+        //Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseGet(null);
+        //if(playlist == null) return null;
+
 
         PlaylistResponseDto playlistResponseDto = webClientBuilder.build().get().uri(uriBuilder -> uriBuilder.path("/playlists/"+playlistId).queryParam("fields","description,id,name,images,tracks(items(track(album(images),artists(name),id,name,uri)))").build()).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
                 .retrieve().bodyToMono(PlaylistResponseDto.class).block();
@@ -137,11 +139,20 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         track.setCount(track.getCount()+1);
     }
 
+    // 개인 플레이리스트에 트랙 삭제
+    @Transactional
+    public void deleteTrack(String playlistId, TrackDeleteRequestDto trackDeleteRequestDto){
+        String token = getToken();
+        String str = webClientBuilder.build().method(HttpMethod.DELETE).uri("/playlists/{playlist_id}/tracks",playlistId).header("Authorization", "Bearer " + token)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(BodyInserters.fromValue(trackDeleteRequestDto)).retrieve().bodyToMono(String.class).block();
+        individualPlaylistTrackRepository.deleteByTrackSpotifyId(trackDeleteRequestDto.getTracks().get(0).getUri());
+    }
+
     private String getSpotifyUserId() {
         return "31nmxiqhjnusfymqkaki3usnsose";
     }
 
     private String getToken() {
-        return "BQA6O45hIGiw21G5wmuE41pUkBF5YFtCssVyFwKtqQicorP7M8HjRLd_i2h9j7N7eZ4XEvONOWMCMDTawJPGcu--JpqqPrM1xKBilBlPFDLTYpN6IWU5L4sIdvaBJvh7m0-hdiYuDE4IouO1b84YJYphS8zBibe0Kx-947YEgLbUOdIbjq3YfkKETwpAdCjSQyX05n4KS5dMIAXeLYjKU4burRfetQrZE5QO-2nAfC7Wy35D0oKnx7tpR1qSAS9l4O-65ajdVgWDr6cn3A4-Zf0grsHyy1KD2FQFMRGgeEU";
+        return "BQCeOjj0rw8gIidFztwaSwzhhrHR12rshn1VIaf6kSVuiQNOMjuSxl_m7_-vp4VLGCQLho_X-d8wWNVogpCaqPthSqPpYBgUfTh1OMPxmCDEhwkMzsgWMgQd1tMI2DVgsA8W3bxxr6eYwkRV9MdZ2r-x2OB_qY186mT2nQEX2RQ72PJKI0S_Hk7In2bbEQKEL1yY6OHjDjSk06cxJfGyEs57ldwZx63KXHZQ0fPBlA7S72uwghylZgLJHQFSKIh-SL5si78Aw_W6S7ELkJ2_IO4JJ31Tj7oqLSMki30LQ50";
     }
 }
