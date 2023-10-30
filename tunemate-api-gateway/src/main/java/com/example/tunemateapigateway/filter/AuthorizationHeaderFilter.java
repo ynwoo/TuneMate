@@ -14,10 +14,14 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Component
-@RequiredArgsConstructor
 @Slf4j
 public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.Config> {
     private final Environment env;
+
+    public AuthorizationHeaderFilter(Environment env) {
+        super(Config.class);
+        this.env = env;
+    }
 
     @Override
     public GatewayFilter apply(Config config) {
