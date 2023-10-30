@@ -6,10 +6,16 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: user-service-auth
+        - id: user-service-login
           uri: lb://user-service
           predicates:
-            - Path=/api/v1/user-service/login/oauth2/code/spotify
+            - Path=/api/v1/user-service/login/oauth2/**
+          filters:
+            - RewritePath=/api/v1/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service-authorization
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user-service/oauth2/authorization/**
           filters:
             - RewritePath=/api/v1/user-service/(?<segment>.*), /$\{segment}
         - id: user-service
