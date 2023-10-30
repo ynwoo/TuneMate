@@ -9,9 +9,9 @@ spring:
         - id: user-service-auth
           uri: lb://user-service
           predicates:
-            - Path=/api/v1/user-service/users/sign-in
+            - Path=/api/v1/user-service/login/oauth2/code/spotify
           filters:
-            - RewritePath=/api/v1/user-service/users/sign-in, /users/sign-in
+            - RewritePath=/api/v1/user-service/login/oauth2/code/spotify, /login/oauth2/code/spotify
         - id: user-service
           uri: lb://user-service
           predicates:
