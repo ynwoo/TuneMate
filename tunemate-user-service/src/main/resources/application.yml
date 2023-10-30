@@ -41,6 +41,10 @@ eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance.id:${random.value}}
 
+jwt:
+  access-token:
+    expiration-epoch: 7200000 // 2 hours
+
 logging:
   level:
     com.example.com.example.tunemateuserservice: debug
