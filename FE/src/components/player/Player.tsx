@@ -3,28 +3,15 @@ import {
   StyleSheet,
   View,
   Text,
-  Image,
   TouchableOpacity,
   Animated,
   Easing,
   ImageBackground,
 } from 'react-native';
-import {
-  withSpring,
-  useSharedValue,
-  useAnimatedStyle,
-  withRepeat,
-} from 'react-native-reanimated';
-import LP from './LP';
+import Play from './Play';
 
 export default function Player() {
-  const bgArray = [
-    ['#0272a4', '#f6a564'],
-    ['#b6bfc8', '#36595b'],
-    ['#e58e82', '#6f569f'],
-  ];
-
-  const totalNum = 3;
+  const totalNum = 6;
   const [pageNum, setPageNum] = useState(0);
   const spinValue = new Animated.Value(0);
 
@@ -42,6 +29,9 @@ export default function Player() {
     require('@/image/iu_0.jpg'),
     require('@/image/iu_1.jpg'),
     require('@/image/iu_2.jpg'),
+    require('@/image/iu_3.jpg'),
+    require('@/image/iu_4.jpg'),
+    require('@/image/iu_5.jpg'),
   ];
 
   const spin = spinValue.interpolate({
@@ -77,22 +67,30 @@ export default function Player() {
   };
 
   return (
-    <View style={styles.contentWrap}>
-      <View style={[styles.album, styles.albumActive, styles.coverImg]}>
-        <View style={styles.diskContainer}>
-          <Animated.View
-            style={[styles.disk, { transform: [{ rotate: spin }] }]}
-          >
-            <ImageBackground
-              source={imageSources[pageNum]}
-              style={{ width: '100%', height: '100%' }}
-            >
-              <View style={styles.diskInner} />
-            </ImageBackground>
-          </Animated.View>
-        </View>
+    <View>
+      <View>
+        <Play />
       </View>
-
+      <View style={styles.contentWrap}>
+        <View style={styles.bg}>
+          <View style={[styles.album, styles.albumActive, styles.coverImg]}>
+            <View style={styles.diskContainer}>
+              <Animated.View
+                style={[styles.disk, { transform: [{ rotate: spin }] }]}
+              >
+                <ImageBackground
+                  source={imageSources[pageNum]}
+                  style={{ width: '100%', height: '100%' }}
+                >
+                  <View style={styles.diskInner} />
+                </ImageBackground>
+              </Animated.View>
+            </View>
+          </View>
+        </View>
+        <View style={styles.pointWrap}>{renderPointButtons()}</View>
+        <Text>Play</Text>
+      </View>
       <View style={styles.buttonWrap}>
         <TouchableOpacity style={styles.button} onPress={handlePrev}>
           <Text>PREV</Text>
@@ -101,7 +99,6 @@ export default function Player() {
           <Text>NEXT</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.pointWrap}>{renderPointButtons()}</View>
     </View>
   );
 }
@@ -109,7 +106,7 @@ export default function Player() {
 const styles = StyleSheet.create({
   contentWrap: {
     width: '100%',
-    height: '100%',
+    height: '60%',
   },
   album: {
     position: 'absolute',
@@ -140,56 +137,31 @@ const styles = StyleSheet.create({
     height: 392,
   },
   disk: {
-    position: 'absolute',
-    top: 140,
+    top: 40,
     left: 0,
     width: 300,
     height: 300,
     borderRadius: 196,
-    // backgroundColor: 'linear-gradient(120deg, #000, #333333, #000)',
     shadowColor: 'rgba(0, 0, 0, 0.3)',
     shadowOffset: { width: 4, height: 14 },
     shadowRadius: 40,
     overflow: 'hidden',
   },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-  diskMobile: {
-    width: 244,
-    height: 244,
-    borderRadius: 122,
-  },
   diskInner: {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: [{ translateX: -55 }, { translateY: -50 }],
-    width: 110,
-    height: 110,
+    transform: [{ translateX: -45 }, { translateY: -45 }],
+    width: 90,
+    height: 90,
     backgroundColor: '#000000',
     borderRadius: 80,
     borderWidth: 3,
     borderColor: 'rgba(255, 255, 255, 0.4)',
   },
-  diskInnerMobile: {
-    width: 100,
-    height: 100,
-  },
-  diskInnerDot: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: [{ translateX: 50 }, { translateY: 50 }],
-    width: 7,
-    height: 7,
-    borderRadius: 3.5,
-    backgroundColor: 'black',
-  },
   buttonWrap: {
     position: 'absolute',
-    bottom: '5%',
+    bottom: '20%',
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -197,17 +169,11 @@ const styles = StyleSheet.create({
   button: {
     padding: 6,
     margin: 3,
-    // backgroundColor: '#000',
-    color: '#fff',
-  },
-  buttonHover: {
-    backgroundColor: '#fff',
-    color: '#000',
   },
   pointWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    transform: [{ translateX: 180 }, { translateY: 30 }],
+    transform: [{ translateX: 145 }, { translateY: 0 }],
   },
   point: {
     width: 10,
@@ -218,5 +184,11 @@ const styles = StyleSheet.create({
   },
   pointActive: {
     backgroundColor: 'black',
+  },
+  bg: {
+    backgroundColor: 'grey',
+    top: '10%',
+    width: '100%',
+    height: 400,
   },
 });
