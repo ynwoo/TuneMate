@@ -73,9 +73,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.tunemate"
+    namespace "kr.co.tunemate"
     defaultConfig {
-        applicationId "com.tunemate"
+        applicationId "kr.co.tunemate"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
