@@ -25,3 +25,8 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: ${eureka-endpoint}
+
+jwt:
+  private-key: ${jwt-private-key}
+  access-token:
+    expiration-epoch: 7200000 # 2 hours
