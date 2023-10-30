@@ -22,6 +22,8 @@ export type RootStackParamList = {
   Player: undefined;
   Chat: undefined;
   BottomTab: BottomTabNavigationScreenParams;
+  Profile: undefined;
+  SharedProfile: undefined;
 };
 export type RootStackNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;
