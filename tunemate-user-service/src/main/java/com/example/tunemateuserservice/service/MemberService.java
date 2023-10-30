@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface MemberService extends OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     Optional<MemberDto> getMemberDetailsBySpotifyUserId(String spotifyUserId);
     Member saveMember(MemberDto memberDto);
-
+    MemberDto getMemberDetailsByUserId(String userId);
 }

@@ -1,10 +1,12 @@
 package com.example.tunemateuserservice.service;
 
 import com.example.tunemateuserservice.dto.MemberDto;
+import com.example.tunemateuserservice.exception.NoSuchItemException;
 import com.example.tunemateuserservice.model.Member;
 import com.example.tunemateuserservice.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -56,5 +58,12 @@ public class MemberServiceImpl implements MemberService {
                 });
 
         return resultMember;
+    }
+
+    @Override
+    public MemberDto getMemberDetailsByUserId(String userId) {
+        Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new NoSuchItemException("사용자 ID가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
+
+        return mapper.map(member, MemberDto.class);
     }
 }
