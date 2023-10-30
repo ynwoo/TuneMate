@@ -23,6 +23,8 @@ export type RootStackParamList = {
   Chat: undefined;
   Auth: { uri: string };
   BottomTab: BottomTabNavigationScreenParams;
+  Profile: undefined;
+  SharedProfile: undefined;
 };
 export type RootStackNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;

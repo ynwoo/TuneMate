@@ -22,7 +22,7 @@ const FriendItem = ({ style, item }: FriendItemProps) => {
 
   // 공동 프로필 이동
   const onMoveSharedProfile = () => {
-    navigation.push('BottomTab', { screen: 'Profile' });
+    navigation.push('BottomTab', { screen: 'SharedProfile' });
   };
 
   // 친구 프로필 이동
