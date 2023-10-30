@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   Menu,
@@ -7,8 +7,8 @@ import {
   MenuOptions,
   MenuOption,
   MenuTrigger,
-  renderers
- } from "react-native-popup-menu";
+  renderers,
+} from 'react-native-popup-menu';
 
 const Divider = () => <View style={styles.divider} />;
 const PlaylistMenu = () => {
@@ -16,26 +16,24 @@ const PlaylistMenu = () => {
     <MenuProvider style={styles.container}>
       <Menu
         renderer={renderers.SlideInMenu}
-        rendererProps={{
-          // placement: 'right',
-          // anchorStyle: {
-          //   width: 100,
-          //   height: 75,
-          //   borderRadius: 10,
-          //   borderWidth: 1,
-          //   borderColor: '#1c1c1c',
-          //   justifyContent: "center",
-          //   alignItems: "center",
-          //   position: "absolute",
-          // }
-        }}
+        rendererProps={
+          {
+            // placement: 'right',
+            // anchorStyle: {
+            //   width: 100,
+            //   height: 75,
+            //   borderRadius: 10,
+            //   borderWidth: 1,
+            //   borderColor: '#1c1c1c',
+            //   justifyContent: "center",
+            //   alignItems: "center",
+            //   position: "absolute",
+            // }
+          }
+        }
       >
         <MenuTrigger>
-          <Icon 
-            color={'#666666'}
-            size={20}
-            name="dots-vertical"
-          />
+          <Icon color="#666666" size={20} name="dots-vertical" />
         </MenuTrigger>
         <MenuOptions
           customStyles={{
@@ -45,8 +43,8 @@ const PlaylistMenu = () => {
               borderRadius: 10,
               borderWidth: 1,
               borderColor: '#1c1c1c',
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
             },
           }}
         >
@@ -58,7 +56,7 @@ const PlaylistMenu = () => {
         </MenuOptions>
       </Menu>
     </MenuProvider>
-  )
+  );
 };
 
 const styles = StyleSheet.create({
@@ -77,11 +75,11 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
   },
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   divider: {
     height: StyleSheet.hairlineWidth,
-    backgroundColor: "666666",
+    backgroundColor: '666666',
   },
 });
 
