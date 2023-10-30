@@ -21,6 +21,9 @@
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <data android:scheme="http"
+                android:host="tunemate.co.kr"/>
+            <data android:scheme="https"/>
         </intent-filter>
       </activity>
     </application>
