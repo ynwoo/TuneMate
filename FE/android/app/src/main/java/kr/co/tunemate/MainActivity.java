@@ -1,4 +1,4 @@
-package com.tunemate;
+package kr.co.tunemate;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
