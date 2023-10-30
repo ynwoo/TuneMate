@@ -7,6 +7,7 @@ import PlayerScreen from './PlayerScreen';
 import ChatScreen from './ChatScreen';
 import ProfileScreen from './ProfileScreen';
 import SharedProfileScreen from './SharedProfileScreen';
+import AuthScreen from './AuthScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -18,6 +19,7 @@ const RootStack = () => (
     <Stack.Screen name="Login" component={LoginScreen} />
     <Stack.Screen name="Player" component={PlayerScreen} />
     <Stack.Screen name="Chat" component={ChatScreen} />
+    <Stack.Screen name="Auth" component={AuthScreen} />
     <Stack.Screen name="BottomTab" component={BottomTab} />
     <Stack.Screen name="Profile" component={ProfileScreen} />
     <Stack.Screen name="SharedProfile" component={SharedProfileScreen} />

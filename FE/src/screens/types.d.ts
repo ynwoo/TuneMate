@@ -21,6 +21,7 @@ export type RootStackParamList = {
   Login: undefined;
   Player: undefined;
   Chat: undefined;
+  Auth: { uri: string };
   BottomTab: BottomTabNavigationScreenParams;
   Profile: undefined;
   SharedProfile: undefined;
@@ -46,4 +47,8 @@ export type HomeScreenProps = NativeStackNavigationProp<
 export type LoginScreenProps = NativeStackNavigationProp<
   RootStackParamList,
   'Login'
+>;
+export type AuthScreenProps = NativeStackNavigationProp<
+  RootStackParamList,
+  'Auth'
 >;

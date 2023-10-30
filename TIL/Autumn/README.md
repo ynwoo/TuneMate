@@ -448,3 +448,17 @@ const styles = StyleSheet.create({
 });
 export default Shadow;
 ```
+
+## 2023년 10월 26일
+
+react-native 학습
+API까지 도달 실패
+에러에 막혔다.
+내일 해결할 것 ..
+
+## 2023년 10월 27일
+
+TodoApp 만들기 완료
+오늘도 안드로이드 스튜디오 오류때매 시간을 많이 잡아먹혔다.
+이제 진짜 플레이어 시도를 할 수 있을 것 같음
+주말에 시도해봐야겠다.

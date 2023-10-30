@@ -2,9 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PlaylistItem from './PlaylistItem';
-// import PlaylistMenu from './PlaylistMenu';
+import PlaylistMenu from './PlaylistMenu';
+import Props from '@/types';
 
-const Playlist = () => {
+interface PlayListProps extends Props {
+  onModal?: () => void;
+}
+
+const Playlist = ({ onModal }: PlayListProps) => {
   const playlistName = '플레이리스트 1';
   // const userID = '31uk2txy3yfmuqbsilkm6up27uki';
   // useEffect(() => {
@@ -26,7 +31,12 @@ const Playlist = () => {
       <View style={styles.titleBlock}>
         <Text style={styles.titleText}>{playlistName}</Text>
         {/* <PlaylistMenu /> */}
-        <Icon color="#666666" size={25} name="plus-circle-outline" />
+        <Icon
+          onPress={onModal}
+          color="#666666"
+          size={25}
+          name="plus-circle-outline"
+        />
       </View>
       <View>{itemList}</View>
     </View>
