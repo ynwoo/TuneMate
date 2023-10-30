@@ -1,6 +1,6 @@
 import { NewPlayList, PlayList, TotalPlayList } from '@/types/playList';
 import { authApi } from '..';
-import { ChangeTrackIndex } from '@/types/spotify';
+import { AddTrack, ChangeTrack, DeleteTrack } from '@/types/spotify';
 
 const INDIVIDUAL_PLAYLISTS_URL = 'music/individual/playlists';
 
@@ -30,11 +30,7 @@ const createIndividualPlayListTrack = async ({
   playlistId,
   uris,
   position,
-}: {
-  playlistId: PlayList['id'];
-  uris: string[];
-  position: number;
-}) => {
+}: AddTrack) => {
   await authApi.post<void>(`${INDIVIDUAL_PLAYLISTS_URL}/${playlistId}/tracks`, {
     uris,
     position,
@@ -46,11 +42,7 @@ const deleteIndividualPlayListTrack = async ({
   playlistId,
   uri,
   positions,
-}: {
-  playlistId: PlayList['id'];
-  uri: string;
-  positions: number[];
-}) => {
+}: DeleteTrack) => {
   await authApi.delete<void>(
     `${INDIVIDUAL_PLAYLISTS_URL}/${playlistId}/tracks`,
     { tracks: [{ uri, positions }] },
@@ -61,10 +53,7 @@ const deleteIndividualPlayListTrack = async ({
 const updateIndividualPlayListTrack = async ({
   playlistId,
   changeTrackIndex,
-}: {
-  playlistId: PlayList['id'];
-  changeTrackIndex: ChangeTrackIndex;
-}) => {
+}: ChangeTrack) => {
   await authApi.put<void>(
     `${INDIVIDUAL_PLAYLISTS_URL}/${playlistId}/tracks`,
     changeTrackIndex,
