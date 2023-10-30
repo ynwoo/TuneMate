@@ -85,6 +85,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
 
         String spotifyUri = trackCreateDto.getUris().get(0);
         if(tracksRepository.findBySpotifyUri(spotifyUri).size() != 0){
+            System.out.println("이미 있는 곡");
             return;
         }
         String str = webClientBuilder.build().get().uri("/tracks/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token)
