@@ -5,8 +5,8 @@ import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import ProfileImage from '../image/ProfileImage';
 import { RootStackNavigationProp } from '@/screens/types';
-import { Friend } from '@/types/friend';
 import Props from '@/types';
+import { Friend } from '@/types/social';
 
 interface FriendItemProps extends Props {
   item: Friend;
