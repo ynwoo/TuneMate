@@ -1,4 +1,4 @@
-import React, { JSXElementConstructor, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PlaylistItem from './PlaylistItem';
