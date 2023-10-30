@@ -11,7 +11,7 @@ spring:
           predicates:
             - Path=/api/v1/user-service/login/oauth2/code/spotify
           filters:
-            - RewritePath=/api/v1/user-service/login/oauth2/code/spotify, /login/oauth2/code/spotify
+            - RewritePath=/api/v1/user-service/(?<segment>.*), /$\{segment}
         - id: user-service
           uri: lb://user-service
           predicates:
@@ -19,6 +19,8 @@ spring:
           filters:
             - AuthorizationHeaderFilter
             - RewritePath=/api/v1/user-service/(?<segment>.*), /$\{segment}
+      default-filters:
+        - name: GlobalFilter
 
 eureka:
   client:
