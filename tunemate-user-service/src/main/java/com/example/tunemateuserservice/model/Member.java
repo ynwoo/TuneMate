@@ -21,7 +21,7 @@ public class Member {
     @Schema(description = "API용 사용자 ID")
     @Column(nullable = false, unique = true)
     private String userId;
-    @Schema(description = "사용자 이름")
+    @Schema(description = "스포티파이 display_name")
     @Column(nullable = false)
     private String name;
     @Schema(description = "이메일")
