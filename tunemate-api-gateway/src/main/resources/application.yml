@@ -3,6 +3,22 @@ server:
 spring:
   application:
     name: api-gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: user-service-auth
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user-service/users/sign-in
+          filters:
+            - RewritePath=/api/v1/user-service/users/sign-in, /users/sign-in
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user-service/users/**
+          filters:
+            - RewritePath=/api/v1/user-service/?<segment>.*), /$\{segment}
+
 eureka:
   client:
     register-with-eureka: true
