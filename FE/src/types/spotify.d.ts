@@ -63,6 +63,22 @@ interface Owner {
   uri: string;
 }
 
+interface AddTrack {
+  playlistId: PlayList['id'];
+  uris: string[];
+  position: number;
+}
+interface DeleteTrack {
+  playlistId: PlayList['id'];
+  uri: string;
+  positions: number[];
+}
+
+interface ChangeTrack {
+  playlistId: PlayList['id'];
+  changeTrackIndex: ChangeTrackIndex;
+}
+
 export type {
   SpotifyToken,
   UserProfile,
@@ -73,4 +89,7 @@ export type {
   Image,
   ChangeTrackIndex,
   Track,
+  AddTrack,
+  DeleteTrack,
+  ChangeTrack,
 };
