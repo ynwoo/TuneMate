@@ -16,13 +16,17 @@ spring:
           spotify:
             client-id: ${client-id}
             client-secret: ${client-secret}
-            authorization-grant-type: code
+            authorization-grant-type: authorization_code
+            redirect-uri: ${redirect-uri}
+            scope:
+              - user-read-private
+              - user-read-email
         provider:
           spotify:
             authorization-uri: https://accounts.spotify.com/authorize
             token-uri: https://accounts.spotify.com/api/token
             user-info-uri: https://api.spotify.com/v1/me
-            user-name-attribute: email
+            user-name-attribute: display_name
 
   jpa:
     hibernate:
