@@ -1,32 +1,22 @@
 import { StyleSheet, FlatList } from 'react-native';
 import React from 'react';
 import FriendItem from './FriendItem';
-import { Friend } from '@/types/friend';
 import Props from '@/types';
+import { Friend } from '@/types/social';
 
-type FriendListProps = Props;
+interface FriendListProps extends Props {
+  friends: Friend[];
+}
 
-const data: Friend[] = [
-  { id: '0', name: 'a' },
-  { id: '1', name: 'b' },
-  { id: '2', name: 'c' },
-  { id: '3', name: 'd' },
-  { id: '4', name: 'e' },
-  { id: '6', name: 'b' },
-  { id: '7', name: 'c' },
-  { id: '8', name: 'd' },
-  { id: '9', name: 'e' },
-];
-
-const FriendList = ({ style }: FriendListProps) => {
+const FriendList = ({ style, friends }: FriendListProps) => {
   return (
     <FlatList
       style={style}
-      data={data}
+      data={friends}
       renderItem={({ item }) => (
-        <FriendItem key={item.id} style={styles.friendItem} item={item} />
+        <FriendItem key={item.freindId} style={styles.friendItem} item={item} />
       )}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => String(item.freindId)}
     />
   );
 };
