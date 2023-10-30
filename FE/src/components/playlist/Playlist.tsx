@@ -1,11 +1,11 @@
-import React, { JSXElementConstructor, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import PlaylistItem from './PlaylistItem';
-import PlaylistMenu from './PlaylistMenu';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import PlaylistItem from './PlaylistItem';
+// import PlaylistMenu from './PlaylistMenu';
 
 const Playlist = () => {
-  const playlistName: string = '플레이리스트 1';
+  const playlistName = '플레이리스트 1';
   // const userID = '31uk2txy3yfmuqbsilkm6up27uki';
   // useEffect(() => {
   //   const getUserPlaylist = () => {
@@ -13,7 +13,7 @@ const Playlist = () => {
   // }, []);
 
   const [itemList, setItemList] = useState<any[]>([
-    <PlaylistItem key={1} playing={true} />,
+    <PlaylistItem key={1} playing />,
     <PlaylistItem key={2} playing={false} />,
     <PlaylistItem key={3} playing={false} />,
     <PlaylistItem key={4} playing={false} />,
@@ -26,7 +26,7 @@ const Playlist = () => {
       <View style={styles.titleBlock}>
         <Text style={styles.titleText}>{playlistName}</Text>
         {/* <PlaylistMenu /> */}
-        <Icon color={'#666666'} size={25} name="plus-circle-outline" />
+        <Icon color="#666666" size={25} name="plus-circle-outline" />
       </View>
       <View>{itemList}</View>
     </View>
