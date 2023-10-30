@@ -26,11 +26,15 @@ const getIndividualPlayLists = async (): Promise<TotalPlayList> => {
 };
 
 // 개인 대표 플레이리스트 트랙 추가
-const createIndividualPlayListTrack = async (
-  playlistId: PlayList['id'],
-  uris: string[],
-  position: number,
-) => {
+const createIndividualPlayListTrack = async ({
+  playlistId,
+  uris,
+  position,
+}: {
+  playlistId: PlayList['id'];
+  uris: string[];
+  position: number;
+}) => {
   await authApi.post<void>(`${INDIVIDUAL_PLAYLISTS_URL}/${playlistId}/tracks`, {
     uris,
     position,
@@ -38,11 +42,15 @@ const createIndividualPlayListTrack = async (
 };
 
 // 개인 대표 플레이리스트 트랙 삭제
-const deleteIndividualPlayListTrack = async (
-  playlistId: PlayList['id'],
-  uri: string,
-  positions: number[],
-) => {
+const deleteIndividualPlayListTrack = async ({
+  playlistId,
+  uri,
+  positions,
+}: {
+  playlistId: PlayList['id'];
+  uri: string;
+  positions: number[];
+}) => {
   await authApi.delete<void>(
     `${INDIVIDUAL_PLAYLISTS_URL}/${playlistId}/tracks`,
     { tracks: [{ uri, positions }] },
@@ -50,10 +58,13 @@ const deleteIndividualPlayListTrack = async (
 };
 
 // 개인 플레이리스트 트랙 순서 변경
-const updateIndividualPlayListTrack = async (
-  playlistId: PlayList['id'],
-  changeTrackIndex: ChangeTrackIndex,
-) => {
+const updateIndividualPlayListTrack = async ({
+  playlistId,
+  changeTrackIndex,
+}: {
+  playlistId: PlayList['id'];
+  changeTrackIndex: ChangeTrackIndex;
+}) => {
   await authApi.put<void>(
     `${INDIVIDUAL_PLAYLISTS_URL}/${playlistId}/tracks`,
     changeTrackIndex,
