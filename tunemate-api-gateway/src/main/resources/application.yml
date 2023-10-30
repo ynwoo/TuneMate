@@ -17,6 +17,7 @@ spring:
           predicates:
             - Path=/api/v1/user-service/users/**
           filters:
+            - AuthorizationHeaderFilter
             - RewritePath=/api/v1/user-service/(?<segment>.*), /$\{segment}
 
 eureka:
