@@ -7,6 +7,7 @@ import com.tunemate.tunemateplaylist.exception.BaseException;
 import com.tunemate.tunemateplaylist.exception.NotFoundException;
 import com.tunemate.tunemateplaylist.repository.IndividualPlaylistRepository;
 import com.tunemate.tunemateplaylist.repository.IndividualPlaylistTrackRepository;
+import com.tunemate.tunemateplaylist.repository.TracksRepository;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -27,11 +28,13 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
     private final WebClient.Builder webClientBuilder;
     private final IndividualPlaylistRepository individualPlaylistRepository;
     private final IndividualPlaylistTrackRepository individualPlaylistTrackRepository;
+    private final TracksRepository tracksRepository;
 
-    public IndividualPlaylistServiceImpl(WebClient.Builder webClientBuilder, IndividualPlaylistRepository individualPlaylistRepository, IndividualPlaylistTrackRepository individualPlaylistTrackRepository) {
+    public IndividualPlaylistServiceImpl(WebClient.Builder webClientBuilder, IndividualPlaylistRepository individualPlaylistRepository,TracksRepository tracksRepository ,IndividualPlaylistTrackRepository individualPlaylistTrackRepository) {
         this.webClientBuilder = webClientBuilder;
         this.individualPlaylistRepository = individualPlaylistRepository;
         this.individualPlaylistTrackRepository = individualPlaylistTrackRepository;
+        this.tracksRepository = tracksRepository;
     }
 
     // 개인 플레이리스트 생성
@@ -66,7 +69,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
     }
 
     // 개인 플레이리스트 노래 추가
-    public void createTrack(long userId, TrackCreateDto trackCreateDto, String playlistId){
+    public void createTrack(long userId, TrackCreateDto trackCreateDto, String playlistId) throws ParseException {
         // AuthService 에 Token 요청
         String token = getToken();
         Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("에러에러", HttpResponseStatus.NOT_FOUND));
@@ -80,8 +83,21 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
             individualPlaylistTrackRepository.save(track);
         });
 
-
-
+        String spotifyUri = trackCreateDto.getUris().get(0);
+        if(tracksRepository.findBySpotifyUri(spotifyUri).size() != 0){
+            return;
+        }
+        String str = webClientBuilder.build().get().uri("/tracks/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token)
+                .retrieve().bodyToMono(String.class).block();
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) parser.parse(str);
+        System.out.println(jsonObject);
+        String artist;
+        String title;
+        double acousticness;
+        double danceability;
+        double tempo;
+        double energy;
     }
 
     //  개인 대표 플레이리스트 조회
