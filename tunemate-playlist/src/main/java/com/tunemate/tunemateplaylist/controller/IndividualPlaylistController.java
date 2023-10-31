@@ -50,14 +50,14 @@ public class IndividualPlaylistController {
     //개인 플레이리스트 트랙 삭제
     @DeleteMapping("playlists/{playlistId}/tracks")
     public void deleteTrack(@RequestHeader("UserId") String userId, @RequestBody TrackDeleteRequestDto trackDeleteRequestDto,@PathVariable("playlistId") String playlistId){
-        individualPlaylistService.deleteTrack(playlistId,trackDeleteRequestDto);
+        individualPlaylistService.deleteTrack(userId, playlistId, trackDeleteRequestDto);
 
     }
 
     // 개인 플레이리스트 트랙 순서 변경
     @PutMapping("/playlists/{playlistId}/tracks")
     public void changeTrack(@RequestHeader("UserId") String userId, @RequestBody TrackChangeRequestDto trackChangeRequestDto,@PathVariable("playlistId") String playlistId){
-        individualPlaylistService.changeTrack(playlistId,trackChangeRequestDto);
+        individualPlaylistService.changeTrack(userId, playlistId, trackChangeRequestDto);
     }
 
 }
