@@ -189,10 +189,6 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(BodyInserters.fromValue(trackChangeRequestDto)).retrieve().bodyToMono(String.class).block();
     }
 
-    private String getSpotifyUserId() {
-        return "31nmxiqhjnusfymqkaki3usnsose";
-    }
-
     private MemberInfo requestMemberInfo(String userId) {
         return userServiceClient.getMember(Map.of("UserId", userId), userId);
     }
