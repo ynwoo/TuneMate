@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet ,TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PlaylistItem from './PlaylistItem';
 import PlaylistMenu from './PlaylistMenu';
 import Props from '@/types';
+import DraggableFlatList, {
+  ScaleDecorator,
+  RenderItemParams,
+} from 'react-native-draggable-flatlist';
+import {GestureHandlerRootView, gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
 interface PlayListProps extends Props {
   onModal?: () => void;
 }
 
-const Playlist = ({ onModal }: PlayListProps) => {
+const Playlist = gestureHandlerRootHOC(({ onModal }: PlayListProps) => {
   const playlistName = '플레이리스트 1';
   // const userID = '31uk2txy3yfmuqbsilkm6up27uki';
   // useEffect(() => {
@@ -17,13 +22,60 @@ const Playlist = ({ onModal }: PlayListProps) => {
   //   }
   // }, []);
 
-  const [itemList, setItemList] = useState<any[]>([
-    <PlaylistItem key={1} playing />,
-    <PlaylistItem key={2} playing={false} />,
-    <PlaylistItem key={3} playing={false} />,
-    <PlaylistItem key={4} playing={false} />,
-    <PlaylistItem key={5} playing={false} />,
-    <PlaylistItem key={7} playing={false} />,
+  const renderItem = gestureHandlerRootHOC(({item, drag, isActive}: RenderItemParams<any>) => {
+    return (
+      <ScaleDecorator>
+        <TouchableOpacity
+          activeOpacity={1}
+          onLongPress={drag}
+          disabled={isActive}
+        >
+          <PlaylistItem
+            data={item}
+            index={item.key - 1}
+            playing={false} />
+        </TouchableOpacity>
+      </ScaleDecorator>
+    );
+  });
+
+  const [data, setData] = useState<any[]>([
+    {
+      title: 'Fine',
+      artist: '태연',
+      cover: 'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+      key: 1,
+    },
+    {
+      title: 'Fine',
+      artist: '태연',
+      cover: 'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+      key: 2,
+    },
+    {
+      title: 'Fine',
+      artist: '태연',
+      cover: 'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+      key: 3,
+    },
+    {
+      title: 'Fine',
+      artist: '태연',
+      cover: 'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+      key: 4,
+    },
+    {
+      title: 'Fine',
+      artist: '태연',
+      cover: 'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+      key: 5,
+    },
+    {
+      title: 'Fine6',
+      artist: '태연',
+      cover: 'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+      key: 6,
+    },
   ]);
 
   return (
@@ -38,10 +90,18 @@ const Playlist = ({ onModal }: PlayListProps) => {
           name="plus-circle-outline"
         />
       </View>
-      <View>{itemList}</View>
+      <GestureHandlerRootView style={{flex: 1}}>
+      <DraggableFlatList
+        data={data}
+        onDragEnd={({data}) => setData(data)}
+        keyExtractor={(item) => item.key}
+        scrollEnabled={false}
+        renderItem={renderItem}
+      />
+    </GestureHandlerRootView>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   block: {
