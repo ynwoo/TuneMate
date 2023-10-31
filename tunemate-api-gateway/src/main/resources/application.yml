@@ -3,9 +3,39 @@ server:
 spring:
   application:
     name: api-gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: user-service-login
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user-service/login/oauth2/**
+          filters:
+            - RewritePath=/api/v1/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service-authorization
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user-service/oauth2/authorization/**
+          filters:
+            - RewritePath=/api/v1/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user-service/users/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/user-service/(?<segment>.*), /$\{segment}
+      default-filters:
+        - name: GlobalFilter
+
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
       defaultZone: ${eureka-endpoint}
+
+jwt:
+  private-key: ${jwt-private-key}
+  access-token:
+    expiration-epoch: 7200000 # 2 hours
