@@ -1,12 +1,17 @@
 package com.tunemate.tunemateplaylist.service;
 
 import com.tunemate.tunemateplaylist.domain.Playlist;
+import com.tunemate.tunemateplaylist.domain.Tracks;
 import com.tunemate.tunemateplaylist.dto.*;
+import com.tunemate.tunemateplaylist.exception.NotFoundException;
+import com.tunemate.tunemateplaylist.repository.TracksRepository;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -25,8 +30,11 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
 
     private final Map<Long, SseEmitter> SseEmitters = new ConcurrentHashMap<>();
 
-    public CommonPlaylistServiceImpl(WebClient.Builder webClientBuilder){
+    private final TracksRepository tracksRepository;
+
+    public CommonPlaylistServiceImpl(WebClient.Builder webClientBuilder, TracksRepository tracksRepository){
         this.webClientBuilder = webClientBuilder;
+        this.tracksRepository = tracksRepository;
     }
 
 
@@ -60,13 +68,42 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
     }
 
     // 공동 플레이리스트에 트랙 추가
-    public void createTrack(String playlistId, TrackCreateDto trackCreateDto){
+    public void createTrack(String playlistId, TrackCreateDto trackCreateDto) throws ParseException {
 
         String token = getToken();
-        String str = webClientBuilder.build().post().uri("/playlists/{playlist_id}/tracks",playlistId).header("Authorization", "Bearer " + token)
+        String strr= webClientBuilder.build().post().uri("/playlists/{playlist_id}/tracks",playlistId).header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(trackCreateDto)).retrieve().bodyToMono(String.class).block();
+        String spotifyUri = trackCreateDto.getUris().get(0);
+        if(tracksRepository.findBySpotifyUri(spotifyUri).size() != 0){
+            throw new NotFoundException("이미 데이터베이스에 있는 노래", HttpStatus.FORBIDDEN);
+        }
+        String str = webClientBuilder.build().get().uri("/tracks/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
+                .retrieve().bodyToMono(String.class).block();
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) parser.parse(str);
+        JSONObject jsonObject2 = (JSONObject) jsonObject.get("album");
+        List<JSONObject> jsonObject3 = (List<JSONObject>) jsonObject2.get("artists");
+        String artist= (String) jsonObject3.get(0).get("name");
+        String title = (String) jsonObject.get("name");
 
+        String str2 = webClientBuilder.build().get().uri("/audio-features/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
+                .retrieve().bodyToMono(String.class).block();
+        JSONObject jsonObject5 = (JSONObject) parser.parse(str2);
+
+        double acousticness = (Double) jsonObject5.get("acousticness");
+        double danceability = (Double) jsonObject5.get("danceability");
+        double tempo = (Double) jsonObject5.get("tempo");
+        double energy = (Double) jsonObject5.get("energy");
+        Tracks tracks = new Tracks();
+        tracks.setAcousticness(acousticness);
+        tracks.setArtist(artist);
+        tracks.setDanceability(danceability);
+        tracks.setEnergy(energy);
+        tracks.setTempo(tempo);
+        tracks.setTitle(title);
+        tracks.setSpotifyUri(trackCreateDto.getUris().get(0));
+        tracksRepository.save(tracks);
 
 
     }
@@ -105,6 +142,6 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
 
     // 토큰 요청
     private String getToken() {
-        return "BQALNtw0eto-4YmM518C3AcZXpkeH9tR1AwYxYaCk_j01VhZnh5T1hlC5x1AjnRwIXtATEbs_aJqk2n6CXQLyFRkzEBKJmB4liNzfPKkQF-vT8gdQ1gqvsBQY5N7OkHPakPN8YN3y_m5b2w0wHnYtS9FRMerrt1Ipp7o_0LngWg72rFy_pbwDo1qwPgTk3bnggvtyf8w3f64OW9j4hMnSB90psxdNcW4Rt9ThURG63BiR1EmYPhXgqY2KXTx3PTPJ3vkQYSeK0eNi8ldnobdWWQxQnpqpSeB83plRlypzKU";
+        return "BQCG3K7JKvwj4PBEdbe-ITdQ2R6rtnShn_ARw-KbiQw-eLrpGM6oCmrQ6SVGPQc4j7F0MyuqKxjIQ-CzcNG3WsobknSCWvULgdNhn54qKj2ExTs-zzr8b9ZXohDs6Oa8fU90JcjGOgZF_1TUVLuZ9WRq-fdRZANVfwMAkCniPzccEt8_vPH7cacRIctLncXtTX_1rKgyS4_wrSpmRwxMeTm7GoaSEDsT24d6Nyl3c7QMw9V04xTBJiu-gf0sk1UYWBjljBGS6QK0PtCZAW35NvJrZwORf6OqhUwRa-mJjt4";
     }
 }

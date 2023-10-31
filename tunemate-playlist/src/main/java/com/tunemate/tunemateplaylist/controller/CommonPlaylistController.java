@@ -30,7 +30,7 @@ public class CommonPlaylistController {
 
     // 공동 플레이리스트 조회
     @GetMapping("/playlist/{playlistId}")
-    public ResponseEntity<SseEmitter> getCommonPlaylist(@PathVariable("playlistId") String playlistId, @RequestHeader("UserId") long userId) throws IOException {
+    public ResponseEntity<SseEmitter> getCommonPlaylist(@PathVariable("playlistId") String playlistId, @RequestHeader("UserId") String userId) throws IOException {
         System.out.println("연결 : "+ userId);
         SseEmitter sseEmitter = new SseEmitter(1800000l);
         SseEmitters.computeIfAbsent(playlistId, k -> new ArrayList<>()).add(sseEmitter);
@@ -81,7 +81,7 @@ public class CommonPlaylistController {
 
     // 공동 플레이리스트에 트랙 추가
     @PostMapping("/playlists/{playlistId}/tracks")
-    public void createTrack(@PathVariable("playlistId") String playlistId, @RequestBody TrackCreateDto trackCreateDto) throws IOException {
+    public void createTrack(@PathVariable("playlistId") String playlistId, @RequestBody TrackCreateDto trackCreateDto) throws IOException, ParseException {
         commonPlaylistService.createTrack(playlistId, trackCreateDto);
         updatePlaylistAndSendResponse(playlistId);
 

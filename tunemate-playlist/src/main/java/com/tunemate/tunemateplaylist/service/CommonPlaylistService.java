@@ -8,7 +8,7 @@ public interface CommonPlaylistService {
 
     void createPlaylist(PlaylistCreateDto playlistCreateDto) throws ParseException;
 
-    void createTrack(String playlistId, TrackCreateDto trackCreateDto);
+    void createTrack(String playlistId, TrackCreateDto trackCreateDto) throws ParseException;
 
     RelationDto getRelationId(String playlistId);
 

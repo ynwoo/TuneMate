@@ -21,5 +21,5 @@ public class Playlist {
     private String playlistSpotifyId;
 
     @Column(name = "user_id")
-    private Long userId;
+    private String userId;
 }

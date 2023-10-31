@@ -15,6 +15,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +42,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
 
     // 개인 플레이리스트 생성
     @Transactional
-    public void createPlaylist(long userId, PlaylistCreateDto playlistCreateDto) throws ParseException {
+    public void createPlaylist(String userId, PlaylistCreateDto playlistCreateDto) throws ParseException {
 
         // AuthService 에 Token 요청
         String token = getToken();
@@ -71,11 +72,11 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
     }
 
     // 개인 플레이리스트 노래 추가
-    public void createTrack(long userId, TrackCreateDto trackCreateDto, String playlistId) throws ParseException {
+    public void createTrack(String userId, TrackCreateDto trackCreateDto, String playlistId) throws ParseException {
         // AuthService 에 Token 요청
         String token = getToken();
-        Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("에러에러", HttpResponseStatus.NOT_FOUND));
-        individualPlaylistTrackRepository.findByTrackSpotifyIdAndPlaylist(trackCreateDto.getUris().get(0),playlist).ifPresentOrElse(track -> {throw new NotFoundException("dfsdf",HttpResponseStatus.FORBIDDEN);},() -> { // 중복 노래가 있는 경우 처리(나중에 에러 핸들링 해야함)
+        Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("플레이 리스트가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
+        individualPlaylistTrackRepository.findByTrackSpotifyIdAndPlaylist(trackCreateDto.getUris().get(0),playlist).ifPresentOrElse(track -> {throw new NotFoundException("중복된 노래가 존재합니다.",HttpStatus.FORBIDDEN);},() -> { // 중복 노래가 있는 경우 처리(나중에 에러 핸들링 해야함)
             String str = webClientBuilder.build().post().uri("/playlists/{playlist_id}/tracks",playlist.getPlaylistSpotifyId()).header("Authorization", "Bearer " + token)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(BodyInserters.fromValue(trackCreateDto)).retrieve().bodyToMono(String.class).block();
@@ -87,7 +88,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
 
         String spotifyUri = trackCreateDto.getUris().get(0);
         if(tracksRepository.findBySpotifyUri(spotifyUri).size() != 0){
-            throw new NotFoundException("이미 데이터베이스에 있는 노래",HttpResponseStatus.FORBIDDEN);
+            throw new NotFoundException("이미 데이터베이스에 노래가 존재합니다.", HttpStatus.FORBIDDEN);
         }
         String str = webClientBuilder.build().get().uri("/tracks/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
                 .retrieve().bodyToMono(String.class).block();
@@ -118,7 +119,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
     }
 
     //  개인 대표 플레이리스트 조회
-    public PlaylistResponseDto getIndividualPlaylist(long userId) throws ParseException {
+    public PlaylistResponseDto getIndividualPlaylist(String userId) throws ParseException {
         // AuthService 에 Token 요청
         String token = getToken();
 
@@ -134,11 +135,11 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
 
     // 대표 플레이리스트로 설정(변경)
     @Transactional
-    public void setIndividualPlaylistId(long userId, PlaylistIdDto playlistIdDto){
+    public void setIndividualPlaylistId(String userId, PlaylistIdDto playlistIdDto){
 
         String token = getToken();
         String playlistId = playlistIdDto.getPlaylistId();
-        Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("에러에러", HttpResponseStatus.NOT_FOUND));
+        Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("플레이 리스트가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
         playlist.setPlaylistSpotifyId(playlistId);
 
         individualPlaylistTrackRepository.deleteAll();
@@ -157,7 +158,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
 
     // 재생 횟수 카운트
     @Transactional
-    public void counting(long userId) throws ParseException {
+    public void counting(String userId) throws ParseException {
         String token = getToken();
         String str = webClientBuilder.build().get().uri("/me/player/currently-playing").header("Authorization", "Bearer " + token)
                 .retrieve().bodyToMono(String.class).block();
@@ -166,9 +167,8 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         JSONObject jsonObject2 = (JSONObject) jsonObject.get("item");
         String uri = (String) jsonObject2.get("uri");
 
-        Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("에러에러", HttpResponseStatus.NOT_FOUND));
-
-        Track track = individualPlaylistTrackRepository.findByTrackSpotifyIdAndPlaylist(uri,playlist).orElseThrow(() -> new NotFoundException("에러에러", HttpResponseStatus.NOT_FOUND));
+        Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("플레이 리스트가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
+        Track track = individualPlaylistTrackRepository.findByTrackSpotifyIdAndPlaylist(uri,playlist).orElseThrow(() -> new NotFoundException("플레이 리스트에 노래가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
         track.setCount(track.getCount()+1);
     }
 
@@ -193,6 +193,6 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
     }
 
     private String getToken() {
-        return "BQCXLQ7c0t1bKvSNt4o4SIRaSev2s-U9lF4TrAKzxsjtZpfVh6MDYYnBL9dn9sCIm9Gt7tiT5UaI6O2ADGpsV3fnZyDiy3BF5rmZZJ35wnPrY3du1lp-suXRbnMCItkJOjQEkyTj-zKvRn2A8BxGs-LCipNhQ0jJL59KSm6iCs758Cv24lkFZJoOqqy71NDHQmNDUnMKsvNL9L1GKWtufHfqnXgqSaNeYJklbx0hV7j_vVNrHEMsnu6vfm1svmqbkS5PhOIvjwMZx40AhmSiw4Cx5mNebleV0QeyIFyWW98";
+        return "BQCG3K7JKvwj4PBEdbe-ITdQ2R6rtnShn_ARw-KbiQw-eLrpGM6oCmrQ6SVGPQc4j7F0MyuqKxjIQ-CzcNG3WsobknSCWvULgdNhn54qKj2ExTs-zzr8b9ZXohDs6Oa8fU90JcjGOgZF_1TUVLuZ9WRq-fdRZANVfwMAkCniPzccEt8_vPH7cacRIctLncXtTX_1rKgyS4_wrSpmRwxMeTm7GoaSEDsT24d6Nyl3c7QMw9V04xTBJiu-gf0sk1UYWBjljBGS6QK0PtCZAW35NvJrZwORf6OqhUwRa-mJjt4";
     }
 }
