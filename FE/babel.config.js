@@ -14,8 +14,9 @@ module.exports = {
           '@': './src',
         },
       },
-      'react-native-reanimated/plugin',
+      // 'react-native-reanimated/plugin',
     ],
+    'react-native-reanimated/plugin',
     // react-native-dotenv
     [
       'module:react-native-dotenv',
