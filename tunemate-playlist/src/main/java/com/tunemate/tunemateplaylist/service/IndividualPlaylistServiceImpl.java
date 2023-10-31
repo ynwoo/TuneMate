@@ -1,15 +1,16 @@
 package com.tunemate.tunemateplaylist.service;
 
+import com.tunemate.tunemateplaylist.client.UserServiceClient;
 import com.tunemate.tunemateplaylist.domain.Playlist;
 import com.tunemate.tunemateplaylist.domain.Track;
 import com.tunemate.tunemateplaylist.domain.Tracks;
 import com.tunemate.tunemateplaylist.dto.*;
-import com.tunemate.tunemateplaylist.exception.BaseException;
 import com.tunemate.tunemateplaylist.exception.NotFoundException;
 import com.tunemate.tunemateplaylist.repository.IndividualPlaylistRepository;
 import com.tunemate.tunemateplaylist.repository.IndividualPlaylistTrackRepository;
 import com.tunemate.tunemateplaylist.repository.TracksRepository;
-import io.netty.handler.codec.http.HttpResponseStatus;
+import com.tunemate.tunemateplaylist.vo.MemberInfo;
+import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -22,32 +23,24 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import javax.swing.*;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class IndividualPlaylistServiceImpl implements IndividualPlaylistService {
 
     private final WebClient.Builder webClientBuilder;
     private final IndividualPlaylistRepository individualPlaylistRepository;
     private final IndividualPlaylistTrackRepository individualPlaylistTrackRepository;
     private final TracksRepository tracksRepository;
-
-    public IndividualPlaylistServiceImpl(WebClient.Builder webClientBuilder, IndividualPlaylistRepository individualPlaylistRepository,TracksRepository tracksRepository ,IndividualPlaylistTrackRepository individualPlaylistTrackRepository) {
-        this.webClientBuilder = webClientBuilder;
-        this.individualPlaylistRepository = individualPlaylistRepository;
-        this.individualPlaylistTrackRepository = individualPlaylistTrackRepository;
-        this.tracksRepository = tracksRepository;
-    }
+    private final UserServiceClient userServiceClient;
 
     // 개인 플레이리스트 생성
     @Transactional
     public void createPlaylist(String userId, PlaylistCreateDto playlistCreateDto) throws ParseException {
-
-        // AuthService 에 Token 요청
-        String token = getToken();
-        // UserService에 스포티파이 유저 아이디 요청
-        String spotifyUserId = getSpotifyUserId();
+        MemberInfo memberInfo = requestMemberInfo(userId);
+        String token = getToken(memberInfo);
+        String spotifyUserId = memberInfo.getSpotifyUserId();
 
         JSONParser parser = new JSONParser();
 
@@ -73,8 +66,8 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
 
     // 개인 플레이리스트 노래 추가
     public void createTrack(String userId, TrackCreateDto trackCreateDto, String playlistId) throws ParseException {
-        // AuthService 에 Token 요청
-        String token = getToken();
+        MemberInfo memberInfo = requestMemberInfo(userId);
+        String token = getToken(memberInfo);
         Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("플레이 리스트가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
         individualPlaylistTrackRepository.findByTrackSpotifyIdAndPlaylist(trackCreateDto.getUris().get(0),playlist).ifPresentOrElse(track -> {throw new NotFoundException("중복된 노래가 존재합니다.",HttpStatus.FORBIDDEN);},() -> { // 중복 노래가 있는 경우 처리(나중에 에러 핸들링 해야함)
             String str = webClientBuilder.build().post().uri("/playlists/{playlist_id}/tracks",playlist.getPlaylistSpotifyId()).header("Authorization", "Bearer " + token)
@@ -120,8 +113,8 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
 
     //  개인 대표 플레이리스트 조회
     public PlaylistResponseDto getIndividualPlaylist(String userId) throws ParseException {
-        // AuthService 에 Token 요청
-        String token = getToken();
+        MemberInfo memberInfo = requestMemberInfo(userId);
+        String token = getToken(memberInfo);
 
         Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseGet(null);
         if(playlist == null) return null;
@@ -136,8 +129,9 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
     // 대표 플레이리스트로 설정(변경)
     @Transactional
     public void setIndividualPlaylistId(String userId, PlaylistIdDto playlistIdDto){
+        MemberInfo memberInfo = requestMemberInfo(userId);
+        String token = getToken(memberInfo);
 
-        String token = getToken();
         String playlistId = playlistIdDto.getPlaylistId();
         Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("플레이 리스트가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
         playlist.setPlaylistSpotifyId(playlistId);
@@ -159,7 +153,9 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
     // 재생 횟수 카운트
     @Transactional
     public void counting(String userId) throws ParseException {
-        String token = getToken();
+        MemberInfo memberInfo = requestMemberInfo(userId);
+        String token = getToken(memberInfo);
+
         String str = webClientBuilder.build().get().uri("/me/player/currently-playing").header("Authorization", "Bearer " + token)
                 .retrieve().bodyToMono(String.class).block();
         JSONParser parser = new JSONParser();
@@ -174,16 +170,20 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
 
     // 개인 플레이리스트에 트랙 삭제
     @Transactional
-    public void deleteTrack(String playlistId, TrackDeleteRequestDto trackDeleteRequestDto){
-        String token = getToken();
+    public void deleteTrack(String userId, String playlistId, TrackDeleteRequestDto trackDeleteRequestDto){
+        MemberInfo memberInfo = requestMemberInfo(userId);
+        String token = getToken(memberInfo);
+
         String str = webClientBuilder.build().method(HttpMethod.DELETE).uri("/playlists/{playlist_id}/tracks",playlistId).header("Authorization", "Bearer " + token)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(BodyInserters.fromValue(trackDeleteRequestDto)).retrieve().bodyToMono(String.class).block();
         individualPlaylistTrackRepository.deleteByTrackSpotifyId(trackDeleteRequestDto.getTracks().get(0).getUri());
     }
 
     // 개인 플레이리스트 트랙 순서 변경
-    public void changeTrack(String playlistId, TrackChangeRequestDto trackChangeRequestDto){
-        String token = getToken();
+    public void changeTrack(String userId, String playlistId, TrackChangeRequestDto trackChangeRequestDto){
+        MemberInfo memberInfo = requestMemberInfo(userId);
+        String token = getToken(memberInfo);
+
         webClientBuilder.build().method(HttpMethod.PUT).uri("/playlists/{playlist_id}/tracks",playlistId).header("Authorization", "Bearer " + token)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(BodyInserters.fromValue(trackChangeRequestDto)).retrieve().bodyToMono(String.class).block();
     }
@@ -192,7 +192,11 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         return "31nmxiqhjnusfymqkaki3usnsose";
     }
 
-    private String getToken() {
-        return "BQCG3K7JKvwj4PBEdbe-ITdQ2R6rtnShn_ARw-KbiQw-eLrpGM6oCmrQ6SVGPQc4j7F0MyuqKxjIQ-CzcNG3WsobknSCWvULgdNhn54qKj2ExTs-zzr8b9ZXohDs6Oa8fU90JcjGOgZF_1TUVLuZ9WRq-fdRZANVfwMAkCniPzccEt8_vPH7cacRIctLncXtTX_1rKgyS4_wrSpmRwxMeTm7GoaSEDsT24d6Nyl3c7QMw9V04xTBJiu-gf0sk1UYWBjljBGS6QK0PtCZAW35NvJrZwORf6OqhUwRa-mJjt4";
+    private MemberInfo requestMemberInfo(String userId) {
+        return userServiceClient.getMember(userId);
+    }
+
+    private String getToken(MemberInfo memberInfo) {
+        return memberInfo.getSpotifyAccessToken();
     }
 }
