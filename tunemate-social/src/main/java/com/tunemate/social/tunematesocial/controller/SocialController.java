@@ -28,7 +28,7 @@ public class SocialController {
 
 	@PostMapping("friend-request")
 	public ResponseEntity<?> addFriendRequest(@RequestBody FriendRequestDto friendRequestDto,
-		@RequestHeader("UserId") long userId) {
+		@RequestHeader("UserId") String userId) {
 		log.debug("친구 요청");
 		socialService.addFriendRequest(userId, friendRequestDto);
 

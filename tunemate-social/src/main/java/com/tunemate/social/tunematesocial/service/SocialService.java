@@ -7,5 +7,5 @@ public interface SocialService {
 	 * 친구 신청
 	 * @param friendRequestDto
 	 */
-	void addFriendRequest(Long myId, FriendRequestDto friendRequestDto);
+	void addFriendRequest(String myId, FriendRequestDto friendRequestDto);
 }

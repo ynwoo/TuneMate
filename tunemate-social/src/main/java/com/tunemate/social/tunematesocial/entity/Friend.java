@@ -16,9 +16,9 @@ public class Friend {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; //  기본 키
 
-	private Long user1Id; // 친구1
+	private String user1Id; // 친구1
 
-	private Long user2Id; // 친구2
+	private String user2Id; // 친구2
 
 	private String distance; // 거리
 
@@ -26,5 +26,5 @@ public class Friend {
 
 	private String commonPlaylistId; // 공동 플레이리스트 아이디
 
-	private Long host; // 플레이리스트 host
+	private String host; // 플레이리스트 host
 }
