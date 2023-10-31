@@ -2,6 +2,7 @@ import { getConcerts } from '@/api/concert';
 import { Concert, ConcertSearchOption } from '@/types/concert';
 import { useQuery } from '@tanstack/react-query';
 
+// 공연 정보 목록 조회
 const useConcertsQuery = (concertSearchOption: ConcertSearchOption) => {
   const query = useQuery<Concert[]>({
     queryKey: ['useConcertsQuery', concertSearchOption],
