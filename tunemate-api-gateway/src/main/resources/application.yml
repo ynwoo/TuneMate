@@ -25,6 +25,13 @@ spring:
           filters:
             - AuthorizationHeaderFilter
             - RewritePath=/api/v1/user-service/(?<segment>.*), /$\{segment}
+        - id: music-service
+          uri: lb://music-service
+          predicates:
+            - Path=/api/v1/music-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/music-service/(?<segment>.*), /$\{segment}
       default-filters:
         - name: GlobalFilter
 
