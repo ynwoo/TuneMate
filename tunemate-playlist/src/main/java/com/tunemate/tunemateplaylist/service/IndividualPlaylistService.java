@@ -8,7 +8,7 @@ public interface IndividualPlaylistService {
 
     void createPlaylist(long userId, PlaylistCreateDto playlistCreateDto) throws ParseException;
 
-    void createTrack(long userId, TrackCreateDto trackCreateDto, String playlistId);
+    void createTrack(long userId, TrackCreateDto trackCreateDto, String playlistId) throws ParseException;
 
     PlaylistResponseDto getIndividualPlaylist(long userId) throws ParseException;
 

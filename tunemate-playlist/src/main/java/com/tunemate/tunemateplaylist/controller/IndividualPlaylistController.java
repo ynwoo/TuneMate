@@ -22,7 +22,7 @@ public class IndividualPlaylistController {
 
     //개인 플레이리스트 트랙 추가
     @PostMapping("playlists/{playlistId}/tracks")
-    public void createTrack(@RequestHeader("UserId") long userId, @RequestBody TrackCreateDto trackCreateDto,@PathVariable("playlistId") String playlistId){
+    public void createTrack(@RequestHeader("UserId") long userId, @RequestBody TrackCreateDto trackCreateDto,@PathVariable("playlistId") String playlistId) throws ParseException {
         individualPlaylistService.createTrack(userId, trackCreateDto,playlistId);
     }
 
