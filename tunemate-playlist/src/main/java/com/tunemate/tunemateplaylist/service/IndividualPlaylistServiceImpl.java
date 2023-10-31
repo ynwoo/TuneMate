@@ -2,6 +2,7 @@ package com.tunemate.tunemateplaylist.service;
 
 import com.tunemate.tunemateplaylist.domain.Playlist;
 import com.tunemate.tunemateplaylist.domain.Track;
+import com.tunemate.tunemateplaylist.domain.Tracks;
 import com.tunemate.tunemateplaylist.dto.*;
 import com.tunemate.tunemateplaylist.exception.BaseException;
 import com.tunemate.tunemateplaylist.exception.NotFoundException;
@@ -21,6 +22,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.swing.*;
+import java.util.List;
 
 @Service
 public class IndividualPlaylistServiceImpl implements IndividualPlaylistService {
@@ -85,20 +87,34 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
 
         String spotifyUri = trackCreateDto.getUris().get(0);
         if(tracksRepository.findBySpotifyUri(spotifyUri).size() != 0){
-            System.out.println("이미 있는 곡");
-            return;
+            throw new NotFoundException("이미 데이터베이스에 있는 노래",HttpResponseStatus.FORBIDDEN);
         }
-        String str = webClientBuilder.build().get().uri("/tracks/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token)
+        String str = webClientBuilder.build().get().uri("/tracks/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
                 .retrieve().bodyToMono(String.class).block();
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(str);
-        System.out.println(jsonObject);
-        String artist;
-        String title;
-        double acousticness;
-        double danceability;
-        double tempo;
-        double energy;
+        JSONObject jsonObject2 = (JSONObject) jsonObject.get("album");
+        List<JSONObject> jsonObject3 = (List<JSONObject>) jsonObject2.get("artists");
+        String artist= (String) jsonObject3.get(0).get("name");
+        String title = (String) jsonObject.get("name");
+
+        String str2 = webClientBuilder.build().get().uri("/audio-features/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
+                .retrieve().bodyToMono(String.class).block();
+        JSONObject jsonObject5 = (JSONObject) parser.parse(str2);
+
+        double acousticness = (Double) jsonObject5.get("acousticness");
+        double danceability = (Double) jsonObject5.get("danceability");
+        double tempo = (Double) jsonObject5.get("tempo");
+        double energy = (Double) jsonObject5.get("energy");
+        Tracks tracks = new Tracks();
+        tracks.setAcousticness(acousticness);
+        tracks.setArtist(artist);
+        tracks.setDanceability(danceability);
+        tracks.setEnergy(energy);
+        tracks.setTempo(tempo);
+        tracks.setTitle(title);
+        tracks.setSpotifyUri(trackCreateDto.getUris().get(0));
+        tracksRepository.save(tracks);
     }
 
     //  개인 대표 플레이리스트 조회
@@ -177,6 +193,6 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
     }
 
     private String getToken() {
-        return "BQALNtw0eto-4YmM518C3AcZXpkeH9tR1AwYxYaCk_j01VhZnh5T1hlC5x1AjnRwIXtATEbs_aJqk2n6CXQLyFRkzEBKJmB4liNzfPKkQF-vT8gdQ1gqvsBQY5N7OkHPakPN8YN3y_m5b2w0wHnYtS9FRMerrt1Ipp7o_0LngWg72rFy_pbwDo1qwPgTk3bnggvtyf8w3f64OW9j4hMnSB90psxdNcW4Rt9ThURG63BiR1EmYPhXgqY2KXTx3PTPJ3vkQYSeK0eNi8ldnobdWWQxQnpqpSeB83plRlypzKU";
+        return "BQCXLQ7c0t1bKvSNt4o4SIRaSev2s-U9lF4TrAKzxsjtZpfVh6MDYYnBL9dn9sCIm9Gt7tiT5UaI6O2ADGpsV3fnZyDiy3BF5rmZZJ35wnPrY3du1lp-suXRbnMCItkJOjQEkyTj-zKvRn2A8BxGs-LCipNhQ0jJL59KSm6iCs758Cv24lkFZJoOqqy71NDHQmNDUnMKsvNL9L1GKWtufHfqnXgqSaNeYJklbx0hV7j_vVNrHEMsnu6vfm1svmqbkS5PhOIvjwMZx40AhmSiw4Cx5mNebleV0QeyIFyWW98";
     }
 }
