@@ -39,6 +39,9 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
                 return onError(exchange, "JWT token is not valid", HttpStatus.UNAUTHORIZED);
             }
 
+            request.mutate()
+                    .header("userId", getSubject(jwt));
+
             return chain.filter(exchange);
         };
     }
@@ -47,12 +50,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         String subject = null;
 
         try {
-            subject = Jwts.parser()
-                    .setSigningKey(env.getProperty("jwt.private-key"))
-                    .build()
-                    .parseSignedClaims(jwt)
-                    .getPayload()
-                    .getSubject();
+            subject = getSubject(jwt);
         } catch (Exception ex) {
             log.error(ex.getMessage());
             return false;
@@ -72,6 +70,15 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         log.error(errorMsg);
 
         return response.setComplete();
+    }
+
+    private String getSubject(String jwt) {
+        return Jwts.parser()
+                .setSigningKey(env.getProperty("jwt.private-key"))
+                .build()
+                .parseSignedClaims(jwt)
+                .getPayload()
+                .getSubject();
     }
 
     public static class Config {
