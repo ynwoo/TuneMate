@@ -5,6 +5,7 @@ import {
   SPOTIFY_AUTHORIZE_URL,
   SPOTIFY_TOKEN_API_URL,
 } from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const apiInstance = (): AxiosInstance => {
   const instance = axios.create({
@@ -37,7 +38,6 @@ const spotifyTokenApiInstance = (): AxiosInstance => {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json;charset=UTF-8',
       Accept: 'application/x-www-form-urlencoded',
-      // Accept: 'application/json',
     },
   });
   return instance;
@@ -49,7 +49,6 @@ const spotifyApiInstance = (): AxiosInstance => {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json;charset=UTF-8',
       Accept: 'application/x-www-form-urlencoded',
-      // Accept: 'application/json',
     },
   });
   return instance;
@@ -57,7 +56,9 @@ const spotifyApiInstance = (): AxiosInstance => {
 
 const authInterceptor = (instance: AxiosInstance) => {
   instance.interceptors.request.use(
-    (config) => {
+    async (config) => {
+      const accessToken = await AsyncStorage.getItem('access_token');
+      config.headers['Authorization'] = accessToken;
       return config;
     },
     (error) => {

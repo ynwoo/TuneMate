@@ -4,6 +4,11 @@ interface Friend extends FriendRequest {
   commonPlayListId: string;
 }
 
+interface RecommendationFriend extends FriendRequest {
+  userId: number;
+  playListId: string;
+}
+
 interface FriendRequest {
   name: string;
   img: string;
@@ -11,4 +16,4 @@ interface FriendRequest {
   musicalTasteSimilarity: string;
 }
 
-export type { Friend, FriendRequest };
+export type { Friend, FriendRequest, RecommendationFriend };
