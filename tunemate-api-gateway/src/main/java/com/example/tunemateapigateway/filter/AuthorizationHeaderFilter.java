@@ -40,7 +40,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             }
 
             request.mutate()
-                    .header("userId", getSubject(jwt));
+                    .header("UserId", getSubject(jwt));
 
             return chain.filter(exchange);
         };
