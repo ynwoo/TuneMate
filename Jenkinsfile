@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Build Music Backend') {
             steps {
-                dir('tunemate-discovery-service') {
+                dir('tunemate-social') {
                     sh "chmod +x gradlew"
                     sh "./gradlew clean compileJava bootJar"
                }
