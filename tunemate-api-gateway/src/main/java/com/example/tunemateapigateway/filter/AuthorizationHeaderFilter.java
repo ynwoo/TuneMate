@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Base64;
+
 @Component
 @Slf4j
 public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.Config> {
@@ -73,8 +75,10 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     }
 
     private String getSubject(String jwt) {
+        byte[] encoded = Base64.getEncoder().encode(env.getProperty("jwt.private-key").getBytes());
+
         return Jwts.parser()
-                .setSigningKey(env.getProperty("jwt.private-key"))
+                .setSigningKey(encoded)
                 .build()
                 .parseSignedClaims(jwt)
                 .getPayload()
