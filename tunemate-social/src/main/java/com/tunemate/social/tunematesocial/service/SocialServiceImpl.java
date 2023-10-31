@@ -25,9 +25,9 @@ public class SocialServiceImpl implements SocialService {
 	 * @param friendRequestDto
 	 */
 	@Override
-	public void addFriendRequest(Long myId, FriendRequestDto friendRequestDto) {
+	public void addFriendRequest(String myId, FriendRequestDto friendRequestDto) {
 		// 신청보낸 유저가 존재하는지 확인 필요
-		Long userId = friendRequestDto.getUserId();
+		String userId = friendRequestDto.getUserId();
 
 		// Dto -> Entity 변환
 		FriendRequest friendRequest = FriendRequest.builder()
