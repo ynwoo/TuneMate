@@ -24,6 +24,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -193,7 +194,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
     }
 
     private MemberInfo requestMemberInfo(String userId) {
-        return userServiceClient.getMember(userId);
+        return userServiceClient.getMember(Map.of("UserId", userId), userId);
     }
 
     private String getToken(MemberInfo memberInfo) {
