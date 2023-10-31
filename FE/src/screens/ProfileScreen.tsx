@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RootStackParamList } from './types';
 import Playlist from '@/components/playlist/Playlist';
 import MyModal from '@/components/modal/MyModal';
 import PlaylistItem from '@/components/playlist/PlaylistItem';
+import SearchBar from '@/components/search/SearchBar';
 
 type ProfileScreenProps = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -42,9 +42,40 @@ const ProfileScreen = ({}: ProfileScreenProps): JSX.Element => {
         setModalVisible={setModalVisible}
         title="곡 추가"
       >
-        <PlaylistItem key={1} playing />
-        <PlaylistItem key={2} playing={false} />
-        <PlaylistItem key={3} playing={false} />
+        <SearchBar />
+        <PlaylistItem
+          key={1}
+          index={0}
+          data={{
+            title: 'Fine',
+            artist: '태연',
+            cover:
+              'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+          }}
+          playing
+        />
+        <PlaylistItem
+          key={2}
+          index={1}
+          data={{
+            title: 'Fine',
+            artist: '태연',
+            cover:
+              'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+          }}
+          playing={false}
+        />
+        <PlaylistItem
+          key={3}
+          index={2}
+          data={{
+            title: 'Fine',
+            artist: '태연',
+            cover:
+              'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+          }}
+          playing={false}
+        />
       </MyModal>
     </>
   );
