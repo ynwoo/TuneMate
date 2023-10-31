@@ -17,12 +17,12 @@ public class FriendRequest {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; //  기본 키
 
-	private Long requestedUserId; // 요청받은 유저 아이디
+	private String requestedUserId; // 요청받은 유저 아이디
 
-	private Long requestingUserId; // 요청한 유저 아이디
+	private String requestingUserId; // 요청한 유저 아이디
 
 	@Builder
-	public FriendRequest(Long requestedUserId, Long requestingUserId) {
+	public FriendRequest(String requestedUserId, String requestingUserId) {
 		this.requestedUserId = requestedUserId;
 		this.requestingUserId = requestingUserId;
 	}
