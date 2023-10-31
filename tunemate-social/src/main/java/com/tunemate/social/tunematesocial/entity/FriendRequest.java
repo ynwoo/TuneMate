@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +21,9 @@ public class FriendRequest {
 
 	private Long requestingUserId; // 요청한 유저 아이디
 
+	@Builder
+	public FriendRequest(Long requestedUserId, Long requestingUserId) {
+		this.requestedUserId = requestedUserId;
+		this.requestingUserId = requestingUserId;
+	}
 }
