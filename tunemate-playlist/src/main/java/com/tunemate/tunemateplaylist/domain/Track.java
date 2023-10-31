@@ -16,11 +16,6 @@ public class Track {
     private Long id;
 
 
-    private String title;
-
-
-    private String genre;
-
     @Column()
     private Integer count;
 
@@ -34,6 +29,5 @@ public class Track {
     @PrePersist
     public void setCreatedAt() {
         this.count = 0;
-        this.genre = "없음";
     }
 }
