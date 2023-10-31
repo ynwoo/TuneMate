@@ -20,6 +20,11 @@ export const getSocialFriendRequests = async (): Promise<FriendRequest[]> => {
   return response.data;
 };
 
+// 친구 신청
+export const sendSocialFriendRequest = async (userId: number) => {
+  await authApi.post<void>(`social/friend-request`, { userId });
+};
+
 // 친구 요청 수락
 export const acceptSocialFriendRequest = async (userId: string) => {
   await authApi.post<void>(`social/acceptance/${userId}`);

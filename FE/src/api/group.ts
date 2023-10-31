@@ -53,7 +53,7 @@ export const participateGroup = async (groupId: Group['groupId']) => {
 };
 
 // 받은 참여 요청 조회
-export const getGroupReceivedParicipations = async (): Promise<
+export const getGroupReceivedParticipations = async (): Promise<
   ParticipationRequest[]
 > => {
   const response = await authApi.get<ParticipationRequest[]>(
@@ -63,7 +63,7 @@ export const getGroupReceivedParicipations = async (): Promise<
 };
 
 // 보낸 참여 요쳥 목록 조회
-export const getGroupSentParicipations = async (): Promise<
+export const getGroupSentParticipations = async (): Promise<
   ParticipationResponse[]
 > => {
   const response = await authApi.get<ParticipationResponse[]>(
