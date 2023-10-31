@@ -1,11 +1,13 @@
+import { User } from './user';
+
 interface Friend extends FriendRequest {
   relationId: number;
-  freindId: number;
+  freindId: User['userId'];
   commonPlayListId: string;
 }
 
 interface RecommendationFriend extends FriendRequest {
-  userId: number;
+  userId: User['userId'];
   playListId: string;
 }
 

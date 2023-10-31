@@ -1,7 +1,9 @@
+import { User } from './user';
+
 interface Chat {
   id: string;
   message: string;
-  userId: string;
+  userId: User['userId'];
 }
 
 export type { Chat };
