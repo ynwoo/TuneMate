@@ -1,5 +1,6 @@
 import { Friend, FriendRequest } from '@/types/social';
 import { authApi } from '.';
+import { UserInfo } from '@/types/user';
 
 const SOCIAL_FRIENDS_URL = 'social/friends';
 
@@ -10,7 +11,7 @@ export const getSocialFriends = async (): Promise<Friend[]> => {
 };
 
 // 친구 삭제
-export const deleteSocialFriend = async (userId: string) => {
+export const deleteSocialFriend = async (userId: UserInfo['userId']) => {
   await authApi.delete<void>(`${SOCIAL_FRIENDS_URL}/${userId}`);
 };
 
@@ -21,17 +22,19 @@ export const getSocialFriendRequests = async (): Promise<FriendRequest[]> => {
 };
 
 // 친구 신청
-export const sendSocialFriendRequest = async (userId: number) => {
+export const sendSocialFriendRequest = async (userId: UserInfo['userId']) => {
   await authApi.post<void>(`social/friend-request`, { userId });
 };
 
 // 친구 요청 수락
-export const acceptSocialFriendRequest = async (userId: string) => {
+export const acceptSocialFriendRequest = async (userId: UserInfo['userId']) => {
   await authApi.post<void>(`social/acceptance/${userId}`);
 };
 
 // 친구 요청 거절
-export const declineSocialFriendRequest = async (userId: string) => {
+export const declineSocialFriendRequest = async (
+  userId: UserInfo['userId'],
+) => {
   await authApi.post<void>(`social/decline/${userId}`);
 };
 
