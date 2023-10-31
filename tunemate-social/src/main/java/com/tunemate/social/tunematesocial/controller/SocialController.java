@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -36,7 +37,7 @@ public class SocialController {
 	 * @param userId
 	 * @return
 	 */
-	@PostMapping("friend-request")
+	@PostMapping("/friend-request")
 	public ResponseEntity<?> addFriendRequest(@RequestBody FriendRequestDto friendRequestDto,
 		@RequestHeader("UserId") String userId) {
 		log.debug("친구 요청");
@@ -50,7 +51,7 @@ public class SocialController {
 	 * @param userId
 	 * @return
 	 */
-	@GetMapping("friend-requests")
+	@GetMapping("/friend-requests")
 	public ResponseEntity<?> getFriendRequests(@RequestHeader("UserId") String userId) {
 		log.debug("친구 요청 목록 조회");
 
@@ -59,4 +60,19 @@ public class SocialController {
 		return ResponseEntity.ok(friendRequests);
 	}
 
+	/**
+	 * 해당 친구 요청을 수락하는 API입니다.
+	 * @param newFriendId
+	 * @param userId
+	 * @return
+	 */
+	@PostMapping("/acceptance/{userId}")
+	public ResponseEntity<?> acceptFriendRequest(@PathVariable("userId") String newFriendId,
+		@RequestHeader("UserId") String userId) {
+		log.debug(userId + "님이 " + newFriendId + "님의 친구 요청을 수락하였습니다.");
+
+		socialService.acceptFriendRequest(userId, newFriendId);
+
+		return ResponseEntity.ok().build();
+	}
 }

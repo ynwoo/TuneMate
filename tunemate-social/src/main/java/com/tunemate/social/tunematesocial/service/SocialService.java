@@ -13,4 +13,6 @@ public interface SocialService {
 	void addFriendRequest(String myId, FriendRequestDto friendRequestDto);
 
 	List<ReceivedFriendRequestResponseDto> getFriendRequests(String myId);
+
+	void acceptFriendRequest(String myId, String newFriendId);
 }

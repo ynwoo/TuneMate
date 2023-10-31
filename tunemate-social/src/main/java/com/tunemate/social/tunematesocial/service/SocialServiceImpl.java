@@ -2,19 +2,23 @@ package com.tunemate.social.tunematesocial.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tunemate.social.tunematesocial.dto.UserInfoDto;
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResponseDto;
+import com.tunemate.social.tunematesocial.entity.Friend;
 import com.tunemate.social.tunematesocial.entity.FriendRequest;
 import com.tunemate.social.tunematesocial.repository.FriendRepository;
 import com.tunemate.social.tunematesocial.repository.FriendRequestRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class SocialServiceImpl implements SocialService {
 	private final FriendRepository friendRepository;
 
@@ -83,5 +87,36 @@ public class SocialServiceImpl implements SocialService {
 		// }
 
 		return result;
+	}
+
+	@Override
+	public void acceptFriendRequest(String myId, String newFriendId) {
+		// 친구 요청 기록 가져오기
+		Optional<FriendRequest> friendRequestOptional = friendRequestRepository.findByRequestedUserIdAndRequestingUserId(
+			myId, newFriendId);
+
+		if (friendRequestOptional.isEmpty()) {
+			log.debug("해당하는 친구 요청이 없습니다.");
+			return;
+		}
+
+		FriendRequest friendRequest = friendRequestOptional.get();
+
+		// 친구 목록에 추가
+		// Dto -> Entity 변환
+		Friend friend = Friend.builder()
+			.user1Id(myId)
+			.user2Id(newFriendId)
+			.distance(friendRequest.getDistance())
+			.musicalTasteSimilarity(friendRequest.getMusicalTasteSimilarity())
+			// 공용 playListId 생성
+			.commonPlaylistId(null)
+			.host(null)
+			.build();
+
+		// repository 저장
+		friendRepository.save(friend);
+
+		// 친구 신청 목록에서 제거
 	}
 }

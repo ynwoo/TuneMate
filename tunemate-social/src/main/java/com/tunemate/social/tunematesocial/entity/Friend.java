@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,4 +28,16 @@ public class Friend {
 	private String commonPlaylistId; // 공동 플레이리스트 아이디
 
 	private String host; // 플레이리스트 host
+
+	@Builder
+	public Friend(Long id, String user1Id, String user2Id, String distance, String musicalTasteSimilarity,
+		String commonPlaylistId, String host) {
+		this.id = id;
+		this.user1Id = user1Id;
+		this.user2Id = user2Id;
+		this.distance = distance;
+		this.musicalTasteSimilarity = musicalTasteSimilarity;
+		this.commonPlaylistId = commonPlaylistId;
+		this.host = host;
+	}
 }
