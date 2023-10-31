@@ -1,3 +1,5 @@
+import { UserInfo } from './user';
+
 interface GroupAnnouncement {
   title: string;
   capacity: number;
@@ -10,8 +12,8 @@ interface Group extends GroupAnnouncement {
   groupId: number;
   participantsCnt: number;
   startDateTime: string;
-  hostId: number;
-  hostName: string;
+  hostId: UserInfo['userId'];
+  hostName: UserInfo['name'];
 }
 
 interface Participation {
@@ -22,14 +24,14 @@ interface Participation {
 }
 
 interface ParticipationRequest extends Participation {
-  requesterId: number;
-  requesterName: string;
+  requesterId: UserInfo['userId'];
+  requesterName: UserInfo['name'];
 }
 
 interface ParticipationResponse extends Participation {
   title: string;
-  hostId: number;
-  hostName: string;
+  hostId: UserInfo['userId'];
+  hostName: UserInfo['name'];
   concertId: number;
 }
 
