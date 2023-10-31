@@ -1,9 +1,9 @@
-import { User } from './user';
+import { UserInfo } from './user';
 
 interface Chat {
   id: string;
   message: string;
-  userId: User['userId'];
+  userId: UserInfo['userId'];
 }
 
 export type { Chat };

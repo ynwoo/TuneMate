@@ -1,4 +1,4 @@
-interface User {
+interface UserInfo {
   userId: string;
   spotifyUserId: string;
   name: string;
@@ -9,7 +9,7 @@ interface User {
 interface TokenResponse {
   accessToken: string;
   refreshToken: string;
-  userId: User['userId'];
+  userId: UserInfo['userId'];
 }
 
-export type { User, TokenResponse };
+export type { UserInfo, TokenResponse };
