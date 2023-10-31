@@ -33,6 +33,7 @@ pipeline {
         stage('Deploy Backend Server') {
             steps {
                 sshagent(credentials: ['pemKey']) {
+                    sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'whoami'"
                     sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker rm -f $CONTAINER_NAME_BACK'"
                     sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker rmi -f $DOCKERHUB_REPOSITORY_BACK:$VERSION'"
                     sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker pull $DOCKERHUB_REPOSITORY_BACK:$VERSION'"
