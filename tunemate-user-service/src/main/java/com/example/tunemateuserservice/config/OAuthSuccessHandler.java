@@ -2,7 +2,7 @@ package com.example.tunemateuserservice.config;
 
 import com.example.tunemateuserservice.dto.MemberDto;
 import com.example.tunemateuserservice.service.MemberService;
-import com.example.tunemateuserservice.vo.ResponseToken;
+import com.example.tunemateuserservice.vo.ResponseAuth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -74,8 +74,11 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
                 .compact();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        ResponseToken responseToken = new ResponseToken(accessToken);
-        String result = objectMapper.writeValueAsString(responseToken);
+        ResponseAuth responseAuth = ResponseAuth.builder()
+                .accessToken(accessToken)
+                .userId(userId)
+                .build();
+        String result = objectMapper.writeValueAsString(responseAuth);
 
         response.setHeader("content-type", "application/json");
         response.setCharacterEncoding("utf-8");
