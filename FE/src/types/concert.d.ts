@@ -1,4 +1,5 @@
 interface Concert {
+  concertId: number;
   imageUrl: string;
   title: string;
   place: string;
