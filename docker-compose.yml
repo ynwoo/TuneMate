@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  backend:
+    image: ynwoo/tunemate-discovery:latest
+    build:
+      context: ./tunemate-discovery-service
+      dockerfile: Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
