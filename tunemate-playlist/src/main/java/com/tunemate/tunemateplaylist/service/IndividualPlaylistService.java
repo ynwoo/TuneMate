@@ -16,7 +16,7 @@ public interface IndividualPlaylistService {
 
     void counting(String userId) throws ParseException;
 
-    void deleteTrack(String playlistId, TrackDeleteRequestDto trackDeleteRequestDto);
+    void deleteTrack(String userId, String playlistId, TrackDeleteRequestDto trackDeleteRequestDto);
 
-    void changeTrack(String playlistId, TrackChangeRequestDto trackChangeRequestDto);
+    void changeTrack(String userId, String playlistId, TrackChangeRequestDto trackChangeRequestDto);
 }
