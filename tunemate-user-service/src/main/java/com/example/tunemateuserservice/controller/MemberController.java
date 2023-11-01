@@ -22,7 +22,7 @@ public class MemberController {
     private final ModelMapper mapper;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<ResponseMember> getMember(@PathVariable String userId, @RequestHeader("userId") String headerUserId) {
+    public ResponseEntity<ResponseMember> getMember(@PathVariable String userId, @RequestHeader("UserId") String headerUserId) {
         if (!userId.equals(headerUserId)) {
             throw new NoPermissionException("다른 사용자의 리소스에 접근할 수 없습니다.", HttpStatus.FORBIDDEN);
         }
