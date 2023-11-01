@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tunemate.social.tunematesocial.client.UserServiceClient;
 import com.tunemate.social.tunematesocial.dto.UserInfoDto;
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
@@ -24,13 +25,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SocialServiceImpl implements SocialService {
 	private final FriendRepository friendRepository;
-
 	private final FriendRequestRepository friendRequestRepository;
+	private final UserServiceClient userServiceClient;
 
 	@Autowired
-	public SocialServiceImpl(FriendRepository friendRepository, FriendRequestRepository friendRequestRepository) {
+	public SocialServiceImpl(FriendRepository friendRepository, FriendRequestRepository friendRequestRepository,
+		UserServiceClient userServiceClient) {
 		this.friendRepository = friendRepository;
 		this.friendRequestRepository = friendRequestRepository;
+		this.userServiceClient = userServiceClient;
 	}
 
 	/**
@@ -63,31 +66,34 @@ public class SocialServiceImpl implements SocialService {
 		List<String> idList = byRequestedUserId.stream()
 			.map(FriendRequest::getRequestingUserId)
 			.collect(Collectors.toList());
+		// log.debug("내게 친구 신청한 사용자 아이디 리스트 : " + idList);
 
 		// 범수가 idList Feign으로 가져가서 여기에 유저의 id, name, image 정보 리스트 가져다 줄꺼임
 		// 사용자 정보 리스트
-		// List<UserInfoDto> userInfoList = feignClient.getUsersByIdList(idList);
+		List<UserInfoDto> userInfoList = userServiceClient.getMembersByUserIdIn(idList);
+
+		// log.debug("내게 친구 신청한 사용자 정보 리스트 : " + userInfoList);
 
 		// 리스트 크기가 같다고 가정
 		int size = byRequestedUserId.size();
 
 		// 데이터 결합
-		// for (int i = 0; i < size; i++) {
-		// 	FriendRequest friendRequest = byRequestedUserId.get(i);
-		// 	UserInfoDto userInfo = userInfoList.get(i);
-		//
-		// 	ReceivedFriendRequestResponseDto responseDto = ReceivedFriendRequestResponseDto
-		// 		.builder()
-		// 		.userId(userInfo.getUserId())
-		// 		.name(userInfo.getName())
-		// 		.img(userInfo.getImg())
-		// 		.distance(friendRequest.getDistance())
-		// 		.musicalTasteSimilarity(friendRequest.getMusicalTasteSimilarity())
-		// 		.build();
-		//
-		// 	// 결과 리스트에 추가
-		// 	result.add(responseDto);
-		// }
+		for (int i = 0; i < size; i++) {
+			FriendRequest friendRequest = byRequestedUserId.get(i);
+			UserInfoDto userInfo = userInfoList.get(i);
+
+			ReceivedFriendRequestResponseDto responseDto = ReceivedFriendRequestResponseDto
+				.builder()
+				.userId(userInfo.getUserId())
+				.name(userInfo.getName())
+				.img(userInfo.getImageUrl())
+				.distance(friendRequest.getDistance())
+				.musicalTasteSimilarity(friendRequest.getMusicalTasteSimilarity())
+				.build();
+
+			// 결과 리스트에 추가
+			result.add(responseDto);
+		}
 
 		return result;
 	}
@@ -172,35 +178,35 @@ public class SocialServiceImpl implements SocialService {
 
 		// 범수가 idList Feign으로 가져가서 여기에 유저의 id, name, image 정보 리스트 가져다 줄꺼임
 		// 사용자 정보 리스트
-		// List<UserInfoDto> userInfoList = feignClient.getUsersByIdList(myFriendsIdList);
+		List<UserInfoDto> userInfoList = userServiceClient.getMembersByUserIdIn(myFriendsIdList);
 
 		// 리스트 크기가 같다고 가정
 		int size = myFriendsIdList.size();
 
 		// 데이터 결합
-		// for (int i = 0; i < size; i++) {
-		// 	Friend friend;
-		// 	if (i < byUser1Id.size()) {
-		// 		friend = byUser1Id.get(i);
-		// 	} else {
-		// 		friend = byUser2Id.get(i - byUser1Id.size());
-		// 	}
-		// 	UserInfoDto userInfo = userInfoList.get(i);
-		//
-		// 	MyFriendResponseDto responseDto = MyFriendResponseDto
-		// 		.builder()
-		// 		.relationId(friend.getId())
-		// 		.friendId(userInfo.getUserId())
-		// 		.name(userInfo.getName())
-		// 		.commonPlayListId(friend.getCommonPlaylistId())
-		// 		.img(userInfo.getImg())
-		// 		.distance(friend.getDistance())
-		// 		.musicalTasteSimilarity(friend.getMusicalTasteSimilarity())
-		// 		.build();
-		//
-		// 	// 결과 리스트에 추가
-		// 	result.add(responseDto);
-		// }
+		for (int i = 0; i < size; i++) {
+			Friend friend;
+			if (i < byUser1Id.size()) {
+				friend = byUser1Id.get(i);
+			} else {
+				friend = byUser2Id.get(i - byUser1Id.size());
+			}
+			UserInfoDto userInfo = userInfoList.get(i);
+
+			MyFriendResponseDto responseDto = MyFriendResponseDto
+				.builder()
+				.relationId(friend.getId())
+				.friendId(userInfo.getUserId())
+				.name(userInfo.getName())
+				.commonPlayListId(friend.getCommonPlaylistId())
+				.img(userInfo.getImageUrl())
+				.distance(friend.getDistance())
+				.musicalTasteSimilarity(friend.getMusicalTasteSimilarity())
+				.build();
+
+			// 결과 리스트에 추가
+			result.add(responseDto);
+		}
 
 		return result;
 	}
