@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,5 +66,10 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new NoSuchItemException("사용자 ID가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
 
         return mapper.map(member, MemberDto.class);
+    }
+
+    @Override
+    public List<MemberDto> getMembersByUserIdIn(List<String> userIds) {
+        return memberRepository.findAllByUserIdIn(userIds).stream().map(member -> mapper.map(member, MemberDto.class)).toList();
     }
 }
