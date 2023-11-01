@@ -38,10 +38,10 @@ public class Member {
     @Column(nullable = false)
     private String refreshToken;
     @Schema(description = "스포티파이 액세스 토큰")
-    @Column(nullable = false)
+    @Column(nullable = false, length = 512)
     private String spotifyAccessToken;
     @Schema(description = "스포티파이 리프레시 토큰")
-    @Column(nullable = false)
+    @Column(nullable = false, length = 512)
     private String spotifyRefreshToken;
 
     @Builder
