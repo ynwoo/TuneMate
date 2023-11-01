@@ -40,7 +40,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: ${eureka-endpoint}
+      defaultZone: ${eureka-service-url}
 
 jwt:
   private-key: ${jwt-private-key}
