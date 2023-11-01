@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
+import com.tunemate.social.tunematesocial.dto.response.MyFriendResponseDto;
 import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResponseDto;
 import com.tunemate.social.tunematesocial.service.SocialService;
 
@@ -77,6 +78,12 @@ public class SocialController {
 		return ResponseEntity.ok().build();
 	}
 
+	/**
+	 * 해당 친구 요청을 거절하는 API입니다.
+	 * @param notFriendId
+	 * @param userId
+	 * @return
+	 */
 	@PostMapping("/decline/{userId}")
 	public ResponseEntity<?> declineFriendRequest(@PathVariable("userId") String notFriendId,
 		@RequestHeader("UserId") String userId) {
@@ -87,6 +94,11 @@ public class SocialController {
 		return ResponseEntity.ok().build();
 	}
 
+	/**
+	 * 공동 플레이리스트id와 host id를 저장하는 API입니다.
+	 * @param playlistRequestDto
+	 * @return
+	 */
 	@PostMapping("/common-playlist")
 	public ResponseEntity<?> addCommonPlayListInfo(@RequestBody PlaylistRequestDto playlistRequestDto) {
 		log.debug("플레이리스트 id 및 host 정보를 저장합니다.");
@@ -94,5 +106,19 @@ public class SocialController {
 		socialService.addPlaylistIdAndHost(playlistRequestDto);
 
 		return ResponseEntity.ok().build();
+	}
+
+	/**
+	 * 친구 목록을 조회합니다.
+	 * @param userId
+	 * @return
+	 */
+	@GetMapping("/friends")
+	public ResponseEntity<?> getMyFriends(@RequestHeader("UserId") String userId) {
+		log.debug("나의 친구 목록을 불러옵니다.");
+
+		List<MyFriendResponseDto> myFriends = socialService.getMyFriends(userId);
+
+		return ResponseEntity.ok(myFriends);
 	}
 }

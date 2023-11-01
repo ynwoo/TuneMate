@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
+import com.tunemate.social.tunematesocial.dto.response.MyFriendResponseDto;
 import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResponseDto;
 
 public interface SocialService {
@@ -20,4 +21,6 @@ public interface SocialService {
 	void declineFriendRequest(String myId, String notFriendId);
 
 	void addPlaylistIdAndHost(PlaylistRequestDto playlistRequestDto);
+
+	List<MyFriendResponseDto> getMyFriends(String myId);
 }
