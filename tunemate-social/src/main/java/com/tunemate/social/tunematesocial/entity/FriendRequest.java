@@ -21,9 +21,16 @@ public class FriendRequest {
 
 	private String requestingUserId; // 요청한 유저 아이디
 
+	private String distance; // 요청한 유저와의 거리
+
+	private String musicalTasteSimilarity; // 요청한 유저와의 음악 취향 유사도
+
 	@Builder
-	public FriendRequest(String requestedUserId, String requestingUserId) {
+	public FriendRequest(String requestedUserId, String requestingUserId,
+		String distance, String musicalTasteSimilarity) {
 		this.requestedUserId = requestedUserId;
 		this.requestingUserId = requestingUserId;
+		this.distance = distance;
+		this.musicalTasteSimilarity = musicalTasteSimilarity;
 	}
 }

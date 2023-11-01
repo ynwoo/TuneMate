@@ -1,6 +1,11 @@
 package com.tunemate.social.tunematesocial.service;
 
+import java.util.List;
+
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
+import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
+import com.tunemate.social.tunematesocial.dto.response.MyFriendResponseDto;
+import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResponseDto;
 
 public interface SocialService {
 	/**
@@ -8,4 +13,14 @@ public interface SocialService {
 	 * @param friendRequestDto
 	 */
 	void addFriendRequest(String myId, FriendRequestDto friendRequestDto);
+
+	List<ReceivedFriendRequestResponseDto> getFriendRequests(String myId);
+
+	void acceptFriendRequest(String myId, String newFriendId);
+
+	void declineFriendRequest(String myId, String notFriendId);
+
+	void addPlaylistIdAndHost(PlaylistRequestDto playlistRequestDto);
+
+	List<MyFriendResponseDto> getMyFriends(String myId);
 }
