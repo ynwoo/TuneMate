@@ -117,7 +117,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         MemberInfo memberInfo = requestMemberInfo(userId);
         String token = getToken(memberInfo);
 
-        Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseGet(null);
+        Playlist playlist = individualPlaylistRepository.findByUserId(userId).get();
         if(playlist == null) return null;
 
 
