@@ -4,6 +4,7 @@ import com.example.tunemateuserservice.dto.MemberDto;
 import com.example.tunemateuserservice.exception.NoPermissionException;
 import com.example.tunemateuserservice.service.MemberService;
 import com.example.tunemateuserservice.vo.ResponseMember;
+import com.example.tunemateuserservice.vo.ResponseMemberInfo;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,12 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<List<ResponseMember>> getMembersByUserIdIn(@RequestBody List<String> userIds) {
-        return ResponseEntity.ok(memberService.getMembersByUserIdIn(userIds).stream().map(memberDto -> mapper.map(memberDto, ResponseMember.class)).toList());
+    public ResponseEntity<List<ResponseMemberInfo>> getMembersByUserIdIn(@RequestBody List<String> userIds) {
+        return ResponseEntity.ok(memberService.getMembersByUserIdIn(userIds).stream().map(memberDto -> mapper.map(memberDto, ResponseMemberInfo.class)).toList());
+    }
+
+    @GetMapping
+    public ResponseEntity test() {
+        return ResponseEntity.ok("ok");
     }
 }
