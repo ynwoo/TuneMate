@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: social-service
+  datasource:
+    url: ${DATABASE_SOCIAL_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: true
+        highlight_sql: true
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_SERVICE_URL}
+
+logging:
+  level:
+    root: info
+    com.tunemate.social: debug
+
