@@ -5,11 +5,13 @@ import feign.Response;
 import feign.codec.DecodeException;
 import feign.codec.ErrorDecoder;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 
+@Component
 public class FeignClientDecoder implements ErrorDecoder {
 
     @Override
@@ -22,6 +24,7 @@ public class FeignClientDecoder implements ErrorDecoder {
                     return new ResponseStatusException(HttpStatus.valueOf(response.status()),
                             "Member 정보에 접근할 권한이 없습니다.");
                 }
+                break;
             case 404:
                 break;
             default:
