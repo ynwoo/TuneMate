@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  backend:
+    image: ynwoo/tunemate-gateway:latest
+    build:
+      context: ./tunemate-api-gateway
+      dockerfile: Dockerfile
