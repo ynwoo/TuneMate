@@ -15,6 +15,7 @@ public class WebConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, MemberService memberService, AuthenticationSuccessHandler authenticationSuccessHandler) throws Exception {
         http.oauth2Login(oauth2login -> oauth2login.userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(memberService))
                 .successHandler(authenticationSuccessHandler));
+        http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
 
         return http.build();
     }
