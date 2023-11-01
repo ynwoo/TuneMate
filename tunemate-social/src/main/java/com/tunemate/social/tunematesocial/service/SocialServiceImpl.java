@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
+import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
 import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResponseDto;
 import com.tunemate.social.tunematesocial.entity.Friend;
 import com.tunemate.social.tunematesocial.entity.FriendRequest;
@@ -109,7 +110,7 @@ public class SocialServiceImpl implements SocialService {
 			.user2Id(newFriendId)
 			.distance(friendRequest.getDistance())
 			.musicalTasteSimilarity(friendRequest.getMusicalTasteSimilarity())
-			// 공용 playListId 생성
+			// 이후 공동 플리 생성 클릭 시, 생성된 플리id 저장
 			.commonPlaylistId(null)
 			.host(null)
 			.build();
@@ -118,5 +119,20 @@ public class SocialServiceImpl implements SocialService {
 		friendRepository.save(friend);
 
 		// 친구 신청 목록에서 제거
+		friendRequestRepository.delete(friendRequest);
+	}
+
+	@Override
+	public void addPlaylistIdAndHost(PlaylistRequestDto playlistRequestDto) {
+		Optional<Friend> byId = friendRepository.findById(playlistRequestDto.getRelationId());
+
+		if (byId.isEmpty()) {
+			log.debug("해당하는 친구 관계가 없습니다.");
+			return;
+		}
+
+		Friend friend = byId.get();
+		friend.updatePlaylistIdAndHost(playlistRequestDto.getPlaylistId(), playlistRequestDto.getHost());
+		friendRepository.save(friend);
 	}
 }
