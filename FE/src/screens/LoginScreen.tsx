@@ -1,18 +1,46 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, Linking, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RootStackNavigationProp } from './types';
 import { redirectToAuthCodeFlow } from '@/utils/generateCode';
 import { inAppBrower } from '@/utils/inAppBrowser';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
-
   const onLogin = async () => {
     const uri = await redirectToAuthCodeFlow();
     // navigation.navigate('Auth', { uri });
     await inAppBrower.openLink(uri);
   };
+
+  // useEffect(() => {
+  //   const getInitURL = async () => {
+  //     const initURL = await Linking.getInitialURL(); // 없을 경우 null을 반환한다.
+  //     if (initURL) {
+  //       const path = initURL.split('//')[1];
+  //       console.log(path);
+
+  //       if (path.startsWith('?code=')) {
+  //         const code = decodeURIComponent(path.slice(6));
+  //         console.log(code);
+  //       }
+  //     }
+  //   };
+  //   getInitURL();
+  // }, []);
+
+  const handleOpenURL = ({ url }: any) => {
+    const path = url.split('//')[1];
+    console.log('url', url);
+    console.log('path', path);
+
+    // if (path.startsWith('wc?uri=')) {
+    //   const uri = decodeURIComponent(path.slice(7));
+    //   navigation.navigate('작업 처리할 컴포넌트', { uri: uri ? uri : '' });
+    // }
+  };
+
+  Linking.addEventListener('url', handleOpenURL);
 
   return (
     <View style={styles.block}>
