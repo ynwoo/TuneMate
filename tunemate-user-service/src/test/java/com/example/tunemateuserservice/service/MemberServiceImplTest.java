@@ -7,6 +7,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ class MemberServiceImplTest {
     MemberRepository memberRepository;
 
     @Test
+    @Transactional
     void getMembersByUserIdIn() {
         //given
         List<String> userIds = List.of("userId1", "userId2", "userId3");
