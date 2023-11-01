@@ -40,4 +40,9 @@ public class Friend {
 		this.commonPlaylistId = commonPlaylistId;
 		this.host = host;
 	}
+
+	public void updatePlaylistIdAndHost(String playlistId, String host) {
+		this.commonPlaylistId = playlistId;
+		this.host = host;
+	}
 }

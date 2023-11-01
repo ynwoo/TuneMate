@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
+import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
 import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResponseDto;
 import com.tunemate.social.tunematesocial.service.SocialService;
 
@@ -72,6 +73,15 @@ public class SocialController {
 		log.debug(userId + "님이 " + newFriendId + "님의 친구 요청을 수락하였습니다.");
 
 		socialService.acceptFriendRequest(userId, newFriendId);
+
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/common-playlist")
+	public ResponseEntity<?> addCommonPlayListInfo(@RequestBody PlaylistRequestDto playlistRequestDto) {
+		log.debug("플레이리스트 id 및 host 정보를 저장합니다.");
+
+		socialService.addPlaylistIdAndHost(playlistRequestDto);
 
 		return ResponseEntity.ok().build();
 	}
