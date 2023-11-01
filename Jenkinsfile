@@ -4,7 +4,7 @@ pipeline {
         VERSION = "latest"
         DOCKERHUB_REPOSITORY_BACK = "ynwoo/tunemate-discovery"
         DOCKERHUB_CREDENTIAL = credentials('dockerhub-ynwoo')
-        CONTAINER_NAME_BACK = "tunemate-backend-discovery"
+        CONTAINER_NAME_BACK = "discovery"
         SSH_CONNECTION = "ubuntu@k9a603.p.ssafy.io"
         ENV_DIR = "./config/.env"
         PORT_BACK = "8761"
