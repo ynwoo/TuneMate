@@ -17,5 +17,7 @@ public interface SocialService {
 
 	void acceptFriendRequest(String myId, String newFriendId);
 
+	void declineFriendRequest(String myId, String notFriendId);
+
 	void addPlaylistIdAndHost(PlaylistRequestDto playlistRequestDto);
 }

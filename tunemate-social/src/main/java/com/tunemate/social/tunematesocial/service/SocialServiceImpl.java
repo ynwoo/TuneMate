@@ -123,6 +123,21 @@ public class SocialServiceImpl implements SocialService {
 	}
 
 	@Override
+	public void declineFriendRequest(String myId, String notFriendId) {
+		Optional<FriendRequest> friendRequestOptional = friendRequestRepository.findByRequestedUserIdAndRequestingUserId(
+			myId, notFriendId);
+
+		if (friendRequestOptional.isEmpty()) {
+			log.debug("해당하는 친구 요청이 없습니다.");
+			return;
+		}
+
+		FriendRequest friendRequest = friendRequestOptional.get();
+		// 친구 신청 목록에서 제거
+		friendRequestRepository.delete(friendRequest);
+	}
+
+	@Override
 	public void addPlaylistIdAndHost(PlaylistRequestDto playlistRequestDto) {
 		Optional<Friend> byId = friendRepository.findById(playlistRequestDto.getRelationId());
 

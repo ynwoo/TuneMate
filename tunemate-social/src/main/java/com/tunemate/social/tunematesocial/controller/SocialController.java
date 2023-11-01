@@ -77,6 +77,16 @@ public class SocialController {
 		return ResponseEntity.ok().build();
 	}
 
+	@PostMapping("/decline/{userId}")
+	public ResponseEntity<?> declineFriendRequest(@PathVariable("userId") String notFriendId,
+		@RequestHeader("UserId") String userId) {
+		log.debug(userId + "님이 " + notFriendId + "님의 친구 요청을 거절하였습니다.");
+
+		socialService.declineFriendRequest(userId, notFriendId);
+
+		return ResponseEntity.ok().build();
+	}
+
 	@PostMapping("/common-playlist")
 	public ResponseEntity<?> addCommonPlayListInfo(@RequestBody PlaylistRequestDto playlistRequestDto) {
 		log.debug("플레이리스트 id 및 host 정보를 저장합니다.");
