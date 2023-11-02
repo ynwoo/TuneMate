@@ -147,7 +147,7 @@ def song(UserId : str | None = Header(default=None)):
     return responseData
 
 # 사람 추천
-@app.get("/api/v1/recommendation/friends", response_model=List[ReturnDto])
+@app.get("/api/v1/recommendation/friends", response_model=List)
 def root(UserId : str | None = Header(default=None)):
     conn = pymysql.connect(user=os.environ["DATABASE_USERNAME"],
                            password=os.environ["DATABASE_PASSWORD"], host=os.environ["DATABASE_URL"],
@@ -207,7 +207,7 @@ def root(UserId : str | None = Header(default=None)):
     for user in recommend:
         sql = "select playlist_spotify_id from playlist where user_id = %s"
         cursor.execute(sql,user)
-        playlistId = cursor.fetchone
+        playlistId = cursor.fetchall[0]
         print(playlistId)
         print(user)
         print(type(user))
