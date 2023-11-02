@@ -34,7 +34,7 @@ async def startup_event():
                                    )
 
 class ReturnDto(BaseModel):
-    userId : int
+    userId : str
     name : str
     playlistId : str
     img : str
@@ -199,6 +199,8 @@ def root(UserId : str | None = Header(default=None)):
         cursor.execute(sql,user)
         playlistId = cursor.fetchone
         userOb = request(user)
+        print(userOb)
+        print(userOb.get("userId"))
         responseList.append(ReturnDto(userId=userOb.get("userId"),img=userOb.get("imageUrl"),name=userOb.get("name"),playlistId=playlistId))
     
     return user_id_responses
