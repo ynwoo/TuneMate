@@ -28,6 +28,9 @@ eureka:
     instance-id: ${spring.application.name}:${spring.application.instance.id:${random.value}}
     hostname : k9A603.p.ssafy.io
 
+server:
+  port: 8082
+
 logging:
   level:
     root: info
