@@ -1,6 +1,7 @@
 package com.example.tunemateuserservice.controller;
 
 import com.example.tunemateuserservice.dto.MemberDto;
+import com.example.tunemateuserservice.dto.ReissueDto;
 import com.example.tunemateuserservice.exception.NoPermissionException;
 import com.example.tunemateuserservice.service.JwtTokenService;
 import com.example.tunemateuserservice.service.MemberService;
@@ -45,9 +46,9 @@ public class MemberController {
     public ResponseEntity reissueAccessToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeaderValue) {
         String refreshToken = authHeaderValue.replace("Bearer ", "");
 
-        String accessToken = jwtTokenService.reissueAccessToken(refreshToken);
+        ReissueDto reissueDto = jwtTokenService.reissueAccessToken(refreshToken);
 
-        return ResponseEntity.ok(accessToken);
+        return ResponseEntity.ok(reissueDto);
     }
 
     @GetMapping

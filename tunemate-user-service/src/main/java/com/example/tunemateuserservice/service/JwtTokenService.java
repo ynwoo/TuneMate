@@ -1,5 +1,7 @@
 package com.example.tunemateuserservice.service;
 
+import com.example.tunemateuserservice.dto.ReissueDto;
+
 public interface JwtTokenService {
-    String reissueAccessToken(String refreshToken);
+    ReissueDto reissueAccessToken(String refreshToken);
 }
