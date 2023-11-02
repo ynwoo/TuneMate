@@ -207,8 +207,7 @@ def root(UserId : str | None = Header(default=None)):
         cursor.execute(sql,user)
         playlistId = cursor.fetchone
         userOb = request(user)
-        print(userOb.text)
         print(userOb)
-        responseList.append(ReturnDto(userId=userOb.get("userId"),img=userOb.get("imageUrl"),name=userOb.get("name"),playlistId=playlistId))
+        #responseList.append(ReturnDto(userId=userOb.get("userId"),img=userOb.get("imageUrl"),name=userOb.get("name"),playlistId=playlistId))
     
     return responseList
