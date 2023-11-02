@@ -3,8 +3,9 @@ import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import { RootStackNavigationProp } from './types';
 import { inAppBrower } from '@/utils/inAppBrowser';
-import { LOGIN_URL } from '@env';
+import { API_BASE_URL, LOGIN_URL } from '@env';
 import { storage } from '@/utils/storage';
+import axios from 'axios';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -15,20 +16,26 @@ const LoginScreen = () => {
 
   const onMoveMain = async () => {
     const accessToken =
-      'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTg5MDIzODYsImlzcyI6InR1bmVtYXRlIn0.yZWLMjhGW7SCTcEwSR_25tNFn-FmTT2Ue4FH7NQv0JwHWhMuLNkxdlq3NThg4ECO';
+      'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTg5MDQyNTUsImlzcyI6InR1bmVtYXRlIn0.x0pgalyGquzmU1U-YURkVS-gP1iy_P8K-_kYpKIefU2SpMV_aqLQSLEIgoUyhGxt';
     const userId = 'cb899bc8-33a9-43a6-938c-76b0ec286c77';
     await storage.setAccessToken(accessToken);
     await storage.setUserId(userId);
+    console.log(await storage.getAccessToken());
+    console.log(await storage.getUserId());
+
+    axios.defaults.baseURL = API_BASE_URL;
+    axios.defaults.headers.common['Authorization'] = accessToken;
+    axios.defaults.headers.common['Content-Type'] = 'application/json';
     navigation.navigate('BottomTab');
   };
 
-  const handleOpenURL = ({ url }: any) => {
-    const path = url.split('//')[1];
-    console.log('url', url);
-    console.log('path', path);
-  };
+  // const handleOpenURL = ({ url }: any) => {
+  //   const path = url.split('//')[1];
+  //   console.log('url', url);
+  //   console.log('path', path);
+  // };
 
-  Linking.addEventListener('url', handleOpenURL);
+  // Linking.addEventListener('url', handleOpenURL);
 
   return (
     <View style={styles.block}>

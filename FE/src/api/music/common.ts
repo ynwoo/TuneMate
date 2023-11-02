@@ -1,6 +1,6 @@
 import { NewCommonPlayList, PlayList } from '@/types/playList';
-import { authApi } from '..';
 import { AddTrack, ChangeTrack, DeleteTrack } from '@/types/spotify';
+import axios from 'axios';
 
 const COMMON_PLAYLISTS_URL = 'music/common/playlists';
 
@@ -8,14 +8,14 @@ const COMMON_PLAYLISTS_URL = 'music/common/playlists';
 const getCommonPlayList = async (
   playlistId: PlayList['id'],
 ): Promise<PlayList> => {
-  const response = await authApi.get<PlayList>(
+  const response = await axios.get<PlayList>(
     `${COMMON_PLAYLISTS_URL}/${playlistId}`,
   );
   return response.data;
 };
 // 공동 플레이리스트 생성
 const createCommonPlayList = async (newCommonPlayList: NewCommonPlayList) => {
-  await authApi.post<void>(COMMON_PLAYLISTS_URL, newCommonPlayList);
+  await axios.post<void>(COMMON_PLAYLISTS_URL, newCommonPlayList);
 };
 // 공동 플레이리스트 트랙 추가
 const createCommonPlayListTrack = async ({
@@ -23,7 +23,7 @@ const createCommonPlayListTrack = async ({
   uris,
   position,
 }: AddTrack) => {
-  await authApi.post<void>(`${COMMON_PLAYLISTS_URL}/${playlistId}/tracks`, {
+  await axios.post<void>(`${COMMON_PLAYLISTS_URL}/${playlistId}/tracks`, {
     uris,
     position,
   });
@@ -34,7 +34,7 @@ const deleteCommonPlayListTrack = async ({
   uri,
   positions,
 }: DeleteTrack) => {
-  await authApi.delete<void>(`${COMMON_PLAYLISTS_URL}/${playlistId}/tracks`, {
+  await axios.delete<void>(`${COMMON_PLAYLISTS_URL}/${playlistId}/tracks`, {
     tracks: [{ uri, positions }],
   });
 };
@@ -43,7 +43,7 @@ const updateCommonPlayListTrack = async ({
   playlistId,
   changeTrackIndex,
 }: ChangeTrack) => {
-  await authApi.put<void>(
+  await axios.put<void>(
     `${COMMON_PLAYLISTS_URL}/${playlistId}/tracks`,
     changeTrackIndex,
   );

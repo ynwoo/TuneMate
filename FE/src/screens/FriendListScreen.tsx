@@ -1,9 +1,11 @@
 import { StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FriendList from '@/components/friend/FriendList';
 import SearchBar from '@/components/search/SearchBar';
 import useSocialFriendsQuery from '@/hooks/queries/social/useSocialFriendsQuery';
 import { Friend } from '@/types/social';
+import { getSocialFriends } from '@/api/social';
+import useUserInfoQuery from '@/hooks/queries/user/useUserInfoQuery';
 
 const initData = [
   { freindId: '0', name: 'ss1' },
@@ -17,7 +19,7 @@ const initData = [
 const FriendListScreen = (): JSX.Element => {
   const [text, setText] = useState<string>('');
   const { data: friends } = useSocialFriendsQuery();
-  console.log(friends);
+  console.log('friends', friends);
 
   const onSearch = () => {
     console.log('search!!!!');

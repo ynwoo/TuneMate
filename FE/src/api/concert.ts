@@ -1,5 +1,5 @@
 import { Concert, ConcertSearchOption } from '@/types/concert';
-import { authApi } from '.';
+import axios from 'axios';
 
 // 공연 정보 목록 조회
 export const getConcerts = async (
@@ -16,7 +16,7 @@ export const getConcerts = async (
     default:
       throw new Error('잘못된 search option');
   }
-  const response = await authApi.get<Concert[]>(
+  const response = await axios.get<Concert[]>(
     `concert/concerts?${searchOption}`,
   );
   return response.data;
