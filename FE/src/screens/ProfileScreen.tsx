@@ -16,9 +16,11 @@ import SearchBar from '@/components/search/SearchBar';
 
 type ProfileScreenProps = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
-const ProfileScreen = ({}: ProfileScreenProps): JSX.Element => {
+const ProfileScreen = ({ route }: ProfileScreenProps): JSX.Element => {
   const [username, setUsername] = useState<string>('이름');
   const [refreshing, setRefreshing] = React.useState(false);
+  const { userId } = route.params ?? '';
+  console.log(userId);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);

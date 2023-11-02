@@ -5,16 +5,17 @@ import SearchOption from '@/components/search/SearchOption';
 import useRecommendationFriendsQuery from '@/hooks/queries/recommendation/useRecommendationFriendsQuery';
 
 const RecommendScreen = (): JSX.Element => {
-  const { data: recommendList } = useRecommendationFriendsQuery();
+  // const { data: recommendList } = useRecommendationFriendsQuery();
   return (
     <View style={styles.recommendScreen}>
       <SearchOption style={styles.searchOption} />
-      {recommendList && (
+      <RecommendList recommendList={[]} style={styles.recommendList} />
+      {/* {recommendList && (
         <RecommendList
           recommendList={recommendList}
           style={styles.recommendList}
         />
-      )}
+      )} */}
     </View>
   );
 };

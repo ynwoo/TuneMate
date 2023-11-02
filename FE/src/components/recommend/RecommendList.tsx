@@ -24,7 +24,7 @@ const RecommendList = ({ style, recommendList }: RecommendListProps) => {
   return (
     <FlatList
       style={[style, styles.recommendList]}
-      data={recommendList ?? data}
+      data={data}
       renderItem={({ item }) => (
         <RecommendItem
           key={item.userId}

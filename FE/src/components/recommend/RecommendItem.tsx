@@ -16,7 +16,10 @@ const RecommendItem = ({ item, style }: RecommendItemProps) => {
 
   // 프로필 페이지 이동
   const onMoveProfile = useCallback(() => {
-    navigation.push('BottomTab', { screen: 'Profile' });
+    navigation.push('BottomTab', {
+      screen: 'Profile',
+      params: { userId: item.userId },
+    });
   }, [navigation]);
 
   return (
