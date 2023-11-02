@@ -38,12 +38,15 @@ const PlaylistItem = ({ data, index, listData, setListData }: PlayProps) => {
 
   const removeFromList = () => {
     const removingData = [...listData];
+    console.log(index)
     removingData.splice(index, 1);
     for (let i = 0; i < removingData.length; i++) {
+      console.log(removingData[i].key);
       removingData[i]["key"] = i + 1;
+      console.log(removingData[i].key);
     }
+    console.log(removingData);
     setListData(removingData);
-    console.log(listData);
   };
 
   const rightSwipe = (

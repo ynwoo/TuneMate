@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PlaylistItem from './PlaylistItem';
@@ -39,15 +39,15 @@ const Playlist = ({ data, setData }: PlayListProps) => {
             disabled={isActive}
           >
             <PlaylistItem
-              data={item}
-              index={item.key - 1}
-              listData={data}
-              setListData={setData}
+            data={item}
+            index={item.key - 1}
+            listData={data}
+            setListData={setData}
             />
           </TouchableOpacity>
         </ScaleDecorator>
       );
-    },
+    }
   );
 
   const DraggableList = gestureHandlerRootHOC(() => (

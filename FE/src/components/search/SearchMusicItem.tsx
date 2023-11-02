@@ -48,11 +48,13 @@ const SearchMusicItem = ({
     ];
     const newData = [...listData, ...addingData];
     for (let i = 0; i < newData.length; i++) {
+      console.log(newData[i].key);
       newData[i].key = i + 1;
+      console.log(newData[i].key);
     }
+    console.log(newData);
     setListData(newData);
     setModalVisible(false);
-    console.log(listData);
   };
 
   return (
