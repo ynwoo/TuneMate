@@ -16,7 +16,7 @@ public class IndividualPlaylistController {
 
     private final IndividualPlaylistService individualPlaylistService;
     //개인 플레이리스트 생성
-    @PostMapping("playlist")
+    @PostMapping("playlists")
     public void createPlaylist(@RequestHeader("UserId") String userId, @RequestBody PlaylistCreateDto playlistCreateDto) throws ParseException {
         individualPlaylistService.createPlaylist(userId,playlistCreateDto);
     }
