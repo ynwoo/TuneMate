@@ -1,9 +1,9 @@
 import { TokenResponse, UserInfo } from '@/types/user';
-import { api, authApi } from '.';
+import axios from 'axios';
 
 // 로그인
 export const login = async (code: string): Promise<TokenResponse> => {
-  const response = await api.get<TokenResponse>(
+  const response = await axios.get<TokenResponse>(
     `user-service/login/oauth2/code/spotify?code=${code}`,
   );
   return response.data;
@@ -13,6 +13,6 @@ export const login = async (code: string): Promise<TokenResponse> => {
 export const getUserInfo = async (
   userId: UserInfo['userId'],
 ): Promise<UserInfo> => {
-  const response = await authApi.get<UserInfo>(`user-service/users/${userId}`);
+  const response = await axios.get<UserInfo>(`user-service/users/${userId}`);
   return response.data;
 };

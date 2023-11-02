@@ -1,9 +1,10 @@
 interface UserInfo {
   userId: string;
   spotifyUserId: string;
+  spotifyAccessToken: string;
   name: string;
   email: string;
-  imageUrl: string;
+  // imageUrl: string;
 }
 
 interface TokenResponse {
