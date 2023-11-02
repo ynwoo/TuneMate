@@ -57,7 +57,7 @@ class ResponseDto(BaseModel):
     spotifyAccessToken : str
 
 # 노래 추천
-@app.get("/api/v1/recommendation/songs", response_model = List[SongDto])
+@app.get("/recommendation/songs", response_model = List[SongDto])
 def song(UserId : str | None = Header(default=None)):
 
     
@@ -148,7 +148,7 @@ def song(UserId : str | None = Header(default=None)):
     return responseData
 
 # 사람 추천
-@app.get("/api/v1/recommendation/friends", response_model=List)
+@app.get("/recommendation/friends", response_model=List)
 def root(UserId : str | None = Header(default=None)):
     conn = pymysql.connect(user=os.environ["DATABASE_USERNAME"],
                            password=os.environ["DATABASE_PASSWORD"], host=os.environ["DATABASE_URL"],
