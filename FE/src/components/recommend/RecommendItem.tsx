@@ -3,12 +3,12 @@ import { View, Text, StyleSheet } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/core';
 import ProfileImage from '../image/ProfileImage';
-import { Friend } from '@/types/friend';
 import Props from '@/types';
 import { RootStackNavigationProp } from '@/screens/types';
+import { RecommendationFriend } from '@/types/social';
 
 interface RecommendItemProps extends Props {
-  item: Friend;
+  item: RecommendationFriend;
 }
 
 const RecommendItem = ({ item, style }: RecommendItemProps) => {

@@ -16,7 +16,7 @@ const LoginScreen = () => {
 
   const onMoveMain = async () => {
     const accessToken =
-      'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTg5MDk3MzEsImlzcyI6InR1bmVtYXRlIn0.2-sbsiSPVgynrQ0SID5iO4h1IyoP8MOALcqPXqzsds2tQGcs2cCFij10_ULK_d5k';
+      'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTg5MTM3NDIsImlzcyI6InR1bmVtYXRlIn0.y6qFqGhKnCOxXINPgukR4qfuB0p0S8HBPRTUI7t4RebPova3p09KrtDaW_2Y9wBA';
     const userId = 'cb899bc8-33a9-43a6-938c-76b0ec286c77';
     await storage.setAccessToken(accessToken);
     await storage.setUserId(userId);
