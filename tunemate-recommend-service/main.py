@@ -189,7 +189,7 @@ async def root(UserId : str | None = Header(default=None)):
 
     async def request(userId):
             # 다른 서비스로 HTTP GET 요청 보내기
-        response = await eureka_client.do_service_async("user-service" + "/users/"+userId)
+        response = await eureka_client.do_service_async("user-service" , "/users/"+userId)
         return response
     responseList = []
     for user in recommend:
