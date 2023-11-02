@@ -24,6 +24,9 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: ${EUREKA_SERVICE_URL}
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance.id:${random.value}}
+    hostname : k9A603.p.ssafy.io
 
 logging:
   level:
