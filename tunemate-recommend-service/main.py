@@ -198,7 +198,7 @@ def root(UserId : str | None = Header(default=None)):
     def request(userId):
             # 다른 서비스로 HTTP GET 요청 보내기
         response = eureka_client.do_service_async("user-service" , "/users/"+userId, return_type=ResponseDto)
-        print(response.body_text)
+        print(response)
         return response
     responseList = []
     for user in recommend:
