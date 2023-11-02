@@ -19,6 +19,7 @@ import java.util.Date;
 public class JwtTokenUtil {
     private final static String refreshTokenSubject = "Refresh Token";
     private final static String userIdClaimKey = "userId";
+    private final static String issuer = "Tunemate";
     private final Environment env;
     private final SecretKey secretKey;
     private final Long accessTokenValidMillis;
@@ -58,7 +59,17 @@ public class JwtTokenUtil {
         return Jwts.builder()
                 .subject(userId)
                 .expiration(new Date(System.currentTimeMillis() + accessTokenValidMillis))
-                .issuer("tunemate")
+                .issuer(issuer)
+                .signWith(secretKey)
+                .compact();
+    }
+
+    public String issueRefreshToken(String userId) {
+        return Jwts.builder()
+                .subject("Refresh Token")
+                .claim("userId", userId)
+                .expiration(new Date(System.currentTimeMillis() + refreshTokenValidMillis))
+                .issuer(issuer)
                 .signWith(secretKey)
                 .compact();
     }

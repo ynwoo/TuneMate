@@ -2,10 +2,9 @@ package com.example.tunemateuserservice.config;
 
 import com.example.tunemateuserservice.dto.MemberDto;
 import com.example.tunemateuserservice.service.MemberService;
+import com.example.tunemateuserservice.util.JwtTokenUtil;
 import com.example.tunemateuserservice.vo.ResponseAuth;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,14 +20,16 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
     private final MemberService memberService;
+    private final JwtTokenUtil jwtTokenUtil;
     private final Environment env;
     private final OAuth2AuthorizedClientRepository authorizedClientRepository;
 
@@ -41,29 +42,15 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
 
         String userId = optionalMemberDto.isEmpty() ? UUID.randomUUID().toString() : optionalMemberDto.get().getUserId();
 
-        byte[] encodedKey = Base64.getEncoder().encode(env.getProperty("jwt.private-key").getBytes());
-        SecretKey secretKey = Keys.hmacShaKeyFor(encodedKey);
-
         OAuth2AuthenticationToken auth = (OAuth2AuthenticationToken) authentication;
         OAuth2AuthorizedClient authorizedClient = authorizedClientRepository.loadAuthorizedClient(auth.getAuthorizedClientRegistrationId(), authentication, request);
 
         OAuth2AccessToken oAuth2AccessToken = authorizedClient.getAccessToken();
         OAuth2RefreshToken oAuth2RefreshToken = authorizedClient.getRefreshToken();
 
-        String accessToken = Jwts.builder()
-                .subject(userId)
-                .expiration(new Date(System.currentTimeMillis() + Long.parseLong(env.getProperty("jwt.access-token.expiration-epoch"))))
-                .issuer("tunemate")
-                .signWith(secretKey)
-                .compact();
+        String accessToken = jwtTokenUtil.issueAccessToken(userId);
 
-        String refreshToken = Jwts.builder()
-                .subject("Refresh Token")
-                .claim("userId", userId)
-                .expiration(new Date(System.currentTimeMillis() + Long.parseLong(env.getProperty("jwt.refresh-token.expiration-epoch"))))
-                .issuer("tunemate")
-                .signWith(secretKey)
-                .compact();
+        String refreshToken = jwtTokenUtil.issueRefreshToken(userId);
 
         List<String> images = (List<String>) oAuth2User.getAttribute("images");
         String imageUrl = images.isEmpty() ? null : images.get(0);
