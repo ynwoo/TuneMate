@@ -212,7 +212,6 @@ def root(UserId : str | None = Header(default=None)):
         print(user)
         print(type(user))
         userOb = request(user)
-        image = null
 
         responseList.append(ReturnDto(userId=userOb.get("userId"),img=userOb.get("imageUrl"),name=userOb.get("name"),playlist=playlistId))
     
