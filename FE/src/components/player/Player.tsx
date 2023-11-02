@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -24,40 +24,52 @@ export default function Player() {
     ['#e58e82', '#6f569f'],
   ];
 
-  const totalNum = 3;
+  const imageSources = [
+    require('@/image/iu_0.jpg'),
+    require('@/image/iu_1.jpg'),
+    require('@/image/iu_2.jpg'),
+    require('@/image/iu_3.jpg'),
+    require('@/image/iu_4.jpg'),
+    require('@/image/iu_5.jpg'),
+  ];
+
+  const totalNum = 6;
   const [pageNum, setPageNum] = useState(0);
-  const spinValue = new Animated.Value(0);
+  const spinValue = useRef(new Animated.Value(0)).current;
 
   const handlePrev = () => {
     const newPageNum = (pageNum - 1 + totalNum) % totalNum;
     setPageNum(newPageNum);
+    startSpin(); // 스핀 애니메이션 다시 시작
   };
 
   const handleNext = () => {
     const newPageNum = (pageNum + 1) % totalNum;
     setPageNum(newPageNum);
+    startSpin(); // 스핀 애니메이션 다시 시작
   };
-
-  const imageSources = [
-    require('@/image/iu_0.jpg'),
-    require('@/image/iu_1.jpg'),
-    require('@/image/iu_2.jpg'),
-  ];
 
   const spin = spinValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg'],
   });
 
+  const startSpin = () => {
+    spinValue.setValue(0); // 스핀 애니메이션 초기화
+    Animated.timing(spinValue, {
+      toValue: 1,
+      duration: 10000, // 10 seconds for one full rotation
+      easing: Easing.linear,
+      useNativeDriver: true,
+    }).start(({ finished }) => {
+      if (finished) {
+        startSpin(); // 애니메이션이 끝나면 다시 시작
+      }
+    });
+  };
+
   useEffect(() => {
-    Animated.loop(
-      Animated.timing(spinValue, {
-        toValue: 1,
-        duration: 10000, // 10 seconds for one full rotation
-        easing: Easing.linear,
-        useNativeDriver: true,
-      }),
-    ).start();
+    startSpin();
   }, []);
 
   const renderPointButtons = () => {
@@ -77,9 +89,9 @@ export default function Player() {
   };
 
   return (
-    <View style={styles.contentWrap}>
-      <View style={[styles.album, styles.albumActive, styles.coverImg]}>
-        <View style={styles.diskContainer}>
+    <View>
+      <View style={styles.contentWrap}>
+        <View style={[styles.albumActive, styles.coverImg]}>
           <Animated.View
             style={[styles.disk, { transform: [{ rotate: spin }] }]}
           >
@@ -91,17 +103,17 @@ export default function Player() {
             </ImageBackground>
           </Animated.View>
         </View>
-      </View>
 
-      <View style={styles.buttonWrap}>
-        <TouchableOpacity style={styles.button} onPress={handlePrev}>
-          <Text>PREV</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleNext}>
-          <Text>NEXT</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonWrap}>
+          <TouchableOpacity style={styles.button} onPress={handlePrev}>
+            <Text>PREV</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleNext}>
+            <Text>NEXT</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.pointWrap}>{renderPointButtons()}</View>
       </View>
-      <View style={styles.pointWrap}>{renderPointButtons()}</View>
     </View>
   );
 }
@@ -111,22 +123,22 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  album: {
-    position: 'absolute',
-    transform: [{ translateX: -150 }, { translateY: 0 }],
-    width: 200,
-    height: 200,
-    opacity: 0,
-    transition: 'all .4s ease-in-out',
-  },
+  // album: {
+  //   position: 'absolute',
+  //   transform: [{ translateX: -150 }, { translateY: 0 }],
+  //   width: 800,
+  //   height: 800,
+  //   opacity: 0,
+  //   transition: 'all .4s ease-in-out',
+  // },
   albumActive: {
     opacity: 1,
-    left: '50%',
+    left: 60,
   },
   coverImg: {
     position: 'absolute',
-    width: 200,
-    height: 200,
+    width: 800,
+    height: 800,
     borderRadius: 20,
     shadowColor: 'rgba(0, 0, 0, 0.3)',
     shadowOffset: { width: 2, height: 14 },
@@ -165,9 +177,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: [{ translateX: -55 }, { translateY: -50 }],
-    width: 110,
-    height: 110,
+    transform: [{ translateX: -43 }, { translateY: -43 }],
+    width: 90,
+    height: 90,
     backgroundColor: '#000000',
     borderRadius: 80,
     borderWidth: 3,
@@ -189,7 +201,7 @@ const styles = StyleSheet.create({
   },
   buttonWrap: {
     position: 'absolute',
-    bottom: '5%',
+    top: '48%',
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -207,7 +219,8 @@ const styles = StyleSheet.create({
   pointWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    transform: [{ translateX: 180 }, { translateY: 30 }],
+    justifyContent: 'center',
+    transform: [{ translateX: 0 }, { translateY: 100 }],
   },
   point: {
     width: 10,

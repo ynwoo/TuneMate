@@ -1,10 +1,19 @@
-import { Button, Linking, StyleSheet, Text, View } from 'react-native';
+import {
+  Button,
+  Linking,
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Image,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import React from 'react';
+import React, { useState, useE } from 'react';
 import { RootStackNavigationProp } from './types';
 import { inAppBrower } from '@/utils/inAppBrowser';
 import { API_BASE_URL, LOGIN_URL } from '@env';
 import { storage } from '@/utils/storage';
+import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 
 const LoginScreen = () => {
@@ -38,17 +47,24 @@ const LoginScreen = () => {
   // Linking.addEventListener('url', handleOpenURL);
 
   return (
-    <View style={styles.block}>
-      <Text testID="title" style={styles.title}>
-        Tunemate
-      </Text>
-      <View style={styles.Button}>
-        <Button title="Login" onPress={onLogin} />
+    <LinearGradient colors={['#e4ddff', '#ffffff']} style={{ flex: 1 }}>
+      <View style={styles.block}>
+        <Image
+          source={require('../assets/images/TuneMate.png')} // 이미지 파일의 경로로 변경
+          style={styles.image}
+        />
+        <View style={styles.Button}>
+          <Pressable onPress={onLogin}>
+            <Text style={{ fontSize: 18 }}>LOGIN</Text>
+          </Pressable>
+        </View>
+        <View style={styles.Button}>
+          <Pressable onPress={onMoveMain}>
+            <Text style={{ fontSize: 18 }}>비회원</Text>
+          </Pressable>
+        </View>
       </View>
-      <View style={styles.Button}>
-        <Button title="비회원" onPress={onMoveMain} />
-      </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -59,11 +75,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 30,
+    fontSize: 70,
+    fontFamily: 'LO',
   },
   Button: {
     width: 200,
-    height: 50,
+    height: 40,
+    backgroundColor: 'white',
+    color: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 10,
+    borderRadius: 10,
+  },
+  image: {
+    width: 300, // 이미지의 너비
+    height: 50, // 이미지의 높이
+    marginBottom: 100,
   },
 });
 
