@@ -2,7 +2,7 @@ import { Friend, FriendRequest } from '@/types/social';
 import { authApi } from '.';
 import { UserInfo } from '@/types/user';
 
-const SOCIAL_FRIENDS_URL = 'social/friends';
+const SOCIAL_FRIENDS_URL = 'social-service/friends';
 
 // 친구 목록 조회
 export const getSocialFriends = async (): Promise<Friend[]> => {
