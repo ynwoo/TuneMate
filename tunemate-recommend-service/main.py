@@ -191,6 +191,6 @@ def root(UserId : str | None = Header(default=None)):
         return response
     responseList = []
     for user in recommend:
-        responseList.append(user)
+        responseList.append(request(user))
     
     return responseList
