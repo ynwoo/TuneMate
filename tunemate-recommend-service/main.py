@@ -158,7 +158,7 @@ def root(UserId : str | None = Header(default=None)):
     # 대표 플레이리스트가 없거나 대표 플레이리스트에 담긴 곡이 10곡 미만일 경우 에러
     sql = "SELECT count(*) FROM MUSIC.track where playlist_id = (select id from playlist where user_id = %s);"
     cursor.execute(sql,UserId)
-    counting = cursor.fetchone()
+    counting = cursor.fetchone()[0]
     if(counting < 10):
         raise HTTPException(status_code=400, detail="Not Enough Music Data")
 
