@@ -11,6 +11,6 @@ public interface IndividualPlaylistTrackRepository extends JpaRepository<Track, 
 
     void deleteByTrackSpotifyId(String uri);
 
-    void deleteAllByUserId(String userId);
+    void deleteAllByPlaylistId(Long playlistId);
 
 }
