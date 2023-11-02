@@ -186,8 +186,6 @@ def root(UserId : str | None = Header(default=None)):
             recommend.append(similarUser)
             count += 1
 
-    user_id_responses = [ReturnDto(userId=id) for id in recommend]
-    print(user_id_responses)
 
     async def request(userId):
             # 다른 서비스로 HTTP GET 요청 보내기
