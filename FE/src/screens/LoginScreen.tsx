@@ -18,19 +18,17 @@ import axios from 'axios';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
+
   const onLogin = async () => {
     await inAppBrower.openLink(LOGIN_URL);
-    console.log('끝?');
   };
 
   const onMoveMain = async () => {
     const accessToken =
-      'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTg5MDQyNTUsImlzcyI6InR1bmVtYXRlIn0.x0pgalyGquzmU1U-YURkVS-gP1iy_P8K-_kYpKIefU2SpMV_aqLQSLEIgoUyhGxt';
+      'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTg5MDk3MzEsImlzcyI6InR1bmVtYXRlIn0.2-sbsiSPVgynrQ0SID5iO4h1IyoP8MOALcqPXqzsds2tQGcs2cCFij10_ULK_d5k';
     const userId = 'cb899bc8-33a9-43a6-938c-76b0ec286c77';
     await storage.setAccessToken(accessToken);
     await storage.setUserId(userId);
-    console.log(await storage.getAccessToken());
-    console.log(await storage.getUserId());
 
     axios.defaults.baseURL = API_BASE_URL;
     axios.defaults.headers.common['Authorization'] = accessToken;

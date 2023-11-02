@@ -1,11 +1,3 @@
-interface SpotifyToken {
-  access_token: string;
-  token_type: 'Bearer';
-  expires_in: number;
-  refresh_token: string;
-  scope: string;
-}
-
 interface UserProfile {
   country: string;
   display_name: string;
@@ -79,8 +71,14 @@ interface ChangeTrack {
   changeTrackIndex: ChangeTrackIndex;
 }
 
+interface Song {
+  title: string;
+  img: string;
+  artist: string;
+  uri: string;
+}
+
 export type {
-  SpotifyToken,
   UserProfile,
   Item,
   Owner,
@@ -92,4 +90,5 @@ export type {
   AddTrack,
   DeleteTrack,
   ChangeTrack,
+  Song,
 };
