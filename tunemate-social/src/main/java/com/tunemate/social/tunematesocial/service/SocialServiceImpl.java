@@ -210,4 +210,16 @@ public class SocialServiceImpl implements SocialService {
 
 		return result;
 	}
+
+	@Override
+	public String getHostId(String playlistId) {
+		Optional<Friend> byCommonPlaylistId = friendRepository.findByCommonPlaylistId(playlistId);
+		if (byCommonPlaylistId.isEmpty()) {
+			log.debug("해당 플레이리스트 아이디를 가진 친구 관계가 없습니다");
+			return null;
+		}
+
+		// host Id 제공
+		return byCommonPlaylistId.get().getHost();
+	}
 }

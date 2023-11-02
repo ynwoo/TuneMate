@@ -23,4 +23,6 @@ public interface SocialService {
 	void addPlaylistIdAndHost(PlaylistRequestDto playlistRequestDto);
 
 	List<MyFriendResponseDto> getMyFriends(String myId);
+
+	String getHostId(String playlistId);
 }

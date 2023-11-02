@@ -120,4 +120,9 @@ public class SocialController {
 
 		return ResponseEntity.ok(myFriends);
 	}
+
+	@GetMapping("/host/{playlistId}")
+	public String getHostId(@PathVariable("playlistId") String playlistId) {
+		return socialService.getHostId(playlistId);
+	}
 }
