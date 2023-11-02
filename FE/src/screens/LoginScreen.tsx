@@ -1,14 +1,6 @@
-import {
-  Button,
-  Linking,
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-  Image,
-} from 'react-native';
+import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import React, { useState, useE } from 'react';
+import React from 'react';
 import { RootStackNavigationProp } from './types';
 import { inAppBrower } from '@/utils/inAppBrowser';
 import { API_BASE_URL, LOGIN_URL } from '@env';
@@ -18,19 +10,17 @@ import axios from 'axios';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
+
   const onLogin = async () => {
     await inAppBrower.openLink(LOGIN_URL);
-    console.log('끝?');
   };
 
   const onMoveMain = async () => {
     const accessToken =
-      'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhYjFiNGI3Zi1hYmIyLTRiZjEtOTIwZi1iNDM3MjMzYjRmNDciLCJleHAiOjE2OTg5MjA3MzUsImlzcyI6InR1bmVtYXRlIn0.-VunTqC4EzOBj0l9a5LTezoWT6_xFiHEKGnjtF7kzsXAErkx3Xm-N2pfaJ-lSnAZ';
-    const userId = 'ab1b4b7f-abb2-4bf1-920f-b437233b4f47';
+      'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTg5MTM3NDIsImlzcyI6InR1bmVtYXRlIn0.y6qFqGhKnCOxXINPgukR4qfuB0p0S8HBPRTUI7t4RebPova3p09KrtDaW_2Y9wBA';
+    const userId = 'cb899bc8-33a9-43a6-938c-76b0ec286c77';
     await storage.setAccessToken(accessToken);
     await storage.setUserId(userId);
-    console.log(await storage.getAccessToken());
-    console.log(await storage.getUserId());
 
     axios.defaults.baseURL = API_BASE_URL;
     axios.defaults.headers.common['Authorization'] = accessToken;
