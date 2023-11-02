@@ -35,7 +35,7 @@ spring:
         - id: social-service
           uri: lb://social-service
           predicates:
-            -Path=/api/v1/social-service/**
+            - Path=/api/v1/social-service/**
           filters:
             - AuthorizationHeaderFilter
             - RewritePath=/api/v1/social-service/(?<segment>.*), /$\{segment}
