@@ -11,6 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@expo-google-fonts/leckerli-one": "^0.2.3",
     "@react-native-async-storage/async-storage": "^1.19.3",
     "@react-native-community/cli-doctor": "^11.3.9",
     "@react-navigation/bottom-tabs": "^6.5.9",
@@ -21,10 +22,11 @@
     "axios": "^1.5.1",
     "react": "18.2.0",
     "react-native": "0.72.6",
-    "react-native-fs": "^2.20.0",
     "react-native-dotenv": "^3.4.9",
+    "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.13.3",
     "react-native-inappbrowser-reborn": "^3.7.0",
+    "react-native-linear-gradient": "^2.8.3",
     "react-native-pkce-challenge": "^5.2.0",
     "react-native-popup-menu": "^0.16.1",
     "react-native-reanimated": "^3.5.4",

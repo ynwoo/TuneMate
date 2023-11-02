@@ -6,22 +6,24 @@ import {
 } from 'react-native-gesture-handler';
 import Player from '@/components/player/Player';
 import Playlist from '@/components/playlist/Playlist';
-import Sound from '@/components/player/sound';
+import LinearGradient from 'react-native-linear-gradient';
 
 const PlayerScreen = () => {
   return (
-    <GestureHandlerRootView>
-      <ScrollView>
-        <Sound />
-        <View>
-          <Player />
+    <LinearGradient colors={['#e4ddff', '#ffffff']} style={{ flex: 1 }}>
+      <GestureHandlerRootView>
+        <ScrollView>
+          {/* <Sound /> */}
+          <View>
+            <Player />
 
-          <View style={styles.playList}>
-            <Playlist />
+            <View style={styles.playList}>
+              <Playlist />
+            </View>
           </View>
-        </View>
-      </ScrollView>
-    </GestureHandlerRootView>
+        </ScrollView>
+      </GestureHandlerRootView>
+    </LinearGradient>
   );
 };
 
