@@ -39,6 +39,7 @@ class ReturnDto(BaseModel):
     name : str
     playlist : str
     img : str | None
+    similarity : float
 
 
 class SongDto(BaseModel):
@@ -186,12 +187,14 @@ def root(UserId : str | None = Header(default=None)):
     similar_User = similarity_df[UserId].sort_values(ascending=False)[1:]
     print(similar_User)
     recommend = []
+    similaritys = []
     count = 0
     for similarUser in similar_User.index:
         # similaruser : 유사한 사용자의 기본키
         # UserService에  해당 사용자에 대한 정보를 요청하여 받아 리턴해준다.
         if similar_User[similarUser] != 0:
             if(count == 5): break
+            similaritys.append(similar_User[similarUser])
             recommend.append(similarUser)
             count += 1
 
@@ -204,15 +207,12 @@ def root(UserId : str | None = Header(default=None)):
 
         return response.json()
     responseList = []
-    for user in recommend:
-        sql = "select playlist_spotify_id from playlist where user_id = %s"
-        cursor.execute(sql,user)
-        playlistId = cursor.fetchall()[0][0]
-        print(playlistId)
-        print(user)
-        print(type(user))
-        userOb = request(user)
 
-        responseList.append(ReturnDto(userId=userOb.get("userId"),img=userOb.get("imageUrl"),name=userOb.get("name"),playlist=playlistId))
+    for i in range(len(recommend)):
+        sql = "select playlist_spotify_id from playlist where user_id = %s"
+        cursor.execute(sql,recommend[i])
+        playlistId = cursor.fetchall()[0][0]
+        userOb = request(recommend[i])
+        responseList.append(ReturnDto(userId=userOb.get("userId"),img=userOb.get("imageUrl"),name=userOb.get("name"),playlist=playlistId,similarity=similaritys[i]))
     
     return responseList
