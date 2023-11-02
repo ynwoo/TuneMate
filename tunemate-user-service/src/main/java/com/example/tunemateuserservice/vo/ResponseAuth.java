@@ -9,5 +9,6 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseAuth {
     private String accessToken;
+    private String refreshToken;
     private String userId;
 }
