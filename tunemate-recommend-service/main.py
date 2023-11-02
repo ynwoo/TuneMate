@@ -38,7 +38,7 @@ class ReturnDto(BaseModel):
     userId : str
     name : str
     playlist : str
-    img : str
+    img : str | None
 
 
 class SongDto(BaseModel):
@@ -212,10 +212,8 @@ def root(UserId : str | None = Header(default=None)):
         print(user)
         print(type(user))
         userOb = request(user)
-        print(userOb)
-        print(userOb.get("userId"))
-        print(userOb.get("imageUrl"))
-        print(userOb.get("name"))
+        image = null
+
         responseList.append(ReturnDto(userId=userOb.get("userId"),img=userOb.get("imageUrl"),name=userOb.get("name"),playlist=playlistId))
     
     return responseList
