@@ -207,7 +207,7 @@ def root(UserId : str | None = Header(default=None)):
     for user in recommend:
         sql = "select playlist_spotify_id from playlist where user_id = %s"
         cursor.execute(sql,user)
-        playlistId = cursor.fetchall[0]
+        playlistId = cursor.fetchall()
         print(playlistId)
         print(user)
         print(type(user))
