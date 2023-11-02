@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from sklearn.metrics.pairwise import cosine_similarity
 import py_eureka_client.eureka_client as eureka_client
 import os
+import requests
 
 
 load_dotenv()
@@ -195,11 +196,13 @@ def root(UserId : str | None = Header(default=None)):
             count += 1
 
 
-    async def request(userId):
+    def request(userId):
             # 다른 서비스로 HTTP GET 요청 보내기
-        response = await eureka_client.do_service_async("user-service" , "/users/"+userId, return_type=ResponseDto, headers={"UserId" : userId})
+        response = requests.get("http://k9A603.p.ssafy.io:8083/users/"+userId, headers={"UserId" : userId})
+        #response = await eureka_client.do_service_async("user-service" , "/users/"+userId, return_type=ResponseDto, headers={"UserId" : userId})
+        
 
-        print("반환값!! ",response)
+        print(response)
         return response
     responseList = []
     for user in recommend:
@@ -208,6 +211,6 @@ def root(UserId : str | None = Header(default=None)):
         playlistId = cursor.fetchone
         userOb = request(user)
         print(userOb)
-        #responseList.append(ReturnDto(userId=userOb.get("userId"),img=userOb.get("imageUrl"),name=userOb.get("name"),playlistId=playlistId))
+        responseList.append(ReturnDto(userId=userOb.get("userId"),img=userOb.get("imageUrl"),name=userOb.get("name"),playlistId=playlistId))
     
     return responseList
