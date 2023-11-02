@@ -54,7 +54,10 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         JSONObject jsonObject2 = (JSONObject) parser.parse(str2);
 
         individualPlaylistRepository.findByUserId(userId).ifPresentOrElse(
-            playlist -> playlist.setPlaylistSpotifyId((String)jsonObject2.get("id")),
+            playlist -> {
+                playlist.setPlaylistSpotifyId((String)jsonObject2.get("id"));
+                individualPlaylistTrackRepository.deleteAllByUserId(userId);
+            },
             () -> {
                 Playlist playlist = new Playlist();
                 playlist.setPlaylistSpotifyId((String)jsonObject2.get("id"));
@@ -144,7 +147,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("플레이 리스트가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
         playlist.setPlaylistSpotifyId(playlistId);
 
-        individualPlaylistTrackRepository.deleteAll();
+        individualPlaylistTrackRepository.deleteAllByUserId(userId);
 
         PlaylistResponseDto playlistResponseDto = webClientBuilder.build().get().uri(uriBuilder -> uriBuilder.path("/playlists/"+playlistId).queryParam("fields","description,id,name,images,tracks(items(track(album(images),artists(name),id,name,uri)))").build()).header("Authorization", "Bearer " + token)
                 .retrieve().bodyToMono(PlaylistResponseDto.class).block();
