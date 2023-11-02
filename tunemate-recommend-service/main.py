@@ -37,7 +37,7 @@ async def startup_event():
 class ReturnDto(BaseModel):
     userId : str
     name : str
-    playlistId : str
+    playlist : str
     img : str
 
 
@@ -208,10 +208,14 @@ def root(UserId : str | None = Header(default=None)):
         sql = "select playlist_spotify_id from playlist where user_id = %s"
         cursor.execute(sql,user)
         playlistId = cursor.fetchone
+        print(playlistId)
         print(user)
         print(type(user))
         userOb = request(user)
         print(userOb)
-        responseList.append(ReturnDto(userId=userOb.get("userId"),img=userOb.get("imageUrl"),name=userOb.get("name"),playlistId=playlistId))
+        print(userOb.get("userId"))
+        print(userOb.get("imageUrl"))
+        print(userOb.get("name"))
+        responseList.append(ReturnDto(userId=userOb.get("userId"),img=userOb.get("imageUrl"),name=userOb.get("name"),playlist=playlistId))
     
     return responseList
