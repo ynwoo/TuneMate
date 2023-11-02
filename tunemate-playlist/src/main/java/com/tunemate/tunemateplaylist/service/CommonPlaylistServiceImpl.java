@@ -7,6 +7,7 @@ import com.tunemate.tunemateplaylist.dto.*;
 import com.tunemate.tunemateplaylist.exception.NotFoundException;
 import com.tunemate.tunemateplaylist.repository.TracksRepository;
 import com.tunemate.tunemateplaylist.vo.MemberInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -21,9 +22,10 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 @Service
+@Slf4j
 public class CommonPlaylistServiceImpl implements CommonPlaylistService{
 
     private final WebClient.Builder webClientBuilder;
@@ -88,41 +90,44 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
                 .body(BodyInserters.fromValue(trackCreateDto)).retrieve().bodyToMono(String.class).block();
         String spotifyUri = trackCreateDto.getUris().get(0);
         if(tracksRepository.findBySpotifyUri(spotifyUri).size() != 0){
-            throw new NotFoundException("이미 데이터베이스에 있는 노래", HttpStatus.FORBIDDEN);
+            log.info("이미 데이터베이스에 있는 노래");
         }
-        String str = webClientBuilder.build().get().uri("/tracks/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
-                .retrieve().bodyToMono(String.class).block();
-        JSONParser parser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) parser.parse(str);
-        JSONObject jsonObject2 = (JSONObject) jsonObject.get("album");
-        List<JSONObject> artists = (List<JSONObject>) jsonObject.get("artists");
-        List<JSONObject> jsonObject3 = (List<JSONObject>) jsonObject2.get("images");
-        String artist= "";
-        for(JSONObject artistOne : artists){
-            artist += artistOne.get("name") +",";
+        else{
+            String str = webClientBuilder.build().get().uri("/tracks/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
+                    .retrieve().bodyToMono(String.class).block();
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) parser.parse(str);
+            JSONObject jsonObject2 = (JSONObject) jsonObject.get("album");
+            List<JSONObject> artists = (List<JSONObject>) jsonObject.get("artists");
+            List<JSONObject> jsonObject3 = (List<JSONObject>) jsonObject2.get("images");
+            String artist= "";
+            for(JSONObject artistOne : artists){
+                artist += artistOne.get("name") +",";
+            }
+            artist = artist.substring(0, artist.length() - 1);
+            String image = (String) jsonObject3.get(0).get("url");
+            String title = (String) jsonObject.get("name");
+
+            String str2 = webClientBuilder.build().get().uri("/audio-features/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
+                    .retrieve().bodyToMono(String.class).block();
+            JSONObject jsonObject5 = (JSONObject) parser.parse(str2);
+
+            double acousticness = (Double) jsonObject5.get("acousticness");
+            double danceability = (Double) jsonObject5.get("danceability");
+            double tempo = (Double) jsonObject5.get("tempo");
+            double energy = (Double) jsonObject5.get("energy");
+            Tracks tracks = new Tracks();
+            tracks.setAcousticness(acousticness);
+            tracks.setArtist(artist);
+            tracks.setDanceability(danceability);
+            tracks.setEnergy(energy);
+            tracks.setTempo(tempo);
+            tracks.setTitle(title);
+            tracks.setImage(image);
+            tracks.setSpotifyUri(trackCreateDto.getUris().get(0));
+            tracksRepository.save(tracks);
         }
-        artist = artist.substring(0, artist.length() - 1);
-        String image = (String) jsonObject3.get(0).get("url");
-        String title = (String) jsonObject.get("name");
 
-        String str2 = webClientBuilder.build().get().uri("/audio-features/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
-                .retrieve().bodyToMono(String.class).block();
-        JSONObject jsonObject5 = (JSONObject) parser.parse(str2);
-
-        double acousticness = (Double) jsonObject5.get("acousticness");
-        double danceability = (Double) jsonObject5.get("danceability");
-        double tempo = (Double) jsonObject5.get("tempo");
-        double energy = (Double) jsonObject5.get("energy");
-        Tracks tracks = new Tracks();
-        tracks.setAcousticness(acousticness);
-        tracks.setArtist(artist);
-        tracks.setDanceability(danceability);
-        tracks.setEnergy(energy);
-        tracks.setTempo(tempo);
-        tracks.setTitle(title);
-        tracks.setImage(image);
-        tracks.setSpotifyUri(trackCreateDto.getUris().get(0));
-        tracksRepository.save(tracks);
 
 
     }

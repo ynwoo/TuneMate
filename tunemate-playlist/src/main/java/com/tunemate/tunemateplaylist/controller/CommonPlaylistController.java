@@ -31,7 +31,7 @@ public class CommonPlaylistController {
     private final Map<String, List<SseEmitter>> SseEmitters = new ConcurrentHashMap<>();
 
     // 공동 플레이리스트 조회
-    @GetMapping("/playlist/{playlistId}")
+    @GetMapping("/playlists/{playlistId}")
     public ResponseEntity<SseEmitter> getCommonPlaylist(@PathVariable("playlistId") String playlistId, @RequestHeader("UserId") String userId) throws IOException {
         System.out.println("연결 : "+ userId);
         SseEmitter sseEmitter = new SseEmitter(1800000l);
