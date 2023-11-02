@@ -28,7 +28,11 @@ const HomeScreen = () => {
       });
       console.log('log', response.data.tracks.items[0]);
       const trackIds = response.data.tracks.items.map((item) => item.track.id);
+      const trackName = response.data.tracks.items.map(
+        (item) => item.track.name,
+      );
       console.log(trackIds);
+      console.log(trackName);
 
       const tracks = response.data.items;
       setRecentlyLoaded(tracks);
