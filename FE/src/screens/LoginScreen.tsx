@@ -1,18 +1,34 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, Linking, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import { RootStackNavigationProp } from './types';
-import { redirectToAuthCodeFlow } from '@/utils/generateCode';
 import { inAppBrower } from '@/utils/inAppBrowser';
+import { LOGIN_URL } from '@env';
+import { storage } from '@/utils/storage';
 
 const LoginScreen = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
-
   const onLogin = async () => {
-    const uri = await redirectToAuthCodeFlow();
-    // navigation.navigate('Auth', { uri });
-    await inAppBrower.openLink(uri);
+    await inAppBrower.openLink(LOGIN_URL);
+    console.log('끝?');
   };
+
+  const onMoveMain = async () => {
+    const accessToken =
+      'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTg5MDIzODYsImlzcyI6InR1bmVtYXRlIn0.yZWLMjhGW7SCTcEwSR_25tNFn-FmTT2Ue4FH7NQv0JwHWhMuLNkxdlq3NThg4ECO';
+    const userId = 'cb899bc8-33a9-43a6-938c-76b0ec286c77';
+    await storage.setAccessToken(accessToken);
+    await storage.setUserId(userId);
+    navigation.navigate('BottomTab');
+  };
+
+  const handleOpenURL = ({ url }: any) => {
+    const path = url.split('//')[1];
+    console.log('url', url);
+    console.log('path', path);
+  };
+
+  Linking.addEventListener('url', handleOpenURL);
 
   return (
     <View style={styles.block}>
@@ -23,12 +39,7 @@ const LoginScreen = () => {
         <Button title="Login" onPress={onLogin} />
       </View>
       <View style={styles.Button}>
-        <Button
-          title="비회원"
-          onPress={() => {
-            navigation.navigate('BottomTab');
-          }}
-        />
+        <Button title="비회원" onPress={onMoveMain} />
       </View>
     </View>
   );
