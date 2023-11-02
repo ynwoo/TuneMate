@@ -206,7 +206,7 @@ async def root(UserId : str | None = Header(default=None)):
         sql = "select playlist_spotify_id from playlist where user_id = %s"
         cursor.execute(sql,user)
         playlistId = cursor.fetchone
-        userOb = request(user)
+        userOb = await request(user)
         print(userOb)
         responseList.append(ReturnDto(userId=userOb.get("userId"),img=userOb.get("imageUrl"),name=userOb.get("name"),playlistId=playlistId))
     
