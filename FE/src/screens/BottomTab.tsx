@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useState } from 'react';
-import { StyleSheet, View, Pressable } from 'react-native';
+import { StyleSheet, View, Pressable, Text } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/core';
 import { RootStackNavigationProp, MyBottomTabParamList } from './types';
@@ -19,23 +19,25 @@ const BottomTab = () => {
   return (
     <View style={[styles.bottomTab, modalVisible && styles.blackout]}>
       <MyModal
-        message="알림 모달"
+        title="알림 모달"
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-      />
+      >
+        <Text>이것은 알림</Text>
+      </MyModal>
       <View style={styles.topTab}>
         <MaterialCommunityIcons
           color={styles.topTabItem.color}
           size={styles.topTabItem.size}
           name="arrow-left"
-          onPress={() => navigation.pop(1)}
+          onPress={() => navigation.goBack()}
         />
         <Pressable onPress={() => setModalVisible(true)}>
           <MaterialCommunityIcons
             color={styles.topTabItem.color}
             size={styles.topTabItem.size}
             name="bell"
-            // onPress={() => setModalVisible(true)}
+            onPress={() => setModalVisible(true)}
           />
         </Pressable>
       </View>

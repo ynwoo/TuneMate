@@ -5,8 +5,8 @@ import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import ProfileImage from '../image/ProfileImage';
 import { RootStackNavigationProp } from '@/screens/types';
-import { Friend } from '@/types/friend';
 import Props from '@/types';
+import { Friend } from '@/types/social';
 
 interface FriendItemProps extends Props {
   item: Friend;
@@ -22,7 +22,7 @@ const FriendItem = ({ style, item }: FriendItemProps) => {
 
   // 공동 프로필 이동
   const onMoveSharedProfile = () => {
-    navigation.push('BottomTab', { screen: 'Profile' });
+    navigation.push('BottomTab', { screen: 'SharedProfile' });
   };
 
   // 친구 프로필 이동

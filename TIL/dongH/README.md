@@ -54,3 +54,19 @@
 - BottomTab style 변경 방식
 - 기본적인 React Native view, text, image, stylesheet 구현
 - react-native-vector-icon 사용법
+
+---
+
+### 2023. 10. 26 TIL
+
+- 스포티파이 API 사용 방법
+- 스포티파이 API용 axios intercepter 생성
+
+---
+
+### 2023. 10. 27 TIL
+
+- 스포티파이 OAuth를 활용한 Android에서의 로그인 방식 고안
+- 이후 로그인 Response로 받는 데이터 관리와 서버와의 통신 관련 회의
+
+---
