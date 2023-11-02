@@ -67,8 +67,9 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
 
     // 개인 플레이리스트 노래 추가
     public void createTrack(String userId, TrackCreateDto trackCreateDto, String playlistId) throws ParseException {
-        MemberInfo memberInfo = requestMemberInfo(userId);
-        String token = getToken(memberInfo);
+        //MemberInfo memberInfo = requestMemberInfo(userId);
+        //String token = getToken(memberInfo);
+        String token = "BQCL88ANF--Htv9rWAtu9Lipt4-vYC2E74EZjdTv4vHiYn18vV6iUCRAzDNNf92hYw6M7fxmXrvP75Xb5JnDsy7TL7Cv3dRksLi2xTX29GyGd9oJzbcLyLc-KPPqP9_lROW5v6q97N0UEt5i-ZU3EZ7huUYlaVCQPhBg_XPKDpNZp7snlhzs97nzorAtrhZeHffK7Y2LlYKIVw-6VKsZRfyReRwZZ834uL7Blv4VOYITvkR9MU7Yq8fhgZfVOV9YhLv_MUzIyN-9_kTBPQBMDOAEMVV7GlZ6iN1vkoZT6do";
         Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("플레이 리스트가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
         individualPlaylistTrackRepository.findByTrackSpotifyIdAndPlaylist(trackCreateDto.getUris().get(0),playlist).ifPresentOrElse(track -> {throw new NotFoundException("중복된 노래가 존재합니다.",HttpStatus.FORBIDDEN);},() -> { // 중복 노래가 있는 경우 처리(나중에 에러 핸들링 해야함)
             String str = webClientBuilder.build().post().uri("/playlists/{playlist_id}/tracks",playlist.getPlaylistSpotifyId()).header("Authorization", "Bearer " + token)
@@ -89,8 +90,14 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(str);
         JSONObject jsonObject2 = (JSONObject) jsonObject.get("album");
-        List<JSONObject> jsonObject3 = (List<JSONObject>) jsonObject2.get("artists");
-        String artist= (String) jsonObject3.get(0).get("name");
+        List<JSONObject> artists = (List<JSONObject>) jsonObject.get("artists");
+        List<JSONObject> jsonObject3 = (List<JSONObject>) jsonObject2.get("images");
+        String artist= "";
+        for(JSONObject artistOne : artists){
+            artist += artistOne.get("name") +",";
+        }
+        artist = artist.substring(0, artist.length() - 1);
+        String image = (String) jsonObject3.get(0).get("url");
         String title = (String) jsonObject.get("name");
 
         String str2 = webClientBuilder.build().get().uri("/audio-features/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
@@ -108,6 +115,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         tracks.setEnergy(energy);
         tracks.setTempo(tempo);
         tracks.setTitle(title);
+        tracks.setImage(image);
         tracks.setSpotifyUri(trackCreateDto.getUris().get(0));
         tracksRepository.save(tracks);
     }

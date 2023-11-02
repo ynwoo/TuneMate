@@ -83,8 +83,14 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(str);
         JSONObject jsonObject2 = (JSONObject) jsonObject.get("album");
-        List<JSONObject> jsonObject3 = (List<JSONObject>) jsonObject2.get("artists");
-        String artist= (String) jsonObject3.get(0).get("name");
+        List<JSONObject> artists = (List<JSONObject>) jsonObject.get("artists");
+        List<JSONObject> jsonObject3 = (List<JSONObject>) jsonObject2.get("images");
+        String artist= "";
+        for(JSONObject artistOne : artists){
+            artist += artistOne.get("name") +",";
+        }
+        artist = artist.substring(0, artist.length() - 1);
+        String image = (String) jsonObject3.get(0).get("url");
         String title = (String) jsonObject.get("name");
 
         String str2 = webClientBuilder.build().get().uri("/audio-features/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
@@ -102,6 +108,7 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
         tracks.setEnergy(energy);
         tracks.setTempo(tempo);
         tracks.setTitle(title);
+        tracks.setImage(image);
         tracks.setSpotifyUri(trackCreateDto.getUris().get(0));
         tracksRepository.save(tracks);
 

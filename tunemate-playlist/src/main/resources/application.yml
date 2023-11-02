@@ -5,7 +5,7 @@ spring:
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DATABASE_URL}
+    url: ${DATABASE_MUSIC_URL}
     hikari:
       maximum-pool-size: 20
 
@@ -29,9 +29,10 @@ eureka:
       defaultZone: ${EUREKA_SERVICE_URL}
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance.id:${random.value}}
+    hostname: ${HOSTNAME}
 
 server:
-  port: 0
+  port: 8081
 
 logging:
   level:

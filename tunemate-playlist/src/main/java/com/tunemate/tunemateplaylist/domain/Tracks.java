@@ -27,4 +27,6 @@ public class Tracks {
     private double energy;
 
     private double tempo;
+
+    private String image;
 }
