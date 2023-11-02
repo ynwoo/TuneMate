@@ -3,6 +3,7 @@ package com.example.tunemateuserservice.util;
 import com.example.tunemateuserservice.exception.InvalidRefreshTokenException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
@@ -15,14 +16,20 @@ import java.util.Date;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
 public class JwtTokenUtil {
     private final static String refreshTokenSubject = "Refresh Token";
     private final static String userIdClaimKey = "userId";
     private final Environment env;
-    private final SecretKey secretKey = Keys.hmacShaKeyFor(Base64.getEncoder().encode(env.getProperty("jwt.private-key").getBytes()));;
-    private final Long accessTokenValidMillis = Long.parseLong(env.getProperty("jwt.access-token.expiration-epoch"));
-    private final Long refreshTokenValidMillis = Long.parseLong(env.getProperty("jwt.refresh-token.expiration-epoch"));
+    private final SecretKey secretKey;
+    private final Long accessTokenValidMillis;
+    private final Long refreshTokenValidMillis;
+
+    public JwtTokenUtil(Environment env) {
+        this.env = env;
+        this.secretKey = Keys.hmacShaKeyFor(Base64.getEncoder().encode(env.getProperty("jwt.private-key").getBytes()));
+        this.accessTokenValidMillis = Long.parseLong(env.getProperty("jwt.access-token.expiration-epoch"));
+        this.refreshTokenValidMillis = Long.parseLong(env.getProperty("jwt.refresh-token.expiration-epoch"));
+    }
 
     /**
      * 리프레시 토큰이 유효한지 아래사항을 검증하여 예외를 던진다.
@@ -42,7 +49,7 @@ public class JwtTokenUtil {
             throw new InvalidRefreshTokenException("유효하지 않은 리프레시 토큰입니다.", HttpStatus.BAD_REQUEST);
         }
 
-        if (subject == null || subject.isEmpty() || subject.equals(refreshTokenSubject)) {
+        if (subject == null || !subject.equals(refreshTokenSubject)) {
             throw new InvalidRefreshTokenException("유효하지 않은 리프레시 토큰입니다.", HttpStatus.BAD_REQUEST);
         }
     }
@@ -50,7 +57,7 @@ public class JwtTokenUtil {
     public String issueAccessToken(String userId) {
         return Jwts.builder()
                 .subject(userId)
-                .expiration(new Date(System.currentTimeMillis() + Long.parseLong(env.getProperty("jwt.access-token.expiration-epoch"))))
+                .expiration(new Date(System.currentTimeMillis() + accessTokenValidMillis))
                 .issuer("tunemate")
                 .signWith(secretKey)
                 .compact();
@@ -73,6 +80,4 @@ public class JwtTokenUtil {
                 .getPayload()
                 .get(userIdClaimKey, String.class);
     }
-
-
 }
