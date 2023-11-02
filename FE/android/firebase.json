@@ -3,6 +3,9 @@
     "public": "public",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "appAssociation": "AUTO",
-    "rewrites": [{ "source": "/callback/**", "dynamicLinks": true }]
+    "rewrites": [
+      { "source": "/callback/**", "dynamicLinks": true },
+      { "source": "/link/**", "dynamicLinks": true }
+    ]
   }
 }
