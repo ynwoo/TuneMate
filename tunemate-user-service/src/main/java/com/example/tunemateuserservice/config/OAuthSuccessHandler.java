@@ -50,6 +50,21 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         OAuth2AccessToken oAuth2AccessToken = authorizedClient.getAccessToken();
         OAuth2RefreshToken oAuth2RefreshToken = authorizedClient.getRefreshToken();
 
+        String accessToken = Jwts.builder()
+                .subject(userId)
+                .expiration(new Date(System.currentTimeMillis() + Long.parseLong(env.getProperty("jwt.access-token.expiration-epoch"))))
+                .issuer("tunemate")
+                .signWith(secretKey)
+                .compact();
+
+        String refreshToken = Jwts.builder()
+                .subject("Refresh Token")
+                .claim("userId", userId)
+                .expiration(new Date(System.currentTimeMillis() + Long.parseLong(env.getProperty("jwt.refresh-token.expiration-epoch"))))
+                .issuer("tunemate")
+                .signWith(secretKey)
+                .compact();
+
         List<String> images = (List<String>) oAuth2User.getAttribute("images");
         String imageUrl = images.isEmpty() ? null : images.get(0);
 
@@ -61,21 +76,15 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
                 .spotifyUserId(spotifyUserId)
                 .spotifyAccessToken(oAuth2AccessToken.getTokenValue())
                 .spotifyRefreshToken(oAuth2RefreshToken.getTokenValue())
-                .refreshToken("임시 값")
+                .refreshToken(refreshToken)
                 .build();
 
         memberService.saveMember(memberDto);
 
-        String accessToken = Jwts.builder()
-                .subject(userId)
-                .expiration(new Date(System.currentTimeMillis() + Long.parseLong(env.getProperty("jwt.access-token.expiration-epoch"))))
-                .issuer("tunemate")
-                .signWith(secretKey)
-                .compact();
-
         ObjectMapper objectMapper = new ObjectMapper();
         ResponseAuth responseAuth = ResponseAuth.builder()
                 .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .userId(userId)
                 .build();
         String result = objectMapper.writeValueAsString(responseAuth);

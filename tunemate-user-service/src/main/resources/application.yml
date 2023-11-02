@@ -53,6 +53,8 @@ jwt:
   private-key: ${jwt-private-key}
   access-token:
     expiration-epoch: 7200000 # 2 hours
+  refresh-token:
+    expiration-epoch: 1209600000 # 2 weeks
 
 
 logging:
