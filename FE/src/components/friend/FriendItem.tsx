@@ -27,7 +27,10 @@ const FriendItem = ({ style, item }: FriendItemProps) => {
 
   // 친구 프로필 이동
   const onMoveProfile = () => {
-    navigation.push('BottomTab', { screen: 'Profile' });
+    navigation.push('BottomTab', {
+      screen: 'Profile',
+      params: { userId: item.freindId },
+    });
   };
 
   return (

@@ -2,7 +2,7 @@ import { NewPlayList, PlayList, TotalPlayList } from '@/types/playList';
 import { AddTrack, ChangeTrack, DeleteTrack } from '@/types/spotify';
 import axios from 'axios';
 
-const INDIVIDUAL_PLAYLISTS_URL = 'music/individual/playlists';
+const INDIVIDUAL_PLAYLISTS_URL = 'music-service/individual/playlists';
 
 // 개인 플레이리스트 생성
 const createIndividualPlayList = async (newPlayList: NewPlayList) => {
@@ -10,11 +10,9 @@ const createIndividualPlayList = async (newPlayList: NewPlayList) => {
 };
 
 // 개인 대표 플레이리스트 조회
-const getIndividualPlayListRepresentative = async (
-  playlistId: PlayList['id'],
-): Promise<PlayList> => {
+const getIndividualPlayListRepresentative = async (): Promise<PlayList> => {
   const response = await axios.get<PlayList>(
-    `${INDIVIDUAL_PLAYLISTS_URL}-representative/${playlistId}`,
+    `${INDIVIDUAL_PLAYLISTS_URL}-representative`,
   );
   return response.data;
 };
