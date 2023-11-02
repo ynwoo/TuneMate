@@ -2,7 +2,7 @@ import { Alert, Linking, Platform } from 'react-native';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
 
 const inAppBrower = {
-  async sleep(timeout: string) {
+  async sleep(timeout: number) {
     return new Promise((resolve) => {
       setTimeout(resolve, timeout);
     });
