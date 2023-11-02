@@ -1,14 +1,6 @@
-import {
-  Button,
-  Linking,
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-  Image,
-} from 'react-native';
+import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import React, { useState, useE } from 'react';
+import React from 'react';
 import { RootStackNavigationProp } from './types';
 import { inAppBrower } from '@/utils/inAppBrowser';
 import { API_BASE_URL, LOGIN_URL } from '@env';

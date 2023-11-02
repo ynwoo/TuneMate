@@ -30,7 +30,7 @@ const FriendListScreen = (): JSX.Element => {
         onChangeText={setText}
         onPress={onSearch}
       />
-      <FriendList friends={friends ?? initData} style={styles.friendList} />
+      <FriendList friends={initData} style={styles.friendList} />
     </View>
   );
 };
