@@ -202,8 +202,7 @@ def root(UserId : str | None = Header(default=None)):
         #response = await eureka_client.do_service_async("user-service" , "/users/"+userId, return_type=ResponseDto, headers={"UserId" : userId})
         
 
-        print(response)
-        return response
+        return response.json()
     responseList = []
     for user in recommend:
         sql = "select playlist_spotify_id from playlist where user_id = %s"
