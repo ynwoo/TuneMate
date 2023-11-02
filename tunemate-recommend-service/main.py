@@ -35,6 +35,10 @@ async def startup_event():
 
 class ReturnDto(BaseModel):
     userId : int
+    name : str
+    playlistId : str
+    img : str
+
 
 class SongDto(BaseModel):
     title  : str
@@ -134,7 +138,7 @@ def song(UserId : str | None = Header(default=None)):
     return responseData
 
 # 사람 추천
-@app.get("/api/v1/recommendation/friends", response_model=List)
+@app.get("/api/v1/recommendation/friends", response_model=List[ReturnDto])
 def root(UserId : str | None = Header(default=None)):
     conn = pymysql.connect(user=os.environ["DATABASE_USERNAME"],
                            password=os.environ["DATABASE_PASSWORD"], host=os.environ["DATABASE_URL"],
@@ -191,6 +195,10 @@ def root(UserId : str | None = Header(default=None)):
         return response
     responseList = []
     for user in recommend:
-        responseList.append(request(user))
+        sql = "select playlist_spotify_id from playlist where user_id = %s"
+        cursor.execute(sql,user)
+        playlistId = cursor.fetchone
+        userOb = request(user)
+        responseList.append(ReturnDto(userId=userOb.get("userId"),img=userOb.get("imageUrl"),name=userOb.get("name"),playlistId=playlistId))
     
-    return responseList
+    return user_id_responses
