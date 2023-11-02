@@ -195,9 +195,9 @@ def root(UserId : str | None = Header(default=None)):
             count += 1
 
 
-    def request(userId):
+    async def request(userId):
             # 다른 서비스로 HTTP GET 요청 보내기
-        response = eureka_client.do_service("user-service" , "/users/"+userId, return_type=ResponseDto)
+        response = await eureka_client.do_service_async("user-service" , "/users/"+userId, return_type=ResponseDto, headers={"UserId" : userId})
         print(response)
         return response
     responseList = []
