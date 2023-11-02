@@ -38,7 +38,7 @@ pipeline {
                     sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker pull $DOCKERHUB_REPOSITORY_BACK:$VERSION'"
                     sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'echo y | docker image prune'"
                     sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker images'"
-                    sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker run -d --name $CONTAINER_NAME_BACK --env-file $ENV_DIR -p $PORT_BACK:8080 $DOCKERHUB_REPOSITORY_BACK:$VERSION'"
+                    sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker run -d --name $CONTAINER_NAME_BACK --env-file $ENV_DIR -p $PORT_BACK:8082 $DOCKERHUB_REPOSITORY_BACK:$VERSION'"
                     sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker ps'"
                 }
             }
