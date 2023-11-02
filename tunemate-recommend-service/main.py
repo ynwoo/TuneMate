@@ -3,7 +3,7 @@ from typing import List
 
 import math
 from dotenv import load_dotenv
-from fastapi import FastAPI, Header
+from fastapi import FastAPI, Header, HTTPException
 import pandas as pd
 import pymysql
 from pydantic import BaseModel
@@ -154,6 +154,16 @@ def root(UserId : str | None = Header(default=None)):
                            password=os.environ["DATABASE_PASSWORD"], host=os.environ["DATABASE_URL"],
                            db="MUSIC", port=int(os.environ["DATABASE_PORT"]), charset="utf8")
     cursor = conn.cursor()
+    
+    # 대표 플레이리스트가 없거나 대표 플레이리스트에 담긴 곡이 10곡 미만일 경우 에러
+    sql = "SELECT count(*) FROM MUSIC.track where playlist_id = (select id from playlist where user_id = %s);"
+    cursor.execute(sql,UserId)
+    counting = cursor.fetchone()
+    if(counting < 10):
+        raise HTTPException(status_code=400, detail="Not Enough Music Data")
+
+
+
     sql = "SELECT distinct(track_spotify_id) FROM track"
     cursor.execute(sql)
     li = cursor.fetchall()
