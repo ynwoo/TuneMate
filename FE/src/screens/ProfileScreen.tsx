@@ -1,29 +1,88 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RootStackParamList } from './types';
 import Playlist from '@/components/playlist/Playlist';
 import MyModal from '@/components/modal/MyModal';
 import PlaylistItem from '@/components/playlist/PlaylistItem';
+import SearchBar from '@/components/search/SearchBar';
 
 type ProfileScreenProps = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
 const ProfileScreen = ({}: ProfileScreenProps): JSX.Element => {
   const [username, setUsername] = useState<string>('이름');
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
+  const [data, setData] = useState<any[]>([
+    {
+      title: 'Fine',
+      artist: '태연',
+      cover:
+        'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+      key: 1,
+    },
+    {
+      title: 'Fine',
+      artist: '태연',
+      cover:
+        'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+      key: 2,
+    },
+    {
+      title: 'Fine',
+      artist: '태연',
+      cover:
+        'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+      key: 3,
+    },
+    {
+      title: 'Fine',
+      artist: '태연',
+      cover:
+        'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+      key: 4,
+    },
+    {
+      title: 'Fine',
+      artist: '태연',
+      cover:
+        'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+      key: 5,
+    },
+    {
+      title: 'Fine6',
+      artist: '태연',
+      cover:
+        'https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg',
+      key: 6,
+    },
+  ]);
 
   const handleUsername = (value: string) => {
     setUsername(value);
   };
 
-  const onModal = () => {
-    setModalVisible(true);
-  };
-
   return (
     <>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View style={styles.block}>
           <View style={styles.profileImgBlock}>
             <Image
@@ -34,18 +93,9 @@ const ProfileScreen = ({}: ProfileScreenProps): JSX.Element => {
           <View style={styles.nameBlock}>
             <Text style={styles.nameText}>{username}</Text>
           </View>
-          <Playlist onModal={onModal} />
+          <Playlist data={data} setData={setData} />
         </View>
       </ScrollView>
-      <MyModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        title="곡 추가"
-      >
-        <PlaylistItem key={1} playing />
-        <PlaylistItem key={2} playing={false} />
-        <PlaylistItem key={3} playing={false} />
-      </MyModal>
     </>
   );
 };
