@@ -1,11 +1,12 @@
 package com.tunemate.tunemateplaylist.service;
 
-import com.tunemate.tunemateplaylist.domain.Playlist;
+import com.tunemate.tunemateplaylist.client.SocialServiceClient;
+import com.tunemate.tunemateplaylist.client.UserServiceClient;
 import com.tunemate.tunemateplaylist.domain.Tracks;
 import com.tunemate.tunemateplaylist.dto.*;
 import com.tunemate.tunemateplaylist.exception.NotFoundException;
 import com.tunemate.tunemateplaylist.repository.TracksRepository;
-import io.netty.handler.codec.http.HttpResponseStatus;
+import com.tunemate.tunemateplaylist.vo.MemberInfo;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -18,7 +19,6 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,20 +28,25 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
 
     private final WebClient.Builder webClientBuilder;
 
-    private final Map<Long, SseEmitter> SseEmitters = new ConcurrentHashMap<>();
-
     private final TracksRepository tracksRepository;
 
-    public CommonPlaylistServiceImpl(WebClient.Builder webClientBuilder, TracksRepository tracksRepository){
+    private final UserServiceClient userServiceClient;
+
+    private final SocialServiceClient socialServiceClient;
+
+    public CommonPlaylistServiceImpl(WebClient.Builder webClientBuilder, TracksRepository tracksRepository, UserServiceClient userServiceClient, SocialServiceClient socialServiceClient){
         this.webClientBuilder = webClientBuilder;
         this.tracksRepository = tracksRepository;
+        this.userServiceClient = userServiceClient;
+        this.socialServiceClient = socialServiceClient;
     }
 
 
     // 공동 플레이리스트 조회
-    public PlaylistResponseDto getIndividualPlaylist(String playlistId) {
+    public PlaylistResponseDto getIndividualPlaylist(String userId,String playlistId) {
         // AuthService 에 Token 요청
-        String token = getToken();
+        MemberInfo memberInfo = requestMemberInfo(userId);
+        String token = getToken(memberInfo);
 
         PlaylistResponseDto playlistResponseDto = webClientBuilder.build().get().uri(uriBuilder -> uriBuilder.path("/playlists/"+playlistId).queryParam("fields","description,id,name,images,tracks(items(track(album(images),artists(name),id,name,uri)))").build()).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
                 .retrieve().bodyToMono(PlaylistResponseDto.class).block();
@@ -50,27 +55,34 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
     }
 
     // 공동 플레이리스트 생성
-    public void createPlaylist(PlaylistCreateDto playlistCreateDto) throws ParseException {
+    public void createPlaylist(String userId,PlaylistCreateDto playlistCreateDto) throws ParseException {
         // AuthService 에 Token 요청
-        String token = getToken();
+        MemberInfo memberInfo = requestMemberInfo(userId);
+        String token = getToken(memberInfo);
         // UserService에 스포티파이 유저 아이디 요청
-        String spotifyUserId = getSpotifyUserId();
+        String spotifyUserId = memberInfo.getSpotifyUserId();
 
         String requestBody = "{\"name\": \""+playlistCreateDto.getName()+"\",\"description\":\""+playlistCreateDto.getDescription()+"\",\"public\":"+playlistCreateDto.isOpen()+"}";
 
         String str2 = webClientBuilder.build().post().uri("/users/{user_id}/playlists",spotifyUserId).header("Authorization", "Bearer " + token)
                 .bodyValue(requestBody).retrieve().bodyToMono(String.class).block();
 
-//        JSONParser parser = new JSONParser();
-//        JSONObject jsonObject2 = (JSONObject) parser.parse(str2);
-//        String playlistId = (String) jsonObject2.get("id");
+
+        // 윤우에게 공통 플레이리스트의 호스트가 누구인지 알려줘야한다.
+
+
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject2 = (JSONObject) parser.parse(str2);
+        String playlistId = (String) jsonObject2.get("id");
+        socialServiceClient.setPlaylist(Map.of("host", userId,"playlistId",playlistId,"relationId",playlistCreateDto.getRelationId()));
 
     }
 
     // 공동 플레이리스트에 트랙 추가
-    public void createTrack(String playlistId, TrackCreateDto trackCreateDto) throws ParseException {
-
-        String token = getToken();
+    public void createTrack(String userId,String playlistId, TrackCreateDto trackCreateDto) throws ParseException {
+        String hostId = getHostId(playlistId);
+        MemberInfo memberInfo = requestMemberInfo(hostId);
+        String token = getToken(memberInfo);
         String strr= webClientBuilder.build().post().uri("/playlists/{playlist_id}/tracks",playlistId).header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(trackCreateDto)).retrieve().bodyToMono(String.class).block();
@@ -128,27 +140,33 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
     }
 
     // 공동 플레이리스트에 트랙 삭제
-    public void deleteTrack(String playlistId, TrackDeleteRequestDto trackDeleteRequestDto){
-        String token = getToken();
+    public void deleteTrack(String userId,String playlistId, TrackDeleteRequestDto trackDeleteRequestDto){
+        String hostId = getHostId(playlistId);
+        MemberInfo memberInfo = requestMemberInfo(hostId);
+        String token = getToken(memberInfo);
         String str = webClientBuilder.build().method(HttpMethod.DELETE).uri("/playlists/{playlist_id}/tracks",playlistId).header("Authorization", "Bearer " + token)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(BodyInserters.fromValue(trackDeleteRequestDto)).retrieve().bodyToMono(String.class).block();
     }
 
     // 공동 플레이리스트 트랙 순서 변경
-    public void changeTrack(String playlistId, TrackChangeRequestDto trackChangeRequestDto){
-        String token = getToken();
+    public void changeTrack(String userId,String playlistId, TrackChangeRequestDto trackChangeRequestDto){
+        String hostId = getHostId(playlistId);
+        MemberInfo memberInfo = requestMemberInfo(hostId);
+        String token = getToken(memberInfo);
         webClientBuilder.build().method(HttpMethod.PUT).uri("/playlists/{playlist_id}/tracks",playlistId).header("Authorization", "Bearer " + token)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(BodyInserters.fromValue(trackChangeRequestDto)).retrieve().bodyToMono(String.class).block();
     }
 
 
-    // 스포티파이 유저 ID 요청
-    private String getSpotifyUserId() {
-        return "31nmxiqhjnusfymqkaki3usnsose";
+    private String getHostId(String playlistId){
+        return socialServiceClient.getHost(playlistId);
     }
 
-    // 토큰 요청
-    private String getToken() {
-        return "BQCG3K7JKvwj4PBEdbe-ITdQ2R6rtnShn_ARw-KbiQw-eLrpGM6oCmrQ6SVGPQc4j7F0MyuqKxjIQ-CzcNG3WsobknSCWvULgdNhn54qKj2ExTs-zzr8b9ZXohDs6Oa8fU90JcjGOgZF_1TUVLuZ9WRq-fdRZANVfwMAkCniPzccEt8_vPH7cacRIctLncXtTX_1rKgyS4_wrSpmRwxMeTm7GoaSEDsT24d6Nyl3c7QMw9V04xTBJiu-gf0sk1UYWBjljBGS6QK0PtCZAW35NvJrZwORf6OqhUwRa-mJjt4";
+    private MemberInfo requestMemberInfo(String userId) {
+        return userServiceClient.getMember(Map.of("UserId", userId), userId);
+    }
+
+    private String getToken(MemberInfo memberInfo) {
+        return memberInfo.getSpotifyAccessToken();
     }
 }

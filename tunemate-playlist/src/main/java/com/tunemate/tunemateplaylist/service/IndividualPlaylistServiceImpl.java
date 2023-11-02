@@ -67,9 +67,8 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
 
     // 개인 플레이리스트 노래 추가
     public void createTrack(String userId, TrackCreateDto trackCreateDto, String playlistId) throws ParseException {
-        //MemberInfo memberInfo = requestMemberInfo(userId);
-        //String token = getToken(memberInfo);
-        String token = "BQCL88ANF--Htv9rWAtu9Lipt4-vYC2E74EZjdTv4vHiYn18vV6iUCRAzDNNf92hYw6M7fxmXrvP75Xb5JnDsy7TL7Cv3dRksLi2xTX29GyGd9oJzbcLyLc-KPPqP9_lROW5v6q97N0UEt5i-ZU3EZ7huUYlaVCQPhBg_XPKDpNZp7snlhzs97nzorAtrhZeHffK7Y2LlYKIVw-6VKsZRfyReRwZZ834uL7Blv4VOYITvkR9MU7Yq8fhgZfVOV9YhLv_MUzIyN-9_kTBPQBMDOAEMVV7GlZ6iN1vkoZT6do";
+        MemberInfo memberInfo = requestMemberInfo(userId);
+        String token = getToken(memberInfo);
         Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("플레이 리스트가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
         individualPlaylistTrackRepository.findByTrackSpotifyIdAndPlaylist(trackCreateDto.getUris().get(0),playlist).ifPresentOrElse(track -> {throw new NotFoundException("중복된 노래가 존재합니다.",HttpStatus.FORBIDDEN);},() -> { // 중복 노래가 있는 경우 처리(나중에 에러 핸들링 해야함)
             String str = webClientBuilder.build().post().uri("/playlists/{playlist_id}/tracks",playlist.getPlaylistSpotifyId()).header("Authorization", "Bearer " + token)

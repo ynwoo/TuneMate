@@ -9,5 +9,9 @@ import java.util.Map;
 @FeignClient(name ="social-service")
 public interface SocialServiceClient {
     @PostMapping("/common-playlist")
-    MemberInfo getMember(@RequestBody Map<String, String> headers);
+    MemberInfo setPlaylist(@RequestBody Map<String, Object> headers);
+
+    @GetMapping("/host/{playlistId}") // 플레이리스트 ID를 제공해서 해당 플레이리스트의 호스트 ID 값을 받는 요청
+    String getHost(@PathVariable String playlistId);
+
 }
