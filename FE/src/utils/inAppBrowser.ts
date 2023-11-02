@@ -1,4 +1,4 @@
-import { Alert, Linking } from 'react-native';
+import { Alert, Linking, Platform } from 'react-native';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
 
 const inAppBrower = {
@@ -11,7 +11,8 @@ const inAppBrower = {
     try {
       const url = uri;
       if (await InAppBrowser.isAvailable()) {
-        const result = await InAppBrowser.open(url, {
+        const redirect_uri = 'https://tunematebe9fb.page.link/link';
+        const result = await InAppBrowser.openAuth(url, redirect_uri, {
           // iOS Properties
           dismissButtonStyle: 'cancel',
           preferredBarTintColor: '#453AA4',
@@ -44,7 +45,8 @@ const inAppBrower = {
           },
         });
         await this.sleep(800);
-        Alert.alert(JSON.stringify(result));
+        console.log(result);
+        // Alert.alert(JSON.stringify(result));
       } else {
         await Linking.openURL(url);
       }
@@ -57,4 +59,11 @@ const inAppBrower = {
   },
 };
 
-export { inAppBrower };
+const getDeepLink = (path = '') => {
+  const scheme = 'my-scheme';
+  const prefix =
+    Platform.OS == 'android' ? `${scheme}://my-host/` : `${scheme}://`;
+  return prefix + path;
+};
+
+export { inAppBrower, getDeepLink };
