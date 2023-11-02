@@ -147,7 +147,7 @@ def song(UserId : str | None = Header(default=None)):
 
 # 사람 추천
 @app.get("/api/v1/recommendation/friends", response_model=List[ReturnDto])
-async def root(UserId : str | None = Header(default=None)):
+def root(UserId : str | None = Header(default=None)):
     conn = pymysql.connect(user=os.environ["DATABASE_USERNAME"],
                            password=os.environ["DATABASE_PASSWORD"], host=os.environ["DATABASE_URL"],
                            db="MUSIC", port=int(os.environ["DATABASE_PORT"]), charset="utf8")
@@ -195,9 +195,9 @@ async def root(UserId : str | None = Header(default=None)):
             count += 1
 
 
-    def request(userId):
+    async def request(userId):
             # 다른 서비스로 HTTP GET 요청 보내기
-        response = eureka_client.do_service("user-service" , "/users/"+userId, return_type=ResponseDto, headers={"UserId" : userId})
+        response = await eureka_client.do_service_async("user-service" , "/users/"+userId, return_type=ResponseDto, headers={"UserId" : userId})
 
         print("반환값!! ",response)
         return response
@@ -206,7 +206,8 @@ async def root(UserId : str | None = Header(default=None)):
         sql = "select playlist_spotify_id from playlist where user_id = %s"
         cursor.execute(sql,user)
         playlistId = cursor.fetchone
-        userOb = await request(user)
+        userOb = request(user)
+        print(userOb.text)
         print(userOb)
         responseList.append(ReturnDto(userId=userOb.get("userId"),img=userOb.get("imageUrl"),name=userOb.get("name"),playlistId=playlistId))
     
