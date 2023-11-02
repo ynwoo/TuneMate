@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -24,20 +24,6 @@ export default function Player() {
     ['#e58e82', '#6f569f'],
   ];
 
-  const totalNum = 6;
-  const [pageNum, setPageNum] = useState(0);
-  const spinValue = new Animated.Value(0);
-
-  const handlePrev = () => {
-    const newPageNum = (pageNum - 1 + totalNum) % totalNum;
-    setPageNum(newPageNum);
-  };
-
-  const handleNext = () => {
-    const newPageNum = (pageNum + 1) % totalNum;
-    setPageNum(newPageNum);
-  };
-
   const imageSources = [
     require('@/image/iu_0.jpg'),
     require('@/image/iu_1.jpg'),
@@ -47,20 +33,43 @@ export default function Player() {
     require('@/image/iu_5.jpg'),
   ];
 
+  const totalNum = 6;
+  const [pageNum, setPageNum] = useState(0);
+  const spinValue = useRef(new Animated.Value(0)).current;
+
+  const handlePrev = () => {
+    const newPageNum = (pageNum - 1 + totalNum) % totalNum;
+    setPageNum(newPageNum);
+    startSpin(); // 스핀 애니메이션 다시 시작
+  };
+
+  const handleNext = () => {
+    const newPageNum = (pageNum + 1) % totalNum;
+    setPageNum(newPageNum);
+    startSpin(); // 스핀 애니메이션 다시 시작
+  };
+
   const spin = spinValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg'],
   });
 
+  const startSpin = () => {
+    spinValue.setValue(0); // 스핀 애니메이션 초기화
+    Animated.timing(spinValue, {
+      toValue: 1,
+      duration: 10000, // 10 seconds for one full rotation
+      easing: Easing.linear,
+      useNativeDriver: true,
+    }).start(({ finished }) => {
+      if (finished) {
+        startSpin(); // 애니메이션이 끝나면 다시 시작
+      }
+    });
+  };
+
   useEffect(() => {
-    Animated.loop(
-      Animated.timing(spinValue, {
-        toValue: 1,
-        duration: 10000, // 10 seconds for one full rotation
-        easing: Easing.linear,
-        useNativeDriver: true,
-      }),
-    ).start();
+    startSpin();
   }, []);
 
   const renderPointButtons = () => {
@@ -93,7 +102,6 @@ export default function Player() {
               <View style={styles.diskInner} />
             </ImageBackground>
           </Animated.View>
-          <Text>{pageNum}</Text>
         </View>
 
         <View style={styles.buttonWrap}>
@@ -193,7 +201,7 @@ const styles = StyleSheet.create({
   },
   buttonWrap: {
     position: 'absolute',
-    bottom: '5%',
+    top: '48%',
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -201,7 +209,7 @@ const styles = StyleSheet.create({
   button: {
     padding: 6,
     margin: 3,
-    backgroundColor: '#000',
+    // backgroundColor: '#000',
     color: '#fff',
   },
   buttonHover: {
