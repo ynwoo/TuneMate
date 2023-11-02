@@ -24,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @CrossOrigin(value = "*", allowedHeaders = "*")
 @Slf4j
-@RequestMapping("/social")
 public class SocialController {
 	private final SocialService socialService;
 
