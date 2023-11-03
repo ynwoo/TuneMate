@@ -21,7 +21,10 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Base64;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -81,6 +84,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * Member Repository 조회와 함께 Redis에 저장된 Spotify Access Token을 조회한다.
      * Spotify Access Token이 만료되어 존재하지 않는 경우, Spotify Refresh Token으로 Spotify Access Token을 재발급 받고 저장하여 응답한다.
+     *
      * @param userId
      * @return
      */
@@ -100,7 +104,10 @@ public class MemberServiceImpl implements MemberService {
                             );
 
                             memberDto.setSpotifyAccessToken(spotifyReissueInfo.getAccessToken());
-                            memberDto.setSpotifyRefreshToken(spotifyReissueInfo.getRefreshToken());
+
+                            String returnRefreshToken = spotifyReissueInfo.getRefreshToken();
+                            memberDto.setSpotifyRefreshToken(returnRefreshToken == null ? memberDto.getSpotifyRefreshToken() : returnRefreshToken);
+
                             mapper.map(memberDto, member);
                             spotifyTokenRepository.save(SpotifyToken.builder()
                                     .userId(userId)
