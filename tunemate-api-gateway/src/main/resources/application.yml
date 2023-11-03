@@ -25,6 +25,12 @@ spring:
           filters:
             - AuthorizationHeaderFilter
             - RewritePath=/api/v1/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service-api-docs
+          uri: lb://user-service
+          predicates:
+            - Path=/user-service/v3/api-docs
+          filters:
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
         - id: music-service
           uri: lb://music-service
           predicates:
@@ -55,6 +61,20 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: ${eureka-service-url}
+
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: API Gateway Service
+      - url: /user-service/v3/api-docs
+        name: User Service
 
 jwt:
   private-key: ${jwt-private-key}
