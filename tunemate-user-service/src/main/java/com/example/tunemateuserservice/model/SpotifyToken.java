@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.RedisHash;
 /**
  * 1시간 유효한 스포티파이 액세스 토큰을 55분간 Redis에 저장한다.
  */
-@RedisHash(value = "SpotifyToken", timeToLive = 20)
+@RedisHash(value = "SpotifyToken", timeToLive = 3300)
 @Builder
 @Getter
 public class SpotifyToken {
