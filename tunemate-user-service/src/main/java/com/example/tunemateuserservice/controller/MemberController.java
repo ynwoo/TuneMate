@@ -7,6 +7,7 @@ import com.example.tunemateuserservice.service.JwtTokenService;
 import com.example.tunemateuserservice.service.MemberService;
 import com.example.tunemateuserservice.vo.ResponseMember;
 import com.example.tunemateuserservice.vo.ResponseMemberInfo;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
@@ -17,9 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MemberController {
     private final MemberService memberService;
     private final JwtTokenService jwtTokenService;
