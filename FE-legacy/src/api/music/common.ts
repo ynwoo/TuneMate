@@ -2,7 +2,7 @@ import { NewCommonPlayList, PlayList } from '@/types/playList';
 import { AddTrack, ChangeTrack, DeleteTrack } from '@/types/spotify';
 import axios from 'axios';
 
-const COMMON_PLAYLISTS_URL = 'music/common/playlists';
+const COMMON_PLAYLISTS_URL = 'music-service/common/playlists';
 
 // 공동 플레이리스트 조회
 const getCommonPlayList = async (

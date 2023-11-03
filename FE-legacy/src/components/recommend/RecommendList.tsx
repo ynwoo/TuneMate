@@ -1,30 +1,36 @@
 import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import RecommendItem from './RecommendItem';
-import { Friend } from '@/types/friend';
 import Props from '@/types';
+import { RecommendationFriend } from '@/types/social';
 
-type RecommendListProps = Props;
+interface RecommendListProps extends Props {
+  recommendList: RecommendationFriend[];
+}
 
-const data: Friend[] = [
-  { id: '0', name: 'a' },
-  { id: '1', name: 'b' },
-  { id: '2', name: 'c' },
-  { id: '3', name: 'd' },
-  { id: '4', name: 'e' },
-  { id: '6', name: 'b' },
-  { id: '7', name: 'c' },
-  { id: '8', name: 'd' },
-  { id: '9', name: 'e' },
-];
+const data: RecommendationFriend[] = [
+  { userId: '0', name: 'a' },
+  { userId: '1', name: 'b' },
+  { userId: '2', name: 'c' },
+  { userId: '3', name: 'd' },
+  { userId: '4', name: 'e' },
+  { userId: '6', name: 'b' },
+  { userId: '7', name: 'c' },
+  { userId: '8', name: 'd' },
+  { userId: '9', name: 'e' },
+] as RecommendationFriend[];
 
-const RecommendList = ({ style }: RecommendListProps) => {
+const RecommendList = ({ style, recommendList }: RecommendListProps) => {
   return (
     <FlatList
       style={[style, styles.recommendList]}
       data={data}
       renderItem={({ item }) => (
-        <RecommendItem key={item.id} style={styles.recommendItem} item={item} />
+        <RecommendItem
+          key={item.userId}
+          style={styles.recommendItem}
+          item={item}
+        />
       )}
       horizontal={false}
       numColumns={2}

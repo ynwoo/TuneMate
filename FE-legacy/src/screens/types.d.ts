@@ -4,6 +4,7 @@ import {
   CompositeNavigationProp,
   NavigatorScreenParams,
 } from '@react-navigation/native';
+import { UserInfo } from '@/types/user';
 
 // bottomTab
 export type MyBottomTabParamList = {
@@ -23,7 +24,7 @@ export type RootStackParamList = {
   Chat: undefined;
   Auth: { uri: string };
   BottomTab: BottomTabNavigationScreenParams;
-  Profile: undefined;
+  Profile: { userId: UserInfo['userId'] };
   SharedProfile: undefined;
 };
 export type RootStackNavigationProp =
