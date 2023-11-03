@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: user-service
+    name: ${spring-application-name}
   datasource:
     url: ${datasource-url}
     username: ${datasource-username}
@@ -60,6 +60,16 @@ jwt:
   refresh-token:
     expiration-epoch: 1209600000 # 2 weeks
 
+openapi:
+  service:
+    version: ${openapi-service-version}
+    url: ${openapi-service-url} # api gateway url
+
 logging:
   level:
     com.example.com.example.tunemateuserservice: debug
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
