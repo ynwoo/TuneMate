@@ -17,8 +17,13 @@ const LoginScreen = () => {
 
   const onMoveMain = async () => {
     const accessToken =
+<<<<<<< HEAD:FE-legacy/src/screens/LoginScreen.tsx
+      'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIyM2NiOTFkMy03OGFjLTQ1YjAtOTk1YS0zOGY4YmQzNDhkZmYiLCJleHAiOjE2OTg5NzgwNjYsImlzcyI6InR1bmVtYXRlIn0.bMxmuKUZt97oPfVLdGz6f-zQPWjrtPYImiaLRfozD2-yKpQ7U-f3DHLoLAEV_tCz';
+    const userId = '23cb91d3-78ac-45b0-995a-38f8bd348dff';
+=======
       'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTg5MTM3NDIsImlzcyI6InR1bmVtYXRlIn0.y6qFqGhKnCOxXINPgukR4qfuB0p0S8HBPRTUI7t4RebPova3p09KrtDaW_2Y9wBA';
     const userId = 'cb899bc8-33a9-43a6-938c-76b0ec286c77';
+>>>>>>> develop:FE/src/screens/LoginScreen.tsx
     await storage.setAccessToken(accessToken);
     await storage.setUserId(userId);
 
