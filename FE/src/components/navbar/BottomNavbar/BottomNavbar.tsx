@@ -1,20 +1,21 @@
 import Link from "next/link";
 import styles from "./BottomNavbar.module.css";
+import Icon from "@/components/icons";
 
 const BottomNavbar = () => {
   return (
     <div className={styles["bottom-navbar"]}>
       <Link href="/main" className={styles["bottom-navbar__item"]}>
-        main
+        <Icon.Home />
       </Link>
       <Link href="/profile/1" className={styles["bottom-navbar__item"]}>
-        profile
+        <Icon.Profile />
       </Link>
       <Link href="/friends" className={styles["bottom-navbar__item"]}>
-        friends
+        <Icon.Friends />
       </Link>
       <Link href="/recommendation" className={styles["bottom-navbar__item"]}>
-        recommendation
+        <Icon.Recommendation />
       </Link>
     </div>
   );

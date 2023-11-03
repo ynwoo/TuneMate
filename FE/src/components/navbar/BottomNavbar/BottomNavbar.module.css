@@ -4,7 +4,7 @@
   height: 10vh;
   width: inherit;
   display: grid;
-  background-color: aquamarine;
+  background-color: #e4ddff;
   grid-template-columns: repeat(4, 1fr);
   gap: 1vw;
   align-items: center;
@@ -12,4 +12,5 @@
 }
 
 .bottom-navbar__item {
+  margin: auto;
 }
