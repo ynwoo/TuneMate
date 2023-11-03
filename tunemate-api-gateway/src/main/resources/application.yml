@@ -8,7 +8,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: '*'
+            allowedOrigins: 'http://localhost:3000 http://k9a603.p.ssafy.io:3000'
             allowedHeaders: '*'
             allowedMethods:
               - PUT
@@ -65,6 +65,7 @@ spring:
             - RewritePath=/api/v1/recommendation-service/(?<segment>.*), /$\{segment}
       default-filters:
         - name: GlobalFilter
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
 
 eureka:
   client:
