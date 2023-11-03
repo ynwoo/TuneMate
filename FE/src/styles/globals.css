@@ -1,5 +1,11 @@
 #__next {
+  position: relative;
   width: 400px;
   height: 800px;
   background-color: #ececec;
+}
+
+.main {
+  margin-top: 10vh;
+  margin-bottom: 10vh;
 }
