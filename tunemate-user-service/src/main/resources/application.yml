@@ -38,6 +38,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  data:
+    redis:
+      host: ${redis-url}
+      port: ${redis-port}
+      password: ${redis-password}
 
 eureka:
   client:
@@ -47,7 +52,6 @@ eureka:
       defaultZone: ${eureka-service-url}
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance.id:${random.value}}
-    hostname : k9A603.p.ssafy.io
 
 jwt:
   private-key: ${jwt-private-key}
@@ -55,7 +59,6 @@ jwt:
     expiration-epoch: 7200000 # 2 hours
   refresh-token:
     expiration-epoch: 1209600000 # 2 weeks
-
 
 logging:
   level:

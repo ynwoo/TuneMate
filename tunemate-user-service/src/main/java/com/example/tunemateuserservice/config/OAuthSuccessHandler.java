@@ -1,6 +1,8 @@
 package com.example.tunemateuserservice.config;
 
 import com.example.tunemateuserservice.dto.MemberDto;
+import com.example.tunemateuserservice.model.SpotifyToken;
+import com.example.tunemateuserservice.repository.SpotifyTokenRepository;
 import com.example.tunemateuserservice.service.MemberService;
 import com.example.tunemateuserservice.util.JwtTokenUtil;
 import com.example.tunemateuserservice.vo.ResponseAuth;
@@ -29,6 +31,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
     private final MemberService memberService;
+    private final SpotifyTokenRepository spotifyTokenRepository;
     private final JwtTokenUtil jwtTokenUtil;
     private final Environment env;
     private final OAuth2AuthorizedClientRepository authorizedClientRepository;
@@ -48,8 +51,14 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         OAuth2AccessToken oAuth2AccessToken = authorizedClient.getAccessToken();
         OAuth2RefreshToken oAuth2RefreshToken = authorizedClient.getRefreshToken();
 
-        String accessToken = jwtTokenUtil.issueAccessToken(userId);
+        SpotifyToken spotifyToken = SpotifyToken.builder()
+                .userId(userId)
+                .accessToken(oAuth2AccessToken.getTokenValue())
+                .build();
 
+        spotifyTokenRepository.save(spotifyToken);
+
+        String accessToken = jwtTokenUtil.issueAccessToken(userId);
         String refreshToken = jwtTokenUtil.issueRefreshToken(userId);
 
         List<String> images = (List<String>) oAuth2User.getAttribute("images");
@@ -61,7 +70,6 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
                 .email(oAuth2User.getAttribute("email"))
                 .imageUrl(imageUrl)
                 .spotifyUserId(spotifyUserId)
-                .spotifyAccessToken(oAuth2AccessToken.getTokenValue())
                 .spotifyRefreshToken(oAuth2RefreshToken.getTokenValue())
                 .refreshToken(refreshToken)
                 .build();

@@ -1,14 +1,19 @@
 package com.example.tunemateuserservice;
 
+import feign.codec.Encoder;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
 import org.modelmapper.convention.MatchingStrategies;
 import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @SpringBootApplication
+@EnableRedisRepositories
+@EnableFeignClients
 public class TunemateUserServiceApplication {
 
     public static void main(String[] args) {
@@ -24,4 +29,8 @@ public class TunemateUserServiceApplication {
         return mapper;
     }
 
+    @Bean
+    Encoder formEncoder() {
+        return new feign.form.FormEncoder();
+    }
 }
