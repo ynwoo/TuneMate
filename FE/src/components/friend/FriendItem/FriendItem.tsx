@@ -9,9 +9,9 @@ interface FriendItemProps extends Props {
   item: Friend;
 }
 
-const FriendItem = ({ item }: FriendItemProps) => {
+const FriendItem = ({ item, className }: FriendItemProps) => {
   return (
-    <div className={styles["friend-item"]}>
+    <div className={[styles["friend-item"], className].join(" ")}>
       <div className={styles["friend-item__user"]}>
         <Link href={`/profile/${item.freindId}`}>사진</Link>
         <p>{item.name}</p>

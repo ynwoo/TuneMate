@@ -12,7 +12,11 @@ const FriendList = ({ friends }: FriendListProps) => {
   return (
     <div className={styles["friend-list"]}>
       {friends.map((friend) => (
-        <FriendItem key={friend.freindId} item={friend} />
+        <FriendItem
+          key={friend.freindId}
+          item={friend}
+          className={styles["friend-list__item"]}
+        />
       ))}
     </div>
   );
