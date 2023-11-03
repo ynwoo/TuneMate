@@ -17,7 +17,7 @@ import java.util.List;
 @Configuration
 public class OpenApiConfigs {
     @Bean
-    public OpenAPI openAPI(@Value("${openapi.service.title}") String serviceTitle, @Value("${openapi.service.version}") String serviceVersion, @Value("${openapi.service.url}") String url) {
+    public OpenAPI openAPI(@Value("${spring.application.name}") String serviceTitle, @Value("${openapi.service.version}") String serviceVersion, @Value("${openapi.service.url}") String url) {
         final String securitySchemeName = "bearerAuth";
         return new OpenAPI()
                 .servers(List.of(new Server().url(url)))
