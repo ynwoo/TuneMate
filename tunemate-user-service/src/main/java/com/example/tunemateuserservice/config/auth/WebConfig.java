@@ -1,4 +1,4 @@
-package com.example.tunemateuserservice.config;
+package com.example.tunemateuserservice.config.auth;
 
 import com.example.tunemateuserservice.service.MemberService;
 import org.springframework.context.annotation.Bean;

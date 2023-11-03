@@ -1,4 +1,4 @@
-package com.example.tunemateuserservice.config;
+package com.example.tunemateuserservice.config.auth;
 
 import com.example.tunemateuserservice.dto.MemberDto;
 import com.example.tunemateuserservice.model.SpotifyToken;
