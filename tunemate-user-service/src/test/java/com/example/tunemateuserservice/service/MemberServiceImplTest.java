@@ -11,8 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class MemberServiceImplTest {
     @Autowired
@@ -35,7 +33,6 @@ class MemberServiceImplTest {
                     .email(emails.get(i))
                     .spotifyUserId(spotifyUserIds.get(i))
                     .refreshToken("refreshToken")
-                    .spotifyAccessToken("spotifyAccessToken")
                     .spotifyRefreshToken("spotifyRefreshToken")
                     .build();
 

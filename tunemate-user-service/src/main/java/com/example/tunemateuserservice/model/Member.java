@@ -37,23 +37,18 @@ public class Member {
     @Schema(description = "Tunemate 리프레시 토큰")
     @Column(nullable = false)
     private String refreshToken;
-    @Schema(description = "스포티파이 액세스 토큰")
-    @Column(nullable = false, length = 512)
-    private String spotifyAccessToken;
     @Schema(description = "스포티파이 리프레시 토큰")
     @Column(nullable = false, length = 512)
     private String spotifyRefreshToken;
 
     @Builder
-    public Member(String userId, String name, String email, String imageUrl, String spotifyUserId, String refreshToken,
-                  String spotifyAccessToken, String spotifyRefreshToken) {
+    public Member(String userId, String name, String email, String imageUrl, String spotifyUserId, String refreshToken, String spotifyRefreshToken) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.imageUrl = imageUrl;
         this.spotifyUserId = spotifyUserId;
         this.refreshToken = refreshToken;
-        this.spotifyAccessToken = spotifyAccessToken;
         this.spotifyRefreshToken = spotifyRefreshToken;
     }
 }
