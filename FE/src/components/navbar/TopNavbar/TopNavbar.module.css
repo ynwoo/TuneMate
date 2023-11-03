@@ -1,0 +1,21 @@
+.top-navbar {
+  position: fixed;
+  top: 0;
+  height: 10vh;
+  width: inherit;
+  display: grid;
+  background-color: #ececec;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-navbar__item {
+  cursor: pointer;
+  padding-left: 5vw;
+  padding-right: 5vw;
+}
+
+.top-navbar__item--back {
+  cursor: pointer;
+}

@@ -1,0 +1,16 @@
+.bottom-navbar {
+  position: fixed;
+  bottom: 0;
+  height: 10vh;
+  width: inherit;
+  display: grid;
+  background-color: #e4ddff;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1vw;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom-navbar__item {
+  margin: auto;
+}
