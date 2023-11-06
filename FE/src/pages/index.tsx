@@ -3,6 +3,7 @@ import useIndividualPlayListsQuery from "@/hooks/queries/music/individual/useInd
 import { storage } from "@/utils/storage";
 import Link from "next/link";
 import { useEffect } from "react";
+import styles from "@/styles/LoginPage.module.css";
 
 const LoginPage = () => {
   if (typeof window !== "undefined") {
@@ -26,13 +27,15 @@ const LoginPage = () => {
 
   useEffect(() => {}, []);
   return (
-    <div>
-      <p>loginPage</p>
+    <div className={styles["login-page"]}>
+      <p className={styles["login-page__title"]}>Tunemate</p>
+      <button className={styles["login-page__button"]} onClick={onLogin}>
+        login
+      </button>
+      <br />
       <a href="http://k9a603.p.ssafy.io:8000/api/v1/user-service/oauth2/authorization/spotify">
         login
       </a>
-      <br />
-      <button onClick={onLogin}>login</button>
       <br />
       <Link href={"/main"}>메인 페이지 이동</Link>
     </div>
