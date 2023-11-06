@@ -10,6 +10,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Controller
@@ -17,12 +18,17 @@ import java.util.ArrayList;
 public class MessageController {
 
     private final SimpMessageSendingOperations simpMessageSendingOperations;
+    private final ChatRepository chatRepository;
 
-
-    @MessageMapping("/hello/{relationId}")
-    @SendTo("/sub/channel/{relationId}")
-    public ChatDto message(@DestinationVariable Long relationId,ChatDto chatDto){
-
-        return chatDto;
+    @MessageMapping("/chat/{relationId}")
+    @SendTo("/sub/chat/{relationId}")
+    public Message message(@DestinationVariable Long relationId,ChatDto chatDto){
+        Message msg = chatRepository.findByChatRoomId(relationId);
+        chatDto.setTime(LocalDateTime.now());
+        chatDto.setType("Message");
+        chatDto.setReadCount(1);
+        msg.getMessages().add(chatDto);
+        chatRepository.save(msg);
+        return msg;
     }
 }
