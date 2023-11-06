@@ -6,7 +6,7 @@ import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
 import com.tunemate.social.tunematesocial.dto.response.MyFriendResponseDto;
 import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResponseDto;
-import com.tunemate.social.tunematesocial.entity.Message;
+import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 
 public interface SocialService {
 	/**
@@ -27,7 +27,7 @@ public interface SocialService {
 
 	String getHostId(String playlistId);
 
-	Message getChats(long relationId);
+	ChattingRoom getChats(long relationId);
 
 	void setChats(long relationId,String userId);
 

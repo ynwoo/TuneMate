@@ -2,19 +2,10 @@ package com.tunemate.social.tunematesocial.controller;
 
 import java.util.List;
 
-import com.tunemate.social.tunematesocial.dto.ChatDto;
-import com.tunemate.social.tunematesocial.entity.Message;
-import jakarta.ws.rs.Path;
+import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
@@ -133,7 +124,7 @@ public class SocialController {
 	 * 채팅 기록을 보여줍니다 (채팅 방 접속).
 	 */
 	@GetMapping("/chats/{relationId}")
-	public ResponseEntity<Message> getChatRecord(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId){
+	public ResponseEntity<ChattingRoom> getChatRecord(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId){
 
 		socialService.setChats(relationId,userId);
 		socialService.setChatPerson(relationId,userId);
@@ -143,7 +134,7 @@ public class SocialController {
 	/**
 	 * 채팅 방 퇴장 (채팅 방 화면에서 다른 화면으로 전환).
 	 */
-	@PostMapping("chat-out/{relationId}")
+	@DeleteMapping("chat-out/{relationId}")
 	public void chatOut(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId){
 		socialService.outChat(relationId,userId);
 	}

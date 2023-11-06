@@ -7,14 +7,13 @@ import java.util.stream.Collectors;
 
 import com.tunemate.social.tunematesocial.client.UserServiceClient;
 import com.tunemate.social.tunematesocial.dto.ChatDto;
-import com.tunemate.social.tunematesocial.entity.Chat;
-import com.tunemate.social.tunematesocial.entity.Message;
+import com.tunemate.social.tunematesocial.entity.ChatPerson;
+import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 import com.tunemate.social.tunematesocial.repository.ChatPersonRepository;
-import com.tunemate.social.tunematesocial.repository.ChatRepository;
+import com.tunemate.social.tunematesocial.repository.ChattingRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-// import com.tunemate.social.tunematesocial.client.UserServiceClient;
 import com.tunemate.social.tunematesocial.dto.UserInfoDto;
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
@@ -33,16 +32,16 @@ public class SocialServiceImpl implements SocialService {
 	private final FriendRepository friendRepository;
 	private final FriendRequestRepository friendRequestRepository;
 	private final UserServiceClient userServiceClient;
-	private final ChatRepository chatRepository;
+	private final ChattingRoomRepository chattingRoomRepository;
 	private final ChatPersonRepository chatPersonRepository;
 
 	@Autowired
 	public SocialServiceImpl(FriendRepository friendRepository, FriendRequestRepository friendRequestRepository,
-							 UserServiceClient userServiceClient, ChatRepository chatRepository, ChatPersonRepository chatPersonRepository) {
+							 UserServiceClient userServiceClient, ChattingRoomRepository chattingRoomRepository, ChatPersonRepository chatPersonRepository) {
 		this.friendRepository = friendRepository;
 		this.friendRequestRepository = friendRequestRepository;
 		this.userServiceClient = userServiceClient;
-		this.chatRepository = chatRepository;
+		this.chattingRoomRepository = chattingRoomRepository;
 		this.chatPersonRepository = chatPersonRepository;
 	}
 
@@ -142,10 +141,10 @@ public class SocialServiceImpl implements SocialService {
 
 		// 채팅 방 생성
 		long relationId = friendRepository.findByUser1IdAndAndUser2Id(myId, newFriendId).get(0).getId();
-		Message message = new Message();
-		message.setChatRoomId(relationId);
-		message.setMessages(new ArrayList<>());
-		chatRepository.save(message);
+		ChattingRoom chattingRoom = new ChattingRoom();
+		chattingRoom.setChatRoomId(relationId);
+		chattingRoom.setMessages(new ArrayList<>());
+		chattingRoomRepository.save(chattingRoom);
 	}
 
 	@Override
@@ -242,37 +241,37 @@ public class SocialServiceImpl implements SocialService {
 	}
 
 	@Override
-	public Message getChats(long relationId){
-		Message message = chatRepository.findByChatRoomId(relationId);
-		return message;
+	public ChattingRoom getChats(long relationId){
+		ChattingRoom chattingRoom = chattingRoomRepository.findByChatRoomId(relationId);
+		return chattingRoom;
 	}
 
 	@Override
 	public void setChats(long relationId, String userId){
-		Message chatRecord = this.getChats(relationId);
+		ChattingRoom chatRecord = this.getChats(relationId);
 		List<ChatDto> list = chatRecord.getMessages();
-		for(int i=0; i<list.size();i++){
+		for(int i=list.size()-1; i>=0;i--){
 			if(list.get(i).getReadCount() == 0) break;
 			if(!list.get(i).getSenderNo().equals(userId)){
 				list.get(i).setReadCount(0);
 			}
 		}
 		chatRecord.setMessages(list);
-		chatRepository.save(chatRecord);
+		chattingRoomRepository.save(chatRecord);
 	}
 
 	// 채팅방 접속 한 사람 DB에 저장
 	@Override
 	public void setChatPerson(long relationId, String userId){
 		Friend friend = friendRepository.findById(relationId).get();
-		Chat chat = Chat.builder().userId(userId).friend(friend).build();
-		chatPersonRepository.save(chat);
+		ChatPerson chatPerson = ChatPerson.builder().userId(userId).friend(friend).build();
+		chatPersonRepository.save(chatPerson);
 	}
 
 	@Override
 	public void outChat(long relationId, String userId){
 		Friend friend = friendRepository.findById(relationId).get();
-		Chat chat = chatPersonRepository.findByRelationIdAndUserId(friend,userId);
-		chatPersonRepository.delete(chat);
+		ChatPerson chatPerson = chatPersonRepository.findByFriendAndUserId(friend,userId);
+		chatPersonRepository.delete(chatPerson);
 	}
 }
