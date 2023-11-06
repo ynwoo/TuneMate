@@ -6,7 +6,7 @@ pipeline {
         DOCKERHUB_CREDENTIAL = credentials('dockerhub-ynwoo')
         CONTAINER_NAME_BACK = "social"
         SSH_CONNECTION = "ubuntu@k9a603.p.ssafy.io"
-        ENV_DIR = "./config/.env"
+        ENV_DIR = "./config/social.env"
         PORT_BACK = "8082"
     }
     stages {
