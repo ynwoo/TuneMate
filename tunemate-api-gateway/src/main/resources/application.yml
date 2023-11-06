@@ -51,6 +51,12 @@ spring:
           filters:
             - AuthorizationHeaderFilter
             - RewritePath=/api/v1/music-service/(?<segment>.*), /$\{segment}
+        - id: music-service-api-docs
+          uri: lb://music-service
+          predicates:
+            - Path=/music-service/v3/api-docs
+          filters:
+            - RewritePath=/music-service/(?<segment>.*), /$\{segment}
         - id: social-service
           uri: lb://social-service
           predicates:
@@ -97,6 +103,8 @@ springdoc:
         name: User Service
       - url: /social-service/v3/api-docs
         name: Social Service
+      - url: /music-service/v3/api-docs
+        name: Music Service
 
 jwt:
   private-key: ${jwt-private-key}
