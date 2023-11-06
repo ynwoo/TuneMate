@@ -5,6 +5,7 @@ export const storage = {
   setAccessToken(accessToken: string) {
     localStorage.setItem("accessToken", accessToken);
   },
+
   getRefreshToken() {
     return localStorage.getItem("refreshToken");
   },
@@ -16,5 +17,17 @@ export const storage = {
   },
   setUserId(userId: string) {
     localStorage.setItem("userId", userId);
+  },
+  getSpotifyAccessToken() {
+    return localStorage.getItem("spotifyAccessToken");
+  },
+  setSpotifyAccessToken(spotifyAccessToken: string) {
+    localStorage.setItem("spotifyAccessToken", spotifyAccessToken);
+  },
+  getSpotifyUserId() {
+    return localStorage.getItem("spotifyUserId");
+  },
+  setSpotifyUserId(spotifyUserId: string) {
+    localStorage.setItem("spotifyUserId", spotifyUserId);
   },
 };
