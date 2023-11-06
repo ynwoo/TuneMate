@@ -5,7 +5,7 @@ import Props from "@/types";
 interface ModalProps extends Props {
   isOpen: boolean;
   toggle: () => void;
-  children: JSX.Element;
+  children: JSX.Element | JSX.Element[];
 }
 
 const Modal = ({

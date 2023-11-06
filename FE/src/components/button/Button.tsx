@@ -9,12 +9,14 @@ interface ButtonProps extends Props {
 
 const Button = ({ className, children, onClick }: ButtonProps) => {
   return (
-    <button
-      className={classNameWrapper(className, styles.button)}
-      onClick={onClick}
-    >
-      {children}
-    </button>
+    <>
+      <button
+        className={classNameWrapper(className, styles.button)}
+        onClick={onClick}
+      >
+        {children}
+      </button>
+    </>
   );
 };
 

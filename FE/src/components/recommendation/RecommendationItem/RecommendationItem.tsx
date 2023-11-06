@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 import Button from "@/components/button/Button";
 import useAcceptSocialFriendRequestMutation from "@/hooks/mutations/social/useAcceptSocialFriendRequestMutation";
 import useDeclineSocialFriendRequestMutation from "@/hooks/mutations/social/useDeclineSocialFriendRequestMutation";
+import Icon from "@/components/icons";
+import ButtonWithModal from "@/components/button/ButtonWithModal";
 
 interface RecommendItemProps extends Props {
   item: FriendRequest | RecommendationFriend;
@@ -53,16 +55,20 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
         <p className={styles["recommendation-item__user--name"]}>{item.name}</p>
       </div>
       <div className={styles["recommendation-item__ratio"]}>
-        <p>거리</p>
-        <p>유사도</p>
+        <p>{item.distance ?? 0}km</p>
+        <p>
+          {(item.similarity * 100).toFixed(0)}
+          <Icon.Music size="lg" />
+        </p>
         {isFriendRequest && (
           <div className={styles["recommendation-item__button"]}>
-            <Button
+            <ButtonWithModal
               className={styles["recommendation-item__button--accept"]}
               onClick={onAccept}
+              modalMessage="수락하시겠습니까?"
             >
               수락
-            </Button>
+            </ButtonWithModal>
             <Button
               className={styles["recommendation-item__button--reject"]}
               onClick={onDecline}

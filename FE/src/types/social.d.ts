@@ -18,7 +18,7 @@ interface FriendRequest {
   name: string;
   img: string;
   distance: string;
-  musicalTasteSimilarity: string;
+  similarity: number;
 }
 
 export type { Friend, FriendRequest, RecommendationFriend };

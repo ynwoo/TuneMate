@@ -2,3 +2,14 @@
   border: 0;
   border-radius: 5px;
 }
+
+.button__accept {
+  background-color: var(--blue-color);
+  color: var(--white-color);
+  margin-right: 1vw;
+}
+
+.button__reject {
+  background-color: var(--red-color);
+  color: var(--white-color);
+}

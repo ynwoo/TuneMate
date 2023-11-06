@@ -1,5 +1,5 @@
 .recommendation-item {
-  position: relative;
+  /* position: relative; */
   background-color: var(--white-color);
   justify-content: center;
   align-items: center;
@@ -21,6 +21,7 @@
   flex: 1;
 }
 .recommendation-item__user--name {
+  text-align: center;
 }
 
 .recommendation-item__ratio {
@@ -29,9 +30,9 @@
 }
 
 .recommendation-item__button {
-  position: absolute;
+  /* position: absolute;
   bottom: 1vh;
-  right: 3vw;
+  right: 3vw; */
   display: flex;
 }
 
