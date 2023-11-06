@@ -1,5 +1,5 @@
 interface Props {
-  style?: Object;
+  className?: string;
   children?: JSX.Element | JSX.Element[];
 }
 
