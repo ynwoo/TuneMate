@@ -84,11 +84,13 @@ public class IndividualPlaylistController {
 	// 개인 플레이리스트 트랙 순서 변경
 	@PutMapping("/playlists/{playlistId}/tracks")
 	@Operation(summary = "개인 플레이리스트 트랙 순서 변경", description = """
-		개인 플레이리스트에 트랙(곡) 순서를 변경합니다.{
-		    "range_start": 1, // 선택한 노래의 인덱스
-		    "insert_before": 3, // 삽입 위치 인덱스 (위에 있는 곡 아래로 내릴 때는 [삽입 위치 인덱스 + 1] 로 해주어야함)
-		    "range_length": 1 // 1로 고정
-		}""")
+		개인 플레이리스트에 트랙(곡) 순서를 변경합니다.
+		  
+		"range_start": 1, // 선택한 노래의 인덱스
+		  
+		"insert_before": 3, // 삽입 위치 인덱스 (위에 있는 곡 아래로 내릴 때는 [삽입 위치 인덱스 + 1] 로 해주어야함)
+		  
+		"range_length": 1 // 1로 고정""")
 	public void changeTrack(@RequestHeader("UserId") String userId,
 		@RequestBody TrackChangeRequestDto trackChangeRequestDto, @PathVariable("playlistId") String playlistId) {
 		individualPlaylistService.changeTrack(userId, playlistId, trackChangeRequestDto);
