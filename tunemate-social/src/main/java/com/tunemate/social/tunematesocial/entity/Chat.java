@@ -1,12 +1,11 @@
 package com.tunemate.social.tunematesocial.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Chat {
 
@@ -19,6 +18,12 @@ public class Chat {
 
     @ManyToOne
     private Friend relationId;
+
+    @Builder
+    public Chat( String userId, Friend friend){
+        this.userId = userId;
+        this.relationId = friend;
+    }
 
 
 

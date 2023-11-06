@@ -28,4 +28,10 @@ public interface SocialService {
 	String getHostId(String playlistId);
 
 	Message getChats(long relationId);
+
+	void setChats(long relationId,String userId);
+
+	void setChatPerson(long relationId, String userId);
+
+	void outChat(long relationId, String userId);
 }
