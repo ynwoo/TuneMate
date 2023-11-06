@@ -45,7 +45,7 @@ const deleteIndividualPlayListTrack = async ({
   positions,
 }: DeleteTrack) => {
   await api.delete<void>(`${INDIVIDUAL_PLAYLISTS_URL}/${playlistId}/tracks`, {
-    tracks: [{ uri, positions }],
+    data: { tracks: [{ uri, positions }] },
   });
 };
 
