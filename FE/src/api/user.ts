@@ -1,6 +1,6 @@
-import axios, { HttpStatusCode } from "axios";
 import { TokenResponse, UserInfo } from "@/types/user";
-import { api, spotifyApi } from ".";
+import { api } from ".";
+import { storage } from "@/utils/storage";
 
 // 로그인
 export const login = async (): Promise<TokenResponse> => {
@@ -15,9 +15,9 @@ export const login = async (): Promise<TokenResponse> => {
 export const getUserInfo = async (
   userId: UserInfo["userId"]
 ): Promise<UserInfo> => {
-  const response = await axios.get<UserInfo>(`user-service/users/${userId}`);
-  if (response.status === HttpStatusCode.Ok) {
-    spotifyApi.defaults.headers.common.Authorization = `Bearer ${response.data.spotifyAccessToken}`;
-  }
-  return response.data;
+  const response = await api.get<UserInfo>(`user-service/users/${userId}`);
+  const userInfo = response.data;
+  storage.setSpotifyAccessToken(userInfo.spotifyAccessToken);
+  storage.setSpotifyUserId(userInfo.spotifyUserId);
+  return userInfo;
 };
