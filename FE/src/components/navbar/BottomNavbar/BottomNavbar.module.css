@@ -4,7 +4,7 @@
   height: var(--bottom-navbar-height);
   width: inherit;
   display: grid;
-  background-color: #e4ddff;
+  background-color: var(--main-color);
   grid-template-columns: repeat(4, 1fr);
   gap: 1vw;
   align-items: center;
