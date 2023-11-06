@@ -8,7 +8,8 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: 'http://localhost:3000 http://k9a603.p.ssafy.io:3000'
+            allowedOrigins:
+              - 'http://localhost:3000'
             allowedHeaders: '*'
             allowedMethods:
               - PUT
@@ -56,6 +57,12 @@ spring:
           filters:
             - AuthorizationHeaderFilter
             - RewritePath=/api/v1/social-service/(?<segment>.*), /$\{segment}
+        - id: social-service-api-docs
+          uri: lb://social-service
+          predicates:
+            - Path=/social-service/v3/api-docs
+          filters:
+            - RewritePath=/social-service/(?<segment>.*), /$\{segment}
         - id: recommend-service
           uri: lb://recommendation-service
           predicates:
