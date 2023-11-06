@@ -30,51 +30,68 @@ import lombok.RequiredArgsConstructor;
 
 public class IndividualPlaylistController {
 
-    private final IndividualPlaylistService individualPlaylistService;
-    //개인 플레이리스트 생성
-    @PostMapping("playlists")
-    @Operation(summary = "개인 플레이리스트 생성", description = "Spotify계정에 개인의 플레이리스트를 생성합니다.")
-    public void createPlaylist(@RequestHeader("UserId") String userId, @RequestBody PlaylistCreateDto playlistCreateDto) throws ParseException {
-        individualPlaylistService.createPlaylist(userId,playlistCreateDto);
-    }
+	private final IndividualPlaylistService individualPlaylistService;
 
-    //개인 플레이리스트 트랙 추가
-    @PostMapping("playlists/{playlistId}/tracks")
-    public void createTrack(@RequestHeader("UserId") String userId, @RequestBody TrackCreateDto trackCreateDto,@PathVariable("playlistId") String playlistId) throws ParseException {
-        individualPlaylistService.createTrack(userId, trackCreateDto,playlistId);
-    }
+	//개인 플레이리스트 생성
+	@PostMapping("playlists")
+	@Operation(summary = "개인 플레이리스트 생성", description = "Spotify계정에 개인의 플레이리스트를 생성합니다.")
+	public void createPlaylist(@RequestHeader("UserId") String userId,
+		@RequestBody PlaylistCreateDto playlistCreateDto) throws ParseException {
+		individualPlaylistService.createPlaylist(userId, playlistCreateDto);
+	}
 
-    //개인 대표 플레이리스트 조회
-    @GetMapping("playlists-representative")
-    public PlaylistResponseDto getIndividualPlaylist(@RequestHeader("UserId") String userId) throws ParseException {
-        PlaylistResponseDto playlistResponseDto = individualPlaylistService.getIndividualPlaylist(userId);
-        return playlistResponseDto;
+	//개인 플레이리스트 트랙 추가
+	@PostMapping("playlists/{playlistId}/tracks")
+	@Operation(summary = "개인 플레이리스트 트랙 추가", description = "개인의 플레이리스트에 트랙(곡)을 추가합니다.")
+	public void createTrack(@RequestHeader("UserId") String userId, @RequestBody TrackCreateDto trackCreateDto,
+		@PathVariable("playlistId") String playlistId) throws ParseException {
+		individualPlaylistService.createTrack(userId, trackCreateDto, playlistId);
+	}
 
-    }
+	//개인 대표 플레이리스트 조회
+	@GetMapping("playlists-representative")
+	@Operation(summary = "개인 대표 플레이리스트 조회", description = "개인의 대표 플레이리스트를 조회합니다.")
+	public PlaylistResponseDto getIndividualPlaylist(@RequestHeader("UserId") String userId) throws ParseException {
+		PlaylistResponseDto playlistResponseDto = individualPlaylistService.getIndividualPlaylist(userId);
+		return playlistResponseDto;
 
-    //개인의 대표 플레이리스트 변경
-    @PutMapping("playlists")
-    public void setIndividualPlaylistId(@RequestHeader("UserId") String userId, @RequestBody PlaylistIdDto playlistIdDto){
-        individualPlaylistService.setIndividualPlaylistId(userId,playlistIdDto);
-    }
+	}
 
-    //노래 재생 횟수 카운트
-    @PostMapping("count")
-    public void counting(@RequestHeader("UserId") String userId) throws ParseException {
-        individualPlaylistService.counting(userId);
-    }
+	//개인의 대표 플레이리스트 변경
+	@PutMapping("playlists")
+	@Operation(summary = "개인의 대표 플레이리스트 변경", description = "자신의 대표 플레이리스트를 설정합니다.")
+	public void setIndividualPlaylistId(@RequestHeader("UserId") String userId,
+		@RequestBody PlaylistIdDto playlistIdDto) {
+		individualPlaylistService.setIndividualPlaylistId(userId, playlistIdDto);
+	}
 
-    //개인 플레이리스트 트랙 삭제
-    @DeleteMapping("playlists/{playlistId}/tracks")
-    public void deleteTrack(@RequestHeader("UserId") String userId, @RequestBody TrackDeleteRequestDto trackDeleteRequestDto,@PathVariable("playlistId") String playlistId){
-        individualPlaylistService.deleteTrack(userId, playlistId, trackDeleteRequestDto);
+	//노래 재생 횟수 카운트
+	@PostMapping("count")
+	@Operation(summary = "노래 재생 횟수 카운트", description = "노래 재생 횟수를 카운트합니다.")
+	public void counting(@RequestHeader("UserId") String userId) throws ParseException {
+		individualPlaylistService.counting(userId);
+	}
 
-    }
+	//개인 플레이리스트 트랙 삭제
+	@DeleteMapping("playlists/{playlistId}/tracks")
+	@Operation(summary = "개인 플레이리스트 트랙 삭제", description = "개인 플레이리스트에 트랙(곡)을 삭제합니다.")
+	public void deleteTrack(@RequestHeader("UserId") String userId,
+		@RequestBody TrackDeleteRequestDto trackDeleteRequestDto, @PathVariable("playlistId") String playlistId) {
+		individualPlaylistService.deleteTrack(userId, playlistId, trackDeleteRequestDto);
 
-    // 개인 플레이리스트 트랙 순서 변경
-    @PutMapping("/playlists/{playlistId}/tracks")
-    public void changeTrack(@RequestHeader("UserId") String userId, @RequestBody TrackChangeRequestDto trackChangeRequestDto,@PathVariable("playlistId") String playlistId){
-        individualPlaylistService.changeTrack(userId, playlistId, trackChangeRequestDto);
-    }
+	}
+
+	// 개인 플레이리스트 트랙 순서 변경
+	@PutMapping("/playlists/{playlistId}/tracks")
+	@Operation(summary = "개인 플레이리스트 트랙 순서 변경", description = """
+		개인 플레이리스트에 트랙(곡) 순서를 변경합니다.{
+		    "range_start": 1, // 선택한 노래의 인덱스
+		    "insert_before": 3, // 삽입 위치 인덱스 (위에 있는 곡 아래로 내릴 때는 [삽입 위치 인덱스 + 1] 로 해주어야함)
+		    "range_length": 1 // 1로 고정
+		}""")
+	public void changeTrack(@RequestHeader("UserId") String userId,
+		@RequestBody TrackChangeRequestDto trackChangeRequestDto, @PathVariable("playlistId") String playlistId) {
+		individualPlaylistService.changeTrack(userId, playlistId, trackChangeRequestDto);
+	}
 
 }
