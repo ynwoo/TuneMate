@@ -1,4 +1,3 @@
-import useAuth from "./useAuth";
 import { Container, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import SpotifyWebApi from "spotify-web-api-node";
@@ -11,17 +10,14 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 export default function Dashboard({ accessToken }) {
-  //   const accessToken = useAuth(code);
-
-  //   const accessToken = accessToken;
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [playingTrack, setPlayingTrack] = useState();
+  //   const [lyrics, setLyrics] = useState(""); // lyrics 상태 추가
 
   function chooseTrack(track) {
     setPlayingTrack(track);
     setSearch("");
-    setLyrics("");
   }
 
   useEffect(() => {
@@ -34,7 +30,7 @@ export default function Dashboard({ accessToken }) {
         },
       })
       .then((data) => {
-        setLyrics(data.data.lyrics);
+        // setLyrics(data.data.lyrics);
       });
   }, [playingTrack]);
 
@@ -69,6 +65,7 @@ export default function Dashboard({ accessToken }) {
         })
       );
     });
+
     return () => {
       cancel = true;
     };
@@ -98,7 +95,6 @@ export default function Dashboard({ accessToken }) {
             track={track}
             key={track.uri}
             chooseTrack={chooseTrack}
-            style={{ display: "flex" }}
           />
         ))}
       </div>
