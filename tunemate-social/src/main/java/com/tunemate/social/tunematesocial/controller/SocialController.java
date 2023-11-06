@@ -2,6 +2,7 @@ package com.tunemate.social.tunematesocial.controller;
 
 import java.util.List;
 
+import com.tunemate.social.tunematesocial.dto.ChatDto;
 import com.tunemate.social.tunematesocial.entity.Message;
 import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,11 +146,22 @@ public class SocialController {
 	}
 
 	/**
-	 * 채팅 기록을 보여줍니다.
+	 * 채팅 기록을 보여줍니다 (채팅 방 접속).
 	 */
 	@GetMapping("/chats/{relationId}")
 	public ResponseEntity<Message> getChatRecord(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId){
-		System.out.println("sss");
+
+		socialService.setChats(relationId,userId);
+		socialService.setChatPerson(relationId,userId);
 		return ResponseEntity.ok(socialService.getChats(relationId));
 	}
+
+	/**
+	 * 채팅 방 퇴장 (채팅 방 화면에서 다른 화면으로 전환).
+	 */
+	@PostMapping("chat-out/{relationId}")
+	public void chatOut(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId){
+		socialService.outChat(relationId,userId);
+	}
+
 }

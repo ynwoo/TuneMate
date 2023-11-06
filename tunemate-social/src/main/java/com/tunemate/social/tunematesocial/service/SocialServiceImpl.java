@@ -6,7 +6,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.tunemate.social.tunematesocial.client.UserServiceClient;
+import com.tunemate.social.tunematesocial.dto.ChatDto;
+import com.tunemate.social.tunematesocial.entity.Chat;
 import com.tunemate.social.tunematesocial.entity.Message;
+import com.tunemate.social.tunematesocial.repository.ChatPersonRepository;
 import com.tunemate.social.tunematesocial.repository.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,14 +34,16 @@ public class SocialServiceImpl implements SocialService {
 	private final FriendRequestRepository friendRequestRepository;
 	private final UserServiceClient userServiceClient;
 	private final ChatRepository chatRepository;
+	private final ChatPersonRepository chatPersonRepository;
 
 	@Autowired
 	public SocialServiceImpl(FriendRepository friendRepository, FriendRequestRepository friendRequestRepository,
-							 UserServiceClient userServiceClient, ChatRepository chatRepository) {
+							 UserServiceClient userServiceClient, ChatRepository chatRepository, ChatPersonRepository chatPersonRepository) {
 		this.friendRepository = friendRepository;
 		this.friendRequestRepository = friendRequestRepository;
 		this.userServiceClient = userServiceClient;
 		this.chatRepository = chatRepository;
+		this.chatPersonRepository = chatPersonRepository;
 	}
 
 	/**
@@ -240,5 +245,34 @@ public class SocialServiceImpl implements SocialService {
 	public Message getChats(long relationId){
 		Message message = chatRepository.findByChatRoomId(relationId);
 		return message;
+	}
+
+	@Override
+	public void setChats(long relationId, String userId){
+		Message chatRecord = this.getChats(relationId);
+		List<ChatDto> list = chatRecord.getMessages();
+		for(int i=0; i<list.size();i++){
+			if(list.get(i).getReadCount() == 0) break;
+			if(!list.get(i).getSenderNo().equals(userId)){
+				list.get(i).setReadCount(0);
+			}
+		}
+		chatRecord.setMessages(list);
+		chatRepository.save(chatRecord);
+	}
+
+	// 채팅방 접속 한 사람 DB에 저장
+	@Override
+	public void setChatPerson(long relationId, String userId){
+		Friend friend = friendRepository.findById(relationId).get();
+		Chat chat = Chat.builder().userId(userId).friend(friend).build();
+		chatPersonRepository.save(chat);
+	}
+
+	@Override
+	public void outChat(long relationId, String userId){
+		Friend friend = friendRepository.findById(relationId).get();
+		Chat chat = chatPersonRepository.findByRelationIdAndUserId(friend,userId);
+		chatPersonRepository.delete(chat);
 	}
 }
