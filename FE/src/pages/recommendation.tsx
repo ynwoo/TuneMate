@@ -1,5 +1,7 @@
 import RecommendationList from "@/components/recommendation/RecommendationList/RecommendationList";
+import useRecommendationFriendsQuery from "@/hooks/queries/recommendation/useRecommendationFriendsQuery";
 import { RecommendationFriend } from "@/types/social";
+import styles from "@/styles/RecommendationPage.module.css";
 
 const data: RecommendationFriend[] = [
   { userId: "0", name: "a" },
@@ -14,9 +16,14 @@ const data: RecommendationFriend[] = [
 ] as RecommendationFriend[];
 
 const RecommendationPage = () => {
+  // const { data: recommendationFriends } = useRecommendationFriendsQuery();
+  const { data: recommendationFriends } = { data };
+
   return (
-    <div>
-      <RecommendationList recommendations={data} />
+    <div className={styles["recommendation-page"]}>
+      {recommendationFriends && (
+        <RecommendationList recommendations={recommendationFriends} />
+      )}
     </div>
   );
 };

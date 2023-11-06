@@ -1,5 +1,7 @@
 import FriendList from "@/components/friend/FriendList/FriendList";
 import { Friend } from "@/types/social";
+import styles from "@/styles/FriendsPage.module.css";
+import useSocialFriendsQuery from "@/hooks/queries/social/useSocialFriendsQuery";
 
 const initData = [
   { freindId: "0", name: "ss1" },
@@ -11,9 +13,11 @@ const initData = [
 ] as Friend[];
 
 const FriendsPage = () => {
+  const { data: friends } = useSocialFriendsQuery();
+
   return (
-    <div className="friends-page">
-      <FriendList friends={initData} />
+    <div className={styles["friends-page"]}>
+      {friends && <FriendList friends={friends} />}
     </div>
   );
 };

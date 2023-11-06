@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import type { AppProps } from "next/app";
 import { usePathname } from "next/navigation";
+import { useMemo } from "react";
 import { RecoilRoot } from "recoil";
 
 const queryClient = new QueryClient({
@@ -16,8 +17,7 @@ const queryClient = new QueryClient({
 
 export default function App({ Component, pageProps }: AppProps) {
   const pathname = usePathname();
-  const isLoginPage = pathname === "/";
-  console.log(isLoginPage);
+  const isLoginPage = useMemo(() => pathname === "/", [pathname]);
 
   return (
     <RecoilRoot>
