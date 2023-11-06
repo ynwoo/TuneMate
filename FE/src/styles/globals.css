@@ -1,0 +1,45 @@
+* {
+  /* 색상 설정 */
+  --black-color: #1c1c1c;
+  --white-color: #fdfdfd;
+  --gray-color: #858585;
+  --light-gray-color: #dddddd;
+  --point-color: #463296;
+  --main-color: #e4ddff;
+  --text-color: #666666;
+  --gradation-color: linear-gradient(var(--main-color), var(--white-color));
+
+  --top-navbar-height: 10vh;
+  --bottom-navbar-height: 10vh;
+}
+
+#__next {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--light-gray-color);
+}
+
+a {
+  text-decoration: none;
+}
+
+.main {
+  margin-top: var(--top-navbar-height);
+  margin-bottom: var(--bottom-navbar-height);
+  padding: 2vh 5vw;
+  height: 96vh;
+  width: 90vw;
+  background-color: var(--light-gray-color);
+}
+
+.login {
+  height: inherit;
+  width: inherit;
+  background: var(--gradation-color);
+}
+
+.friends-page {
+  /* padding-top: 1vh;
+  padding-bottom: 1vh; */
+}
