@@ -1,27 +1,37 @@
-#__next {
-  position: relative;
-  width: 400px;
-  height: 800px;
-  background-color: #ececec;
-}
-
-.main {
-  margin-top: 10vh;
-  margin-bottom: 10vh;
-}
-
 * {
   /* 색상 설정 */
   --black-color: #1c1c1c;
   --white-color: #fdfdfd;
   --gray-color: #858585;
-  --light-gray-color: #DDDDDD;
+  --light-gray-color: #dddddd;
   --point-color: #463296;
-  --main-color: #E4DDFF;
+  --main-color: #e4ddff;
   --text-color: #666666;
-  --gradation-color: linear-gradient(
-    0deg,
-    #e4ddff
-    #fdfdfd
-  );
+  --gradation-color: linear-gradient(var(--main-color), var(--white-color));
+}
+
+#__next {
+  position: relative;
+  width: 400px;
+  height: 800px;
+  background-color: var(--white-color);
+}
+
+.main {
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+  padding: 2vh 5vw;
+  height: inherit;
+  background-color: var(--light-gray-color);
+}
+
+.login {
+  height: inherit;
+  width: inherit;
+  background: var(--gradation-color);
+}
+
+.friends-page {
+  /* padding-top: 1vh;
+  padding-bottom: 1vh; */
 }
