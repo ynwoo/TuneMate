@@ -86,9 +86,18 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         String result = objectMapper.writeValueAsString(responseAuth);
 
         response.setHeader("content-type", "application/json");
-        response.addCookie(new Cookie("accessToken", accessToken));
-        response.addCookie(new Cookie("refreshToken", refreshToken));
-        response.addCookie(new Cookie("userId", userId));
+        Cookie cookie = new Cookie("accessToken", accessToken);
+        cookie.setDomain("http://localhost:3000");
+        response.addCookie(cookie);
+
+        cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setDomain("http://localhost:3000");
+        response.addCookie(cookie);
+
+        cookie = new Cookie("userId", userId);
+        cookie.setDomain("http://localhost:3000");
+        response.addCookie(cookie);
+
         response.setCharacterEncoding("utf-8");
         response.sendRedirect("http://localhost:3000");
     }
