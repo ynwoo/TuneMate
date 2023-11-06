@@ -9,3 +9,19 @@
   margin-top: 10vh;
   margin-bottom: 10vh;
 }
+
+* {
+  /* 색상 설정 */
+  --black-color: #1c1c1c;
+  --white-color: #fdfdfd;
+  --gray-color: #858585;
+  --light-gray-color: #DDDDDD;
+  --point-color: #463296;
+  --main-color: #E4DDFF;
+  --text-color: #666666;
+  --gradation-color: linear-gradient(
+    0deg,
+    #e4ddff
+    #fdfdfd
+  );
+}
