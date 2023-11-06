@@ -27,7 +27,7 @@ public class MessageController {
         chatDto.setTime(LocalDateTime.now());
         chatDto.setType("Message");
         chatDto.setReadCount(1);
-        msg.getMessages().add(chatDto);
+        msg.getMessages().add(0,chatDto);
         chatRepository.save(msg);
         return msg;
     }
