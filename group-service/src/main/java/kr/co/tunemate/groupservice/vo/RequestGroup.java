@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class RequestGroup {
+    private String groupId;
     private String title;
     private Integer capacity;
     private String concertId;
