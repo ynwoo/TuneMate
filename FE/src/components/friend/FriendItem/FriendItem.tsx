@@ -13,16 +13,17 @@ interface FriendItemProps extends Props {
 const FriendItem = ({ item, className }: FriendItemProps) => {
   return (
     <div className={[styles["friend-item"], className].join(" ")}>
-      <div className={styles["friend-item__user"]}>
-        <Link href={`/profile/${item.freindId}`}>
-          <ProfileImage
-            src="https://i.scdn.co/image/ab67757000003b824e172b7776591b79a63fcea9"
-            alt="친구 프로필"
-            type="friend"
-          />
-        </Link>
+      <Link
+        href={`/profile/${item.freindId}`}
+        className={styles["friend-item__user"]}
+      >
+        <ProfileImage
+          src="https://i.scdn.co/image/ab67757000003b824e172b7776591b79a63fcea9"
+          alt="친구 프로필"
+          type="friend"
+        />
         <p>{item.name}</p>
-      </div>
+      </Link>
       <div className={styles["friend-item__icons"]}>
         <Link href={`/friends/${item.relationId}`}>
           <Icon.Message size="xl" />

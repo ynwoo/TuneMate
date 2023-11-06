@@ -8,20 +8,28 @@
   --main-color: #e4ddff;
   --text-color: #666666;
   --gradation-color: linear-gradient(var(--main-color), var(--white-color));
+
+  --top-navbar-height: 10vh;
+  --bottom-navbar-height: 10vh;
 }
 
 #__next {
   position: relative;
-  width: 400px;
-  height: 800px;
-  background-color: var(--white-color);
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--light-gray-color);
+}
+
+a {
+  text-decoration: none;
 }
 
 .main {
-  margin-top: 10vh;
-  margin-bottom: 10vh;
+  margin-top: var(--top-navbar-height);
+  margin-bottom: var(--bottom-navbar-height);
   padding: 2vh 5vw;
-  height: inherit;
+  height: 96vh;
+  width: 90vw;
   background-color: var(--light-gray-color);
 }
 
