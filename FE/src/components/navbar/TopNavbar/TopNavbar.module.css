@@ -4,7 +4,7 @@
   height: 10vh;
   width: inherit;
   display: grid;
-  background-color: #ececec;
+  background-color: var(--white-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
