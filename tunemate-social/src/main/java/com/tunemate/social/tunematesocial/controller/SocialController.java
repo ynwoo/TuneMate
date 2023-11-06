@@ -2,6 +2,8 @@ package com.tunemate.social.tunematesocial.controller;
 
 import java.util.List;
 
+import com.tunemate.social.tunematesocial.entity.Message;
+import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -124,5 +126,14 @@ public class SocialController {
 	@GetMapping("/host/{playlistId}")
 	public String getHostId(@PathVariable("playlistId") String playlistId) {
 		return socialService.getHostId(playlistId);
+	}
+
+	/**
+	 * 채팅 기록을 보여줍니다.
+	 */
+	@GetMapping("/chats/{relationId}")
+	public ResponseEntity<Message> getChatRecord(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId){
+		System.out.println("sss");
+		return ResponseEntity.ok(socialService.getChats(relationId));
 	}
 }

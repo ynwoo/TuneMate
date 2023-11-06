@@ -235,4 +235,10 @@ public class SocialServiceImpl implements SocialService {
 		// host Id 제공
 		return byCommonPlaylistId.get().getHost();
 	}
+
+	@Override
+	public Message getChats(long relationId){
+		Message message = chatRepository.findByChatRoomId(relationId);
+		return message;
+	}
 }
