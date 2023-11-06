@@ -107,6 +107,8 @@ public class SocialController {
 	 * @return
 	 */
 	@PostMapping("/common-playlist")
+	@Operation(summary = "플리id 및 host 정보 저장", description = """
+		마이크로 서비스간 통신용""")
 	public ResponseEntity<?> addCommonPlayListInfo(@RequestBody PlaylistRequestDto playlistRequestDto) {
 		log.debug("플레이리스트 id 및 host 정보를 저장합니다.");
 
@@ -132,6 +134,9 @@ public class SocialController {
 	}
 
 	@GetMapping("/host/{playlistId}")
+	@Operation(summary = "Host Id 제공", description = """
+		playlist id를 받으면 그 플레이 리스트에 해당하는 host id를 제공합니다.
+		마이크로 서비스간 통신용""")
 	public String getHostId(@PathVariable("playlistId") String playlistId) {
 		return socialService.getHostId(playlistId);
 	}
