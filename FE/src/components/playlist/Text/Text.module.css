@@ -1,0 +1,9 @@
+.title {
+  font-size: 3vh;
+  color: var(--black-color);
+}
+
+.artist {
+  font-size: 2vh;
+  color: var(--text-color);
+}
