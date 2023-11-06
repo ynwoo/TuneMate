@@ -10,6 +10,7 @@ spring:
           '[/**]':
             allowedOrigins:
               - 'http://localhost:3000'
+              - 'http://k9a603.p.ssafy.io:3000'
             allowedHeaders: '*'
             allowedMethods:
               - PUT
