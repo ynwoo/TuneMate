@@ -22,10 +22,8 @@ const getIndividualPlayListRepresentative = async (): Promise<PlayList> => {
 const getIndividualPlayLists = async (
   userId: UserInfo["userId"]
 ): Promise<TotalPlayList> => {
-  const response = await spotifyApi.get<TotalPlayList>(
-    `users/${userId}/playlists`
-  );
-  return response.data;
+  const response = await spotifyApi.get(`users/${userId}/playlists`);
+  return response.data.items;
 };
 
 // 개인 대표 플레이리스트 트랙 추가
