@@ -1,17 +1,27 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Props from "@/types";
 import { RecommendationFriend } from "@/types/social";
 import { classNameWrapper } from "@/utils/className";
 import styles from "./RecommendationItem.module.css";
 import ProfileImage from "@/components/image/ProfileImage/ProfileImage";
+import { useRouter } from "next/router";
 
 interface RecommendItemProps extends Props {
   item: RecommendationFriend;
 }
 
 const RecommendationItem = ({ item, className }: RecommendItemProps) => {
+  const router = useRouter();
+
+  const onMoveProfilePage = useCallback(() => {
+    router.push(`/profile/${item.userId}`);
+  }, [router, item.userId]);
+
   return (
-    <div className={classNameWrapper(className, styles["recommendation-item"])}>
+    <div
+      className={classNameWrapper(className, styles["recommendation-item"])}
+      onClick={onMoveProfilePage}
+    >
       <div className={styles["recommendation-item__user"]}>
         <ProfileImage
           className={styles["recommendation-item__user--image"]}

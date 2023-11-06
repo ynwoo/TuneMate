@@ -1,7 +1,7 @@
 .bottom-navbar {
   position: fixed;
-  bottom: 0;
-  height: 10vh;
+  bottom: 0vh;
+  height: var(--bottom-navbar-height);
   width: inherit;
   display: grid;
   background-color: var(--main-color);
