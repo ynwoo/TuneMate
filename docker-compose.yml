@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   frontend:
-    image: ynwoo/tunemate-front-dev:latest
+    image: ynwoo/tunemate-front-master:latest
     build:
       context: ./FE
       dockerfile: Dockerfile
