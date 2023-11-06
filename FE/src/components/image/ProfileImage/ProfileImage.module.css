@@ -20,6 +20,9 @@
 }
 
 .profile {
-  height: 30vw;
-  width: 30vw;
+  height: 15vw;
+  width: 15vw;
+  background-color: var(--white-color);
+  border: 10px solid var(--main-color);
+  border-radius: 50%;
 }

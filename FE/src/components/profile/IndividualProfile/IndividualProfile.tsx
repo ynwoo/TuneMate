@@ -1,7 +1,7 @@
 import React from "react";
 import Props from "@/types";
 import styles from './IndividualProfile.module.css';
-import ProfileImageBox from "../ProfileImageBox/ProfileImageBox";
+import ProfileImage from "@/components/image/ProfileImage/ProfileImage";
 import NameBar from "../NameBar/NameBar";
 
 interface IndividualProfileProps extends Props {
@@ -12,7 +12,7 @@ interface IndividualProfileProps extends Props {
 const IndividualProfile = ({ src, name }: IndividualProfileProps) => {
  return (
   <div className={styles['individual-profile']}>
-    <ProfileImageBox src={src} width={200} height={200} />
+    <ProfileImage src={src} alt='profile-img' type={'profile'} />
     <NameBar name={name} />
   </div>
  );
