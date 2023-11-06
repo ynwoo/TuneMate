@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.tunemate.social.tunematesocial.client.UserServiceClient;
+import com.tunemate.social.tunematesocial.entity.Message;
+import com.tunemate.social.tunematesocial.repository.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,13 +30,15 @@ public class SocialServiceImpl implements SocialService {
 	private final FriendRepository friendRepository;
 	private final FriendRequestRepository friendRequestRepository;
 	private final UserServiceClient userServiceClient;
+	private final ChatRepository chatRepository;
 
 	@Autowired
 	public SocialServiceImpl(FriendRepository friendRepository, FriendRequestRepository friendRequestRepository,
-		UserServiceClient userServiceClient) {
+							 UserServiceClient userServiceClient, ChatRepository chatRepository) {
 		this.friendRepository = friendRepository;
 		this.friendRequestRepository = friendRequestRepository;
 		this.userServiceClient = userServiceClient;
+		this.chatRepository = chatRepository;
 	}
 
 	/**
@@ -129,6 +133,14 @@ public class SocialServiceImpl implements SocialService {
 
 		// 친구 신청 목록에서 제거
 		friendRequestRepository.delete(friendRequest);
+
+
+		// 채팅 방 생성
+		long relationId = friendRepository.findByUser1IdAndAndUser2Id(myId, newFriendId).get(0).getId();
+		Message message = new Message();
+		message.setChatRoomId(relationId);
+		message.setMessages(new ArrayList<>());
+		chatRepository.save(message);
 	}
 
 	@Override
