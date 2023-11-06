@@ -12,7 +12,7 @@ const initData = [
 
 const FriendsPage = () => {
   return (
-    <div>
+    <div className="friends-page">
       <FriendList friends={initData} />
     </div>
   );
