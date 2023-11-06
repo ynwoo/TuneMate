@@ -18,7 +18,7 @@ pipeline {
         stage('Push Images'){
             steps {
                 sh "echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin"
-                sh "docker push $DOCKERHUB_REPOSITORY_BACK:$VERSION"
+                sh "docker push $DOCKERHUB_REPOSITORY_FRONT:$VERSION"
             }
         }
         stage('Deploy Frontend Server') {
