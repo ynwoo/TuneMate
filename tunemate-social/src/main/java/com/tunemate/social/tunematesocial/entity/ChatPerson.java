@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Chat {
+public class ChatPerson {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +17,12 @@ public class Chat {
     private String userId;
 
     @ManyToOne
-    private Friend relationId;
+    private Friend friend;
 
     @Builder
-    public Chat( String userId, Friend friend){
+    public ChatPerson(String userId, Friend friend){
         this.userId = userId;
-        this.relationId = friend;
+        this.friend = friend;
     }
 
 

@@ -13,7 +13,7 @@ public class ChatDto {
 
     private String senderName;
 
-    private Long senderNo;
+    private String senderNo;
 
     private String content;
 
