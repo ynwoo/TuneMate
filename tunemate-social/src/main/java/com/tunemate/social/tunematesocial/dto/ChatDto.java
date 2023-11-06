@@ -1,10 +1,12 @@
 package com.tunemate.social.tunematesocial.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 public class ChatDto {
 
     private String type;
@@ -15,7 +17,7 @@ public class ChatDto {
 
     private String content;
 
-    private String time;
+    private LocalDateTime time;
 
     private Integer readCount;
 }
