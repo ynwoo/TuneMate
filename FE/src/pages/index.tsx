@@ -1,6 +1,7 @@
 import { login } from "@/api/user";
 import useIndividualPlayListsQuery from "@/hooks/queries/music/individual/useIndividualPlayListsQuery";
 import { storage } from "@/utils/storage";
+import Link from "next/link";
 import { useEffect } from "react";
 
 const LoginPage = () => {
@@ -32,6 +33,8 @@ const LoginPage = () => {
       </a>
       <br />
       <button onClick={onLogin}>login</button>
+      <br />
+      <Link href={"/main"}>메인 페이지 이동</Link>
     </div>
   );
 };

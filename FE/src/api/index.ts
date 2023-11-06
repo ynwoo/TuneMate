@@ -8,8 +8,8 @@ const apiInstance = () => {
   const instance = axios.create({
     baseURL: "http://k9a603.p.ssafy.io:8000/api/v1/",
     headers: {
-      "Access-Control-Allow-Origin": `http://localhost:3000`,
-      "Access-Control-Allow-Credentials": "true",
+      // "Access-Control-Allow-Origin": `http://localhost:3000`,
+      // "Access-Control-Allow-Credentials": "true",
       "Content-Type": "application/json;charset=UTF-8",
       Accept: "application/json,",
     },
