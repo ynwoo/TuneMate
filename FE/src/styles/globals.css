@@ -1,5 +1,7 @@
 * {
   /* 색상 설정 */
+  --red-color: red;
+  --blue-color: blue;
   --black-color: #1c1c1c;
   --white-color: #fdfdfd;
   --gray-color: #858585;

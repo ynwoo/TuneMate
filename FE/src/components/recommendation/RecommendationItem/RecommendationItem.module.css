@@ -1,4 +1,5 @@
 .recommendation-item {
+  position: relative;
   background-color: var(--white-color);
   justify-content: center;
   align-items: center;
@@ -25,4 +26,22 @@
 .recommendation-item__ratio {
   display: flex;
   flex-direction: column;
+}
+
+.recommendation-item__button {
+  position: absolute;
+  bottom: 1vh;
+  right: 3vw;
+  display: flex;
+}
+
+.recommendation-item__button--accept {
+  background-color: var(--blue-color);
+  color: var(--white-color);
+  margin-right: 1vw;
+}
+
+.recommendation-item__button--reject {
+  background-color: var(--red-color);
+  color: var(--white-color);
 }
