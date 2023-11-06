@@ -45,7 +45,8 @@ public class CommonPlaylistController {
 
 	// 공동 플레이리스트 조회
 	@GetMapping("/playlists/{playlistId}")
-	@Operation(summary = "공동 플레이리스트 조회", description = "공동 플레이리스트를 조회합니다.")
+	@Operation(summary = "공동 플레이리스트 조회", description = "공동 플레이리스트를 조회합니다.\n" +
+		"공통 플리 조회는 PostMan에서 테스트(SSE라 그런듯?)")
 	public ResponseEntity<SseEmitter> getCommonPlaylist(@PathVariable("playlistId") String playlistId,
 		@RequestHeader("UserId") String userId) throws IOException {
 		System.out.println("연결 : " + userId);
