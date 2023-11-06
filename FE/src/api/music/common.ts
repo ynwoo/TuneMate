@@ -35,7 +35,7 @@ const deleteCommonPlayListTrack = async ({
   positions,
 }: DeleteTrack) => {
   await api.delete<void>(`${COMMON_PLAYLISTS_URL}/${playlistId}/tracks`, {
-    tracks: [{ uri, positions }],
+    data: { tracks: [{ uri, positions }] },
   });
 };
 // 공동 플레이리스트 트랙 순서 변경
