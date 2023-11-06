@@ -1,11 +1,27 @@
 package com.tunemate.tunemateplaylist.controller;
 
-import com.tunemate.tunemateplaylist.dto.*;
-import com.tunemate.tunemateplaylist.service.IndividualPlaylistService;
-import com.tunemate.tunemateplaylist.service.IndividualPlaylistServiceImpl;
-import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.tunemate.tunemateplaylist.dto.PlaylistCreateDto;
+import com.tunemate.tunemateplaylist.dto.PlaylistIdDto;
+import com.tunemate.tunemateplaylist.dto.PlaylistResponseDto;
+import com.tunemate.tunemateplaylist.dto.TrackChangeRequestDto;
+import com.tunemate.tunemateplaylist.dto.TrackCreateDto;
+import com.tunemate.tunemateplaylist.dto.TrackDeleteRequestDto;
+import com.tunemate.tunemateplaylist.service.IndividualPlaylistService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @CrossOrigin(value = "*", allowedHeaders = "*")
@@ -17,6 +33,7 @@ public class IndividualPlaylistController {
     private final IndividualPlaylistService individualPlaylistService;
     //개인 플레이리스트 생성
     @PostMapping("playlists")
+    @Operation(summary = "개인 플레이리스트 생성", description = "Spotify계정에 개인의 플레이리스트를 생성합니다.")
     public void createPlaylist(@RequestHeader("UserId") String userId, @RequestBody PlaylistCreateDto playlistCreateDto) throws ParseException {
         individualPlaylistService.createPlaylist(userId,playlistCreateDto);
     }
