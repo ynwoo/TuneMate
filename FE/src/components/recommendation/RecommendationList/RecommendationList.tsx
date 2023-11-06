@@ -16,7 +16,11 @@ const RecommendationList = ({
   return (
     <div className={classNameWrapper(className, styles["recommendation-list"])}>
       {recommendations.map((recommendation) => (
-        <RecommendationItem key={recommendation.userId} item={recommendation} />
+        <RecommendationItem
+          key={recommendation.userId}
+          className={styles["recommendation-list__item"]}
+          item={recommendation}
+        />
       ))}
     </div>
   );

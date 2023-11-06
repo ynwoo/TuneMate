@@ -1,0 +1,16 @@
+.login-page {
+  width: inherit;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-page__title {
+  text-align: center;
+  font-size: large;
+}
+
+.login-page__button {
+}
