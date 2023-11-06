@@ -8,6 +8,7 @@ import com.example.tunemateuserservice.util.JwtTokenUtil;
 import com.example.tunemateuserservice.vo.ResponseAuth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -85,7 +86,10 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         String result = objectMapper.writeValueAsString(responseAuth);
 
         response.setHeader("content-type", "application/json");
+        response.addCookie(new Cookie("accessToken", accessToken));
+        response.addCookie(new Cookie("refreshToken", refreshToken));
+        response.addCookie(new Cookie("userId", userId));
         response.setCharacterEncoding("utf-8");
-        response.getWriter().print(result);
+        response.sendRedirect("http://localhost:3000");
     }
 }
