@@ -136,6 +136,7 @@ public class SocialController {
 	@GetMapping("/host/{playlistId}")
 	@Operation(summary = "Host Id 제공", description = """
 		playlist id를 받으면 그 플레이 리스트에 해당하는 host id를 제공합니다.
+				
 		마이크로 서비스간 통신용""")
 	public String getHostId(@PathVariable("playlistId") String playlistId) {
 		return socialService.getHostId(playlistId);
