@@ -1,6 +1,7 @@
 package com.tunemate.social.tunematesocial.service;
 
 import com.tunemate.social.tunematesocial.dto.ChatDto;
+import com.tunemate.social.tunematesocial.dto.response.MyChatRoomListDto;
 import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 import com.tunemate.social.tunematesocial.repository.ChatPersonRepository;
 import com.tunemate.social.tunematesocial.repository.ChattingRoomRepository;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -34,5 +36,10 @@ public class ChatServiceImpl implements ChatService{
         msg.getMessages().add(chatDto);
         chattingRoomRepository.save(msg);
         return msg;
+    }
+
+    @Override
+    public List<MyChatRoomListDto> getChatRoomList(String userId) {
+        return friendRepository.findChatRoomIdByUserId(userId);
     }
 }

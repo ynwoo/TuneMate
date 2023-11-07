@@ -2,7 +2,9 @@ package com.tunemate.social.tunematesocial.controller;
 
 import java.util.List;
 
+import com.tunemate.social.tunematesocial.dto.response.MyChatRoomListDto;
 import com.tunemate.social.tunematesocial.entity.ChattingRoom;
+import com.tunemate.social.tunematesocial.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +24,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SocialController {
 	private final SocialService socialService;
+	private final ChatService chatService;
 
 	@Autowired
-	public SocialController(SocialService socialService) {
+	public SocialController(SocialService socialService, ChatService chatService) {
 		this.socialService = socialService;
+		this.chatService = chatService;
 	}
 
 	/**
@@ -152,9 +156,17 @@ public class SocialController {
 	/**
 	 * 채팅 방 퇴장 (채팅 방 화면에서 다른 화면으로 전환).
 	 */
-	@DeleteMapping("chat-out/{relationId}")
+	@DeleteMapping("/chat-out/{relationId}")
 	public void chatOut(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId){
 		socialService.outChat(relationId,userId);
+	}
+
+	/**
+	 * 내가 속한 채팅방 목록 조회
+	 */
+	@GetMapping("/my-chats")
+	public ResponseEntity<List<MyChatRoomListDto>> myChats(@RequestHeader("UserId") String userId){
+		return ResponseEntity.ok(chatService.getChatRoomList(userId));
 	}
 
 }
