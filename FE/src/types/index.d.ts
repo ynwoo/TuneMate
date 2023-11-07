@@ -1,6 +1,6 @@
 interface Props {
   className?: string;
-  children?: JSX.Element | JSX.Element[];
+  children?: string | JSX.Element | JSX.Element[];
 }
 
 export default Props;

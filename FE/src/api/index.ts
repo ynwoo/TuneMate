@@ -1,12 +1,11 @@
+import { SPOTIFY_API_BASE_URL, TUNEMATE_API_BASE_URL } from "@/constants/url";
 import { storage } from "@/utils/storage";
-import axios, { AxiosInstance } from "axios";
-
-const API_BASE_URL = process.env.API_BASE_URL;
-console.log(API_BASE_URL);
+import axios, { AxiosInstance, HttpStatusCode } from "axios";
+import { getUserInfo, reissueToken } from "./user";
 
 const apiInstance = () => {
   const instance = axios.create({
-    baseURL: "http://k9a603.p.ssafy.io:8000/api/v1/",
+    baseURL: TUNEMATE_API_BASE_URL,
     headers: {
       // "Access-Control-Allow-Origin": `http://localhost:3000`,
       // "Access-Control-Allow-Credentials": "true",
@@ -20,7 +19,7 @@ const apiInstance = () => {
 
 const spotifyApiInstance = () => {
   const instance = axios.create({
-    baseURL: "https://api.spotify.com/v1/",
+    baseURL: SPOTIFY_API_BASE_URL,
     headers: {
       "Content-Type": "application/json",
     },
@@ -34,6 +33,41 @@ const authInterceptor = (instance: AxiosInstance) => {
     (config) => {
       const accessToken = storage.getAccessToken();
       config.headers["Authorization"] = accessToken;
+      return config;
+    },
+    (error) => {
+      console.error("request error : ", error);
+      return Promise.reject(error);
+    }
+  );
+
+  instance.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    async (error) => {
+      if (error.status === HttpStatusCode.Unauthorized) {
+        if (storage.getRefreshToken()) {
+          // token 재발급
+          await reissueToken();
+
+          // TODO: 페이지 새로고침 말고 다른 방법 필요
+          location.reload();
+        }
+      }
+      console.error("response error : ", error);
+      return Promise.reject(error);
+    }
+  );
+
+  return instance;
+};
+
+const reissueInterceptor = (instance: AxiosInstance) => {
+  instance.interceptors.request.use(
+    (config) => {
+      const refreshToken = storage.getRefreshToken();
+      config.headers["Authorization"] = refreshToken;
       return config;
     },
     (error) => {
@@ -72,7 +106,15 @@ const spotifyAuthInterceptor = (instance: AxiosInstance) => {
     (response) => {
       return response;
     },
-    (error) => {
+    async (error) => {
+      if (error.status === HttpStatusCode.Unauthorized) {
+        const accessToken = storage.getAccessToken();
+        const userId = storage.getUserId();
+        if (accessToken && userId) {
+          // spotify token 재발급
+          await getUserInfo(userId);
+        }
+      }
       console.error("response error : ", error);
       return Promise.reject(error);
     }
@@ -83,3 +125,4 @@ const spotifyAuthInterceptor = (instance: AxiosInstance) => {
 
 export const spotifyApi = spotifyAuthInterceptor(spotifyApiInstance());
 export const api = authInterceptor(apiInstance());
+export const reissueApi = reissueInterceptor(apiInstance());

@@ -27,7 +27,14 @@ const ProfileImage = ({
       )}
       onClick={onClick}
     >
-      <Image src={src} alt={alt} objectFit="cover" width={100} height={100} />
+      <Image
+        src={src}
+        alt={alt}
+        width={100}
+        height={100}
+        priority
+        style={{ objectFit: "cover" }}
+      />
     </div>
   );
 };

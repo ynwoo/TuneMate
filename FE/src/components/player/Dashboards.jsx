@@ -5,9 +5,8 @@ import TrackSearchResult from "./TrackSearchResult";
 import Player from "./Player";
 import axios from "axios";
 import PlaylistDetails from "./PlaylistDetails"; // 위에서 만든 PlaylistDetails 컴포넌트를 불러옵니다.
-
-const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIEND_ID;
-const spotifyApi = new SpotifyWebApi(clientId);
+const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
+const spotifyApi = new SpotifyWebApi({ clientId });
 
 export default function Dashboard({ accessToken }) {
   const [search, setSearch] = useState("");
@@ -183,50 +182,26 @@ export default function Dashboard({ accessToken }) {
         placeholder="Search Songs/Artists"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="my-custom-class rounded-pill"
+        className="my-custom-class rounded-pill" // Bootstrap 클래스 및 둥근 스타일 클래스 추가
         style={{
-          border: "2px solid #d4bafd",
-          borderRadius: "20px",
-          padding: "10px",
+          border: "2px solid #d4bafd", // 테두리 스타일
+          borderRadius: "20px", // 테두리를 더 둥글게 만듭니다.
+          padding: "10px", // 내용과 테두리 사이의 간격 조절
           width: "100%",
         }}
       />
-      {/* <div>
-        <h1>내 플레이리스트</h1>
-        <ul>
-          {playlists.map((playlist) => (
-            <li key={playlist.id}>
-              <a
-                href="#"
-                onClick={() => handlePlaylistClick(playlist.id)}
-                className={playlist.id === selectedPlaylistId ? "selected" : ""}
-              >
-                {playlist.name}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div> */}
-      <div>
-        <h1>내 플레이리스트</h1>
-        <select
-          className="form-select"
-          value={selectedPlaylistId}
-          onChange={handleSelectChange}
-        >
-          <option value="">플레이리스트 선택</option>
-          {playlists.map((playlist) => (
-            <option key={playlist.id} value={playlist.id}>
-              {playlist.name}
-            </option>
-          ))}
-        </select>
-
-        <button onClick={handleConfirmClick}>선택</button>
+      <div style={{ overflowY: "auto" }}>
+        {searchResults.map((track) => (
+          <TrackSearchResult
+            track={track}
+            key={track.uri}
+            chooseTrack={chooseTrack}
+          />
+        ))}
       </div>
-
-      {/* 선택된 플레이리스트의 상세 정보 표시 */}
-      <PlaylistDetails playlistDetails={playlistDetails} />
+      <div>
+        <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
+      </div>
     </Container>
   );
 }
