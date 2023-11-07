@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.tunemate.social.tunematesocial.client.UserServiceClient;
 import com.tunemate.social.tunematesocial.dto.ChatDto;
+import com.tunemate.social.tunematesocial.dto.UserIdDto;
 import com.tunemate.social.tunematesocial.entity.ChatPerson;
 import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 import com.tunemate.social.tunematesocial.repository.ChatPersonRepository;
@@ -273,5 +274,10 @@ public class SocialServiceImpl implements SocialService {
 		Friend friend = friendRepository.findById(relationId).get();
 		ChatPerson chatPerson = chatPersonRepository.findByFriendAndUserId(friend,userId);
 		chatPersonRepository.delete(chatPerson);
+	}
+
+	@Override
+	public List<UserIdDto> getRequestUserId(String userId){
+		return friendRequestRepository.findByRequestingUserId(userId);
 	}
 }
