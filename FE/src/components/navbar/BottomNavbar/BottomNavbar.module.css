@@ -1,6 +1,8 @@
 .bottom-navbar {
-  position: sticky;
-  bottom: 0vh;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: var(--bottom-navbar-height);
   width: inherit;
   display: grid;

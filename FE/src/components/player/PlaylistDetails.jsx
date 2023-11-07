@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import styles from "@/styles/PlayerPage.module.css";
 
 function PlaylistDetails({ playlistDetails, handleTrackClick }) {
   if (!playlistDetails) {
@@ -6,7 +7,7 @@ function PlaylistDetails({ playlistDetails, handleTrackClick }) {
   }
 
   return (
-    <div>
+    <div className={styles["playlist-details"]}>
       <h2>플레이리스트 상세 정보</h2>
       <p>플레이리스트 이름: {playlistDetails.name}</p>
       {playlistDetails.owner && (
@@ -14,10 +15,11 @@ function PlaylistDetails({ playlistDetails, handleTrackClick }) {
       )}
 
       <h3>곡 목록</h3>
-      <div>
+      <div className={styles["playlist-details-container"]}>
         {playlistDetails.tracks.items.map((track, index) => (
           <span
             key={index}
+            className={styles["playlist-details-item"]}
             onClick={() => handleTrackClick(track)}
             style={{ cursor: "pointer" }}
           >
