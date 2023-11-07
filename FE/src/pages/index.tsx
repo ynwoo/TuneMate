@@ -1,6 +1,7 @@
 import { storage } from "@/utils/storage";
 import Link from "next/link";
 import styles from "@/styles/LoginPage.module.css";
+import Image from "next/image";
 
 const LoginPage = () => {
   if (typeof window !== "undefined") {
@@ -11,7 +12,9 @@ const LoginPage = () => {
 
   return (
     <div className={styles["login-page"]}>
-      <p className={styles["login-page__title"]}>Tunemate</p>
+      <Image src="/TuneMate.png" alt="TuneMate Logo" width={250} height={40} />
+
+      <p className={styles["login-page__title"]}></p>
       <br />
       <a href="http://k9a603.p.ssafy.io:8000/api/v1/user-service/oauth2/authorization/spotify">
         login
