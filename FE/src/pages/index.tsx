@@ -16,7 +16,7 @@ const LoginPage = () => {
 
       <p className={styles["login-page__title"]}></p>
       <br />
-      <a href="http://k9a603.p.ssafy.io:8000/api/v1/user-service/oauth2/authorization/spotify">
+      <a href="http://tunemate.co.kr/api/v1/user-service/oauth2/authorization/spotify">
         login
       </a>
       <br />

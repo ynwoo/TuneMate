@@ -6,7 +6,7 @@ console.log(API_BASE_URL);
 
 const apiInstance = () => {
   const instance = axios.create({
-    baseURL: "http://k9a603.p.ssafy.io:8000/api/v1/",
+    baseURL: "http://tunemate.co.kr/api/v1/",
     headers: {
       // "Access-Control-Allow-Origin": `http://localhost:3000`,
       // "Access-Control-Allow-Credentials": "true",
