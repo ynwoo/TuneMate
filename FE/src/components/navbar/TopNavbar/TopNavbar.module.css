@@ -1,5 +1,5 @@
 .top-navbar {
-  position: fixed;
+  position: sticky;
   top: 0;
   height: var(--top-navbar-height);
   width: inherit;
