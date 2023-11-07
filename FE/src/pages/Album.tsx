@@ -1,6 +1,11 @@
+import Props from "@/types";
 import { useRouter } from "next/router";
 
-export default function Album({ albumUrl }) {
+interface AlbumProps extends Props {
+  albumUrl: string;
+}
+
+export default function Album({ albumUrl }: AlbumProps) {
   const router = useRouter();
   // const { albumUrl } = router.query;
 
