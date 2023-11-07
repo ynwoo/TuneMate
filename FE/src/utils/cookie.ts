@@ -37,10 +37,14 @@ const Cookie = Object.freeze({
       ";path=/";
   },
 
+  setInstantCookie(name: string, value: string) {
+    document.cookie = name + "=" + encodeURI(value) + ";path=/";
+  },
+
   setTokenResponse({ userId, accessToken, refreshToken }: TokenResponse) {
-    Cookie.setCookie("userId", userId, 1);
-    Cookie.setCookie("accessToken", accessToken, 1);
-    Cookie.setCookie("refreshToken", refreshToken, 1);
+    Cookie.setInstantCookie("userId", userId);
+    Cookie.setInstantCookie("accessToken", accessToken);
+    Cookie.setInstantCookie("refreshToken", refreshToken);
   },
 });
 
