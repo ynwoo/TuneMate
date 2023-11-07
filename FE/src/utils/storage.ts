@@ -1,33 +1,63 @@
-export const storage = {
-  getAccessToken() {
-    return localStorage.getItem("accessToken");
+import { TokenResponse } from "@/types/user";
+
+export const storage = Object.freeze({
+  getItem(name: string) {
+    const value = localStorage.getItem(name);
+    return value ? JSON.parse(value) : null;
   },
+
+  setItem(name: string, item: any) {
+    if (!item) return;
+    localStorage.setItem(name, JSON.stringify(item));
+  },
+
+  getAccessToken() {
+    return storage.getItem("accessToken");
+  },
+
   setAccessToken(accessToken: string) {
-    localStorage.setItem("accessToken", accessToken);
+    storage.setItem("accessToken", accessToken);
   },
 
   getRefreshToken() {
-    return localStorage.getItem("refreshToken");
+    return storage.getItem("refreshToken");
   },
+
   setRefreshToken(refreshToken: string) {
-    localStorage.setItem("refreshToken", refreshToken);
+    storage.setItem("refreshToken", refreshToken);
   },
+
   getUserId() {
-    return localStorage.getItem("userId");
+    return storage.getItem("userId");
   },
+
   setUserId(userId: string) {
-    localStorage.setItem("userId", userId);
+    storage.setItem("userId", userId);
   },
+
   getSpotifyAccessToken() {
-    return localStorage.getItem("spotifyAccessToken");
+    return storage.getItem("spotifyAccessToken");
   },
+
   setSpotifyAccessToken(spotifyAccessToken: string) {
-    localStorage.setItem("spotifyAccessToken", spotifyAccessToken);
+    storage.setItem("spotifyAccessToken", spotifyAccessToken);
   },
+
   getSpotifyUserId() {
-    return localStorage.getItem("spotifyUserId");
+    return storage.getItem("spotifyUserId");
   },
+
   setSpotifyUserId(spotifyUserId: string) {
-    localStorage.setItem("spotifyUserId", spotifyUserId);
+    storage.setItem("spotifyUserId", spotifyUserId);
   },
-};
+
+  setTokenResponse({ userId, accessToken, refreshToken }: TokenResponse) {
+    storage.setUserId(userId);
+    storage.setAccessToken(accessToken);
+    storage.setRefreshToken(refreshToken);
+  },
+
+  clear() {
+    localStorage.clear();
+  },
+});

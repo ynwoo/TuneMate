@@ -2,13 +2,39 @@ import { storage } from "@/utils/storage";
 import Link from "next/link";
 import styles from "@/styles/LoginPage.module.css";
 import Image from "next/image";
+import { TUNEMATE_API_BASE_URL } from "@/constants/url";
+import { Cookie } from "@/utils/cookie";
+import { TokenResponse } from "@/types/user";
+import { useRouter } from "next/router";
+import { getUserInfo } from "@/api/user";
+import { useEffect } from "react";
 
 const LoginPage = () => {
-  if (typeof window !== "undefined") {
-    storage.setAccessToken(
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTkzMjkyODUsImlzcyI6IlR1bmVtYXRlIn0.xtwh54KguZ8MF8sZ3GDdCSQnBZJBSPUqekCqaTfO0pdkgQHykswo1ncibaEJp4L4"
-    );
-  }
+  const router = useRouter();
+
+  useEffect(() => {
+    storage.clear();
+    const tokenResponse: TokenResponse = Cookie.getTokenResponse();
+    storage.setTokenResponse(tokenResponse);
+  }, []);
+
+  useEffect(() => {
+    const userId = storage.getUserId();
+    if (userId) {
+      getUserInfo(userId).then(() => {
+        router.push("/main");
+      });
+    }
+  }, [router]);
+
+  const setCookie = () => {
+    const userId = "cb899bc8-33a9-43a6-938c-76b0ec286c77";
+    const accessToken =
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTkzNDI5MDYsImlzcyI6IlR1bmVtYXRlIn0._9fvD6jYr90teVlBjZrjYk-NOIdEZhehnbLm5a8L73FaUUdSebvJIc6KekaGPuaE";
+    const refreshToken =
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiY2I4OTliYzgtMzNhOS00M2E2LTkzOGMtNzZiMGVjMjg2Yzc3IiwiZXhwIjoxNzAwNTQ1MzA2LCJpc3MiOiJUdW5lbWF0ZSJ9.gl-1N-cLwgcMCOskcf2-4zsCj0_yNC-p32HPId0HyxQLQZ0Ib9Npe5Xh8Gd4ySKQ";
+    Cookie.setTokenResponse({ userId, accessToken, refreshToken });
+  };
 
   return (
     <div className={styles["login-page"]}>
@@ -16,11 +42,15 @@ const LoginPage = () => {
 
       <p className={styles["login-page__title"]}></p>
       <br />
-      <a href="http://tunemate.co.kr/api/v1/user-service/oauth2/authorization/spotify">
+      <a
+        href={`${TUNEMATE_API_BASE_URL}/user-service/oauth2/authorization/spotify`}
+      >
         login
       </a>
       <br />
       <Link href={"/main"}>메인 페이지 이동</Link>
+      <br />
+      <button onClick={setCookie}>쿠키 넣기!!!!!</button>
     </div>
   );
 };
