@@ -32,8 +32,14 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
       if (isFriendRequest) {
         acceptFriendRequest(item.userId);
       } else {
-        const { userId, distance, musicalTasteSimilarity } = item;
-        sendSocialFriendRequest({ userId, distance, musicalTasteSimilarity });
+        const { userId, distance, similarity } = item;
+        console.log(distance, similarity);
+
+        sendSocialFriendRequest({
+          userId,
+          distance: "",
+          musicalTasteSimilarity: String(similarity),
+        });
       }
     };
     const onDecline = (e: MouseEvent<HTMLButtonElement>) => {
@@ -76,7 +82,7 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
         <div className={styles["recommendation-item__ratio"]}>
           <p>{item.distance ?? 0}km</p>
           <p>
-            {(Number(item.musicalTasteSimilarity) * 100).toFixed(0)}
+            {(Number(item.similarity) * 100).toFixed(0)}
             <Icon.Music size="lg" />
           </p>
           {!isFriendRequest && (

@@ -12,10 +12,13 @@ interface RecommendationFriend extends FriendRequest {
   playListId: string;
 }
 
-interface FriendRequest extends SendFriendRequest {
+interface FriendRequest {
   type: "friendRequest";
+  userId: UserInfo["userId"];
+  distance: string;
   name: string;
   img: string;
+  similarity: string;
 }
 
 interface SendFriendRequest {

@@ -46,12 +46,14 @@ const authInterceptor = (instance: AxiosInstance) => {
       return response;
     },
     async (error) => {
-      if (storage.getRefreshToken()) {
-        // token 재발급
-        await reissueToken();
+      if (error.status === HttpStatusCode.Unauthorized) {
+        if (storage.getRefreshToken()) {
+          // token 재발급
+          await reissueToken();
 
-        // TODO: 페이지 새로고침 말고 다른 방법 필요
-        location.reload();
+          // TODO: 페이지 새로고침 말고 다른 방법 필요
+          location.reload();
+        }
       }
       console.error("response error : ", error);
       return Promise.reject(error);
@@ -78,7 +80,7 @@ const reissueInterceptor = (instance: AxiosInstance) => {
     (response) => {
       return response;
     },
-    async (error) => {
+    (error) => {
       console.error("response error : ", error);
       return Promise.reject(error);
     }
