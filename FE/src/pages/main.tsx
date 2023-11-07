@@ -1,14 +1,16 @@
-import Dashboard from "../components/player/Dashboards.tsx";
+import React, { useEffect, useState } from "react";
+import Dashboard from "../components/player/Dashboards";
+import axios from "axios";
 
 const accessToken =
-  "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhYjFiNGI3Zi1hYmIyLTRiZjEtOTIwZi1iNDM3MjMzYjRmNDciLCJleHAiOjE2OTkyNjQwMjAsImlzcyI6IlR1bmVtYXRlIn0.vJrRdYnAr0YqSzfsfb6Eoj7F032Ee_K4rNKmy7oAc6mwqrbLVTB3ADOxtAjewWTA";
-const mainPage = () => {
+  "BQCEqCB0c7JVVyKUMqnm2oESbxInKXdhHEHmhij2wDHk4fpFSHWss_z1cP1BU7m1agNo_WVUlp-RdpWo_JKkAmquYJWqvySCJ5izKlcg3roQ7-FFNrSilzXIPLaQFJG7gZwdqg88WmCxArw7eCLUqKWfztbKQKdmq_OS8gv9TcEozmkmbAzdKbGI8L7vlbjL3LWR7dClAhO759liVYVJR_Cn76L5CsIICwwDKyfPbeAUoMLJJ07O2udUU8ADhwmz-Axt9NA9eb-vqdUlHQ_bQlerIUD1H3N1wFsnX2jcrwM";
+
+const MainPage: React.FC = () => {
   return (
     <div>
-      {/* <Dashboard /> */}
-      <Dashboard accessToken={accessToken} />;
+      <Dashboard accessToken={accessToken} />
     </div>
   );
 };
 
-export default mainPage;
+export default MainPage;
