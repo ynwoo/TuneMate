@@ -20,9 +20,15 @@ public class Group extends BaseTimeEntity {
     @Column(nullable = false, unique = true)
     private String groupId;
     @Column(nullable = false)
+    private String hostId;
+    @Column(nullable = false)
+    private String hostName;
+    @Column(nullable = false)
     private String title;
     @Column(nullable = false)
     private Integer capacity;
+    @Column(nullable = false)
+    private Integer participantsCnt;
     @Column(nullable = false)
     private String concertId;
     @CreatedDate
