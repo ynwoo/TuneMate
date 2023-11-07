@@ -9,9 +9,10 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOrigins:
-              - 'http://localhost:3000'
-              - 'http://k9a603.p.ssafy.io:3000'
-            allowedHeaders: '*'
+              - "http://localhost:3000"
+              - "http://k9a603.p.ssafy.io:3000"
+              - "http://tunemate.co.kr"
+            allowedHeaders: "*"
             allowedMethods:
               - PUT
               - GET
@@ -79,7 +80,7 @@ spring:
             - RewritePath=/api/v1/recommendation-service/(?<segment>.*), /$\{segment}
       default-filters:
         - name: GlobalFilter
-        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
 
 eureka:
   client:
