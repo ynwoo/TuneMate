@@ -8,7 +8,6 @@ import axios from "axios";
 const spotifyApi = new SpotifyWebApi({
   clientId: "c8e6cccf84bd478eb050941460eb765f",
 });
-
 export default function Dashboard({ accessToken }) {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
