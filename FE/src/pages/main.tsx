@@ -1,15 +1,21 @@
 import { storage } from "@/utils/storage";
 import Dashboard from "../components/player/Dashboards";
+import { useState, useEffect } from "react";
 
-const mainPage = () => {
-  const spotifyAccessToken = storage.getSpotifyAccessToken;
+const MainPage = () => {
+  const [accessToken, setAccessToken] = useState<string>("");
+
+  useEffect(() => {
+    const spotifyAccessToken = storage.getSpotifyAccessToken;
+    setAccessToken(spotifyAccessToken);
+  }, []);
 
   return (
     <div>
       {/* <Dashboard /> */}
-      <Dashboard accessToken={spotifyAccessToken} />;
+      <Dashboard accessToken={accessToken} />;
     </div>
   );
 };
 
-export default mainPage;
+export default MainPage;

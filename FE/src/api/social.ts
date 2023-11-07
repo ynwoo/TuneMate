@@ -1,4 +1,4 @@
-import { Friend, FriendRequest } from "@/types/social";
+import { Friend, FriendRequest, SendFriendRequest } from "@/types/social";
 import { UserInfo } from "@/types/user";
 import { api } from ".";
 import { ChatRoom } from "@/types/chat";
@@ -26,8 +26,13 @@ export const getSocialFriendRequests = async (): Promise<FriendRequest[]> => {
 };
 
 // 친구 신청
-export const sendSocialFriendRequest = async (userId: UserInfo["userId"]) => {
-  await api.post<void>(`${SOCIAL_SERVICE_URL}/friend-request`, { userId });
+export const sendSocialFriendRequest = async (
+  sendFriendRequest: SendFriendRequest
+) => {
+  await api.post<void>(
+    `${SOCIAL_SERVICE_URL}/friend-request`,
+    sendFriendRequest
+  );
 };
 
 // 친구 요청 수락

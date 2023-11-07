@@ -5,9 +5,9 @@ import TrackSearchResult from "./TrackSearchResult";
 import Player from "./Player";
 import axios from "axios";
 
-const spotifyApi = new SpotifyWebApi({
-  clientId: "c8e6cccf84bd478eb050941460eb765f",
-});
+const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
+const spotifyApi = new SpotifyWebApi({ clientId });
+
 export default function Dashboard({ accessToken }) {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
