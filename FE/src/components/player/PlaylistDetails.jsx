@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-function PlaylistDetails({ playlistDetails, playlistTracks, playTrack }) {
+function PlaylistDetails({ playlistDetails, handleTrackClick }) {
   if (!playlistDetails) {
     return <div>상세 정보를 불러오는 중...</div>;
   }
@@ -18,7 +18,7 @@ function PlaylistDetails({ playlistDetails, playlistTracks, playTrack }) {
         {playlistDetails.tracks.items.map((track, index) => (
           <span
             key={index}
-            onClick={() => playTrack(track)}
+            onClick={() => handleTrackClick(track)}
             style={{ cursor: "pointer" }}
           >
             <div style={{ display: "flex" }}>
