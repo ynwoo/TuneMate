@@ -12,8 +12,16 @@ public class WebSocketConfigurer implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry){
-        registry.enableSimpleBroker("/sub");
-        registry.setApplicationDestinationPrefixes("/pub");
+        registry.setApplicationDestinationPrefixes("/pub")
+                .enableStompBrokerRelay("/topic")
+                .setRelayHost("k9A603.p.ssafy.io")
+                .setRelayPort(8007)
+                .setVirtualHost("/")
+                .setClientLogin("a603")
+                .setClientPasscode("kimnamgo")
+                .setSystemLogin("a603")
+                .setSystemPasscode("kimnamgo");
+
     }
 
     @Override
