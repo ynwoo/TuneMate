@@ -33,6 +33,7 @@ a {
 }
 
 .main {
+  margin-bottom: var(--bottom-navbar-height);
   padding: 2vh 5vw;
   min-height: var(--main-height);
   width: 90vw;
