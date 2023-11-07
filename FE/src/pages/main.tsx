@@ -12,7 +12,7 @@ const MainPage = () => {
 
   return (
     <div>
-      <Dashboard accessToken={accessToken} />
+      <Dashboard accessToken={accessToken} />;
     </div>
   );
 };
