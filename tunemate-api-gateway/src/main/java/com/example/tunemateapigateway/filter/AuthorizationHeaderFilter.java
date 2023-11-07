@@ -69,7 +69,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(httpStatus);
 
-        log.error(errorMsg);
+        log.info(errorMsg);
 
         return response.setComplete();
     }
