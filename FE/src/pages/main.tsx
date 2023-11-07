@@ -12,7 +12,6 @@ const MainPage = () => {
 
   return (
     <div>
-      {/* <Dashboard /> */}
       <Dashboard accessToken={accessToken} />;
     </div>
   );

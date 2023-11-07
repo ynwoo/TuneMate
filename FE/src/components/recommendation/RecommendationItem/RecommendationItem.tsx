@@ -37,7 +37,7 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
 
         sendSocialFriendRequest({
           userId,
-          distance: "",
+          distance: "100",
           musicalTasteSimilarity: String(similarity),
         });
       }
