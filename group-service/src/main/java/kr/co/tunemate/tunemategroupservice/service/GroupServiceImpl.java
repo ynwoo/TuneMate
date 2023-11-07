@@ -20,8 +20,8 @@ public class GroupServiceImpl implements GroupService {
         Group group = modelMapper.map(groupDto, Group.class);
         group.setGroupId(UUID.randomUUID().toString());
 
-        groupRepository.save(group);
+        group = groupRepository.save(group);
 
-        return groupDto;
+        return modelMapper.map(group, GroupDto.class);
     }
 }
