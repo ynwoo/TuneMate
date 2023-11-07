@@ -1,12 +1,10 @@
+import { SPOTIFY_API_BASE_URL, TUNEMATE_API_BASE_URL } from "@/constants/url";
 import { storage } from "@/utils/storage";
 import axios, { AxiosInstance } from "axios";
 
-const API_BASE_URL = process.env.API_BASE_URL;
-console.log(API_BASE_URL);
-
 const apiInstance = () => {
   const instance = axios.create({
-    baseURL: "http://k9a603.p.ssafy.io:8000/api/v1/",
+    baseURL: TUNEMATE_API_BASE_URL,
     headers: {
       // "Access-Control-Allow-Origin": `http://localhost:3000`,
       // "Access-Control-Allow-Credentials": "true",
@@ -20,7 +18,7 @@ const apiInstance = () => {
 
 const spotifyApiInstance = () => {
   const instance = axios.create({
-    baseURL: "https://api.spotify.com/v1/",
+    baseURL: SPOTIFY_API_BASE_URL,
     headers: {
       "Content-Type": "application/json",
     },
