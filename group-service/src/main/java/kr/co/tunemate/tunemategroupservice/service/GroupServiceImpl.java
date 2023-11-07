@@ -24,4 +24,9 @@ public class GroupServiceImpl implements GroupService {
 
         return modelMapper.map(group, GroupDto.class);
     }
+
+    @Override
+    public GroupDto getGroupByGroupId(String groupId) {
+        return null;
+    }
 }
