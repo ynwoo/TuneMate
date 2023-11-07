@@ -16,8 +16,7 @@ const data: RecommendationFriend[] = [
 ] as RecommendationFriend[];
 
 const RecommendationPage = () => {
-  // const { data: recommendationFriends } = useRecommendationFriendsQuery();
-  const { data: recommendationFriends } = { data };
+  const { data: recommendationFriends } = useRecommendationFriendsQuery();
 
   return (
     <div className={styles["recommendation-page"]}>
