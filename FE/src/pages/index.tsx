@@ -5,19 +5,34 @@ import Image from "next/image";
 import { TUNEMATE_API_BASE_URL } from "@/constants/url";
 import { Cookie } from "@/utils/cookie";
 import { TokenResponse } from "@/types/user";
+import { useRouter } from "next/router";
+import { getUserInfo } from "@/api/user";
+import { useEffect } from "react";
 
 const LoginPage = () => {
-  if (typeof window !== "undefined") {
+  const router = useRouter();
+
+  useEffect(() => {
+    storage.clear();
     const tokenResponse: TokenResponse = Cookie.getTokenResponse();
     storage.setTokenResponse(tokenResponse);
-  }
+  }, []);
+
+  useEffect(() => {
+    const userId = storage.getUserId();
+    if (userId) {
+      getUserInfo(userId).then(() => {
+        router.push("/main");
+      });
+    }
+  }, [router]);
 
   const setCookie = () => {
     const userId = "cb899bc8-33a9-43a6-938c-76b0ec286c77";
     const accessToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTkzMzkyNzgsImlzcyI6IlR1bmVtYXRlIn0.zh8VP-7AfEoJD-YLvqu7wi9lLH2hrrAHQfvnTRSP0JKjfhcKMJjbH2xiwng6MBsx";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTkzNDI5MDYsImlzcyI6IlR1bmVtYXRlIn0._9fvD6jYr90teVlBjZrjYk-NOIdEZhehnbLm5a8L73FaUUdSebvJIc6KekaGPuaE";
     const refreshToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiY2I4OTliYzgtMzNhOS00M2E2LTkzOGMtNzZiMGVjMjg2Yzc3IiwiZXhwIjoxNzAwNTQxNjc4LCJpc3MiOiJUdW5lbWF0ZSJ9.Ceaex12nWlyMt4Wsh-lmRgVY_gLcO3b_G_Kw7isdvUIl70_Ypf1dpaD-MKwtBDLY";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiY2I4OTliYzgtMzNhOS00M2E2LTkzOGMtNzZiMGVjMjg2Yzc3IiwiZXhwIjoxNzAwNTQ1MzA2LCJpc3MiOiJUdW5lbWF0ZSJ9.gl-1N-cLwgcMCOskcf2-4zsCj0_yNC-p32HPId0HyxQLQZ0Ib9Npe5Xh8Gd4ySKQ";
     Cookie.setTokenResponse({ userId, accessToken, refreshToken });
   };
 
