@@ -1,0 +1,48 @@
+.button {
+  border: 0;
+  border-radius: 5px;
+  padding: 1vh 4vw;
+  margin-left: 1vw;
+  margin-right: 1vw;
+}
+
+.button-with-modal__modal {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-with-modal__modal--text {
+  text-align: center;
+}
+
+.button-with-modal__modal--button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.button-with-modal__modal--button-item {
+  padding: 1vw;
+  flex-grow: 1;
+}
+
+.blue {
+  border: 1px solid var(--blue-color);
+  background-color: var(--white-color);
+  color: var(--blue-color);
+}
+
+.blue:hover {
+  background-color: var(--blue-color);
+  color: var(--white-color);
+}
+
+.red {
+  border: 1px solid var(--red-color);
+  background-color: var(--white-color);
+  color: var(--red-color);
+}
+
+.red:hover {
+  background-color: var(--red-color);
+  color: var(--white-color);
+}

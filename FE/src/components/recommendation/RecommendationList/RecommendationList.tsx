@@ -1,12 +1,12 @@
 import React from "react";
 import Props from "@/types";
-import { RecommendationFriend } from "@/types/social";
+import { FriendRequest, RecommendationFriend } from "@/types/social";
 import RecommendationItem from "../RecommendationItem/RecommendationItem";
 import { classNameWrapper } from "@/utils/className";
 import styles from "./RecommendationList.module.css";
 
 interface RecommendListProps extends Props {
-  recommendations: RecommendationFriend[];
+  recommendations: (FriendRequest | RecommendationFriend)[];
 }
 
 const RecommendationList = ({
