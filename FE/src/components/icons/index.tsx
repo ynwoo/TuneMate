@@ -1,5 +1,5 @@
 import { faBell } from "@fortawesome/free-regular-svg-icons/faBell";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faCirclePlay, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { faHouse } from "@fortawesome/free-solid-svg-icons/faHouse";
 import { faMessage } from "@fortawesome/free-solid-svg-icons/faMessage";
@@ -38,6 +38,12 @@ const Icon = {
   ),
   Music: ({ size = "2xl" }: IconProps) => (
     <FontAwesomeIcon className={styles.icon} icon={faMusic} size={size} />
+  ),
+  PlayMusic: ({ size = "2xl" }: IconProps) => (
+    <FontAwesomeIcon className={styles.icon} icon={faCirclePlay} size={size} />
+  ),
+  Menu: ({ size = "2xl" }: IconProps) => (
+    <FontAwesomeIcon className={styles.icon} icon={faBars} size={size} />
   ),
 };
 
