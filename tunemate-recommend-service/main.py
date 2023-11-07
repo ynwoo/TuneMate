@@ -198,15 +198,15 @@ def root(UserId : str | None = Header(default=None)):
     print(similar_User)
     recommend = []
     similaritys = []
-    count = 0
+    # count = 0
     for similarUser in similar_User.index:
         # similaruser : 유사한 사용자의 기본키
         # UserService에  해당 사용자에 대한 정보를 요청하여 받아 리턴해준다.
         if similar_User[similarUser] != 0:
-            if(count == 5): break
+            # if(count == 5): break
             similaritys.append(similar_User[similarUser])
             recommend.append(similarUser)
-            count += 1
+            # count += 1
 
 
     def request(userId):
