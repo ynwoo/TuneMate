@@ -1,16 +1,13 @@
-package kr.co.tunemate.tunemategroupservice.dto;
+package kr.co.tunemate.tunemategroupservice.vo;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@EqualsAndHashCode(callSuper = false)
-public class GroupDto {
+@Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ResponseGroup {
     private String groupId;
     private String hostId;
     private String hostName;
