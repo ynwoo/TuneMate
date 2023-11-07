@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 public class ChatDto {
 
-    private String type;
+    private Long relationId;
 
     private String senderName;
 
