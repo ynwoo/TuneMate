@@ -1,0 +1,13 @@
+server:
+  port: 8004
+
+spring:
+  application:
+    name: group-service
+  datasource:
+    url: ${datasource-url}
+    username: ${datasource-username}
+    password: ${datasource-password}
+  jpa:
+    hibernate:
+      ddl-auto: create
