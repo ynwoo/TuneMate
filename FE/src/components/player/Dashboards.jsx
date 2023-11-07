@@ -18,10 +18,38 @@ export default function Dashboard({ accessToken }) {
   const [playlists, setPlaylists] = useState([]);
   const [playlistDetails, setPlaylistDetails] = useState(null);
   const [playlistTracks, setPlaylistTracks] = useState([]);
+  // 선택한 리스트
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
 
   function chooseTrack(track) {
     setPlayingTrack(track);
     setSearch("");
+  }
+
+  function handleConfirmClick() {
+    if (selectedPlaylistId) {
+      const endpoint = `https://api.spotify.com/v1/playlists/${selectedPlaylistId}`;
+      axios
+        .get(endpoint, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          const playlistDetails = response.data;
+          setPlaylistDetails(playlistDetails);
+        })
+        .catch((error) => {
+          console.error(
+            "플레이리스트 상세 정보를 가져오는 중 오류 발생:",
+            error
+          );
+        });
+    }
+  }
+
+  function handleSelectChange(event) {
+    setSelectedPlaylistId(event.target.value);
   }
 
   useEffect(() => {
@@ -65,6 +93,7 @@ export default function Dashboard({ accessToken }) {
   }, [accessToken]);
 
   function handlePlaylistClick(playlistId) {
+    setSelectedPlaylistId(playlistId);
     // Spotify API 엔드포인트 URL
     const endpoint = `https://api.spotify.com/v1/playlists/${playlistId}`;
 
@@ -127,6 +156,23 @@ export default function Dashboard({ accessToken }) {
       cancel = true;
     };
   }, [search, accessToken]);
+  useEffect(() => {
+    const endpoint = "https://api.spotify.com/v1/me/playlists";
+    spotifyApi.setAccessToken(accessToken);
+
+    axios
+      .get(endpoint, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        setPlaylists(response.data.items);
+      })
+      .catch((error) => {
+        console.error("플레이리스트를 가져오는 중 오류 발생:", error);
+      });
+  }, [accessToken]);
 
   return (
     <Container
@@ -146,32 +192,42 @@ export default function Dashboard({ accessToken }) {
           width: "100%",
         }}
       />
-      <div>
+      {/* <div>
         <h1>내 플레이리스트</h1>
         <ul>
           {playlists.map((playlist) => (
             <li key={playlist.id}>
-              <a href="#" onClick={() => handlePlaylistClick(playlist.id)}>
+              <a
+                href="#"
+                onClick={() => handlePlaylistClick(playlist.id)}
+                className={playlist.id === selectedPlaylistId ? "selected" : ""}
+              >
                 {playlist.name}
               </a>
             </li>
           ))}
         </ul>
-      </div>
-
-      <div style={{ overflowY: "auto" }}>
-        {searchResults.map((track) => (
-          <TrackSearchResult
-            track={track}
-            key={track.uri}
-            chooseTrack={chooseTrack}
-          />
-        ))}
-      </div>
-
+      </div> */}
       <div>
-        <PlaylistDetails playlistDetails={playlistDetails} />
+        <h1>내 플레이리스트</h1>
+        <select
+          className="form-select"
+          value={selectedPlaylistId}
+          onChange={handleSelectChange}
+        >
+          <option value="">플레이리스트 선택</option>
+          {playlists.map((playlist) => (
+            <option key={playlist.id} value={playlist.id}>
+              {playlist.name}
+            </option>
+          ))}
+        </select>
+
+        <button onClick={handleConfirmClick}>선택</button>
       </div>
+
+      {/* 선택된 플레이리스트의 상세 정보 표시 */}
+      <PlaylistDetails playlistDetails={playlistDetails} />
     </Container>
   );
 }

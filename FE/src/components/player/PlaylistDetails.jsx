@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-function PlaylistDetails({ playlistDetails, playlistTracks }) {
+function PlaylistDetails({ playlistDetails, playlistTracks, playTrack }) {
   if (!playlistDetails) {
     return <div>상세 정보를 불러오는 중...</div>;
   }
@@ -15,23 +15,25 @@ function PlaylistDetails({ playlistDetails, playlistTracks }) {
 
       <h3>곡 목록</h3>
       <div>
-        <p>
-          {playlistDetails.tracks.items.map((track, index) => (
-            <span key={index}>
-              <div style={{ display: "flex" }}>
-                <img
-                  src={track.track.album.images[0].url}
-                  alt="Album Art"
-                  width={64}
-                />
-                <div>
-                  {track.track.name}
-                  <div>{track.track.artists[0].name}</div>
-                </div>
+        {playlistDetails.tracks.items.map((track, index) => (
+          <span
+            key={index}
+            onClick={() => playTrack(track)}
+            style={{ cursor: "pointer" }}
+          >
+            <div style={{ display: "flex" }}>
+              <img
+                src={track.track.album.images[0].url}
+                alt="Album Art"
+                width={64}
+              />
+              <div>
+                {track.track.name}
+                <div>{track.track.artists[0].name}</div>
               </div>
-            </span>
-          ))}
-        </p>
+            </div>
+          </span>
+        ))}
       </div>
     </div>
   );
