@@ -1,0 +1,17 @@
+.container {
+  background-color: var(--gray-color);
+  padding: 1vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3vh;
+}
+
+.playlist-upper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 39vh;
+  padding: 1vh 0vh
+}

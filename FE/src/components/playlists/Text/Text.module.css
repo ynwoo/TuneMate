@@ -1,9 +1,17 @@
 .title {
   font-size: 3vh;
   color: var(--black-color);
+  margin: 0;
 }
 
 .artist {
   font-size: 2vh;
   color: var(--text-color);
+  margin: 0;
+}
+
+.playlist {
+  font-size: 4vh;
+  color: var(--black-color);
+  margin: 0
 }

@@ -1,0 +1,18 @@
+.container {
+  background-color: var(--white-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 35vh;
+  padding: 0.5vh 2vh
+}
+
+.item-left {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text-box {
+  margin-left: 1vh;
+}
