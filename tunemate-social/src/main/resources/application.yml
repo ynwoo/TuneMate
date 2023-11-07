@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: social-service
+  datasource:
+    url: ${DATABASE_SOCIAL_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: true
+        highlight_sql: true
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_SERVICE_URL}
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance.id:${random.value}}
+    hostname : k9A603.p.ssafy.io
+
+server:
+  port: 8082
+
+logging:
+  level:
+    root: info
+    com.tunemate.social: debug
+
+openapi:
+  service:
+    version: ${OPENAPI_SERVICE_VERSION}
+    url: ${OPENAPI_SERVICE_URL} #api gateway url
+springdoc:
+  api-docs:
+    path: /v3/api-docs #these urls will used to load the swagger ui of this service by the api gateway
+  swagger-ui:
+    path: /swagger-ui.html
+
