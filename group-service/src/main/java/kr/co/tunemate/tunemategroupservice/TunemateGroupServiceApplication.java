@@ -1,4 +1,4 @@
-package kr.co.tunemate.groupservice;
+package kr.co.tunemate.tunemategroupservice;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class GroupServiceApplication {
+public class TunemateGroupServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(GroupServiceApplication.class, args);
+        SpringApplication.run(TunemateGroupServiceApplication.class, args);
     }
 
     @Bean

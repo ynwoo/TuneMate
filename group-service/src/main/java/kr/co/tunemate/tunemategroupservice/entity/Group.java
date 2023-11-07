@@ -1,4 +1,4 @@
-package kr.co.tunemate.groupservice.entity;
+package kr.co.tunemate.tunemategroupservice.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

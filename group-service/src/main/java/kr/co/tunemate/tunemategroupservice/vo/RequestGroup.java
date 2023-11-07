@@ -1,4 +1,4 @@
-package kr.co.tunemate.groupservice.vo;
+package kr.co.tunemate.tunemategroupservice.vo;
 
 import lombok.Data;
 

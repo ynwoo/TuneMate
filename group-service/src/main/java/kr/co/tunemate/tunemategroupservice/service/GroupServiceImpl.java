@@ -1,8 +1,8 @@
-package kr.co.tunemate.groupservice.service;
+package kr.co.tunemate.tunemategroupservice.service;
 
-import kr.co.tunemate.groupservice.dto.GroupDto;
-import kr.co.tunemate.groupservice.entity.Group;
-import kr.co.tunemate.groupservice.repository.GroupRepository;
+import kr.co.tunemate.tunemategroupservice.dto.GroupDto;
+import kr.co.tunemate.tunemategroupservice.entity.Group;
+import kr.co.tunemate.tunemategroupservice.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
