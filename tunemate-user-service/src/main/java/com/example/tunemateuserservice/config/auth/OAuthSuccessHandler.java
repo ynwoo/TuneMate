@@ -99,6 +99,6 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         response.addCookie(cookie);
 
         response.setCharacterEncoding("utf-8");
-        response.sendRedirect(env.getProperty("authentication.successRedirectUrl"));
+        response.sendRedirect(env.getProperty("authentication.success-redirect-url"));
     }
 }
