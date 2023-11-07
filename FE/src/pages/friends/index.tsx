@@ -3,7 +3,7 @@ import { Friend } from "@/types/social";
 import styles from "@/styles/FriendsPage.module.css";
 import useSocialFriendsQuery from "@/hooks/queries/social/useSocialFriendsQuery";
 
-const initData = [
+const data = [
   { freindId: "0", name: "ss1" },
   { freindId: "1", name: "ss2" },
   { freindId: "2", name: "ss3" },
@@ -13,7 +13,8 @@ const initData = [
 ] as Friend[];
 
 const FriendsPage = () => {
-  const { data: friends } = useSocialFriendsQuery();
+  // const { data: friends } = useSocialFriendsQuery();
+  const { data: friends } = { data };
 
   return (
     <div className={styles["friends-page"]}>
