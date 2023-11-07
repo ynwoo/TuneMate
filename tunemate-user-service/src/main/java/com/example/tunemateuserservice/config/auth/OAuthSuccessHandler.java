@@ -99,6 +99,6 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         response.addCookie(cookie);
 
         response.setCharacterEncoding("utf-8");
-        response.sendRedirect("http://localhost:3000");
+        response.sendRedirect(env.getProperty("authentication.successRedirectUrl"));
     }
 }

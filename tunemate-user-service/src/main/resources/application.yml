@@ -1,6 +1,9 @@
 server:
   port: 8083
 
+authentication:
+  success-redirect-url: ${authentication-success-redirect-url}
+
 spring:
   application:
     name: ${spring-application-name}
