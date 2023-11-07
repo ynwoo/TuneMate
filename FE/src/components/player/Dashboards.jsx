@@ -6,9 +6,8 @@ import Player from "./Player";
 import axios from "axios";
 import PlaylistDetails from "./PlaylistDetails"; // 위에서 만든 PlaylistDetails 컴포넌트를 불러옵니다.
 
-const spotifyApi = new SpotifyWebApi({
-  clientId: "c8e6cccf84bd478eb050941460eb765f",
-});
+const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIEND_ID;
+const spotifyApi = new SpotifyWebApi(clientId);
 
 export default function Dashboard({ accessToken }) {
   const [search, setSearch] = useState("");
