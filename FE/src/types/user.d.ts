@@ -10,7 +10,7 @@ interface UserInfo {
 interface TokenResponse {
   accessToken: string;
   refreshToken: string;
-  userId: UserInfo['userId'];
+  userId: UserInfo["userId"];
 }
 
 export type { UserInfo, TokenResponse };
