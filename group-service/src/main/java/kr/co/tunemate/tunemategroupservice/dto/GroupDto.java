@@ -9,12 +9,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 public class GroupDto {
     private String groupId;
+    private String hostId;
+    private String hostName;
     private String title;
     private Integer capacity;
+    private Integer participantsCnt;
     private String concertId;
+    private LocalDateTime startDateTime;
     private LocalDateTime deadline;
     private String content;
+    private LocalDateTime createdAt;
+    private LocalDateTime lastModifiedAt;
 }
