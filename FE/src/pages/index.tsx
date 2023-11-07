@@ -6,7 +6,7 @@ import Image from "next/image";
 const LoginPage = () => {
   if (typeof window !== "undefined") {
     storage.setAccessToken(
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTkzMjIwNTUsImlzcyI6IlR1bmVtYXRlIn0.XgU3ekmW15b-3JFtAbcEM87JWJPrYI6vO0yn-BbyDfDqb65Cw4zlY63H6K7X1OzO"
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTkzMjkyODUsImlzcyI6IlR1bmVtYXRlIn0.xtwh54KguZ8MF8sZ3GDdCSQnBZJBSPUqekCqaTfO0pdkgQHykswo1ncibaEJp4L4"
     );
   }
 
