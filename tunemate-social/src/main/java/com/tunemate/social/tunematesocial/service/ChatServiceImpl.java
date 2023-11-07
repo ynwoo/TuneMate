@@ -25,8 +25,6 @@ public class ChatServiceImpl implements ChatService{
     @Override
     public ChattingRoom getChat(long relationId, ChatDto chatDto){
         ChattingRoom msg = chattingRoomRepository.findByChatRoomId(relationId);
-        chatDto.setTime(LocalDateTime.now());
-        chatDto.setType("Message");
         if(chatPersonRepository.findByFriend(friendRepository.findById(relationId).get()).size() == 2){
             chatDto.setReadCount(0);
         }
