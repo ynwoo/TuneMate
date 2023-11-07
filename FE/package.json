@@ -23,7 +23,7 @@
     "react-spotify-web-playback": "^0.14.1",
     "react-swipeable-list": "^1.9.3",
     "recoil": "^0.7.7",
-    "spotify-web-api-node": "^5.0.2",
+    "spotify-web-api-node": "^5.0.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.3",
