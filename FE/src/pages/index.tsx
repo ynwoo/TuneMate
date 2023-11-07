@@ -5,7 +5,7 @@ import styles from "@/styles/LoginPage.module.css";
 const LoginPage = () => {
   if (typeof window !== "undefined") {
     storage.setAccessToken(
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTkyNjQxMjMsImlzcyI6IlR1bmVtYXRlIn0.4ujNAr07ukx9YQRpQ52P273oHQ5xKBdkiNYAuROGXaQ3WkgjgJku_JMG3F81Amow"
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTkzMjIwNTUsImlzcyI6IlR1bmVtYXRlIn0.XgU3ekmW15b-3JFtAbcEM87JWJPrYI6vO0yn-BbyDfDqb65Cw4zlY63H6K7X1OzO"
     );
   }
 

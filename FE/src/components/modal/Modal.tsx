@@ -18,7 +18,6 @@ const Modal = ({
     <>
       {isOpen && (
         <div
-          //   style={{ top: scrollTop }}
           className={classNameWrapper(className, styles["modal-overlay"])}
           onClick={(e) => {
             e.stopPropagation();

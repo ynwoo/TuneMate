@@ -45,39 +45,45 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
       className={classNameWrapper(className, styles["recommendation-item"])}
       onClick={onMoveProfilePage}
     >
-      <div className={styles["recommendation-item__user"]}>
-        <ProfileImage
-          className={styles["recommendation-item__user--image"]}
-          src="https://i.scdn.co/image/ab67757000003b824e172b7776591b79a63fcea9"
-          alt="내 프로필"
-          type="recommendation"
-        />
-        <p className={styles["recommendation-item__user--name"]}>{item.name}</p>
+      <div className="flex-container">
+        <div className={styles["recommendation-item__user"]}>
+          <ProfileImage
+            className={styles["recommendation-item__user--image"]}
+            src="https://i.scdn.co/image/ab67757000003b824e172b7776591b79a63fcea9"
+            alt="내 프로필"
+            type="recommendation"
+          />
+          <p className={styles["recommendation-item__user--name"]}>
+            {item.name}
+          </p>
+        </div>
+        <div className={styles["recommendation-item__ratio"]}>
+          <p>{item.distance ?? 0}km</p>
+          <p>
+            {(item.similarity * 100).toFixed(0)}
+            <Icon.Music size="lg" />
+          </p>
+        </div>
       </div>
-      <div className={styles["recommendation-item__ratio"]}>
-        <p>{item.distance ?? 0}km</p>
-        <p>
-          {(item.similarity * 100).toFixed(0)}
-          <Icon.Music size="lg" />
-        </p>
-        {isFriendRequest && (
-          <div className={styles["recommendation-item__button"]}>
-            <ButtonWithModal
-              className={styles["recommendation-item__button--accept"]}
-              onClick={onAccept}
-              modalMessage="수락하시겠습니까?"
-            >
-              수락
-            </ButtonWithModal>
-            <Button
-              className={styles["recommendation-item__button--reject"]}
-              onClick={onDecline}
-            >
-              거절
-            </Button>
-          </div>
-        )}
-      </div>
+      {isFriendRequest && (
+        <div className={styles["recommendation-item__button-container"]}>
+          <ButtonWithModal
+            className={styles["recommendation-item__button-item"]}
+            onClick={onAccept}
+            modalMessage="수락하시겠습니까?"
+            color="blue"
+          >
+            수락
+          </ButtonWithModal>
+          <Button
+            className={styles["recommendation-item__button-item"]}
+            onClick={onDecline}
+            color="red"
+          >
+            거절
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

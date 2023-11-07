@@ -4,10 +4,12 @@ import styles from "./Button.module.css";
 import { MouseEvent, useCallback } from "react";
 import Modal from "../modal/Modal";
 import useModal from "@/hooks/useModal";
+import Button, { ButtonColor } from "./Button";
 
 interface ButtonWithModalProps extends Props {
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
   modalMessage: string;
+  color: ButtonColor;
 }
 
 const ButtonWithModal = ({
@@ -15,6 +17,7 @@ const ButtonWithModal = ({
   children,
   onClick,
   modalMessage,
+  color,
 }: ButtonWithModalProps) => {
   const { closeToggle, isOpen, openToggle } = useModal();
 
@@ -36,20 +39,39 @@ const ButtonWithModal = ({
 
   return (
     <>
-      <button
+      <Button
         className={classNameWrapper(className, styles.button)}
         onClick={onModal}
+        color={color}
       >
         {children}
-      </button>
+      </Button>
       <Modal isOpen={isOpen} toggle={closeToggle}>
-        <p>{modalMessage}</p>
-        <button className={styles["button__accept"]} onClick={onConfirm}>
-          확인
-        </button>
-        <button className={styles["button--reject"]} onClick={closeToggle}>
-          취소
-        </button>
+        <div className={styles["button-with-modal__modal"]}>
+          <p className={styles["button-with-modal__modal--text"]}>
+            {modalMessage}
+          </p>
+          <div className={styles["button-with-modal__modal--button-container"]}>
+            <Button
+              className={classNameWrapper(
+                styles["button-with-modal__modal--button"]
+              )}
+              onClick={onConfirm}
+              color="blue"
+            >
+              확인
+            </Button>
+            <Button
+              className={classNameWrapper(
+                styles["button-with-modal__modal--button"]
+              )}
+              onClick={closeToggle}
+              color="red"
+            >
+              취소
+            </Button>
+          </div>
+        </div>
       </Modal>
     </>
   );

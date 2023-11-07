@@ -18,7 +18,7 @@
 #__next {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background-color: var(--light-gray-color);
 }
 
@@ -30,18 +30,17 @@ a {
   margin-top: var(--top-navbar-height);
   margin-bottom: var(--bottom-navbar-height);
   padding: 2vh 5vw;
-  height: 96vh;
+  min-height: 96vh;
   width: 90vw;
   background-color: var(--light-gray-color);
 }
 
 .login {
-  height: inherit;
+  min-height: inherit;
   width: inherit;
   background: var(--gradation-color);
 }
 
-.friends-page {
-  /* padding-top: 1vh;
-  padding-bottom: 1vh; */
+.flex-container {
+  display: flex;
 }
