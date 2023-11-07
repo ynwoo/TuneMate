@@ -20,7 +20,12 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI}
-
+  rabbitmq:
+    host: ${HOSTNAME}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+    virtual-host: /
 
 eureka:
   client:
@@ -30,7 +35,7 @@ eureka:
       defaultZone: ${EUREKA_SERVICE_URL}
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance.id:${random.value}}
-    hostname : k9A603.p.ssafy.io
+    hostname : ${HOSTNAME}
 
 server:
   port: 8082
