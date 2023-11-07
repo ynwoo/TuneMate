@@ -1,5 +1,6 @@
 package kr.co.tunemate.tunemategroupservice.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import kr.co.tunemate.tunemategroupservice.dto.GroupDto;
 import kr.co.tunemate.tunemategroupservice.service.GroupService;
 import kr.co.tunemate.tunemategroupservice.vo.RequestGroup;
@@ -18,6 +19,7 @@ public class GroupController {
     private final GroupService groupService;
     private final ModelMapper modelMapper;
 
+    @Operation(description = "공고를 생성합니다.")
     @PostMapping
     public ResponseEntity saveGroup(@RequestHeader("UserId") String userId, @RequestBody RequestGroup requestGroup) {
         GroupDto groupDto = modelMapper.map(requestGroup, GroupDto.class);
@@ -25,5 +27,4 @@ public class GroupController {
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
 }
