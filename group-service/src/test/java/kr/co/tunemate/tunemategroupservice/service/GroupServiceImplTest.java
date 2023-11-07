@@ -1,0 +1,69 @@
+package kr.co.tunemate.tunemategroupservice.service;
+
+import kr.co.tunemate.tunemategroupservice.dto.GroupDto;
+import kr.co.tunemate.tunemategroupservice.entity.Group;
+import kr.co.tunemate.tunemategroupservice.exception.NoSuchItemException;
+import kr.co.tunemate.tunemategroupservice.repository.GroupRepository;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+class GroupServiceImplTest {
+    @Autowired
+    GroupService groupService;
+    @Autowired
+    GroupRepository groupRepository;
+    @Autowired
+    ModelMapper modelMapper;
+
+    @Transactional
+    @DisplayName("공고를 저장")
+    @Test
+    void saveGroup() {
+        // given
+        GroupDto groupDto = GroupDto.builder()
+                .groupId(null)
+                .title("공고 제목")
+                .content("공고 내용")
+                .deadline(LocalDateTime.of(2023, 11, 7, 14, 57))
+                .concertId("콘서트 UUID")
+                .capacity(4)
+                .build();
+
+        // when
+        GroupDto returnGroupDto = groupService.saveGroup(groupDto);
+
+        // then
+        Group returnGroup = groupRepository.findByGroupId(returnGroupDto.getGroupId()).get();
+        GroupDto mappedDto = modelMapper.map(returnGroup, GroupDto.class);
+
+        Assertions.assertThat(returnGroupDto).isEqualTo(mappedDto);
+    }
+    @Transactional
+    @DisplayName("공고 제목 없이 공고를 저장")
+    @Test
+    void saveGroupWithoutTitle() {
+        // given
+        GroupDto groupDto = GroupDto.builder()
+                .groupId(null)
+                .title(null)
+                .content("공고 내용")
+                .deadline(LocalDateTime.of(2023, 11, 7, 14, 57))
+                .concertId("콘서트 UUID")
+                .capacity(4)
+                .build();
+
+        // when
+        // then
+        Assertions.assertThatThrownBy(() -> groupService.saveGroup(groupDto));
+    }
+}
