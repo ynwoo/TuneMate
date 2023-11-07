@@ -1,10 +1,10 @@
-package kr.co.tunemate.groupservice;
+package kr.co.tunemate.tunemategroupservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GroupServiceApplicationTests {
+class TunemateGroupServiceApplicationTests {
 
     @Test
     void contextLoads() {
