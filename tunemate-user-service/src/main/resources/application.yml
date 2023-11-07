@@ -3,6 +3,8 @@ server:
 
 authentication:
   success-redirect-url: ${authentication-success-redirect-url}
+cookie:
+  domain: ${cookie-domain}
 
 spring:
   application:
