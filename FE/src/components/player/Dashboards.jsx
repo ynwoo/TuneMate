@@ -17,6 +17,7 @@ export default function Dashboard({ accessToken }) {
   //   const [lyrics, setLyrics] = useState(""); // lyrics 상태 추가
   const [playlists, setPlaylists] = useState([]);
   const [playlistDetails, setPlaylistDetails] = useState(null);
+  const [playlistTracks, setPlaylistTracks] = useState([]);
 
   function chooseTrack(track) {
     setPlayingTrack(track);
@@ -62,6 +63,7 @@ export default function Dashboard({ accessToken }) {
         console.error("플레이리스트를 가져오는 중 오류 발생:", error);
       });
   }, [accessToken]);
+
   function handlePlaylistClick(playlistId) {
     // Spotify API 엔드포인트 URL
     const endpoint = `https://api.spotify.com/v1/playlists/${playlistId}`;
@@ -80,11 +82,20 @@ export default function Dashboard({ accessToken }) {
         // 여기에서 필요한 정보를 상태로 설정하거나 렌더링하면 됩니다.
         // 예를 들어, 선택한 플레이리스트의 상세 정보를 상태로 설정
         setPlaylistDetails(playlistDetails);
+        // 곡 목록도 설정
+        setPlaylistTracks(playlistDetails.tracks.items);
       })
       .catch((error) => {
         console.error("플레이리스트 상세 정보를 가져오는 중 오류 발생:", error);
       });
   }
+
+  useEffect(() => {
+    if (playlistDetails) {
+      setPlaylistTracks(playlistDetails.tracks.items);
+    }
+  }, [playlistDetails]);
+
   useEffect(() => {
     if (!search) return setSearchResults([]);
     if (!accessToken) return;
