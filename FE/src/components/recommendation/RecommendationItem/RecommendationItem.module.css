@@ -1,13 +1,13 @@
 .recommendation-item {
+  /* position: relative; */
   background-color: var(--white-color);
   justify-content: center;
   align-items: center;
   border-radius: 10px;
   background-color: white;
   padding: 1vh 3vw;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 3vw;
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
 }
 
@@ -20,9 +20,21 @@
   flex: 1;
 }
 .recommendation-item__user--name {
+  text-align: center;
 }
 
 .recommendation-item__ratio {
   display: flex;
   flex-direction: column;
+  text-align: center;
+  margin-left: 2vw;
+}
+
+.recommendation-item__button-container {
+  display: flex;
+  margin-left: auto;
+}
+
+.recommendation-item__button-item {
+  margin-right: 1vw;
 }

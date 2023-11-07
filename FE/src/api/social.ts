@@ -17,25 +17,27 @@ export const deleteSocialFriend = async (userId: UserInfo["userId"]) => {
 
 // 친구 요청 목록 조회
 export const getSocialFriendRequests = async (): Promise<FriendRequest[]> => {
-  const response = await api.get<FriendRequest[]>(`social/friend-requests`);
+  const response = await api.get<FriendRequest[]>(
+    `social-service/friend-requests`
+  );
   return response.data;
 };
 
 // 친구 신청
 export const sendSocialFriendRequest = async (userId: UserInfo["userId"]) => {
-  await api.post<void>(`social/friend-request`, { userId });
+  await api.post<void>(`social-service/friend-request`, { userId });
 };
 
 // 친구 요청 수락
 export const acceptSocialFriendRequest = async (userId: UserInfo["userId"]) => {
-  await api.post<void>(`social/acceptance/${userId}`);
+  await api.post<void>(`social-service/acceptance/${userId}`);
 };
 
 // 친구 요청 거절
 export const declineSocialFriendRequest = async (
   userId: UserInfo["userId"]
 ) => {
-  await api.post<void>(`social/decline/${userId}`);
+  await api.post<void>(`social-service/decline/${userId}`);
 };
 
 // 친구와의 채팅

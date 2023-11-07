@@ -5,7 +5,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(3, 3, 3, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,13 +15,8 @@
 .modal-box {
   display: block;
   background: white;
-  width: 25rem;
-  height: 25rem;
-  padding: 1rem;
+  max-width: 80vw;
+  /* height: 15vh; */
+  padding: 5vw;
   border-radius: 1rem;
-
-  @media screen and (max-width: 499px) {
-    width: 20rem;
-    height: 20rem;
-  }
 }
