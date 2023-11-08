@@ -146,6 +146,8 @@ public class SocialController {
 	 * 채팅 기록을 보여줍니다 (채팅 방 접속).
 	 */
 	@GetMapping("/chats/{relationId}")
+	@Operation(summary = "채팅 기록 조회", description = """
+		채팅 기록을 조회합니다.""")
 	public ResponseEntity<ChattingRoom> getChatRecord(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId){
 
 		socialService.setChats(relationId,userId);
@@ -157,6 +159,8 @@ public class SocialController {
 	 * 채팅 방 퇴장 (채팅 방 화면에서 다른 화면으로 전환).
 	 */
 	@DeleteMapping("/chat-out/{relationId}")
+	@Operation(summary = "채팅방 퇴장(채팅 방 화면에서 다른 화면으로 전환)", description = """
+		채팅 방을 나갈 때 요청하는 API.""")
 	public void chatOut(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId){
 		socialService.outChat(relationId,userId);
 	}
@@ -165,8 +169,20 @@ public class SocialController {
 	 * 내가 속한 채팅방 목록 조회
 	 */
 	@GetMapping("/my-chats")
+	@Operation(summary = "내가 속한 채팅방 목록 조회", description = """
+		로그인 시 웹소켓 연결 및 토픽 구독을 위한 채팅방 목록.""")
 	public ResponseEntity<List<MyChatRoomListDto>> myChats(@RequestHeader("UserId") String userId){
 		return ResponseEntity.ok(chatService.getChatRoomList(userId));
+	}
+
+	/**
+	 * 내가 친구요청 보낸 사람들의 아이디 조회
+	 */
+	@GetMapping("/requests/friends")
+	@Operation(summary = "내가 친구요청 보낸 사람들의 아이디 조회", description = """
+		내가 친구요청 보낸 사람들의 아이디 조회.""")
+	public ResponseEntity<?> getRequestUserId(@RequestHeader("UserId") String userId){
+		return ResponseEntity.ok(socialService.getRequestUserId(userId));
 	}
 
 }
