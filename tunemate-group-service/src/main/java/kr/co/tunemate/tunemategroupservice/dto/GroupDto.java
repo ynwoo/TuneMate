@@ -21,6 +21,7 @@ public class GroupDto {
     private LocalDateTime startDateTime;
     private LocalDateTime deadline;
     private String content;
+    private Boolean closedByHost;
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
 }
