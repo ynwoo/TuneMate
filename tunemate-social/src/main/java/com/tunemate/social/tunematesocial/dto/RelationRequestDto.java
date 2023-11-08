@@ -7,7 +7,7 @@ public class RelationRequestDto {
 
     private boolean accept;
 
-    private String myUserId;
+    private String receiveUserId;
 
     private String requestUserId;
 
