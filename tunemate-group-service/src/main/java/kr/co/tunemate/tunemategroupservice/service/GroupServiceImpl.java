@@ -19,8 +19,8 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupDto saveGroup(GroupDto groupDto) {
+        groupDto.setGroupId(UUID.randomUUID().toString());
         Group group = modelMapper.map(groupDto, Group.class);
-        group.setGroupId(UUID.randomUUID().toString());
 
         group = groupRepository.save(group);
 
