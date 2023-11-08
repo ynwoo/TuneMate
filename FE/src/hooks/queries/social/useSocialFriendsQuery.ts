@@ -1,11 +1,12 @@
-import { getSocialFriends } from '@/api/social';
-import { Friend } from '@/types/social';
-import { useQuery } from '@tanstack/react-query';
+import { getSocialFriends } from "@/api/social";
+import { QueryKey } from "@/constants/queryKey";
+import { Friend } from "@/types/social";
+import { useQuery } from "@tanstack/react-query";
 
 // 친구 목록 조회
 const useSocialFriendsQuery = () => {
   const query = useQuery<Friend[]>({
-    queryKey: ['useSocialFriendsQuery'],
+    queryKey: QueryKey.useSocialFriendsQuery(),
     queryFn: getSocialFriends,
   });
 
