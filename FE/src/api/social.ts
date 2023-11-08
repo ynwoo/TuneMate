@@ -47,6 +47,27 @@ export const declineSocialFriendRequest = async (
   await api.post<void>(`${SOCIAL_SERVICE_URL}/decline/${userId}`);
 };
 
+type SendSocialFriendRequestResponse = {
+  userId: UserInfo["userId"];
+};
+
+// 내가 친구요청 보낸 사람들의 아이디 조회
+export const getSendSocialFriendRequests = async (): Promise<string[]> => {
+  const response = await api.get<SendSocialFriendRequestResponse[]>(
+    `${SOCIAL_SERVICE_URL}/requests/friends`
+  );
+
+  const userIds: string[] = response.data
+    .map((elm: SendSocialFriendRequestResponse) => elm.userId)
+    .reduce((res: string[], elm: string) => {
+      if (!res.includes(elm)) {
+        res.push(elm);
+      }
+      return res;
+    }, []);
+  return userIds;
+};
+
 // 채팅 기록 조회
 export const getChats = async (
   relationId: Friend["relationId"]
@@ -65,14 +86,18 @@ export const disconnectChatRoom = async (relationId: Friend["relationId"]) => {
   await api.post(`${SOCIAL_SERVICE_URL}/chat-out/${relationId}`);
 };
 
+type ChatRoomResponse = {
+  chatRoomId: ChatRoom["chatRoomId"];
+};
 // 내가 참여한 채팅방 목록 조회
-export const getMyChatRooms = async (): Promise<
-  {
-    chatRoomId: ChatRoom["chatRoomId"];
-  }[]
-> => {
-  const response = await api.get(`${SOCIAL_SERVICE_URL}/my-chats`);
-  return response.data;
+export const getMyChatRooms = async (): Promise<number[]> => {
+  const response = await api.get<ChatRoomResponse[]>(
+    `${SOCIAL_SERVICE_URL}/my-chats`
+  );
+  const chatRoomIds: number[] = response.data.map(
+    (elm: ChatRoomResponse) => elm.chatRoomId
+  );
+  return chatRoomIds;
 };
 
 // 로그인 후 채팅 방 구독

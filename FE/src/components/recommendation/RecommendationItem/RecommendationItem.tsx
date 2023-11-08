@@ -30,11 +30,14 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
     const onAccept = (e: MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       if (isFriendRequest) {
+        // 친구 요청 수락
         acceptFriendRequest(item.userId);
       } else {
         const { userId, distance, similarity } = item;
         console.log(distance, similarity);
 
+        // 친구 요청 보내기
+        // TODO: 친구 요청 중복 제거 구현 필요
         sendSocialFriendRequest({
           userId,
           distance: "100",
@@ -63,7 +66,7 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
   }, [router, item.userId]);
 
   return (
-    <div
+    <li
       className={classNameWrapper(className, styles["recommendation-item"])}
       onClick={onMoveProfilePage}
     >
@@ -80,7 +83,8 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
           </p>
         </div>
         <div className={styles["recommendation-item__ratio"]}>
-          <p>{item.distance ?? 0}km</p>
+          {/* TODO: distance 구현 예정 */}
+          {/* <p>{item.distance ?? 0}km</p> */}
           <p>
             {(Number(item.similarity) * 100).toFixed(0)}
             <Icon.Music size="lg" />
@@ -116,7 +120,7 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
           </Button>
         </div>
       )}
-    </div>
+    </li>
   );
 };
 

@@ -21,6 +21,9 @@
 }
 .recommendation-item__user--name {
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .recommendation-item__ratio {

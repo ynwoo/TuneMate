@@ -12,7 +12,7 @@ interface FriendItemProps extends Props {
 
 const FriendItem = ({ item, className }: FriendItemProps) => {
   return (
-    <div className={[styles["friend-item"], className].join(" ")}>
+    <li className={[styles["friend-item"], className].join(" ")}>
       <Link
         href={`/profile/${item.freindId}`}
         className={styles["friend-item__user"]}
@@ -32,7 +32,7 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
           <Icon.Music size="xl" />
         </Link>
       </div>
-    </div>
+    </li>
   );
 };
 

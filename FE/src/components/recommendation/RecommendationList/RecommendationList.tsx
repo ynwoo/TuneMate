@@ -14,7 +14,7 @@ const RecommendationList = ({
   className,
 }: RecommendListProps) => {
   return (
-    <div className={classNameWrapper(className, styles["recommendation-list"])}>
+    <ul className={classNameWrapper(className, styles["recommendation-list"])}>
       {recommendations.map((recommendation) => (
         <RecommendationItem
           key={recommendation.userId}
@@ -22,7 +22,7 @@ const RecommendationList = ({
           item={recommendation}
         />
       ))}
-    </div>
+    </ul>
   );
 };
 
