@@ -15,10 +15,16 @@ interface RecommendationFriend extends FriendRequest {
 interface FriendRequest {
   type: "friendRequest";
   userId: UserInfo["userId"];
+  distance: string;
   name: string;
   img: string;
-  distance: string;
-  similarity: number;
+  similarity: string;
 }
 
-export type { Friend, FriendRequest, RecommendationFriend };
+interface SendFriendRequest {
+  userId: UserInfo["userId"];
+  distance: string;
+  musicalTasteSimilarity: string;
+}
+
+export type { Friend, FriendRequest, RecommendationFriend, SendFriendRequest };
