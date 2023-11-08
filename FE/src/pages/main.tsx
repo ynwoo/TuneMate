@@ -1,7 +1,7 @@
 import { Storage } from "@/utils/storage";
 import Dashboard from "../components/player/Dashboards";
 import { useState, useEffect } from "react";
-import styles from "@/styles/mainPage.module.css";
+import styles from "@/styles/MainPage.module.css";
 
 const MainPage = () => {
   const [accessToken, setAccessToken] = useState<string>("");
