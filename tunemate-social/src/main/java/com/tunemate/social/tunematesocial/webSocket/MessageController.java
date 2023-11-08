@@ -35,6 +35,6 @@ public class MessageController {
 
     @MessageMapping("/request")
     public void request(@Payload RelationRequestDto relationRequestDto){
-        simpMessageSendingOperations.convertAndSend("/exchange/friend/"+relationRequestDto.getMyUserId(),relationRequestDto);
+        simpMessageSendingOperations.convertAndSend("/exchange/friend/"+relationRequestDto.getReceiveUserId(),relationRequestDto);
     }
 }
