@@ -19,3 +19,8 @@
   align-items: center;
   justify-content: center;
 }
+
+.bottom-navbar__item svg {
+  max-height: 45%;
+  max-width: 45%;
+}

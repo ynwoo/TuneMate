@@ -8,9 +8,11 @@ import { TokenResponse } from "@/types/user";
 import { useRouter } from "next/router";
 import { getUserInfo } from "@/api/user";
 import { useEffect } from "react";
+import useChat from "@/hooks/useChat";
 
 const LoginPage = () => {
   const router = useRouter();
+  const { connect } = useChat();
 
   useEffect(() => {
     Storage.clear();
@@ -19,17 +21,18 @@ const LoginPage = () => {
     const userId = Storage.getUserId();
     if (userId) {
       getUserInfo(userId).then(() => {
+        connect();
         router.push("/main");
       });
     }
-  }, [router]);
+  }, [router, connect]);
 
   const setCookie = () => {
     const userId = "cb899bc8-33a9-43a6-938c-76b0ec286c77";
     const accessToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTk0MDY5NzEsImlzcyI6IlR1bmVtYXRlIn0.c_3p55ptALHixny44vYEoqB-NGOVq-3oRlPRro1yffZLIspjccX2eNZHuKMcJOxw";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTk0MjIyNjAsImlzcyI6IlR1bmVtYXRlIn0.da_je-zv3Wh0Jfq1-93LObo3gpsffL6W9tmWf9GYuwnQm3g1dP2a-YnH8kaeWJBz";
     const refreshToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiY2I4OTliYzgtMzNhOS00M2E2LTkzOGMtNzZiMGVjMjg2Yzc3IiwiZXhwIjoxNzAwNjA5MzcxLCJpc3MiOiJUdW5lbWF0ZSJ9.HJLcYq1Vy7r9OShDqoKCjMuCFVYxpFEI-e9ZsVW2Io-6kshv_B0gA3abc1gzEk_C";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiY2I4OTliYzgtMzNhOS00M2E2LTkzOGMtNzZiMGVjMjg2Yzc3IiwiZXhwIjoxNzAwNjI0NjYwLCJpc3MiOiJUdW5lbWF0ZSJ9.4VH8QuTRc0McwnjtAX2FOOUSM05FqXEC_sG99wMkdy5JulPdZM6_w9OKJ23Vuugu";
     Cookie.setTokenResponse({ userId, accessToken, refreshToken });
     location.reload();
   };

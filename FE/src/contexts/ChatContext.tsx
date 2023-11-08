@@ -32,7 +32,10 @@ const ChatProvider = ({ children }: ChatProvider) => {
       }
 
       if (client.current) {
-        Stomp.subscribe(client.current, relationId);
+        const callback = (data: any) => {
+          console.log(data);
+        };
+        Stomp.subscribe(client.current, relationId, callback);
       }
     },
     [connect]
