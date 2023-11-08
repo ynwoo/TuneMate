@@ -13,7 +13,6 @@ export default function Dashboard({ accessToken }) {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [playingTrack, setPlayingTrack] = useState();
-  //   const [lyrics, setLyrics] = useState(""); // lyrics 상태 추가
   const [playlists, setPlaylists] = useState([]);
   const [playlistDetails, setPlaylistDetails] = useState(null);
   const [playlistTracks, setPlaylistTracks] = useState([]);
@@ -25,6 +24,7 @@ export default function Dashboard({ accessToken }) {
     setSearch("");
   }
 
+  // 플레이리스트 가져오기
   function handleConfirmClick() {
     if (selectedPlaylistId) {
       const endpoint = `https://api.spotify.com/v1/playlists/${selectedPlaylistId}`;
@@ -52,20 +52,6 @@ export default function Dashboard({ accessToken }) {
   }
 
   useEffect(() => {
-    if (!playingTrack) return;
-    axios
-      .get("http://localhost:3001/lyrics", {
-        params: {
-          track: playingTrack.title,
-          artist: playingTrack.artist,
-        },
-      })
-      .then((data) => {
-        // setLyrics(data.data.lyrics);
-      });
-  }, [playingTrack]);
-
-  useEffect(() => {
     if (!accessToken) return;
     spotifyApi.setAccessToken(accessToken);
   }, [accessToken]);
@@ -90,33 +76,6 @@ export default function Dashboard({ accessToken }) {
         console.error("플레이리스트를 가져오는 중 오류 발생:", error);
       });
   }, [accessToken]);
-
-  function handlePlaylistClick(playlistId) {
-    setSelectedPlaylistId(playlistId);
-    // Spotify API 엔드포인트 URL
-    const endpoint = `https://api.spotify.com/v1/playlists/${playlistId}`;
-
-    // Spotify API 요청
-    axios
-      .get(endpoint, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) => {
-        // 선택한 플레이리스트의 상세 정보가 response.data에 있음
-        const playlistDetails = response.data;
-        console.log("선택한 플레이리스트 상세 정보:", playlistDetails);
-        // 여기에서 필요한 정보를 상태로 설정하거나 렌더링하면 됩니다.
-        // 예를 들어, 선택한 플레이리스트의 상세 정보를 상태로 설정
-        setPlaylistDetails(playlistDetails);
-        // 곡 목록도 설정
-        setPlaylistTracks(playlistDetails.tracks.items);
-      })
-      .catch((error) => {
-        console.error("플레이리스트 상세 정보를 가져오는 중 오류 발생:", error);
-      });
-  }
 
   useEffect(() => {
     if (playlistDetails) {
@@ -150,15 +109,14 @@ export default function Dashboard({ accessToken }) {
         })
       );
     });
-
     return () => {
       cancel = true;
     };
   }, [search, accessToken]);
+
   useEffect(() => {
     const endpoint = "https://api.spotify.com/v1/me/playlists";
     spotifyApi.setAccessToken(accessToken);
-
     axios
       .get(endpoint, {
         headers: {
@@ -201,27 +159,11 @@ export default function Dashboard({ accessToken }) {
           />
         ))}
       </div>
-
+      {/* 
       <div>
         <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
-      </div>
-
-      {/* <div>
-        <h1>내 플레이리스트</h1>
-        <ul>
-          {playlists.map((playlist) => (
-            <li key={playlist.id}>
-              <a
-                href="#"
-                onClick={() => handlePlaylistClick(playlist.id)}
-                className={playlist.id === selectedPlaylistId ? "selected" : ""}
-              >
-                {playlist.name}
-              </a>
-            </li>
-          ))}
-        </ul>
       </div> */}
+
       <div>
         <h1>내 플레이리스트</h1>
         <select
@@ -241,7 +183,11 @@ export default function Dashboard({ accessToken }) {
       </div>
 
       {/* 선택된 플레이리스트의 상세 정보 표시 */}
-      <PlaylistDetails playlistDetails={playlistDetails} />
+      <PlaylistDetails
+        playlistDetails={playlistDetails}
+        accessToken={accessToken}
+        chooseTrack={chooseTrack}
+      />
     </Container>
   );
 }
