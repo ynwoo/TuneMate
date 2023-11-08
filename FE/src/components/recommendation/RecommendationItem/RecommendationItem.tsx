@@ -30,11 +30,14 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
     const onAccept = (e: MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       if (isFriendRequest) {
+        // 친구 요청 수락
         acceptFriendRequest(item.userId);
       } else {
         const { userId, distance, similarity } = item;
         console.log(distance, similarity);
 
+        // 친구 요청 보내기
+        // TODO: 친구 요청 중복 제거 구현 필요
         sendSocialFriendRequest({
           userId,
           distance: "100",

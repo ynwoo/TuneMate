@@ -1,4 +1,4 @@
-import { storage } from "@/utils/storage";
+import { Storage } from "@/utils/storage";
 import Link from "next/link";
 import styles from "@/styles/LoginPage.module.css";
 import Image from "next/image";
@@ -13,10 +13,10 @@ const LoginPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    storage.clear();
+    Storage.clear();
     const tokenResponse: TokenResponse = Cookie.getTokenResponse();
-    storage.setTokenResponse(tokenResponse);
-    const userId = storage.getUserId();
+    Storage.setTokenResponse(tokenResponse);
+    const userId = Storage.getUserId();
     if (userId) {
       getUserInfo(userId).then(() => {
         router.push("/main");
