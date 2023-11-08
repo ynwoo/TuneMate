@@ -31,13 +31,19 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
 
-            log.info(Arrays.toString( request.getQueryParams().toSingleValueMap().values().toArray()));
+            String authorizationHeader = null;
+            if (request.getQueryParams().containsKey(HttpHeaders.AUTHORIZATION)) { // 웹 소켓용 검증
+                authorizationHeader = request.getQueryParams().getFirst(HttpHeaders.AUTHORIZATION);
+                log.info("accessToken from QueryParam: {}", authorizationHeader);
 
-            if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                return onError(exchange, "No Authorization header", HttpStatus.UNAUTHORIZED);
+            } else { // 그 외 검증
+                if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+                    return onError(exchange, "No Authorization header", HttpStatus.UNAUTHORIZED);
+                }
+
+                authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
             }
 
-            String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
             String jwt = authorizationHeader.replace("Bearer ", "");
 
             if (!isValidJwt(jwt)) {
