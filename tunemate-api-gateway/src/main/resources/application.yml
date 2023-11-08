@@ -60,6 +60,7 @@ spring:
             - RewritePath=/music-service/(?<segment>.*), /$\{segment}
         - id: social-service
           uri: lb://social-service
+          order: 1
           predicates:
             - Path=/api/v1/social-service/**
           filters:
@@ -67,6 +68,7 @@ spring:
             - RewritePath=/api/v1/social-service/(?<segment>.*), /$\{segment}
         - id: social-service-chat
           uri: lb:ws://social-service
+          order: 0
           predicates:
             - Path=/api/v1/social-service/chat
           filters:
