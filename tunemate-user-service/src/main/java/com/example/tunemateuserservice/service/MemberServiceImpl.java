@@ -118,8 +118,13 @@ public class MemberServiceImpl implements MemberService {
         return memberDto;
     }
 
+    /**
+     * userId로 오름차순 정렬한 결과를 반환한다.
+     * @param userIds
+     * @return
+     */
     @Override
     public List<MemberDto> getMembersByUserIdIn(List<String> userIds) {
-        return memberRepository.findAllByUserIdIn(userIds).stream().map(member -> mapper.map(member, MemberDto.class)).toList();
+        return memberRepository.findAllByUserIdInOrderByUserId(userIds).stream().map(member -> mapper.map(member, MemberDto.class)).toList();
     }
 }

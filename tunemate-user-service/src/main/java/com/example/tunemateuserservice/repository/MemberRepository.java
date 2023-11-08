@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findBySpotifyUserId(String spotifyUserId);
     Optional<Member> findByUserId(String userId);
-    List<Member> findAllByUserIdIn(List<String> userIds);
+    List<Member> findAllByUserIdInOrderByUserId(List<String> userIds);
 }
