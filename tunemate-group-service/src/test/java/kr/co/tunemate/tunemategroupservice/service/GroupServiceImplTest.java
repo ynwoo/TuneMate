@@ -2,8 +2,8 @@ package kr.co.tunemate.tunemategroupservice.service;
 
 import kr.co.tunemate.tunemategroupservice.dto.GroupDto;
 import kr.co.tunemate.tunemategroupservice.entity.Group;
+import kr.co.tunemate.tunemategroupservice.exception.NoAuthorizationForItemException;
 import kr.co.tunemate.tunemategroupservice.repository.GroupRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class GroupServiceImplTest {
@@ -50,7 +53,7 @@ class GroupServiceImplTest {
         Group returnGroup = groupRepository.findByGroupId(returnGroupDto.getGroupId()).get();
         GroupDto mappedDto = modelMapper.map(returnGroup, GroupDto.class);
 
-        Assertions.assertThat(returnGroupDto).isEqualTo(mappedDto);
+        assertThat(returnGroupDto).isEqualTo(mappedDto);
     }
 
     @Transactional
@@ -75,7 +78,7 @@ class GroupServiceImplTest {
 
         // when
         // then
-        Assertions.assertThatThrownBy(() -> groupService.saveGroup(groupDto));
+        assertThatThrownBy(() -> groupService.saveGroup(groupDto));
     }
 
     @Transactional
@@ -104,7 +107,7 @@ class GroupServiceImplTest {
         GroupDto returnGroupDto = groupService.getGroupByGroupId(groupDto.getGroupId());
 
         // then
-        Assertions.assertThat(returnGroupDto).isEqualTo(groupDto);
+        assertThat(returnGroupDto).isEqualTo(groupDto);
     }
 
     @Transactional
@@ -131,6 +134,68 @@ class GroupServiceImplTest {
 
         // when
         // then
-        Assertions.assertThatThrownBy(() -> groupService.getGroupByGroupId(UUID.randomUUID().toString()));
+        assertThatThrownBy(() -> groupService.getGroupByGroupId(UUID.randomUUID().toString()));
+    }
+
+    @Transactional
+    @DisplayName("공고 작성자가 아닌 사용자가 공고마감을 시도합니다.")
+    @Test
+    void closeGroupByTheOtherUser() {
+        // given
+        final String name = "엄복동";
+        final String userId = UUID.randomUUID().toString() + "a";
+
+        GroupDto groupDto = GroupDto.builder()
+                .groupId(null)
+                .hostId(userId)
+                .hostName(name)
+                .title("공고 제목")
+                .capacity(4)
+                .participantsCnt(1)
+                .concertId("콘서트 UUID")
+                .deadline(LocalDateTime.of(2023, 11, 7, 14, 57))
+                .content("공고 내용")
+                .build();
+
+        groupDto = groupService.saveGroup(groupDto);
+
+        // when
+        // then
+        final String theOtherUserId = UUID.randomUUID().toString() + "b";
+
+        final GroupDto finalGroupDto = groupDto;
+        assertThatThrownBy(() -> groupService.closeGroup(theOtherUserId, finalGroupDto.getGroupId())).isExactlyInstanceOf(NoAuthorizationForItemException.class);
+    }
+
+    @Transactional
+    @DisplayName("공고 작성자가 공고를 마감합니다.")
+    @Test
+    void closeGroupByHost() {
+        // given
+        final String name = "엄복동";
+        final String userId = UUID.randomUUID().toString() + "a";
+
+        GroupDto groupDto = GroupDto.builder()
+                .groupId(null)
+                .hostId(userId)
+                .hostName(name)
+                .title("공고 제목")
+                .capacity(4)
+                .participantsCnt(1)
+                .concertId("콘서트 UUID")
+                .deadline(LocalDateTime.of(2023, 11, 7, 14, 57))
+                .content("공고 내용")
+                .build();
+
+        groupDto = groupService.saveGroup(groupDto);
+
+        // when
+        groupService.closeGroup(userId, groupDto.getGroupId());
+        GroupDto returnGroupDto = groupService.getGroupByGroupId(groupDto.getGroupId());
+        returnGroupDto.setLastModifiedAt(groupDto.getLastModifiedAt()); // 수정일시는 달라지므로 equals 비교에서 true를 반환하도록 수정일시를 맞춘다.
+
+        // then
+        groupDto.setClosedByHost(true);
+        assertThat(returnGroupDto).isEqualTo(groupDto);
     }
 }
