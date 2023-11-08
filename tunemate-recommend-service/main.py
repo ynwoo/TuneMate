@@ -60,8 +60,6 @@ class ResponseDto(BaseModel):
 @app.get("/recommendation/songs", response_model = List[SongDto])
 def song(UserId : str | None = Header(default=None)):
 
-    
-
     def cosine_similarity(song1, song2):
         dot_product = 0.0
         magnitude1 = 0.0
@@ -75,7 +73,6 @@ def song(UserId : str | None = Header(default=None)):
 
             # "artist" 정보를 원-핫 인코딩으로 변환하여 처리
         if song1["artist"] == song2["artist"]:
-            if(song1["artist"] == "BIGBANG"): print("빅뱅")
             dot_product += 1  # 같은 artist면 1
             magnitude1 += 1  # artist 정보를 더해줌
             magnitude2 += 1  # artist 정보를 더해줌
@@ -91,6 +88,13 @@ def song(UserId : str | None = Header(default=None)):
                            password=os.environ["DATABASE_PASSWORD"], host=os.environ["DATABASE_URL"],
                            db="MUSIC", port=int(os.environ["DATABASE_PORT"]), charset="utf8",cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
+    sql = "SELECT count(*) as count FROM track where playlist_id = (select id from playlist where user_id = %s);"
+    cursor.execute(sql, UserId)
+    counting = cursor.fetchone()["count"]
+    if (counting == 0):
+        raise HTTPException(status_code=400, detail="Not Enough Music Data")
+
+
     all_songs = [] # 데이터베이스에 존재하는 모든 노래 (제목, 가수 등 노래 특징이 딕셔너리 형태로 담겨있음)
     sql = "select * from tracks"
     cursor.execute(sql)
@@ -122,6 +126,11 @@ def song(UserId : str | None = Header(default=None)):
 
 
 
+    sql = "SELECT track_spotify_id FROM MUSIC.track where playlist_id = %s"
+    cursor.execute(sql, UserId)
+    myMusicList = []
+    for i in cursor.fetchall():
+        myMusicList.append(i[0])
     for mysong in songs:
         sql = "select * from tracks where spotify_uri = %s"
         cursor.execute(sql,mysong)
@@ -131,9 +140,15 @@ def song(UserId : str | None = Header(default=None)):
             if mysong == songInfo["spotify_uri"]: continue
             similarity = cosine_similarity(top3,songInfo) # 두 곡의 유사도
             lili.append((similarity,songInfo))
-        sorted_data = sorted(lili, key=lambda x: x[0], reverse=True)[:4]
+        sorted_data = sorted(lili, key=lambda x: x[0], reverse=True)
+        count = 0
         for i in sorted_data:
-            recommendList.append(i[1]["spotify_uri"])
+            if(i[1]["spotify_uri"] not in myMusicList):
+                count += 1
+                recommendList.append(i[1]["spotify_uri"])
+                if count == 5:
+                    break
+
 
 
     recommendList = set(recommendList)
