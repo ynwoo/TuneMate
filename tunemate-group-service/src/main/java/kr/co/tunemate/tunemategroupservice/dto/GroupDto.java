@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
+@ToString
 public class GroupDto {
     private String groupId;
     private String hostId;
@@ -21,6 +22,8 @@ public class GroupDto {
     private LocalDateTime startDateTime;
     private LocalDateTime deadline;
     private String content;
+    @Builder.Default
+    private Boolean closedByHost = false;
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
 }
