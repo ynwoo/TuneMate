@@ -11,7 +11,7 @@ export const Storage = Object.freeze({
     localStorage.setItem(name, JSON.stringify(item));
   },
 
-  getAccessToken() {
+  getAccessToken(): string {
     return Storage.getItem("accessToken");
   },
 
@@ -19,7 +19,7 @@ export const Storage = Object.freeze({
     Storage.setItem("accessToken", accessToken);
   },
 
-  getRefreshToken() {
+  getRefreshToken(): string {
     return Storage.getItem("refreshToken");
   },
 
@@ -27,7 +27,7 @@ export const Storage = Object.freeze({
     Storage.setItem("refreshToken", refreshToken);
   },
 
-  getUserId() {
+  getUserId(): string {
     return Storage.getItem("userId");
   },
 
@@ -35,7 +35,7 @@ export const Storage = Object.freeze({
     Storage.setItem("userId", userId);
   },
 
-  getSpotifyAccessToken() {
+  getSpotifyAccessToken(): string {
     return Storage.getItem("spotifyAccessToken");
   },
 
@@ -43,7 +43,7 @@ export const Storage = Object.freeze({
     Storage.setItem("spotifyAccessToken", spotifyAccessToken);
   },
 
-  getSpotifyUserId() {
+  getSpotifyUserId(): string {
     return Storage.getItem("spotifyUserId");
   },
 

@@ -1,17 +1,22 @@
+import { Friend } from "./social";
 import { UserInfo } from "./user";
 
 interface ChatRoom {
   chatRoomId: number;
-  messages: Message[];
+  messages: MessageResponse[];
 }
 
-interface Message {
+interface MessageResponse extends MessageRequest {
   type: "Message";
+  time: string;
+  readCount: number; // 읽었는지 확인 0이면 모두 읽은 것
+}
+
+interface MessageRequest {
+  relationId: Friend["relationId"];
   senderName: string; // 보낸 사람 이름
   senderNo: number; // 보낸 사람의 기본키
   content: string; // 메세지 내용
-  time: string;
-  readCount: number; // 읽었는지 확인 0이면 모두 읽은 것
 }
 
 interface Chat {
@@ -20,4 +25,4 @@ interface Chat {
   userId: UserInfo["userId"];
 }
 
-export type { Chat, ChatRoom, Message };
+export type { Chat, ChatRoom, MessageResponse, MessageRequest };
