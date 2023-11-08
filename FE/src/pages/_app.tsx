@@ -2,6 +2,7 @@ import BottomNavbar from "@/components/navbar/BottomNavbar/BottomNavbar";
 import TopNavbar from "@/components/navbar/TopNavbar/TopNavbar";
 import ChatProvider from "@/contexts/ChatContext";
 import "@/styles/globals.css";
+import "@/styles/reset.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import type { AppProps } from "next/app";
 import { usePathname } from "next/navigation";

@@ -10,7 +10,7 @@ interface FriendListProps extends Props {
 
 const FriendList = ({ friends }: FriendListProps) => {
   return (
-    <div className={styles["friend-list"]}>
+    <ul className={styles["friend-list"]}>
       {friends.map((friend) => (
         <FriendItem
           key={friend.freindId}
@@ -18,7 +18,7 @@ const FriendList = ({ friends }: FriendListProps) => {
           className={styles["friend-list__item"]}
         />
       ))}
-    </div>
+    </ul>
   );
 };
 

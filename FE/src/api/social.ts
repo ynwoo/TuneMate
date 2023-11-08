@@ -86,14 +86,18 @@ export const disconnectChatRoom = async (relationId: Friend["relationId"]) => {
   await api.post(`${SOCIAL_SERVICE_URL}/chat-out/${relationId}`);
 };
 
+type ChatRoomResponse = {
+  chatRoomId: ChatRoom["chatRoomId"];
+};
 // 내가 참여한 채팅방 목록 조회
-export const getMyChatRooms = async (): Promise<
-  {
-    chatRoomId: ChatRoom["chatRoomId"];
-  }[]
-> => {
-  const response = await api.get(`${SOCIAL_SERVICE_URL}/my-chats`);
-  return response.data;
+export const getMyChatRooms = async (): Promise<number[]> => {
+  const response = await api.get<ChatRoomResponse[]>(
+    `${SOCIAL_SERVICE_URL}/my-chats`
+  );
+  const chatRoomIds: number[] = response.data.map(
+    (elm: ChatRoomResponse) => elm.chatRoomId
+  );
+  return chatRoomIds;
 };
 
 // 로그인 후 채팅 방 구독

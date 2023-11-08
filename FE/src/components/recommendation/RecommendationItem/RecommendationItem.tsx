@@ -66,7 +66,7 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
   }, [router, item.userId]);
 
   return (
-    <div
+    <li
       className={classNameWrapper(className, styles["recommendation-item"])}
       onClick={onMoveProfilePage}
     >
@@ -120,7 +120,7 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
           </Button>
         </div>
       )}
-    </div>
+    </li>
   );
 };
 

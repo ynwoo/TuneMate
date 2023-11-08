@@ -5,13 +5,10 @@ import { Client } from "@stomp/stompjs";
 import { Storage } from "./storage";
 
 export const Stomp = Object.freeze({
-  connect(client: any) {
+  connect() {
     const accessToken = Storage.getAccessToken();
-    client = new Client({
-      brokerURL: SOCKET_URL.brokerURL(),
-      connectHeaders: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+    const client = new Client({
+      brokerURL: `${SOCKET_URL.brokerURL()}?Authorization=${accessToken}`,
       reconnectDelay: 2000, // 자동 재연결
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
@@ -21,6 +18,8 @@ export const Stomp = Object.freeze({
     });
 
     client.activate();
+
+    return client;
   },
 
   disconnect(client: Client) {

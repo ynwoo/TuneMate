@@ -15,7 +15,7 @@ interface MessageResponse extends MessageRequest {
 interface MessageRequest {
   relationId: Friend["relationId"];
   senderName: string; // 보낸 사람 이름
-  senderNo: number; // 보낸 사람의 기본키
+  senderNo: UserInfo["userId"]; // 보낸 사람의 기본키
   content: string; // 메세지 내용
 }
 
