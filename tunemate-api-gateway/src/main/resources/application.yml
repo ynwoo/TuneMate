@@ -67,7 +67,7 @@ spring:
             - AuthorizationHeaderFilter
             - RewritePath=/api/v1/social-service/(?<segment>.*), /$\{segment}
         - id: social-service-chat
-          uri: lb:ws://social-service
+          uri: lb://social-service
           order: 0
           predicates:
             - Path=/api/v1/social-service/chat
