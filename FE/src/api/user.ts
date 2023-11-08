@@ -1,6 +1,6 @@
 import { TokenResponse, UserInfo } from "@/types/user";
 import { api, reissueApi } from ".";
-import { storage } from "@/utils/storage";
+import { Storage } from "@/utils/storage";
 
 const USER_SERVICE_URL = "user-service";
 
@@ -21,8 +21,8 @@ export const getUserInfo = async (
     `${USER_SERVICE_URL}/users/${userId}`
   );
   const userInfo = response.data;
-  storage.setSpotifyAccessToken(userInfo.spotifyAccessToken);
-  storage.setSpotifyUserId(userInfo.spotifyUserId);
+  Storage.setSpotifyAccessToken(userInfo.spotifyAccessToken);
+  Storage.setSpotifyUserId(userInfo.spotifyUserId);
   return userInfo;
 };
 
@@ -30,7 +30,7 @@ export const getUserInfo = async (
 export const reissueToken = async () => {
   const response = await reissueApi.get(`${USER_SERVICE_URL}/users/reissue`);
   const { accessToken, userId } = response.data;
-  storage.setAccessToken(accessToken);
-  storage.setUserId(userId);
+  Storage.setAccessToken(accessToken);
+  Storage.setUserId(userId);
   return response.data;
 };
