@@ -47,6 +47,27 @@ export const declineSocialFriendRequest = async (
   await api.post<void>(`${SOCIAL_SERVICE_URL}/decline/${userId}`);
 };
 
+type SendSocialFriendRequestResponse = {
+  userId: UserInfo["userId"];
+};
+
+// 내가 친구요청 보낸 사람들의 아이디 조회
+export const getSendSocialFriendRequests = async (): Promise<string[]> => {
+  const response = await api.get<SendSocialFriendRequestResponse[]>(
+    `${SOCIAL_SERVICE_URL}/requests/friends`
+  );
+
+  const userIds: string[] = response.data
+    .map((elm: SendSocialFriendRequestResponse) => elm.userId)
+    .reduce((res: string[], elm: string) => {
+      if (!res.includes(elm)) {
+        res.push(elm);
+      }
+      return res;
+    }, []);
+  return userIds;
+};
+
 // 채팅 기록 조회
 export const getChats = async (
   relationId: Friend["relationId"]

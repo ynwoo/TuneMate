@@ -11,7 +11,6 @@ export const Stomp = Object.freeze({
       brokerURL: SOCKET_URL.brokerURL(),
       connectHeaders: {
         Authorization: `Bearer ${accessToken}`,
-        // UserId: "40000000",
       },
       reconnectDelay: 2000, // 자동 재연결
       heartbeatIncoming: 4000,
