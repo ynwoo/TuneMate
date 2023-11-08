@@ -5,6 +5,7 @@ import os
 import pymysql
 from datetime import datetime
 
+
 def crawl_concert_info():
     load_dotenv()
     os.environ["DATABASE_URL"] = os.getenv("DATABASE_URL")
