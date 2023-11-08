@@ -2,6 +2,7 @@ package com.tunemate.social.tunematesocial.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ import com.tunemate.social.tunematesocial.entity.Friend;
 import com.tunemate.social.tunematesocial.entity.FriendRequest;
 import com.tunemate.social.tunematesocial.repository.FriendRepository;
 import com.tunemate.social.tunematesocial.repository.FriendRequestRepository;
+import com.tunemate.social.tunematesocial.vo.MyFriendVo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -184,21 +186,47 @@ public class SocialServiceImpl implements SocialService {
 		List<MyFriendResponseDto> result = new ArrayList<>();
 
 		// 유저의 친구 목록
+		List<Friend> myFriends = new ArrayList<>();
+
 		List<Friend> byUser1Id = friendRepository.findByUser1Id(myId);
 		List<Friend> byUser2Id = friendRepository.findByUser2Id(myId);
 
-		List<String> myFriendsIdList = new ArrayList<>();
+		List<MyFriendVo> myFriendVos = new ArrayList<>();
+
 		for (Friend friend : byUser1Id) {
-			myFriendsIdList.add(friend.getUser2Id());
+			MyFriendVo myFriendVo = MyFriendVo
+				.builder()
+				.relationId(friend.getId())
+				.friendId(friend.getUser2Id())
+				.commonPlayListId(friend.getCommonPlaylistId())
+				.distance(friend.getDistance())
+				.musicalTasteSimilarity(friend.getMusicalTasteSimilarity())
+				.build();
+
+			myFriendVos.add(myFriendVo);
 		}
 
 		for (Friend friend : byUser2Id) {
-			myFriendsIdList.add(friend.getUser1Id());
+			MyFriendVo myFriendVo = MyFriendVo
+				.builder()
+				.relationId(friend.getId())
+				.friendId(friend.getUser1Id())
+				.commonPlayListId(friend.getCommonPlaylistId())
+				.distance(friend.getDistance())
+				.musicalTasteSimilarity(friend.getMusicalTasteSimilarity())
+				.build();
+
+			myFriendVos.add(myFriendVo);
+		}
+		myFriendVos.sort(Comparator.comparing(MyFriendVo::getFriendId));
+
+		// friendId만을 추출하여 List<String> 만들기
+		List<String> myFriendsIdList = new ArrayList<>();
+		for (MyFriendVo friend : myFriendVos) {
+			myFriendsIdList.add(friend.getFriendId());
 		}
 
-		// 범수가 idList Feign으로 가져가서 여기에 유저의 id, name, image 정보 리스트 가져다 줄꺼임
-		// 사용자 정보 리스트
-		Collections.sort(myFriendsIdList);
+		// idList Feign: 유저의 id, name, image 정보 리스트
 		List<UserInfoDto> userInfoList = userServiceClient.getMembersByUserIdIn(myFriendsIdList);
 
 		// 리스트 크기가 같다고 가정
@@ -206,23 +234,17 @@ public class SocialServiceImpl implements SocialService {
 
 		// 데이터 결합
 		for (int i = 0; i < size; i++) {
-			Friend friend;
-			if (i < byUser1Id.size()) {
-				friend = byUser1Id.get(i);
-			} else {
-				friend = byUser2Id.get(i - byUser1Id.size());
-			}
 			UserInfoDto userInfo = userInfoList.get(i);
 
 			MyFriendResponseDto responseDto = MyFriendResponseDto
 				.builder()
-				.relationId(friend.getId())
+				.relationId(myFriendVos.get(i).getRelationId())
 				.friendId(userInfo.getUserId())
 				.name(userInfo.getName())
-				.commonPlayListId(friend.getCommonPlaylistId())
+				.commonPlayListId(myFriendVos.get(i).getCommonPlayListId())
 				.img(userInfo.getImageUrl())
-				.distance(friend.getDistance())
-				.musicalTasteSimilarity(friend.getMusicalTasteSimilarity())
+				.distance(myFriendVos.get(i).getDistance())
+				.musicalTasteSimilarity(myFriendVos.get(i).getMusicalTasteSimilarity())
 				.build();
 
 			// 결과 리스트에 추가
