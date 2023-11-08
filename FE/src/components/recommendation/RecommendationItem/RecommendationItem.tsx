@@ -80,7 +80,8 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
           </p>
         </div>
         <div className={styles["recommendation-item__ratio"]}>
-          <p>{item.distance ?? 0}km</p>
+          {/* TODO: distance 구현 예정 */}
+          {/* <p>{item.distance ?? 0}km</p> */}
           <p>
             {(Number(item.similarity) * 100).toFixed(0)}
             <Icon.Music size="lg" />
