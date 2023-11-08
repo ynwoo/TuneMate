@@ -1,6 +1,7 @@
 package com.tunemate.social.tunematesocial.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import com.tunemate.social.tunematesocial.entity.ChatPerson;
 import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 import com.tunemate.social.tunematesocial.repository.ChatPersonRepository;
 import com.tunemate.social.tunematesocial.repository.ChattingRoomRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +40,8 @@ public class SocialServiceImpl implements SocialService {
 
 	@Autowired
 	public SocialServiceImpl(FriendRepository friendRepository, FriendRequestRepository friendRequestRepository,
-							 UserServiceClient userServiceClient, ChattingRoomRepository chattingRoomRepository, ChatPersonRepository chatPersonRepository) {
+		UserServiceClient userServiceClient, ChattingRoomRepository chattingRoomRepository,
+		ChatPersonRepository chatPersonRepository) {
 		this.friendRepository = friendRepository;
 		this.friendRequestRepository = friendRequestRepository;
 		this.userServiceClient = userServiceClient;
@@ -139,7 +142,6 @@ public class SocialServiceImpl implements SocialService {
 		// 친구 신청 목록에서 제거
 		friendRequestRepository.delete(friendRequest);
 
-
 		// 채팅 방 생성
 		long relationId = friendRepository.findByUser1IdAndAndUser2Id(myId, newFriendId).get(0).getId();
 		ChattingRoom chattingRoom = new ChattingRoom();
@@ -196,6 +198,7 @@ public class SocialServiceImpl implements SocialService {
 
 		// 범수가 idList Feign으로 가져가서 여기에 유저의 id, name, image 정보 리스트 가져다 줄꺼임
 		// 사용자 정보 리스트
+		Collections.sort(myFriendsIdList);
 		List<UserInfoDto> userInfoList = userServiceClient.getMembersByUserIdIn(myFriendsIdList);
 
 		// 리스트 크기가 같다고 가정
@@ -242,18 +245,19 @@ public class SocialServiceImpl implements SocialService {
 	}
 
 	@Override
-	public ChattingRoom getChats(long relationId){
+	public ChattingRoom getChats(long relationId) {
 		ChattingRoom chattingRoom = chattingRoomRepository.findByChatRoomId(relationId);
 		return chattingRoom;
 	}
 
 	@Override
-	public void setChats(long relationId, String userId){
+	public void setChats(long relationId, String userId) {
 		ChattingRoom chatRecord = this.getChats(relationId);
 		List<ChatDto> list = chatRecord.getMessages();
-		for(int i=list.size()-1; i>=0;i--){
-			if(list.get(i).getReadCount() == 0) break;
-			if(!list.get(i).getSenderNo().equals(userId)){
+		for (int i = list.size() - 1; i >= 0; i--) {
+			if (list.get(i).getReadCount() == 0)
+				break;
+			if (!list.get(i).getSenderNo().equals(userId)) {
 				list.get(i).setReadCount(0);
 			}
 		}
@@ -263,21 +267,21 @@ public class SocialServiceImpl implements SocialService {
 
 	// 채팅방 접속 한 사람 DB에 저장
 	@Override
-	public void setChatPerson(long relationId, String userId){
+	public void setChatPerson(long relationId, String userId) {
 		Friend friend = friendRepository.findById(relationId).get();
 		ChatPerson chatPerson = ChatPerson.builder().userId(userId).friend(friend).build();
 		chatPersonRepository.save(chatPerson);
 	}
 
 	@Override
-	public void outChat(long relationId, String userId){
+	public void outChat(long relationId, String userId) {
 		Friend friend = friendRepository.findById(relationId).get();
-		ChatPerson chatPerson = chatPersonRepository.findByFriendAndUserId(friend,userId);
+		ChatPerson chatPerson = chatPersonRepository.findByFriendAndUserId(friend, userId);
 		chatPersonRepository.delete(chatPerson);
 	}
 
 	@Override
-	public List<UserIdDto> getRequestUserId(String userId){
+	public List<UserIdDto> getRequestUserId(String userId) {
 		return friendRequestRepository.findByRequestingUserId(userId);
 	}
 }
