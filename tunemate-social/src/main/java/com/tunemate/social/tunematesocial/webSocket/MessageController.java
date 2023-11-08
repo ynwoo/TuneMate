@@ -1,9 +1,11 @@
 package com.tunemate.social.tunematesocial.webSocket;
 
 import com.tunemate.social.tunematesocial.dto.ChatDto;
+import com.tunemate.social.tunematesocial.dto.RelationRequestDto;
 import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 import com.tunemate.social.tunematesocial.service.ChatService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class MessageController {
 
     private final SimpMessageSendingOperations simpMessageSendingOperations;
@@ -27,7 +30,11 @@ public class MessageController {
         headerAccessor.getSessionAttributes().put("username",message.getSenderName());
         message.setTime(LocalDateTime.now());
         message.setReadCount(1);
-//        chatService.getChat(message.getRelationId(),message);
         simpMessageSendingOperations.convertAndSend("/topic/"+message.getRelationId(),chatService.getChat(message.getRelationId(),message));
+    }
+
+    @MessageMapping("/request")
+    public void request(@Payload RelationRequestDto relationRequestDto){
+        simpMessageSendingOperations.convertAndSend("/exchange/friend/"+relationRequestDto.getMyUserId(),relationRequestDto);
     }
 }
