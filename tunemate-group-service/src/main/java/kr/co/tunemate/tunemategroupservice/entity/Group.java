@@ -37,5 +37,5 @@ public class Group extends BaseTimeEntity {
     private String content;
     @Builder.Default
     @Column(nullable = false)
-    private Boolean closedByUser = false;
+    private Boolean closedByHost = false;
 }
