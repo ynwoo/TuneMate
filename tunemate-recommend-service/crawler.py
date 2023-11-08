@@ -31,6 +31,7 @@ def crawl_concert_info():
     # '''
     # cursor.execute(sql)
 
+    base_url = "https://ticket.interpark.com"
     # 크롤링
     genre_url_mapping = {
         "Bal": 'https://ticket.interpark.com/TPGoodsList.asp?Ca=Liv&SubCa=Bal',
@@ -55,10 +56,14 @@ def crawl_concert_info():
             for tr in tr_elements:
                 # 각 "tr" 요소에서 필요한 데이터를 추출하거나 처리합니다.
                 td_elements = tr.find_all('td')
-
+                # print(td_elements)
                 if len(td_elements) >= 4:
                     # 이미지 URL 추출
                     image_url = td_elements[0].find('img')['src']
+
+                    # 링크 URI 추출
+                    link_uri = td_elements[0].find('a')['href']
+                    link = base_url + link_uri
 
                     # 제목 추출
                     title = td_elements[1].find('a').text.strip()
@@ -88,8 +93,8 @@ def crawl_concert_info():
 
                     if result[0] == 0:
                         # 값 삽입
-                        sql = "INSERT INTO concert (image, title, place, stdate, eddate, genre) VALUES (%s, %s, %s, %s, %s, %s)"
-                        cursor.execute(sql, (image_url, title, location, st_date, ed_date, genre))
+                        sql = "INSERT INTO concert (image, title, place, stdate, eddate, genre, link) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                        cursor.execute(sql, (image_url, title, location, st_date, ed_date, genre, link))
                         # 원하는 정보 출력
                         print(f'이미지 URL: {image_url}')
                         print(f'제목: {title}')
@@ -97,6 +102,7 @@ def crawl_concert_info():
                         print(f"장르: {genre}")
                         print(f'시작 날짜: {st_date}')
                         print(f'시작 날짜: {ed_date}')
+                        print(f'링크: {ed_date}')
                         print(f'"{title}" 추가되었습니다.')
                     else:
                         print(f'"{title}" 이미 존재합니다. 삽입을 건너뜁니다.')
