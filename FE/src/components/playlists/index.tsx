@@ -1,25 +1,25 @@
-import React, { MouseEvent, useCallback } from 'react'
+import React, { MouseEvent, useCallback, useEffect, useState } from 'react'
 import Props from '@/types';
-import {
-  LeadingActions,
-  SwipeableList,
-  SwipeableListItem,
-  SwipeAction,
-  TrailingActions,
-} from 'react-swipeable-list';
 import PlaylistItem from './PlaylistItem/PlaylistItem';
 import styles from './playlists.module.css';
 import Text from './Text/Text';
 import Icon from '../icons';
 import Modal from '../modal/Modal';
 import useModal from '@/hooks/useModal';
+import { AnimatePresence, Reorder } from 'framer-motion';
 
 interface PlaylistProps extends Props {
   data: any[];
+  onRequestDelete: (id: number) => void;
 }
 
-const Playlist = ({ data }: PlaylistProps) => {
+const Playlist = ({ data, onRequestDelete }: PlaylistProps) => {
   const { closeToggle, isOpen, openToggle } = useModal();
+  const [playlistData, setPlaylistData] = useState(data);
+  
+  useEffect(() => {
+    setPlaylistData([...data]);
+  }, [data]);
 
   const onModal = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
@@ -31,33 +31,6 @@ const Playlist = ({ data }: PlaylistProps) => {
 
   const playlistname = '플레이리스트 1'
 
-  const PlaylistItems = () => {
-    let itemArray = [];
-    for (let i = 0; i < data.length; i++ ) {
-      itemArray.push(
-      <SwipeableListItem
-        key={i}
-        trailingActions={trailingActions()}
-        maxSwipe={0.5}
-      >
-        <PlaylistItem src={data[i].cover} title={data[i].title} artist={data[i].artist} />
-      </SwipeableListItem>
-      )
-    }
-    return itemArray;
-  };
-  
-  const trailingActions = () => (
-    <TrailingActions>
-      <SwipeAction
-        destructive={true}
-        onClick={() => console.info('swipe action triggered')}
-      >
-        Delete
-      </SwipeAction>
-    </TrailingActions>
-  );
-
   return (
     <>
     <div className={styles['container']}>
@@ -67,9 +40,11 @@ const Playlist = ({ data }: PlaylistProps) => {
           <Icon.Menu />
         </div>
       </div>
-      <SwipeableList>
-      {PlaylistItems()}
-      </SwipeableList>
+      <Reorder.Group className={styles['playlist-box']} axis="y" values={playlistData} onReorder={setPlaylistData}>
+      {playlistData.map((data) => (
+        <PlaylistItem key={data.id} value={data} onRequestDelete={onRequestDelete} />
+      ))}
+      </Reorder.Group>
     </div>
     <Modal
       isOpen={isOpen}

@@ -15,3 +15,8 @@
   width: 39vh;
   padding: 1vh 0vh
 }
+
+.playlist-box {
+  overflow: hidden;
+  height: 100%;
+}

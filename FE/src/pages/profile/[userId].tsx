@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Props from "@/types";
 import { UserInfo } from "@/types/user";
 import IndividualProfile from "@/components/profile/IndividualProfile/IndividualProfile";
@@ -14,48 +14,55 @@ const ProfilePage = () => {
       artist: "태연",
       cover:
         "https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg",
-      key: 1,
+      id: 0,
     },
     {
       title: "Fine2",
       artist: "태연",
       cover:
         "https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg",
-      key: 2,
+      id: 1,
     },
     {
       title: "Fine3",
       artist: "태연",
       cover:
         "https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg",
-      key: 3,
+      id: 2,
     },
     {
       title: "Fine4",
       artist: "태연",
       cover:
         "https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg",
-      key: 4,
+      id: 3,
     },
     {
       title: "Fine5",
       artist: "태연",
       cover:
         "https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg",
-      key: 5,
+      id: 4,
     },
     {
       title: "Fine6",
       artist: "태연",
       cover:
         "https://www.musickorea.asia/storage/woo680821KR/www/prefix/product/2017/08/O/product.10987.148781799077237.jpg",
-      key: 6,
+      id: 5,
     },
   ];
+
+  const [myPlaylist, setMyPlaylist] = useState(data);
+
+  const handleDelete = (id: number) => {
+    setMyPlaylist(myPlaylist.filter((music) => music.id !== id));
+  };
+
   return (
     <div>
       <IndividualProfile name={name} src={imgSrc} />
-      <Playlist data={data} />
+      <Playlist data={data} onRequestDelete={handleDelete} />
     </div>
   );
 };
