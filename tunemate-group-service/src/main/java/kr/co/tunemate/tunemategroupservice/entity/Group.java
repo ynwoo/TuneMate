@@ -7,7 +7,9 @@ import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
 
 @Getter
+@Builder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity(name = "group_table")
 public class Group extends BaseTimeEntity {
     @Id
@@ -33,6 +35,7 @@ public class Group extends BaseTimeEntity {
     private LocalDateTime deadline;
     @Column(length = 1024)
     private String content;
+    @Builder.Default
     @Column(nullable = false)
     private Boolean closedByUser = false;
 }
