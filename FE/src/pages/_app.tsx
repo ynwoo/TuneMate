@@ -1,6 +1,8 @@
 import BottomNavbar from "@/components/navbar/BottomNavbar/BottomNavbar";
 import TopNavbar from "@/components/navbar/TopNavbar/TopNavbar";
+import ChatProvider from "@/contexts/ChatContext";
 import "@/styles/globals.css";
+import "@/styles/reset.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import type { AppProps } from "next/app";
 import { usePathname } from "next/navigation";
@@ -22,11 +24,15 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        {!isLoginPage && <TopNavbar />}
-        <div className={isLoginPage ? "login" : "main"}>
-          <Component {...pageProps} />
-        </div>
-        {!isLoginPage && <BottomNavbar />}
+        <ChatProvider>
+          <>
+            {!isLoginPage && <TopNavbar />}
+            <div className={isLoginPage ? "login" : "main"}>
+              <Component {...pageProps} />
+            </div>
+            {!isLoginPage && <BottomNavbar />}
+          </>
+        </ChatProvider>
       </QueryClientProvider>
     </RecoilRoot>
   );

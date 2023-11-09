@@ -1,4 +1,4 @@
-import { storage } from "@/utils/storage";
+import { Storage } from "@/utils/storage";
 import Link from "next/link";
 import styles from "@/styles/LoginPage.module.css";
 import Image from "next/image";
@@ -8,28 +8,31 @@ import { TokenResponse } from "@/types/user";
 import { useRouter } from "next/router";
 import { getUserInfo } from "@/api/user";
 import { useEffect } from "react";
+import useChat from "@/hooks/useChat";
 
 const LoginPage = () => {
   const router = useRouter();
+  const { connect } = useChat();
 
   useEffect(() => {
-    storage.clear();
+    Storage.clear();
     const tokenResponse: TokenResponse = Cookie.getTokenResponse();
-    storage.setTokenResponse(tokenResponse);
-    const userId = storage.getUserId();
+    Storage.setTokenResponse(tokenResponse);
+    const userId = Storage.getUserId();
     if (userId) {
       getUserInfo(userId).then(() => {
+        connect();
         router.push("/main");
       });
     }
-  }, [router]);
+  }, [router, connect]);
 
   const setCookie = () => {
-    const userId = "cb899bc8-33a9-43a6-938c-76b0ec286c77";
+    const userId = "ab1b4b7f-abb2-4bf1-920f-b437233b4f47";
     const accessToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTk0MDY5NzEsImlzcyI6IlR1bmVtYXRlIn0.c_3p55ptALHixny44vYEoqB-NGOVq-3oRlPRro1yffZLIspjccX2eNZHuKMcJOxw";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhYjFiNGI3Zi1hYmIyLTRiZjEtOTIwZi1iNDM3MjMzYjRmNDciLCJleHAiOjE2OTk1MTYyMTAsImlzcyI6IlR1bmVtYXRlIn0.ckxGPwGpJIezvqsrQ3WYZ2SbzZyfb59AbWs37pCjzBCOZosB8a7Cegg5P18SZ9nE";
     const refreshToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiY2I4OTliYzgtMzNhOS00M2E2LTkzOGMtNzZiMGVjMjg2Yzc3IiwiZXhwIjoxNzAwNjA5MzcxLCJpc3MiOiJUdW5lbWF0ZSJ9.HJLcYq1Vy7r9OShDqoKCjMuCFVYxpFEI-e9ZsVW2Io-6kshv_B0gA3abc1gzEk_C";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiYWIxYjRiN2YtYWJiMi00YmYxLTkyMGYtYjQzNzIzM2I0ZjQ3IiwiZXhwIjoxNzAwNzE4NjEwLCJpc3MiOiJUdW5lbWF0ZSJ9._5kctKS5FJJE4djqMSZOwXqRxBmBTbyjinB8tqMsSseQxNUDXR6w76Ma8aeneauY";
     Cookie.setTokenResponse({ userId, accessToken, refreshToken });
     location.reload();
   };

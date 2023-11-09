@@ -9,10 +9,18 @@
   background-color: var(--main-color);
   grid-template-columns: repeat(4, 1fr);
   gap: 1vw;
-  align-items: center;
-  justify-content: center;
 }
 
 .bottom-navbar__item {
   margin: auto;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom-navbar__item svg {
+  max-height: 45%;
+  max-width: 45%;
 }

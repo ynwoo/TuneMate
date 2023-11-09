@@ -1,6 +1,6 @@
 import { TokenResponse } from "@/types/user";
 
-export const storage = Object.freeze({
+export const Storage = Object.freeze({
   getItem(name: string) {
     const value = localStorage.getItem(name);
     return value ? JSON.parse(value) : null;
@@ -11,50 +11,50 @@ export const storage = Object.freeze({
     localStorage.setItem(name, JSON.stringify(item));
   },
 
-  getAccessToken() {
-    return storage.getItem("accessToken");
+  getAccessToken(): string {
+    return Storage.getItem("accessToken");
   },
 
   setAccessToken(accessToken: string) {
-    storage.setItem("accessToken", accessToken);
+    Storage.setItem("accessToken", accessToken);
   },
 
-  getRefreshToken() {
-    return storage.getItem("refreshToken");
+  getRefreshToken(): string {
+    return Storage.getItem("refreshToken");
   },
 
   setRefreshToken(refreshToken: string) {
-    storage.setItem("refreshToken", refreshToken);
+    Storage.setItem("refreshToken", refreshToken);
   },
 
-  getUserId() {
-    return storage.getItem("userId");
+  getUserId(): string {
+    return Storage.getItem("userId");
   },
 
   setUserId(userId: string) {
-    storage.setItem("userId", userId);
+    Storage.setItem("userId", userId);
   },
 
-  getSpotifyAccessToken() {
-    return storage.getItem("spotifyAccessToken");
+  getSpotifyAccessToken(): string {
+    return Storage.getItem("spotifyAccessToken");
   },
 
   setSpotifyAccessToken(spotifyAccessToken: string) {
-    storage.setItem("spotifyAccessToken", spotifyAccessToken);
+    Storage.setItem("spotifyAccessToken", spotifyAccessToken);
   },
 
-  getSpotifyUserId() {
-    return storage.getItem("spotifyUserId");
+  getSpotifyUserId(): string {
+    return Storage.getItem("spotifyUserId");
   },
 
   setSpotifyUserId(spotifyUserId: string) {
-    storage.setItem("spotifyUserId", spotifyUserId);
+    Storage.setItem("spotifyUserId", spotifyUserId);
   },
 
   setTokenResponse({ userId, accessToken, refreshToken }: TokenResponse) {
-    storage.setUserId(userId);
-    storage.setAccessToken(accessToken);
-    storage.setRefreshToken(refreshToken);
+    Storage.setUserId(userId);
+    Storage.setAccessToken(accessToken);
+    Storage.setRefreshToken(refreshToken);
   },
 
   clear() {
