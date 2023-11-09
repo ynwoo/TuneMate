@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Player from "./Player";
 import Image from "next/image";
+import styles from "@/styles/PlayerPage.module.css";
 
 function PlaylistDetails({ playlistDetails, accessToken }) {
   const [playTrack, setPlayTrack] = useState([]);
@@ -30,8 +31,6 @@ function PlaylistDetails({ playlistDetails, accessToken }) {
       setPlayTrack((prevPlayTrack) => [...prevPlayTrack, track.track.uri]);
     }
   }
-  import React, { useEffect } from "react";
-  import styles from "@/styles/PlayerPage.module.css";
 
   if (!playlistDetails) {
     return <div>상세 정보를 불러오는 중...</div>;
