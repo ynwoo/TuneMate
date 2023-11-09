@@ -11,4 +11,5 @@ public interface GroupService {
     GroupDto putGroup(String userId, GroupDto groupDto);
     void closeGroup(String userId, String groupId);
     List<GroupDto> searchAll(GroupSearchDto groupSearchDto);
+    void deleteGroupByGroupId(String userId, String groupId);
 }
