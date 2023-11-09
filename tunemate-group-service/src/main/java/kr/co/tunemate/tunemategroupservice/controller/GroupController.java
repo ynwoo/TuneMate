@@ -39,6 +39,16 @@ public class GroupController {
         return ResponseEntity.ok(responseGroup);
     }
 
+    @Operation(description = "공고를 수정합니다.")
+    @PutMapping
+    public ResponseEntity<ResponseGroup> putGroup(@RequestHeader("UserId") String userId, @RequestBody RequestGroup requestGroup) {
+        GroupDto groupDto = modelMapper.map(requestGroup, GroupDto.class);
+        GroupDto returnGroupDto = groupService.putGroup(userId, groupDto);
+        ResponseGroup responseGroup = modelMapper.map(returnGroupDto, ResponseGroup.class);
+
+        return ResponseEntity.ok(responseGroup);
+    }
+
     @Operation(description = "공고 작성자가 공고를 마감합니다.")
     @PatchMapping("/{groupId}")
     public ResponseEntity closeGroup(@RequestHeader("UserId") String userId, @PathVariable String groupId) {
