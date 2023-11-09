@@ -25,6 +25,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -127,11 +128,11 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         MemberInfo memberInfo = requestMemberInfo(userId);
         String token = getToken(memberInfo);
 
-        Playlist playlist = individualPlaylistRepository.findByUserId(userId).get();
-        if(playlist == null) return null;
+        Optional<Playlist> playlist = individualPlaylistRepository.findByUserId(userId);
+        if(playlist.isEmpty()) return null;
 
 
-        PlaylistResponseDto playlistResponseDto = webClientBuilder.build().get().uri(uriBuilder -> uriBuilder.path("/playlists/"+playlist.getPlaylistSpotifyId()).queryParam("fields","description,id,name,images,tracks(items(track(album(images),artists(name),id,name,uri)))").build()).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
+        PlaylistResponseDto playlistResponseDto = webClientBuilder.build().get().uri(uriBuilder -> uriBuilder.path("/playlists/"+playlist.get().getPlaylistSpotifyId()).queryParam("fields","description,id,name,images,tracks(items(track(album(images),artists(name),id,name,uri)))").build()).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
                 .retrieve().bodyToMono(PlaylistResponseDto.class).block();
 
         return playlistResponseDto;
