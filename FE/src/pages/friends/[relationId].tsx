@@ -3,42 +3,9 @@ import useChatsQuery from "@/hooks/queries/social/useChatsQuery";
 import useChat from "@/hooks/useChat";
 import Props from "@/types";
 import { ChatRoom, MessageRequest } from "@/types/chat";
+import { ChatFilter } from "@/utils/filter";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
-
-// const data = {
-//   chatRoomId: 1,
-//   messages: [
-//     {
-//       content:
-//         "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos omnis quas sint accusamus et error perspiciatis sequi repudiandae, commodi fugiat blanditiis unde dolores culpa maiores, itaque iusto a ratione eaque! Ad, repudiandae totam, cum consequuntur facere maxime ab voluptates id, nam ipsa pariatur nobis explicabo perferendis doloribus molestiae et deleniti!",
-//       readCount: 1,
-//       relationId: 1,
-//       senderName: "aa",
-//       senderNo: 1,
-//       time: "aa1",
-//       type: "Message",
-//     },
-//     {
-//       content: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos",
-//       readCount: 1,
-//       relationId: 1,
-//       senderName: "aa",
-//       senderNo: 1,
-//       time: "aa2",
-//       type: "Message",
-//     },
-//     {
-//       content: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos",
-//       readCount: 1,
-//       relationId: 1,
-//       senderName: "aa",
-//       senderNo: 1,
-//       time: "aa3",
-//       type: "Message",
-//     },
-//   ],
-// } as ChatRoom;
+import { useMemo } from "react";
 
 const messageRequest: MessageRequest = {
   content: "aa",
@@ -52,15 +19,22 @@ interface ChatPageProps extends Props {}
 const ChatPage = ({}: ChatPageProps) => {
   const params = useParams();
   const relationId = Number(params?.relationId as string);
-  console.log(relationId);
 
   const { subscribe, publish, chatRooms } = useChat();
-  // const { data: ChatRoom } = useChatsQuery(relationId);
-  console.log(chatRooms);
+  const { data: prevChatRoom } = useChatsQuery(relationId);
+
+  const chatRoom = useMemo(() => {
+    const newChatRoom = chatRooms.find(
+      ({ chatRoomId }) => chatRoomId === relationId
+    );
+    if (!prevChatRoom || !newChatRoom) return undefined;
+    newChatRoom.messages = [...prevChatRoom.messages, ...newChatRoom.messages];
+    return ChatFilter.chatRoom(newChatRoom);
+  }, [prevChatRoom, chatRooms, relationId]);
 
   return (
     <div>
-      {/* <ChatList chatRoom={{}}} /> */}
+      {chatRoom && <ChatList chatRoom={chatRoom} />}
       <button onClick={() => subscribe(relationId)}>subscribe</button>
       <button onClick={() => publish(messageRequest)}>publish</button>
     </div>

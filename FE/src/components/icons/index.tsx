@@ -6,7 +6,7 @@ import { faMessage } from "@fortawesome/free-solid-svg-icons/faMessage";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./icons.module.css";
-import { faComment } from "@fortawesome/free-regular-svg-icons";
+import { faComment, faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import { faMusic } from "@fortawesome/free-solid-svg-icons/faMusic";
 
 type IconSize = "2xs" | "xs" | "sm" | "lg" | "xl" | "2xl";
@@ -41,6 +41,9 @@ const Icon = {
   ),
   Plus: ({ size = "2xl" }: IconProps) => (
     <FontAwesomeIcon className={styles.icon} icon={faPlus} size={size} />
+  ),
+  Send: ({ size = "2xl" }: IconProps) => (
+    <FontAwesomeIcon className={styles.icon} icon={faPaperPlane} size={size} />
   ),
 };
 

@@ -26,61 +26,95 @@ const ChatProvider = ({ children }: ChatProvider) => {
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
   const { data: myChatRooms } = useMyChatRoomsQuery();
 
-  const connect = useCallback(() => {
-    if (client.current) return;
-    client.current = Stomp.connect();
-  }, []);
+  const subscibeCallback = useCallback(
+    (data: any) => {
+      const newChatRoom: ChatRoom = JSON.parse(data.body);
+      const prevChatRoom = chatRooms.find(
+        ({ chatRoomId }) => chatRoomId === newChatRoom.chatRoomId
+      );
+
+      if (prevChatRoom) {
+        const newChatRooms = chatRooms.map((chatRoom) =>
+          newChatRoom.chatRoomId === chatRoom.chatRoomId
+            ? newChatRoom
+            : chatRoom
+        );
+        setChatRooms(newChatRooms);
+        return;
+      }
+      setChatRooms([...chatRooms, newChatRoom]);
+    },
+    [chatRooms]
+  );
+
+  const connect = useCallback(
+    (callback?: () => void) => {
+      if (client.current) return;
+      // 연결 성공 후 실행할 함수
+      const onConnect = () => {
+        // 연결해야할 채팅 방 전부 구독 신청
+        if (myChatRooms) {
+          myChatRooms.forEach((relationId) => {
+            if (client.current) {
+              Stomp.subscribe(client!.current, relationId, subscibeCallback);
+            }
+          });
+        }
+
+        // parameter로 전달 받은 함수 실행
+        if (callback) {
+          callback();
+        }
+      };
+      client.current = Stomp.connect(onConnect);
+    },
+    [myChatRooms, subscibeCallback]
+  );
 
   const subscribe = useCallback(
     (relationId: Friend["relationId"]) => {
+      const onSubscribe = () => {
+        if (client.current) {
+          Stomp.subscribe(client.current, relationId, subscibeCallback);
+        }
+      };
+
+      // client 객체가 없으면 재 연결
       if (!client.current) {
-        connect();
+        connect(onSubscribe);
+        return;
       }
 
-      if (client.current) {
-        const callback = (data: any) => {
-          const newChatRoom = JSON.parse(data.body);
-          const newChatRooms = chatRooms.filter(
-            ({ chatRoomId }) => newChatRoom.chatRoomId !== chatRoomId
-          );
-          newChatRooms.push(newChatRoom);
-          setChatRooms(newChatRooms);
-        };
-        // if (myChatRooms) {
-        //   myChatRooms.forEach((relationId) =>
-        //     Stomp.subscribe(client.current, relationId, callback)
-        //   );
-        // }
-        Stomp.subscribe(client.current, relationId, callback);
-      }
+      // client 객체가 있으면 구독 신청
+      onSubscribe();
     },
-    [connect, setChatRooms, chatRooms]
+    [connect, subscibeCallback]
   );
 
   const publish = useCallback(
     (messageRequest: MessageRequest) => {
-      console.log("publish", client.current);
+      const onPublish = () => {
+        if (client.current) {
+          Stomp.publish(client.current, messageRequest);
+        }
+      };
+
       if (!client.current) {
-        connect();
+        connect(onPublish);
+        return;
       }
 
-      if (client.current) {
-        Stomp.publish(client.current, messageRequest);
-      }
+      onPublish();
     },
     [connect]
   );
 
-  // useEffect(() => {
-  //   connect();
-  // }, [connect]);
-
-  // useEffect(() => {
-  //   if (client.current && myChatRooms && !isSubscribe) {
-  //     isSubscribe = true;
-  //     myChatRooms.forEach((chatRoomId) => subscribe(chatRoomId));
-  //   }
-  // }, [myChatRooms, subscribe, client]);
+  useEffect(() => {
+    if (client.current && myChatRooms && !isSubscribe) {
+      isSubscribe = true;
+      myChatRooms.forEach((chatRoomId) => subscribe(chatRoomId));
+    }
+  }, [myChatRooms, subscribe, client]);
 
   return (
     <ChatContext.Provider value={{ connect, subscribe, publish, chatRooms }}>

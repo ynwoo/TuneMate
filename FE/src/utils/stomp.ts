@@ -5,7 +5,7 @@ import { Client } from "@stomp/stompjs";
 import { Storage } from "./storage";
 
 export const Stomp = Object.freeze({
-  connect() {
+  connect(onConnect?: () => void) {
     const accessToken = Storage.getAccessToken();
     const client = new Client({
       brokerURL: `${SOCKET_URL.brokerURL()}?Authorization=${accessToken}`,
@@ -13,7 +13,9 @@ export const Stomp = Object.freeze({
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
       onConnect() {
-        console.log("client", client);
+        if (onConnect) {
+          onConnect();
+        }
       },
     });
 
