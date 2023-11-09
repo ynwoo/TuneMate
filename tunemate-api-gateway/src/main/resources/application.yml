@@ -66,19 +66,25 @@ spring:
           filters:
             - AuthorizationHeaderFilter
             - RewritePath=/api/v1/social-service/(?<segment>.*), /$\{segment}
-#        - id: social-service-chat
-#          uri: lb://social-service
-#          order: 0
-#          predicates:
-#            - Path=/api/v1/social-service/chat
-#          filters:
-#            - RewritePath=/social-service/(?<segment>.*), /$\{segment}
         - id: social-service-api-docs
           uri: lb://social-service
           predicates:
             - Path=/social-service/v3/api-docs
           filters:
             - RewritePath=/social-service/(?<segment>.*), /$\{segment}
+        - id: group-service
+          uri: lb://group-service
+          predicates:
+            - Path=/api/v1/group-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/group-service/(?<segment>.*), /$\{segment}
+        - id: group-service-api-docs
+          uri: lb://group-service
+          predicates:
+            - Path=/group-service/v3/api-docs
+          filters:
+            - RewritePath=/group-service/(?<segment>.*), /$\{segment}
         - id: recommend-service
           uri: lb://recommendation-service
           predicates:
@@ -114,6 +120,8 @@ springdoc:
         name: Social Service
       - url: /music-service/v3/api-docs
         name: Music Service
+      - url: /group-service/v3/api-docs
+        name: Group Service
 
 jwt:
   private-key: ${jwt-private-key}
