@@ -5,7 +5,8 @@ import TrackSearchResult from "./TrackSearchResult";
 import PlaylistDetails from "./PlaylistDetails"; // 위에서 만든 PlaylistDetails 컴포넌트를 불러옵니다.
 import useUpdateIndividualPlayListMutation from "@/hooks/mutations/music/individual/useUpdateIndividualPlayListMutation";
 import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
-
+import { spotifyApi as spotify } from "@/api";
+import { Storage } from "@/utils/storage";
 const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIEND_ID;
 const spotifyApi = new SpotifyWebApi(clientId);
 
@@ -26,7 +27,6 @@ export default function Dashboard({ accessToken, className }) {
     setPlayingTrack(track);
     setSearch("");
   }
-  console.log("selectedPlaylistId", selectedPlaylistId);
 
   function handleSelectChange(event) {
     setSelectedPlaylistId(event.target.value);
@@ -34,8 +34,6 @@ export default function Dashboard({ accessToken, className }) {
 
   // 대표 플레이리스트 설정
   function handleselect() {
-    console.log("handleselect 함수 호출됨");
-    console.log("selectedPlaylistId", selectedPlaylistId);
     updateIndividualPlayList(selectedPlaylistId);
   }
 
@@ -80,6 +78,19 @@ export default function Dashboard({ accessToken, className }) {
       cancel = true;
     };
   }, [search, accessToken]);
+
+  useEffect(() => {
+    const user_id = Storage.getSpotifyUserId();
+    const endpoint = `users/${user_id}/playlists`;
+    spotify
+      .get(endpoint)
+      .then((response) => {
+        // 플레이리스트 데이터를 가져와 상태에 설정
+        setPlaylists(response.data.items);
+        console.log(response.data.items);
+      })
+      .catch((error) => {});
+  }, [accessToken]);
 
   return (
     <Container
