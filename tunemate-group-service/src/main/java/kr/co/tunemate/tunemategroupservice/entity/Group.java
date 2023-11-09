@@ -3,6 +3,8 @@ package kr.co.tunemate.tunemategroupservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.time.LocalDateTime;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "group_table")
+@SQLDelete(sql = "UPDATE group SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class Group extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,4 +42,7 @@ public class Group extends BaseTimeEntity {
     @Builder.Default
     @Column(nullable = false)
     private Boolean closedByHost = false;
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean deleted = false;
 }

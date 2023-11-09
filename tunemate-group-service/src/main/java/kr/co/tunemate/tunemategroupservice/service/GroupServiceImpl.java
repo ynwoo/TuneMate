@@ -95,4 +95,14 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupDto> searchAll(GroupSearchDto groupSearchDto) {
         return groupRepository.searchAll(groupSearchDto).stream().map(group -> modelMapper.map(group, GroupDto.class)).toList();
     }
+
+    /**
+     * 공고를 삭제합니다.
+     * @param userId 요청자 UUID
+     * @param groupId 삭제대상 공고 UUID
+     */
+    @Override
+    public void deleteGroupByGroupId(String userId, String groupId) {
+        groupRepository.deleteByHostIdAndGroupId(userId, groupId);
+    }
 }

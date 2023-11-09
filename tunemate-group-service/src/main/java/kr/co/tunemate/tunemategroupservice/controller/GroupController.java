@@ -81,4 +81,12 @@ public class GroupController {
 
         return ResponseEntity.ok(responseGroups);
     }
+
+    @Operation(description = "공고를 삭제합니다.")
+    @DeleteMapping("/{groupId}")
+    public ResponseEntity deleteGroup(@RequestHeader("UserId") String userId, @PathVariable String groupId) {
+        groupService.deleteGroupByGroupId(userId, groupId);
+
+        return ResponseEntity.ok().build();
+    }
 }
