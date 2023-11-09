@@ -7,6 +7,7 @@ import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
 import com.tunemate.social.tunematesocial.dto.response.MyFriendResponseDto;
 import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResponseDto;
+import com.tunemate.social.tunematesocial.dto.response.RelationIdsResponseDto;
 import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 
 public interface SocialService {
@@ -30,7 +31,7 @@ public interface SocialService {
 
 	ChattingRoom getChats(long relationId);
 
-	void setChats(long relationId,String userId);
+	void setChats(long relationId, String userId);
 
 	void setChatPerson(long relationId, String userId);
 
@@ -38,5 +39,5 @@ public interface SocialService {
 
 	List<UserIdDto> getRequestUserId(String userId);
 
-	Boolean doesRelationshipExist(Long relationId);
+	RelationIdsResponseDto getRelationId(Long relationId);
 }

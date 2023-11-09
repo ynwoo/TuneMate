@@ -3,10 +3,12 @@ package com.tunemate.social.tunematesocial.controller;
 import java.util.List;
 
 import com.tunemate.social.tunematesocial.dto.response.MyChatRoomListDto;
+import com.tunemate.social.tunematesocial.dto.response.RelationIdsResponseDto;
 import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 import com.tunemate.social.tunematesocial.service.ChatService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -144,11 +146,15 @@ public class SocialController {
 
 	@GetMapping("/relation/{relationId}")
 	@Operation(summary = "relationId로 relation 조회", description = """
-		relationId를 받고 해당 relation이 존재하면 true, 없으면 false을 반환합니다.
+		relationId를 받고 해당 relation이 존재하면 두 유저의 아이디, 없으면 null을 반환합니다.
 				
 		마이크로 서비스간 통신용""")
-	public Boolean getRelationById(@PathVariable("relationId") Long relationId) {
-		return socialService.doesRelationshipExist(relationId);
+	public ResponseEntity<?> getRelationById(@PathVariable("relationId") Long relationId) {
+		RelationIdsResponseDto ids = socialService.getRelationId(relationId);
+		if (ids == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+		return ResponseEntity.ok(ids);
 	}
 
 	/**
