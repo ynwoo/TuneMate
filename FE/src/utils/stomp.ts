@@ -12,13 +12,14 @@ export const Stomp = Object.freeze({
       reconnectDelay: 2000, // 자동 재연결
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
-      onConnect() {
-        if (onConnect) {
-          onConnect();
-        }
-      },
     });
 
+    client.onStompError = (data) => {
+      console.error(data);
+    };
+    if (onConnect) {
+      client.onConnect = onConnect;
+    }
     client.activate();
 
     return client;
