@@ -1,0 +1,9 @@
+.cover {
+  height: 5vh;
+  width: 5vh;
+}
+
+.cover img {
+  height: inherit;
+  width: inherit;
+}
