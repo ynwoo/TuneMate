@@ -1,9 +1,9 @@
 server:
-  port: 8004
+  port: 8084
 
 spring:
   application:
-    name: group-service
+    name: ${spring-application-name}
   datasource:
     url: ${datasource-url}
     username: ${datasource-username}
@@ -11,3 +11,27 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${eureka-service-url}
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance.id:${random.value}}
+    hostname: k9A603.p.ssafy.io
+
+openapi:
+  service:
+    version: ${openapi-service-version}
+    url: ${openapi-service-url} # api gateway url
+
+logging:
+  level:
+    kr.co.kr.co.tunemate.tunemategroupservice: debug
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
