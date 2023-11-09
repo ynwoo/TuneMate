@@ -17,6 +17,7 @@ import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
 import com.tunemate.social.tunematesocial.dto.response.MyFriendResponseDto;
 import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResponseDto;
+import com.tunemate.social.tunematesocial.dto.response.RelationIdsResponseDto;
 import com.tunemate.social.tunematesocial.entity.ChatPerson;
 import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 import com.tunemate.social.tunematesocial.entity.Friend;
@@ -304,8 +305,16 @@ public class SocialServiceImpl implements SocialService {
 	}
 
 	@Override
-	public Boolean doesRelationshipExist(Long relationId) {
+	public RelationIdsResponseDto getRelationId(Long relationId) {
 		Optional<Friend> byId = friendRepository.findById(relationId);
-		return byId.isPresent();
+		if (byId.isEmpty()) {
+			return null;
+		}
+		Friend friend = byId.get();
+
+		return RelationIdsResponseDto.builder()
+			.user1Id(friend.getUser1Id())
+			.user2Id(friend.getUser2Id())
+			.build();
 	}
 }
