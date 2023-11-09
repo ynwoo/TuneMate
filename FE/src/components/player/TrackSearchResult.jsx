@@ -1,13 +1,20 @@
 // TrackSearchResult.js
-import Link from "next/link";
+import useCreateIndividualPlayListTrackMutation from "@/hooks/mutations/music/individual/useCreateIndividualPlayListTrackMutation";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
-export default function TrackSearchResult({ track, chooseTrack }) {
-  const router = useRouter();
+export default function TrackSearchResult({ track, chooseTrack, playlistId }) {
+  const { mutate: createIndividualPlayListTrack } =
+    useCreateIndividualPlayListTrackMutation();
 
   function handlePlay() {
-    chooseTrack(track);
-    // router.push(`/album?albumUrl=${encodeURIComponent(track.albumUrl)}`);
+    console.log("track", track.uri);
+    console.log("playlistId", playlistId);
+    createIndividualPlayListTrack({
+      playlistId: playlistId,
+      uris: [track.uri],
+      position: 0,
+    });
   }
 
   return (
@@ -22,11 +29,7 @@ export default function TrackSearchResult({ track, chooseTrack }) {
       }}
       onClick={handlePlay}
     >
-      <img
-        src={track.albumUrl}
-        style={{ height: "64px", width: "64px" }}
-        alt=""
-      />
+      <Image src={track.albumUrl} width={64} height={64} alt="" />
       <div
         style={{
           marginLeft: 10,
@@ -40,6 +43,7 @@ export default function TrackSearchResult({ track, chooseTrack }) {
           {track.artist}
         </div>
       </div>
+      <button onClick={() => handlePlay(track)}>추가</button>
     </div>
   );
 }

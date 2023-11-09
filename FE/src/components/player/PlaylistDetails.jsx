@@ -1,7 +1,38 @@
-import React, { useEffect } from "react";
-import styles from "@/styles/PlayerPage.module.css";
+import React, { useEffect, useState } from "react";
+import Player from "./Player";
+import Image from "next/image";
 
-function PlaylistDetails({ playlistDetails, handleTrackClick }) {
+function PlaylistDetails({ playlistDetails, accessToken }) {
+  const [playTrack, setPlayTrack] = useState([]);
+  // 페이지 로드 시 플레이리스트의 모든 곡을 playTrack에 추가
+  useEffect(() => {
+    if (playlistDetails) {
+      const allUris = playlistDetails.tracks.items.map(
+        (track) => track.track.uri
+      );
+      setPlayTrack(allUris);
+    }
+  }, [playlistDetails]);
+
+  useEffect(() => {
+    if (playlistDetails) {
+      const allUris = playlistDetails.tracks.items.map(
+        (track) => track.track.uri
+      );
+      setPlayTrack(allUris);
+    }
+  }, [playlistDetails]); // 새로운 플레이리스트가 선택되었을 때만 실행
+
+  function handlePlay(track) {
+    const isTrackInPlayList = playTrack.includes(track.track.uri);
+
+    if (!isTrackInPlayList) {
+      setPlayTrack((prevPlayTrack) => [...prevPlayTrack, track.track.uri]);
+    }
+  }
+  import React, { useEffect } from "react";
+  import styles from "@/styles/PlayerPage.module.css";
+
   if (!playlistDetails) {
     return <div>상세 정보를 불러오는 중...</div>;
   }
@@ -15,19 +46,22 @@ function PlaylistDetails({ playlistDetails, handleTrackClick }) {
       )}
 
       <h3>곡 목록</h3>
-      <div className={styles["playlist-details-container"]}>
+      <div>
+        <Player accessToken={accessToken} playTrack={playTrack} />
+      </div>
+      <div>
         {playlistDetails.tracks.items.map((track, index) => (
           <span
             key={index}
-            className={styles["playlist-details-item"]}
-            onClick={() => handleTrackClick(track)}
+            onClick={() => handlePlay(track)}
             style={{ cursor: "pointer" }}
           >
             <div style={{ display: "flex" }}>
-              <img
+              <Image
                 src={track.track.album.images[0].url}
                 alt="Album Art"
                 width={64}
+                height={64}
               />
               <div>
                 {track.track.name}

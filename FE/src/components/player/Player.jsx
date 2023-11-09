@@ -1,26 +1,59 @@
 import SpotifyPlayer from "react-spotify-web-playback";
 import { useEffect, useState } from "react";
 
-export default function CustomPlayer({ accessToken, trackUri }) {
+export default function CustomPlayer({ accessToken, playTrack, playlist }) {
   const [play, setPlay] = useState(false);
-  useEffect(() => setPlay(true), [trackUri]);
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+
+  const playAllTracks = () => {
+    if (playTrack && playTrack.length > 0) {
+      setPlay(true);
+    } else {
+      console.error("playTrack is undefined or empty.");
+    }
+  };
+
+  const playNextTrack = () => {
+    if (currentTrackIndex < playTrack.length - 1) {
+      setCurrentTrackIndex((prevIndex) => prevIndex + 1);
+    } else {
+      setCurrentTrackIndex(0);
+    }
+    setPlay(true);
+  };
+
+  useEffect(() => {
+    if (!playTrack || playTrack.length === 0) {
+      setPlay(false);
+    }
+  }, [playTrack]);
+
+  useEffect(() => {
+    if (!playTrack || playTrack.length === 0) {
+      setPlay(false);
+    }
+  }, [playTrack]);
+
   if (!accessToken) return null;
 
   return (
     <div className="custom-player">
-      {/* 원하는 커스텀 UI 요소 추가 */}
       <div className="custom-controls">
-        {/* 컨트롤 버튼 또는 다른 사용자 지정 UI 추가 */}
+        <button onClick={playAllTracks}>전체 재생</button>
       </div>
-      <SpotifyPlayer
-        token={accessToken}
-        showSaveIcon
-        callback={(state) => {
-          if (!state.isPlaying) setPlay(false);
-        }}
-        play={play}
-        uris={trackUri ? [trackUri] : []}
-      />
+      {play && (
+        <SpotifyPlayer
+          token={accessToken}
+          showSaveIcon
+          callback={(state) => {
+            if (!state.isPlaying && state.duration - state.position < 1000) {
+              playNextTrack();
+            }
+          }}
+          play={play}
+          uris={playTrack.length > 0 ? playTrack : []}
+        />
+      )}
     </div>
   );
 }
