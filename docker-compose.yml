@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  backend:
+    image: ynwoo/tunemate-group:latest
+    build:
+      context: ./tunemate-group-service
+      dockerfile: Dockerfile
