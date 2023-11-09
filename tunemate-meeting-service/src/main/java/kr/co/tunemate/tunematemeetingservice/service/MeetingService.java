@@ -10,4 +10,6 @@ public interface MeetingService {
     void createMeeting(MeetingResponseDto meetingResponseDto);
 
     List<Meeting> getMeetings(long relationId);
+
+    void deleteMeeting(long meetingId);
 }

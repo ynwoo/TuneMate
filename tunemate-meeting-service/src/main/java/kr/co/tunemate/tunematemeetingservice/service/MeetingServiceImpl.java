@@ -30,4 +30,9 @@ public class MeetingServiceImpl implements MeetingService{
 
         return meetingRepository.findByRelationId(relationId);
     }
+
+    @Override
+    public void deleteMeeting(long meetingId) {
+        meetingRepository.deleteById(meetingId);
+    }
 }
