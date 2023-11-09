@@ -1,20 +1,25 @@
 // TrackSearchResult.js
+import useCreateIndividualPlayListTrackMutation from "@/hooks/mutations/music/individual/useCreateIndividualPlayListTrackMutation";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter, useState } from "next/router";
 
-export default function TrackSearchResult({ track, chooseTrack }) {
+export default function TrackSearchResult({ track, chooseTrack, playlistId }) {
   const router = useRouter();
+  // const [uris, setUris] = useState("");
+  const { mutate: createIndividualPlayListTrack } =
+    useCreateIndividualPlayListTrackMutation();
 
   function handlePlay() {
-    chooseTrack(track);
-    handleAddToQueue(track);
-    // router.push(`/album?albumUrl=${encodeURIComponent(track.albumUrl)}`);
+    console.log("track", track.uri);
+    console.log("playlistId", playlistId);
+    createIndividualPlayListTrack({
+      playlistId: playlistId,
+      uris: [track.uri],
+      position: 0,
+    });
   }
 
   function handleAddToQueue(track) {
-    // 호출되면 선택한 트랙을 재생 목록에 추가
-    // chooseTrack 함수를 통해 부모 컴포넌트로 전달된 것을 사용
-    // 추가적인 로직이 필요할 수 있음
     chooseTrack(track);
     console.log("Add to queue:", track);
   }
@@ -49,7 +54,7 @@ export default function TrackSearchResult({ track, chooseTrack }) {
           {track.artist}
         </div>
       </div>
-      <button onClick={handleAddToQueue}>추가</button>
+      <button onClick={() => handlePlay(track)}>추가</button>
     </div>
   );
 }

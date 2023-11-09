@@ -19,46 +19,18 @@ export default function Dashboard({ accessToken }) {
   const [playlists, setPlaylists] = useState([]);
   const [playlistDetails, setPlaylistDetails] = useState(null);
   const [playlistTracks, setPlaylistTracks] = useState([]);
-  // 선택한 리스트
   const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
+  const [mainlist, setMainlist] = useState("");
   const { mutate: updateIndividualPlayList } =
     useUpdateIndividualPlayListMutation();
   const { data: individualPlayListRepresentative } =
     useIndividualPlayListRepresentativeQuery();
-
-  console.log(
-    "individualPlayListRepresentative",
-    individualPlayListRepresentative
-  );
 
   function chooseTrack(track) {
     setPlayingTrack(track);
     setSearch("");
   }
   console.log("selectedPlaylistId", selectedPlaylistId);
-  // 플레이 리스트 선택 버튼
-  function handleConfirmClick() {
-    if (selectedPlaylistId) {
-      const endpoint = `https://api.spotify.com/v1/playlists/${selectedPlaylistId}`;
-      axios
-        .get(endpoint, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        .then((response) => {
-          const playlistDetails = response.data;
-          setPlaylistDetails(playlistDetails);
-          // setSelectedPlaylistId(null);
-        })
-        .catch((error) => {
-          console.error(
-            "플레이리스트 상세 정보를 가져오는 중 오류 발생:",
-            error
-          );
-        });
-    }
-  }
 
   function handleSelectChange(event) {
     setSelectedPlaylistId(event.target.value);
@@ -74,27 +46,6 @@ export default function Dashboard({ accessToken }) {
   useEffect(() => {
     if (!accessToken) return;
     spotifyApi.setAccessToken(accessToken);
-  }, [accessToken]);
-
-  useEffect(() => {
-    // Spotify API 엔드포인트 URL
-    const endpoint = "https://api.spotify.com/v1/me/playlists";
-
-    // Spotify API 요청
-    axios
-      .get(endpoint, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) => {
-        // 플레이리스트 데이터를 가져와 상태에 설정
-        setPlaylists(response.data.items);
-        console.log(response.data.items);
-      })
-      .catch((error) => {
-        // console.error("플레이리스트를 가져오는 중 오류 발생:", error);
-      });
   }, [accessToken]);
 
   useEffect(() => {
@@ -134,23 +85,6 @@ export default function Dashboard({ accessToken }) {
     };
   }, [search, accessToken]);
 
-  useEffect(() => {
-    const endpoint = "https://api.spotify.com/v1/me/playlists";
-    spotifyApi.setAccessToken(accessToken);
-    axios
-      .get(endpoint, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) => {
-        setPlaylists(response.data.items);
-      })
-      .catch((error) => {
-        // console.error("플레이리스트를 가져오는 중 오류 발생:", error);
-      });
-  }, [accessToken]);
-
   return (
     <Container
       className="d-flex flex-column py-2"
@@ -177,30 +111,13 @@ export default function Dashboard({ accessToken }) {
             key={track.uri}
             chooseTrack={chooseTrack}
             style={{ display: "flex" }}
+            playlistId={individualPlayListRepresentative.id}
           />
         ))}
       </div>
-      {individualPlayListRepresentative && (
-        <div>
-          <h3>대표 플레이리스트 정보</h3>
-          <p>Name: {individualPlayListRepresentative.name}</p>
-          <p>Description: {individualPlayListRepresentative.description}</p>
-          <Image
-            src={individualPlayListRepresentative.images[0].url}
-            alt="Playlist Cover"
-            width="64"
-            height="64"
-          />
-        </div>
-      )}
-
       <div>
-        <h1>내 플레이리스트</h1>
-        <select
-          className="form-select"
-          // value={selectedPlaylistId}
-          onChange={handleSelectChange}
-        >
+        <h3>대표 플레이 리스트 선택</h3>
+        <select className="form-select" onChange={handleSelectChange}>
           <option value="">플레이리스트 선택</option>
           {playlists.map((playlist) => (
             <option key={playlist.id} value={playlist.id}>
@@ -211,22 +128,18 @@ export default function Dashboard({ accessToken }) {
         <button onClick={handleselect} style={{ marginTop: "10px" }}>
           대표 플레이리스트 설정
         </button>
-        {/* <button
-          onClick={fetchRepresentativePlaylist}
-          style={{ marginTop: "10px" }}
-        >
-          대표 플레이리스트 보기
-        </button> */}
 
-        <button onClick={handleConfirmClick}>선택</button>
+        {/* <button onClick={handleConfirmClick}>선택</button> */}
       </div>
-
-      {/* 선택된 플레이리스트의 상세 정보 표시 */}
-      <PlaylistDetails
-        playlistDetails={playlistDetails}
-        accessToken={accessToken}
-        chooseTrack={chooseTrack}
-      />
+      {individualPlayListRepresentative && (
+        <div style={{ border: "1px solid black" }}>
+          <PlaylistDetails
+            playlistDetails={individualPlayListRepresentative}
+            accessToken={accessToken}
+            chooseTrack={chooseTrack}
+          />
+        </div>
+      )}
     </Container>
   );
 }
