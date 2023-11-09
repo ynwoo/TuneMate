@@ -10,7 +10,7 @@ spring:
     password: ${datasource-password}
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
 
 eureka:
   client:
