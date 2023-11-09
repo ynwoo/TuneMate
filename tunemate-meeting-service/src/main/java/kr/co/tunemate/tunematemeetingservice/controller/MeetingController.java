@@ -5,6 +5,8 @@ import kr.co.tunemate.tunematemeetingservice.client.SocialServiceClient;
 import kr.co.tunemate.tunematemeetingservice.domain.Meeting;
 import kr.co.tunemate.tunematemeetingservice.dto.MeetingResponseDto;
 import kr.co.tunemate.tunematemeetingservice.dto.RelationInfo;
+import kr.co.tunemate.tunematemeetingservice.exception.GlobalExceptionHandler;
+import kr.co.tunemate.tunematemeetingservice.exception.NotFoundException;
 import kr.co.tunemate.tunematemeetingservice.service.MeetingService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin(value = "*", allowedHeaders = "*")
@@ -47,5 +50,22 @@ public class MeetingController {
         meetingService.createMeeting(meetingResponseDto);
         return ResponseEntity.ok(HttpStatus.OK);
 
+    }
+
+    @DeleteMapping("meetings/{meetingId}")
+    public ResponseEntity deleteMeeting(@RequestHeader("UserId") String userId, @PathVariable("meetingId") long meetingId){
+
+        meetingService.findMeeting(meetingId).ifPresentOrElse(meeting -> {
+                    RelationInfo relationInfo = socialServiceClient.isExistRelation(meeting.getRelationId());
+                    System.out.println(relationInfo.getUser1Id());
+                    System.out.println(relationInfo.getUser2Id());
+                    if(!relationInfo.getUser1Id().equals(userId) && !relationInfo.getUser2Id().equals(userId)) throw new NotFoundException("삭제 권한이 없습니다.",HttpStatus.FORBIDDEN); // 만남에 참여하지 않은 사람이 삭제하려는 경우 403
+
+                },
+                () ->{
+                    throw new NotFoundException("meetingId가 존재 하지 않습니다.",HttpStatus.NOT_FOUND); // meetingId가 존재하지 않는 경우 404에러
+                });
+        meetingService.deleteMeeting(meetingId);
+        return ResponseEntity.ok().build();
     }
 }

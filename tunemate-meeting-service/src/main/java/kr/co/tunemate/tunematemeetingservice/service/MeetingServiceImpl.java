@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -34,5 +35,10 @@ public class MeetingServiceImpl implements MeetingService{
     @Override
     public void deleteMeeting(long meetingId) {
         meetingRepository.deleteById(meetingId);
+    }
+
+    @Override
+    public Optional<Meeting> findMeeting(long meetingId){
+        return meetingRepository.findById(meetingId);
     }
 }
