@@ -50,7 +50,7 @@ public class ConcertController {
 		단일 공연 정보를 조회합니다.
 		""")
 	@GetMapping("/{concertId}")
-	public ResponseEntity<?> getConcertInfoById(@RequestHeader("UserId") String userId,
+	public ResponseEntity<?> getConcertInfoById(
 		@PathVariable("concertId") Long concertId) {
 		return ResponseEntity.ok(concertService.getConcertById(concertId));
 	}
