@@ -129,7 +129,9 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         String token = getToken(memberInfo);
 
         Optional<Playlist> playlist = individualPlaylistRepository.findByUserId(userId);
-        if(playlist.isEmpty()) return null;
+        if(playlist.isEmpty()){
+            return new PlaylistResponseDto();
+        }
 
 
         PlaylistResponseDto playlistResponseDto = webClientBuilder.build().get().uri(uriBuilder -> uriBuilder.path("/playlists/"+playlist.get().getPlaylistSpotifyId()).queryParam("fields","description,id,name,images,tracks(items(track(album(images),artists(name),id,name,uri)))").build()).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
