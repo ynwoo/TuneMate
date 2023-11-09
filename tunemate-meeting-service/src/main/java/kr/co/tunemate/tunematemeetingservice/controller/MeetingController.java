@@ -26,25 +26,15 @@ public class MeetingController {
     private final SocialServiceClient socialServiceClient;
     private final MeetingService meetingService;
 
-    @GetMapping("meetings")
-    public List<MeetingResponseDto> getMeetings(){
-        List<MeetingResponseDto> meetingResponseDtoList = new ArrayList<>();
-        MeetingResponseDto meeting1 = new MeetingResponseDto();
-        meeting1.setMeetingId(1l);
-        meeting1.setMemo("놀러가기");
-        meeting1.setDatetime(LocalDateTime.now());
-        meeting1.setRelationId(1l);
-        meeting1.setConcertId(1l);
-        MeetingResponseDto meeting2 = new MeetingResponseDto();
-        meeting2.setMeetingId(2l);
-        meeting2.setMemo("영화관 가기");
-        meeting2.setDatetime(LocalDateTime.now());
-        meeting2.setRelationId(2l);
-        meeting2.setConcertId(2l);
-        meetingResponseDtoList.add(meeting1);
-        meetingResponseDtoList.add(meeting2);
+    @GetMapping("meetings/{relationId}")
+    public ResponseEntity<List<MeetingResponseDto>> getMeetings(@RequestHeader("UserId") String userId, @PathVariable("relationId") long relationId){
+        if(!socialServiceClient.isExistRelation(relationId)){ // relationId 가 없다면
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        List<MeetingResponseDto> meetingResponseDtoList = meetingService.getMeetings(relationId);
+        return ResponseEntity.ok(meetingResponseDtoList);
 
-        return meetingResponseDtoList;
+
     }
 
 
