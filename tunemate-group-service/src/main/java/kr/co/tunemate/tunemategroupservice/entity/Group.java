@@ -1,16 +1,14 @@
 package kr.co.tunemate.tunemategroupservice.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "group_table")
 public class Group extends BaseTimeEntity {
@@ -37,4 +35,7 @@ public class Group extends BaseTimeEntity {
     private LocalDateTime deadline;
     @Column(length = 1024)
     private String content;
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean closedByHost = false;
 }
