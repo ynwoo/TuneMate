@@ -144,7 +144,7 @@ public class SocialController {
 
 	@GetMapping("/relation/{relationId}")
 	@Operation(summary = "relationId로 relation 조회", description = """
-		relationId를 받고 해당 relation이 존재하면 정보 반환, 없으면 null을 반환합니다.
+		relationId를 받고 해당 relation이 존재하면 true, 없으면 false을 반환합니다.
 				
 		마이크로 서비스간 통신용""")
 	public Boolean getRelationById(@PathVariable("relationId") Long relationId) {
