@@ -1,30 +1,28 @@
 package com.tunemate.social.tunematesocial.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.tunemate.social.tunematesocial.client.UserServiceClient;
-import com.tunemate.social.tunematesocial.dto.ChatDto;
-import com.tunemate.social.tunematesocial.dto.UserIdDto;
-import com.tunemate.social.tunematesocial.entity.ChatPerson;
-import com.tunemate.social.tunematesocial.entity.ChattingRoom;
-import com.tunemate.social.tunematesocial.repository.ChatPersonRepository;
-import com.tunemate.social.tunematesocial.repository.ChattingRoomRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tunemate.social.tunematesocial.client.UserServiceClient;
+import com.tunemate.social.tunematesocial.dto.ChatDto;
+import com.tunemate.social.tunematesocial.dto.UserIdDto;
 import com.tunemate.social.tunematesocial.dto.UserInfoDto;
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
 import com.tunemate.social.tunematesocial.dto.response.MyFriendResponseDto;
 import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResponseDto;
+import com.tunemate.social.tunematesocial.entity.ChatPerson;
+import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 import com.tunemate.social.tunematesocial.entity.Friend;
 import com.tunemate.social.tunematesocial.entity.FriendRequest;
+import com.tunemate.social.tunematesocial.repository.ChatPersonRepository;
+import com.tunemate.social.tunematesocial.repository.ChattingRoomRepository;
 import com.tunemate.social.tunematesocial.repository.FriendRepository;
 import com.tunemate.social.tunematesocial.repository.FriendRequestRepository;
 import com.tunemate.social.tunematesocial.vo.MyFriendVo;
@@ -185,12 +183,10 @@ public class SocialServiceImpl implements SocialService {
 	public List<MyFriendResponseDto> getMyFriends(String myId) {
 		List<MyFriendResponseDto> result = new ArrayList<>();
 
-		// 유저의 친구 목록
-		List<Friend> myFriends = new ArrayList<>();
-
 		List<Friend> byUser1Id = friendRepository.findByUser1Id(myId);
 		List<Friend> byUser2Id = friendRepository.findByUser2Id(myId);
 
+		// 유저의 친구 목록
 		List<MyFriendVo> myFriendVos = new ArrayList<>();
 
 		for (Friend friend : byUser1Id) {
