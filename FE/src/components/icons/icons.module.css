@@ -1,3 +1,7 @@
 .icon {
   color: var(--black-color);
 }
+
+.gray {
+  color: var(--light-gray-color);
+}
