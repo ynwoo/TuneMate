@@ -19,11 +19,15 @@ import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResp
 import com.tunemate.social.tunematesocial.service.SocialService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @CrossOrigin(value = "*", allowedHeaders = "*")
 @Slf4j
+@Tag(name = "social", description = "소셜 API")
 public class SocialController {
 	private final SocialService socialService;
 	private final ChatService chatService;
@@ -127,7 +131,8 @@ public class SocialController {
 	@GetMapping("/friends")
 	@Operation(summary = "친구 목록 조회", description = """
 		친구 목록을 조회합니다.""")
-	public ResponseEntity<?> getMyFriends(@RequestHeader("UserId") String userId) {
+	public ResponseEntity<?> getMyFriends(
+		@RequestHeader("UserId") String userId) {
 		log.debug("나의 친구 목록을 불러옵니다.");
 
 		List<MyFriendResponseDto> myFriends = socialService.getMyFriends(userId);
