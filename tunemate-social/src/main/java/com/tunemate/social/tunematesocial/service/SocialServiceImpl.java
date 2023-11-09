@@ -302,4 +302,10 @@ public class SocialServiceImpl implements SocialService {
 	public List<UserIdDto> getRequestUserId(String userId) {
 		return friendRequestRepository.findByRequestingUserId(userId);
 	}
+
+	@Override
+	public Boolean doesRelationshipExist(Long relationId) {
+		Optional<Friend> byId = friendRepository.findById(relationId);
+		return byId.isPresent();
+	}
 }
