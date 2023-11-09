@@ -1,5 +1,5 @@
 .container {
-  background-color: var(--gray-color);
+  background-color: var(--light-gray-color);
   padding: 1vh;
   display: flex;
   flex-direction: column;
@@ -12,11 +12,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 39vh;
-  padding: 1vh 0vh
+  width: 70vw;
+  padding: 1vh 0vh;
 }
 
 .playlist-box {
-  overflow: hidden;
   height: 100%;
+}
+
+.modal-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
