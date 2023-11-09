@@ -5,6 +5,7 @@ import kr.co.tunemate.tunematemeetingservice.client.SocialServiceClient;
 import kr.co.tunemate.tunematemeetingservice.domain.Meeting;
 import kr.co.tunemate.tunematemeetingservice.dto.MeetingResponseDto;
 import kr.co.tunemate.tunematemeetingservice.dto.RelationInfo;
+import kr.co.tunemate.tunematemeetingservice.dto.ResponseMeetingList;
 import kr.co.tunemate.tunematemeetingservice.exception.GlobalExceptionHandler;
 import kr.co.tunemate.tunematemeetingservice.exception.NotFoundException;
 import kr.co.tunemate.tunematemeetingservice.service.MeetingService;
@@ -32,10 +33,10 @@ public class MeetingController {
     private final MeetingService meetingService;
 
     @GetMapping("meetings/{relationId}")
-    public ResponseEntity<List<Meeting>> getMeetings(@RequestHeader("UserId") String userId, @PathVariable("relationId") long relationId){
+    public ResponseEntity<List<ResponseMeetingList>> getMeetings(@RequestHeader("UserId") String userId, @PathVariable("relationId") long relationId){
         socialServiceClient.isExistRelation(relationId); // relationId 가 없다면 404 에러 발생
 
-        List<Meeting> meetingResponseDtoList = meetingService.getMeetings(relationId);
+        List<ResponseMeetingList> meetingResponseDtoList = meetingService.getMeetings(relationId);
         return ResponseEntity.ok(meetingResponseDtoList);
 
 
