@@ -1,5 +1,6 @@
 package kr.co.tunemate.tunematemeetingservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,8 @@ public class MeetingResponseDto {
 
     private Long concertId;
 
-    private LocalDateTime dateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime datetime;
 
     private Long relationId;
 }
