@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @Schema(description = "공고 요청 VO")
 public class RequestGroup {
+    private String groupId;
     private String title;
     private String content;
     private Integer capacity;
