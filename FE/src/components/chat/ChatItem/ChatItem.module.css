@@ -1,0 +1,16 @@
+.chat-item {
+  display: flex;
+}
+
+.reverse {
+  justify-content: flex-end;
+}
+
+.chat-item__elm {
+}
+
+.chat-item__image {
+}
+
+.chat-item__text {
+}

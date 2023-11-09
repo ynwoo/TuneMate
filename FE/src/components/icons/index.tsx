@@ -1,5 +1,6 @@
 import { faBell } from "@fortawesome/free-regular-svg-icons/faBell";
 import {
+  faPlus,
   faBars,
   faCirclePlay,
   faUser,
@@ -60,6 +61,9 @@ const Icon = {
   ),
   CircleCheck: ({ size = "2xl" }: IconProps) => (
     <FontAwesomeIcon className={styles.icon} icon={faCircleCheck} size={size} />
+  ),
+  Plus: ({ size = "2xl" }: IconProps) => (
+    <FontAwesomeIcon className={styles.icon} icon={faPlus} size={size} />
   ),
 };
 

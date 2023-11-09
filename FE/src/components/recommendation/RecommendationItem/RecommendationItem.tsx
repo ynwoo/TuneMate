@@ -10,6 +10,7 @@ import useAcceptSocialFriendRequestMutation from "@/hooks/mutations/social/useAc
 import useDeclineSocialFriendRequestMutation from "@/hooks/mutations/social/useDeclineSocialFriendRequestMutation";
 import Icon from "@/components/icons";
 import ButtonWithModal from "@/components/button/ButtonWithModal";
+import useSendSocialFriendRequestMutation from "@/hooks/mutations/social/useSendSocialFriendRequestMutation";
 
 interface RecommendItemProps extends Props {
   item: FriendRequest | RecommendationFriend;
@@ -21,27 +22,51 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
     useAcceptSocialFriendRequestMutation();
   const { mutate: declineFriendRequest } =
     useDeclineSocialFriendRequestMutation();
+  const { mutate: sendSocialFriendRequest } =
+    useSendSocialFriendRequestMutation();
 
   const { isFriendRequest, onAccept, onDecline } = useMemo(() => {
-    return {
-      isFriendRequest: item.type === "friendRequest",
-      onAccept: (e: MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
+    const isFriendRequest = item.type === "friendRequest";
+    const onAccept = (e: MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      if (isFriendRequest) {
+        // 친구 요청 수락
         acceptFriendRequest(item.userId);
-      },
-      onDecline: (e: MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        declineFriendRequest(item.userId);
-      },
+      } else {
+        const { userId, distance, similarity } = item;
+        console.log(distance, similarity);
+
+        // 친구 요청 보내기
+        // TODO: 친구 요청 중복 제거 구현 필요
+        sendSocialFriendRequest({
+          userId,
+          distance: "100",
+          musicalTasteSimilarity: String(similarity),
+        });
+      }
     };
-  }, [item, acceptFriendRequest, declineFriendRequest]);
+    const onDecline = (e: MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      declineFriendRequest(item.userId);
+    };
+    return {
+      isFriendRequest,
+      onAccept,
+      onDecline,
+    };
+  }, [
+    item,
+    acceptFriendRequest,
+    declineFriendRequest,
+    sendSocialFriendRequest,
+  ]);
 
   const onMoveProfilePage = useCallback(() => {
     router.push(`/profile/${item.userId}`);
   }, [router, item.userId]);
 
   return (
-    <div
+    <li
       className={classNameWrapper(className, styles["recommendation-item"])}
       onClick={onMoveProfilePage}
     >
@@ -58,11 +83,22 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
           </p>
         </div>
         <div className={styles["recommendation-item__ratio"]}>
-          <p>{item.distance ?? 0}km</p>
+          {/* TODO: distance 구현 예정 */}
+          {/* <p>{item.distance ?? 0}km</p> */}
           <p>
-            {(item.similarity * 100).toFixed(0)}
+            {(Number(item.similarity) * 100).toFixed(0)}
             <Icon.Music size="lg" />
           </p>
+          {!isFriendRequest && (
+            <ButtonWithModal
+              className={styles["recommendation-item__button-item"]}
+              onClick={onAccept}
+              modalMessage="친구요청을 보내시겠습니까?"
+              color="blue"
+            >
+              <Icon.Plus size="lg" />
+            </ButtonWithModal>
+          )}
         </div>
       </div>
       {isFriendRequest && (
@@ -84,7 +120,7 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
           </Button>
         </div>
       )}
-    </div>
+    </li>
   );
 };
 
