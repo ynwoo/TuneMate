@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/groups")
+@RestController
+@RequestMapping("/groups")
 @RequiredArgsConstructor
 public class GroupController {
     private final GroupService groupService;
