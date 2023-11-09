@@ -1,6 +1,7 @@
 package kr.co.tunemate.tunemategroupservice.service;
 
 import kr.co.tunemate.tunemategroupservice.dto.GroupDto;
+import kr.co.tunemate.tunemategroupservice.dto.GroupSearchDto;
 import kr.co.tunemate.tunemategroupservice.entity.Group;
 import kr.co.tunemate.tunemategroupservice.exception.NoAuthorizationForItemException;
 import kr.co.tunemate.tunemategroupservice.exception.NoSuchItemException;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -55,5 +57,15 @@ public class GroupServiceImpl implements GroupService {
                 .build();
 
         groupRepository.save(closedGroup);
+    }
+
+    /**
+     * 검색 조건을 적용하여 공고를 조회합니다.
+     * @param groupSearchDto 검색 조건들
+     * @return
+     */
+    @Override
+    public List<GroupDto> searchAll(GroupSearchDto groupSearchDto) {
+        return groupRepository.searchAll(groupSearchDto).stream().map(group -> modelMapper.map(group, GroupDto.class)).toList();
     }
 }
