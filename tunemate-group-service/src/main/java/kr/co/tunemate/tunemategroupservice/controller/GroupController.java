@@ -1,6 +1,7 @@
 package kr.co.tunemate.tunemategroupservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.ValidationException;
 import kr.co.tunemate.tunemategroupservice.dto.GroupDto;
 import kr.co.tunemate.tunemategroupservice.dto.GroupSearchDto;
 import kr.co.tunemate.tunemategroupservice.service.GroupService;
@@ -10,11 +11,13 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/groups")
+@RestController
+@RequestMapping("/groups")
 @RequiredArgsConstructor
 public class GroupController {
     private final GroupService groupService;
@@ -34,6 +37,20 @@ public class GroupController {
     public ResponseEntity<ResponseGroup> getGroupByGroupId(@RequestHeader("UserId") String userId, @PathVariable String groupId) {
         GroupDto groupDto = groupService.getGroupByGroupId(groupId);
         ResponseGroup responseGroup = modelMapper.map(groupDto, ResponseGroup.class);
+
+        return ResponseEntity.ok(responseGroup);
+    }
+
+    @Operation(description = "공고를 수정합니다.")
+    @PutMapping
+    public ResponseEntity<ResponseGroup> putGroup(@RequestHeader("UserId") String userId, @RequestBody RequestGroup requestGroup) {
+        if (ObjectUtils.isEmpty(requestGroup.getGroupId())) {
+            throw new ValidationException("groupId는 null 혹은 empty 값이 될 수 없습니다.");
+        }
+
+        GroupDto groupDto = modelMapper.map(requestGroup, GroupDto.class);
+        GroupDto returnGroupDto = groupService.putGroup(userId, groupDto);
+        ResponseGroup responseGroup = modelMapper.map(returnGroupDto, ResponseGroup.class);
 
         return ResponseEntity.ok(responseGroup);
     }
