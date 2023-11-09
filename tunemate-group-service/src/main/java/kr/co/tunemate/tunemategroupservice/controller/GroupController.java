@@ -34,4 +34,12 @@ public class GroupController {
 
         return ResponseEntity.ok(responseGroup);
     }
+
+    @Operation(description = "공고 작성자가 공고를 마감합니다.")
+    @PatchMapping("/{groupId}")
+    public ResponseEntity closeGroup(@RequestHeader("UserId") String userId, @PathVariable String groupId) {
+        groupService.closeGroup(userId, groupId);
+
+        return ResponseEntity.ok().build();
+    }
 }
