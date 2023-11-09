@@ -37,4 +37,6 @@ public interface SocialService {
 	void outChat(long relationId, String userId);
 
 	List<UserIdDto> getRequestUserId(String userId);
+
+	Boolean doesRelationshipExist(Long relationId);
 }
