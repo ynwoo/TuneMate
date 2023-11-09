@@ -1,11 +1,9 @@
 // TrackSearchResult.js
 import useCreateIndividualPlayListTrackMutation from "@/hooks/mutations/music/individual/useCreateIndividualPlayListTrackMutation";
-import Link from "next/link";
-import { useRouter, useState } from "next/router";
+import { useRouter } from "next/router";
+import Image from "next/image";
 
 export default function TrackSearchResult({ track, chooseTrack, playlistId }) {
-  const router = useRouter();
-  // const [uris, setUris] = useState("");
   const { mutate: createIndividualPlayListTrack } =
     useCreateIndividualPlayListTrackMutation();
 
@@ -17,11 +15,6 @@ export default function TrackSearchResult({ track, chooseTrack, playlistId }) {
       uris: [track.uri],
       position: 0,
     });
-  }
-
-  function handleAddToQueue(track) {
-    chooseTrack(track);
-    console.log("Add to queue:", track);
   }
 
   return (
@@ -36,11 +29,7 @@ export default function TrackSearchResult({ track, chooseTrack, playlistId }) {
       }}
       onClick={handlePlay}
     >
-      <img
-        src={track.albumUrl}
-        style={{ height: "64px", width: "64px" }}
-        alt=""
-      />
+      <Image src={track.albumUrl} width={64} height={64} alt="" />
       <div
         style={{
           marginLeft: 10,

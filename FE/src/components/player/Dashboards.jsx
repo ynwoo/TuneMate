@@ -2,12 +2,9 @@ import { Container, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import SpotifyWebApi from "spotify-web-api-node";
 import TrackSearchResult from "./TrackSearchResult";
-import Player from "./Player";
-import axios from "axios";
 import PlaylistDetails from "./PlaylistDetails"; // 위에서 만든 PlaylistDetails 컴포넌트를 불러옵니다.
 import useUpdateIndividualPlayListMutation from "@/hooks/mutations/music/individual/useUpdateIndividualPlayListMutation";
 import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
-import Image from "next/image";
 
 const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIEND_ID;
 const spotifyApi = new SpotifyWebApi(clientId);
@@ -20,7 +17,6 @@ export default function Dashboard({ accessToken }) {
   const [playlistDetails, setPlaylistDetails] = useState(null);
   const [playlistTracks, setPlaylistTracks] = useState([]);
   const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
-  const [mainlist, setMainlist] = useState("");
   const { mutate: updateIndividualPlayList } =
     useUpdateIndividualPlayListMutation();
   const { data: individualPlayListRepresentative } =
