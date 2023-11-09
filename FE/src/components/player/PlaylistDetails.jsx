@@ -30,13 +30,15 @@ function PlaylistDetails({ playlistDetails, accessToken }) {
       setPlayTrack((prevPlayTrack) => [...prevPlayTrack, track.track.uri]);
     }
   }
+  import React, { useEffect } from "react";
+  import styles from "@/styles/PlayerPage.module.css";
 
   if (!playlistDetails) {
     return <div>상세 정보를 불러오는 중...</div>;
   }
 
   return (
-    <div>
+    <div className={styles["playlist-details"]}>
       <h2>플레이리스트 상세 정보</h2>
       <p>플레이리스트 이름: {playlistDetails.name}</p>
       {playlistDetails.owner && (

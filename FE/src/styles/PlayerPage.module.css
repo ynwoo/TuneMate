@@ -4,3 +4,17 @@
   height: 500px; /* 원하는 크기로 조절하세요 */
   /* 다른 스타일링을 추가할 수 있습니다. */
 }
+
+.playlist-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.playlist-details-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.playlist-details-item {
+  flex: 1;
+}

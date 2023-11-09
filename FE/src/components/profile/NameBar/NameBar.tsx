@@ -9,7 +9,7 @@ interface NameBarProps extends Props {
 const NameBar = ({ name }: NameBarProps) => {
   return (
     <div className={styles["name-bar"]}>
-      { name }
+      <h3 className={styles["name-text"]} >{ name }</h3>
     </div>
   );
 };

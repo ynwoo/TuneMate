@@ -9,7 +9,7 @@ import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/indi
 const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIEND_ID;
 const spotifyApi = new SpotifyWebApi(clientId);
 
-export default function Dashboard({ accessToken }) {
+export default function Dashboard({ accessToken, className }) {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [playingTrack, setPlayingTrack] = useState();
@@ -83,7 +83,7 @@ export default function Dashboard({ accessToken }) {
 
   return (
     <Container
-      className="d-flex flex-column py-2"
+      className={`d-flex flex-column py-2 ${className}`}
       style={{ height: "100vh", margin: 10 }}
     >
       <Form.Control
