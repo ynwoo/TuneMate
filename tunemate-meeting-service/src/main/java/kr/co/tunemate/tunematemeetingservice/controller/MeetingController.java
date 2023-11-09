@@ -4,6 +4,7 @@ package kr.co.tunemate.tunematemeetingservice.controller;
 import kr.co.tunemate.tunematemeetingservice.client.SocialServiceClient;
 import kr.co.tunemate.tunematemeetingservice.domain.Meeting;
 import kr.co.tunemate.tunematemeetingservice.dto.MeetingResponseDto;
+import kr.co.tunemate.tunematemeetingservice.dto.RelationInfo;
 import kr.co.tunemate.tunematemeetingservice.service.MeetingService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -29,9 +30,8 @@ public class MeetingController {
 
     @GetMapping("meetings/{relationId}")
     public ResponseEntity<List<Meeting>> getMeetings(@RequestHeader("UserId") String userId, @PathVariable("relationId") long relationId){
-        if(!socialServiceClient.isExistRelation(relationId)){ // relationId 가 없다면
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        socialServiceClient.isExistRelation(relationId); // relationId 가 없다면 404 에러 발생
+
         List<Meeting> meetingResponseDtoList = meetingService.getMeetings(relationId);
         return ResponseEntity.ok(meetingResponseDtoList);
 
@@ -42,9 +42,7 @@ public class MeetingController {
     @PostMapping("meetings")
     public ResponseEntity createMeeting(@RequestHeader("UserId") String userId, @RequestBody MeetingResponseDto meetingResponseDto){
 
-        if(!socialServiceClient.isExistRelation(meetingResponseDto.getRelationId())){ // relationId 가 없다면
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        socialServiceClient.isExistRelation(meetingResponseDto.getRelationId()); // relationId 가 없다면 404 에러 발생
 
         meetingService.createMeeting(meetingResponseDto);
         return ResponseEntity.ok(HttpStatus.OK);
