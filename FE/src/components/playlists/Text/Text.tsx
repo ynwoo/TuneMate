@@ -9,6 +9,8 @@ interface TextProps extends Props {
 
 const Text = ({ type, content }: TextProps) => {
   return (
-    <h3 className={styles[type]}>{content}</h3>
+    <p className={styles[type]}>{content}</p>
   );
-}
+};
+
+export default Text;
