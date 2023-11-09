@@ -4,21 +4,11 @@ import "../../styles/Player.module.css";
 
 export default function CustomPlayer({ accessToken, playTrack, playlist }) {
   const [play, setPlay] = useState(false);
-  const [playTracks, setPlayTracks] = useState([]);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-
-  useEffect(() => {
-    setPlay(true);
-  }, [playTrack]);
-  console.log("playTrack", playTrack);
-  console.log("playTracks", playTracks);
 
   const playAllTracks = () => {
     if (playTrack && playTrack.length > 0) {
-      // playTrack의 각 요소를 uri 배열로 만듭니다.
-      setPlayTracks(playTrack);
       setPlay(true);
-      console.log("2", playTracks);
     } else {
       console.error("playTrack is undefined or empty.");
     }
@@ -33,25 +23,38 @@ export default function CustomPlayer({ accessToken, playTrack, playlist }) {
     setPlay(true);
   };
 
+  useEffect(() => {
+    if (!playTrack || playTrack.length === 0) {
+      setPlay(false);
+    }
+  }, [playTrack]);
+
+  useEffect(() => {
+    if (!playTrack || playTrack.length === 0) {
+      setPlay(false);
+    }
+  }, [playTrack]);
+
   if (!accessToken) return null;
 
   return (
     <div className="custom-player">
       <div className="custom-controls">
         <button onClick={playAllTracks}>전체 재생</button>
-        <button onClick={playNextTrack}>다음 곡 재생</button>
       </div>
-      <SpotifyPlayer
-        token={accessToken}
-        showSaveIcon
-        callback={(state) => {
-          if (!state.isPlaying && state.duration - state.position < 1000) {
-            playNextTrack();
-          }
-        }}
-        play={play}
-        uris={playTrack.length > 0 ? playTrack : []}
-      />
+      {play && (
+        <SpotifyPlayer
+          token={accessToken}
+          showSaveIcon
+          callback={(state) => {
+            if (!state.isPlaying && state.duration - state.position < 1000) {
+              playNextTrack();
+            }
+          }}
+          play={play}
+          uris={playTrack.length > 0 ? playTrack : []}
+        />
+      )}
     </div>
   );
 }
