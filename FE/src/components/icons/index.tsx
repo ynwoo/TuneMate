@@ -1,5 +1,5 @@
 import { faBell } from "@fortawesome/free-regular-svg-icons/faBell";
-import { faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { faHouse } from "@fortawesome/free-solid-svg-icons/faHouse";
 import { faMessage } from "@fortawesome/free-solid-svg-icons/faMessage";
@@ -91,6 +91,14 @@ const Icon = {
     <FontAwesomeIcon
       className={classNameWrapper(styles.icon, className)}
       icon={faPaperPlane}
+      size={size}
+    />
+  ),
+
+  Menu: ({ size = "2xl", className }: IconProps) => (
+    <FontAwesomeIcon
+      className={classNameWrapper(styles.icon, className)}
+      icon={faBars}
       size={size}
     />
   ),

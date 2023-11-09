@@ -10,6 +10,7 @@ import { useParams } from "next/navigation";
 import { useMemo, useCallback, useState, ChangeEvent, useEffect } from "react";
 import { Storage } from "@/utils/storage";
 import { Button } from "react-bootstrap";
+import ChatNavbar from "@/components/navbar/ChatNavbar/ChatNavbar";
 
 interface ChatPageProps extends Props {}
 
@@ -62,6 +63,7 @@ const ChatPage = ({}: ChatPageProps) => {
 
   return (
     <div className={styles["chat-page"]}>
+      <ChatNavbar className={styles["chat-page__chat_navbar"]} />
       <Search
         className={styles["chat-page__search"]}
         value={content}

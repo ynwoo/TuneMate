@@ -17,3 +17,11 @@
   bottom: 4rem;
   right: 0;
 }
+
+.chat-page__chat-navbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4rem;
+}

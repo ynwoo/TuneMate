@@ -9,10 +9,13 @@ import { useRouter } from "next/router";
 import { getUserInfo } from "@/api/user";
 import { useEffect } from "react";
 import useChat from "@/hooks/useChat";
+import { useSetRecoilState } from "recoil";
+import { userInfoState } from "@/store/userInfo";
 
 const LoginPage = () => {
   const router = useRouter();
   const { connect } = useChat();
+  const setUserInfo = useSetRecoilState(userInfoState);
 
   useEffect(() => {
     Storage.clear();
@@ -20,12 +23,13 @@ const LoginPage = () => {
     Storage.setTokenResponse(tokenResponse);
     const userId = Storage.getUserId();
     if (userId) {
-      getUserInfo(userId).then(() => {
+      getUserInfo(userId).then((data) => {
         connect();
+        setUserInfo(data);
         router.push("/main");
       });
     }
-  }, [router, connect]);
+  }, [router, connect, setUserInfo]);
 
   const setCookie = () => {
     const userId = "cb899bc8-33a9-43a6-938c-76b0ec286c77";

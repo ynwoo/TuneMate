@@ -14,8 +14,7 @@
 
 .top-navbar__item {
   cursor: pointer;
-  padding-left: 5vw;
-  padding-right: 5vw;
+  padding: 1rem;
 
   display: flex;
   align-items: center;
