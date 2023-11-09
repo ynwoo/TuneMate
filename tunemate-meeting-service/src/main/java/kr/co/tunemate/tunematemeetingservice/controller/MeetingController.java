@@ -2,6 +2,7 @@ package kr.co.tunemate.tunematemeetingservice.controller;
 
 
 import kr.co.tunemate.tunematemeetingservice.client.SocialServiceClient;
+import kr.co.tunemate.tunematemeetingservice.domain.Meeting;
 import kr.co.tunemate.tunematemeetingservice.dto.MeetingResponseDto;
 import kr.co.tunemate.tunematemeetingservice.service.MeetingService;
 import lombok.AllArgsConstructor;
@@ -27,11 +28,11 @@ public class MeetingController {
     private final MeetingService meetingService;
 
     @GetMapping("meetings/{relationId}")
-    public ResponseEntity<List<MeetingResponseDto>> getMeetings(@RequestHeader("UserId") String userId, @PathVariable("relationId") long relationId){
+    public ResponseEntity<List<Meeting>> getMeetings(@RequestHeader("UserId") String userId, @PathVariable("relationId") long relationId){
         if(!socialServiceClient.isExistRelation(relationId)){ // relationId 가 없다면
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        List<MeetingResponseDto> meetingResponseDtoList = meetingService.getMeetings(relationId);
+        List<Meeting> meetingResponseDtoList = meetingService.getMeetings(relationId);
         return ResponseEntity.ok(meetingResponseDtoList);
 
 

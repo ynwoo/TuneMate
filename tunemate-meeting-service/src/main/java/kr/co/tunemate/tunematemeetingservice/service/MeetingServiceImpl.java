@@ -6,6 +6,8 @@ import kr.co.tunemate.tunematemeetingservice.repository.MeetingRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class MeetingServiceImpl implements MeetingService{
@@ -21,5 +23,11 @@ public class MeetingServiceImpl implements MeetingService{
                 .datetime(meetingResponseDto.getDatetime())
                 .build();
         meetingRepository.save(meeting);
+    }
+
+    @Override
+    public List<Meeting> getMeetings(long relationId) {
+
+        return meetingRepository.findByRelationId(relationId);
     }
 }
