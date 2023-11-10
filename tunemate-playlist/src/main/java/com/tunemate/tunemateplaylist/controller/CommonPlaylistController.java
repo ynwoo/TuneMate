@@ -9,6 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.tunemate.tunemateplaylist.dto.*;
 import com.tunemate.tunemateplaylist.exception.NotFoundException;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,12 +48,18 @@ public class CommonPlaylistController {
 	@GetMapping("/playlists/{relationId}")
 	@Operation(summary = "공동 플레이리스트 조회", description = "공동 플레이리스트를 조회합니다.\n" +
 		"공통 플리 조회는 PostMan에서 테스트(SSE라 그런듯?)")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "조회 성공."),
+			@ApiResponse(responseCode = "403", description = "권한이 없습니다."),
+			@ApiResponse(responseCode = "404", description = "공동 플레이리스트가 없습니다.")
+
+	})
 	public ResponseEntity<SseEmitter> getCommonPlaylist(@PathVariable("relationId") Long relationId,
 		@RequestHeader("UserId") String userId) throws IOException {
 		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(relationId);
 		grantCheck(relationInfoDto,userId);
 		if(relationInfoDto.getPlaylistId() == null){ // 공통 플레이리스트를 생성하지 않은 경우
-			throw new NotFoundException("공통 플레이리스트가 없습니다.",HttpStatus.NOT_FOUND);
+			throw new NotFoundException("공동 플레이리스트가 없습니다.",HttpStatus.NOT_FOUND);
 		}
 		String playlistId = relationInfoDto.getPlaylistId();
 		SseEmitter sseEmitter = new SseEmitter(1800000l);
@@ -73,6 +81,12 @@ public class CommonPlaylistController {
 	// 공동 플레이리스트 생성
 	@PostMapping("/playlists")
 	@Operation(summary = "공동 플레이리스트 생성", description = "공동 플레이리스트를 생성합니다.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "생성 성공."),
+			@ApiResponse(responseCode = "403", description = "권한이 없습니다."),
+			@ApiResponse(responseCode = "404", description = "공동 플레이리스트가 이미 존재합니다.")
+
+	})
 	public void createCommonPlaylist(@RequestHeader("UserId") String userId,
 		@RequestBody PlaylistCreateDto playlistCreateDto) throws ParseException {
 		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(playlistCreateDto.getRelationId());
@@ -105,6 +119,12 @@ public class CommonPlaylistController {
 	// 공동 플레이리스트에 트랙 추가
 	@PostMapping("/playlists/{relationId}/tracks")
 	@Operation(summary = "공동 플레이리스트 트랙 추가", description = "공동 플레이리스트에 트랙(곡)을 추가합니다.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "트랙 추가 성공."),
+			@ApiResponse(responseCode = "403", description = "권한이 없습니다."),
+			@ApiResponse(responseCode = "404", description = "친구 관계 기본키가 올바르지 않습니다.")
+
+	})
 	public void createTrack(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId,
 		@RequestBody TrackCreateDto trackCreateDto) throws IOException, ParseException {
 		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(relationId);
@@ -118,6 +138,12 @@ public class CommonPlaylistController {
 	// 공동 플레이리스트에 트랙 삭제
 	@DeleteMapping("/playlists/{relationId}/tracks")
 	@Operation(summary = "공동 플레이리스트 트랙 삭제", description = "공동 플레이리스트에 트랙(곡)을 삭제합니다.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "삭제 성공."),
+			@ApiResponse(responseCode = "403", description = "권한이 없습니다."),
+			@ApiResponse(responseCode = "404", description = "친구 관계 기본키가 올바르지 않습니다.")
+
+	})
 	public void deleteTrack(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId,
 		@RequestBody TrackDeleteRequestDto trackDeleteRequestDto) throws IOException {
 		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(relationId);
@@ -137,6 +163,12 @@ public class CommonPlaylistController {
 		"insert_before": 3, // 삽입 위치 인덱스 (위에 있는 곡 아래로 내릴 때는 [삽입 위치 인덱스 + 1] 로 해주어야함)
 		  
 		"range_length": 1 // 1로 고정""")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "트랙 순서 변경 성공."),
+			@ApiResponse(responseCode = "403", description = "권한이 없습니다."),
+			@ApiResponse(responseCode = "404", description = "친구 관계 기본키가 올바르지 않습니다.")
+
+	})
 	public void changeTrack(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId,
 		@RequestBody TrackChangeRequestDto trackChangeRequestDto) {
 		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(relationId);

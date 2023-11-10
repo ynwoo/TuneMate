@@ -165,7 +165,6 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
     @Override
     public RelationInfoDto getRelationInfo(long relationId) {
         RelationInfoDto relationInfoDto = socialServiceClient.getRelationInfo(relationId);
-        System.out.println(relationInfoDto);
         return relationInfoDto;
     }
 
