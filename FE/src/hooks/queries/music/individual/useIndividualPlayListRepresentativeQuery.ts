@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 // 개인 대표 플레이리스트 조회
 const useIndividualPlayListRepresentativeQuery = () => {
-  const query = useQuery<PlayList, Error>({
+  const query = useQuery<PlayList | null, Error>({
     queryKey: QueryKey.useIndividualPlayListRepresentativeQuery(),
     queryFn: getIndividualPlayListRepresentative,
   });

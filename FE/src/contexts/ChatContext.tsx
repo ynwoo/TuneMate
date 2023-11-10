@@ -1,13 +1,13 @@
-import { createContext, useRef, useCallback, useState, useEffect } from "react";
+import { createContext, useRef, useCallback, useState } from "react";
 import { Client } from "@stomp/stompjs";
 import Props from "@/types";
 import { Stomp } from "@/utils/stomp";
 import { Friend } from "@/types/social";
 import { ChatRoom, MessageRequest } from "@/types/chat";
-import useMyChatRoomsQuery from "@/hooks/queries/social/useMyChatRoomsQuery";
 
 export interface ChatContextState {
-  connect: () => void;
+  connect: (relationIds?: number[]) => void;
+  disconnect: () => void;
   subscribe: (relationId: Friend["relationId"]) => void;
   publish: (messageRequest: MessageRequest) => void;
   chatRooms: ChatRoom[];
@@ -19,71 +19,72 @@ export const ChatContext = createContext<ChatContextState>(
 
 type ChatProvider = Props;
 
-let isSubscribe = false;
-
 const ChatProvider = ({ children }: ChatProvider) => {
   const client = useRef<Client | undefined>(undefined);
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
-  const { data: myChatRooms } = useMyChatRoomsQuery();
 
-  const connect = useCallback(() => {
-    if (client.current) return;
-    client.current = Stomp.connect();
+  const subscibeCallback = useCallback(
+    (data: any) => {
+      console.log(data);
+
+      // 새로운 chatroom
+      const newChatRoom: ChatRoom = JSON.parse(data.body);
+
+      // 기존 chatroom 있는지 찾기
+      let prevChatRoomId = chatRooms.findIndex(
+        ({ chatRoomId }) => chatRoomId === newChatRoom.chatRoomId
+      );
+
+      // 기존 chatroom 없으면 배열 마지막에 삽입
+      if (prevChatRoomId === -1) prevChatRoomId = chatRooms.length;
+
+      const newChatRooms = [...chatRooms];
+      newChatRooms[prevChatRoomId] = newChatRoom;
+      setChatRooms(newChatRooms);
+    },
+    [chatRooms]
+  );
+
+  const connect = useCallback(
+    (relationIds?: Friend["relationId"][]) => {
+      if (client.current) return;
+      Stomp.connect(client, relationIds, subscibeCallback);
+    },
+    [subscibeCallback]
+  );
+
+  const disconnect = useCallback(() => {
+    if (client.current) {
+      Stomp.disconnect(client.current);
+      client.current = undefined;
+    }
   }, []);
 
   const subscribe = useCallback(
     (relationId: Friend["relationId"]) => {
-      if (!client.current) {
-        connect();
-      }
-
       if (client.current) {
-        const callback = (data: any) => {
-          const newChatRoom = JSON.parse(data.body);
-          const newChatRooms = chatRooms.filter(
-            ({ chatRoomId }) => newChatRoom.chatRoomId !== chatRoomId
-          );
-          newChatRooms.push(newChatRoom);
-          setChatRooms(newChatRooms);
-        };
-        // if (myChatRooms) {
-        //   myChatRooms.forEach((relationId) =>
-        //     Stomp.subscribe(client.current, relationId, callback)
-        //   );
-        // }
-        Stomp.subscribe(client.current, relationId, callback);
+        Stomp.subscribe(client.current, relationId, subscibeCallback);
       }
     },
-    [connect, setChatRooms, chatRooms]
+    [subscibeCallback]
   );
 
-  const publish = useCallback(
-    (messageRequest: MessageRequest) => {
-      console.log("publish", client.current);
-      if (!client.current) {
-        connect();
-      }
-
-      if (client.current) {
-        Stomp.publish(client.current, messageRequest);
-      }
-    },
-    [connect]
-  );
-
-  // useEffect(() => {
-  //   connect();
-  // }, [connect]);
-
-  // useEffect(() => {
-  //   if (client.current && myChatRooms && !isSubscribe) {
-  //     isSubscribe = true;
-  //     myChatRooms.forEach((chatRoomId) => subscribe(chatRoomId));
-  //   }
-  // }, [myChatRooms, subscribe, client]);
+  const publish = useCallback((messageRequest: MessageRequest) => {
+    if (client.current) {
+      Stomp.publish(client.current, messageRequest);
+    }
+  }, []);
 
   return (
-    <ChatContext.Provider value={{ connect, subscribe, publish, chatRooms }}>
+    <ChatContext.Provider
+      value={{
+        connect,
+        disconnect,
+        subscribe,
+        publish,
+        chatRooms,
+      }}
+    >
       {children}
     </ChatContext.Provider>
   );

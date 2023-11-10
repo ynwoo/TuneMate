@@ -13,7 +13,7 @@ const FriendList = ({ friends }: FriendListProps) => {
     <ul className={styles["friend-list"]}>
       {friends.map((friend) => (
         <FriendItem
-          key={friend.freindId}
+          key={friend.friendId}
           item={friend}
           className={styles["friend-list__item"]}
         />

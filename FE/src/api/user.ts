@@ -23,6 +23,7 @@ export const getUserInfo = async (
   const userInfo = response.data;
   Storage.setSpotifyAccessToken(userInfo.spotifyAccessToken);
   Storage.setSpotifyUserId(userInfo.spotifyUserId);
+  Storage.setUserName(userInfo.name);
   return userInfo;
 };
 
