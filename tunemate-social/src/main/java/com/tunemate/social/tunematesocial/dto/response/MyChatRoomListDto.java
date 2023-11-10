@@ -11,9 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MyChatRoomListDto {
 
-    private Long chatRoomId;
-
-    // public MyChatRoomListDto(Long chatRoomId) {
-    //     this.chatRoomId = chatRoomId;
-    // }
+	private Long chatRoomId;
 }
