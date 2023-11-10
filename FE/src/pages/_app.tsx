@@ -1,6 +1,7 @@
 import BottomNavbar from "@/components/navbar/BottomNavbar/BottomNavbar";
 import TopNavbar from "@/components/navbar/TopNavbar/TopNavbar";
 import ChatProvider from "@/contexts/ChatContext";
+import FriendRequestProvider from "@/contexts/FriendRequestContext";
 import StompClientProvider from "@/contexts/StompClientContext";
 import "@/styles/globals.css";
 import "@/styles/reset.css";
@@ -43,13 +44,15 @@ export default function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <StompClientProvider>
           <ChatProvider>
-            <>
-              {!hasNavbar && <TopNavbar />}
-              <div className={hasNavbar ? "login" : "main"}>
-                <Component {...pageProps} />
-              </div>
-              {!hasNavbar && <BottomNavbar />}
-            </>
+            <FriendRequestProvider>
+              <>
+                {!hasNavbar && <TopNavbar />}
+                <div className={hasNavbar ? "login" : "main"}>
+                  <Component {...pageProps} />
+                </div>
+                {!hasNavbar && <BottomNavbar />}
+              </>
+            </FriendRequestProvider>
           </ChatProvider>
         </StompClientProvider>
       </QueryClientProvider>

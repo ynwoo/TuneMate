@@ -73,18 +73,17 @@ const ChatProvider = ({ children }: Props) => {
 
   const connect = useCallback(
     (relationIds?: Friend["relationId"][]) => {
-      if (stompClient.current) return;
       const onConnect = () => {
         if (relationIds) {
           relationIds.forEach((relationId) => {
             subscribe(relationId);
-            console.log(`${relationId}번 방 연결 성공`);
+            console.log(`${relationId}번 채팅 방 연결 성공`);
           });
         }
       };
       defaultConnect(onConnect);
     },
-    [defaultConnect, stompClient, subscribe]
+    [defaultConnect, subscribe]
   );
 
   useEffect(() => {

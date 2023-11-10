@@ -8,7 +8,6 @@ import { TokenResponse } from "@/types/user";
 import { useRouter } from "next/router";
 import { getUserInfo } from "@/api/user";
 import { useEffect } from "react";
-import useChat from "@/hooks/useChat";
 import { useSetRecoilState } from "recoil";
 import { userInfoState } from "@/store/userInfo";
 
