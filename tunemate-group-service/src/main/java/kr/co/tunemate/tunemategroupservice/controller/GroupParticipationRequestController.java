@@ -27,4 +27,12 @@ public class GroupParticipationRequestController {
 
         return ResponseEntity.ok().build();
     }
+
+    @Operation(description = "공고에 대한 참여요청을 작성자가 거절합니다.")
+    @DeleteMapping("/group-participation-requests/{groupParticipationRequestId}")
+    public ResponseEntity denyGroupParticipationRequest(@RequestHeader("UserId") String userId, @PathVariable String groupParticipationRequestId) {
+        groupParticipationRequestService.denyGroupParticipationRequest(userId, groupParticipationRequestId);
+
+        return ResponseEntity.ok().build();
+    }
 }
