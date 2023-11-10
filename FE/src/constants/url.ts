@@ -8,7 +8,6 @@ export const SOCKET_API_BASE_URL = `${TUNEMATE_API_BASE_URL}/social-service`;
 
 export const SOCKET_URL = Object.freeze({
   brokerURL: () =>
-    // `ws://k9A603.p.ssafy.io:8082/chat`,
     `wss://${TUNEMATE_DOMAIN}/${TUNEMATE_API_VERSION}/social-service/chat`,
 
   subscribeURL: (relationId: Friend["relationId"]) => `/topic/${relationId}`,
