@@ -31,8 +31,7 @@ const ChatPage = ({}: ChatPageProps) => {
     const newChatRoom = chatRooms.find(
       ({ chatRoomId }) => chatRoomId === relationId
     );
-    if (!prevChatRoom || !newChatRoom) return undefined;
-    newChatRoom.messages = [...prevChatRoom.messages, ...newChatRoom.messages];
+    if (!newChatRoom) return prevChatRoom;
     return ChatFilter.chatRoom(newChatRoom);
   }, [prevChatRoom, chatRooms, relationId]);
 
