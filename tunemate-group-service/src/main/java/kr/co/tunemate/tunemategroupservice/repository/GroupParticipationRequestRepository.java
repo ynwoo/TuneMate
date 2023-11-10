@@ -14,5 +14,7 @@ public interface GroupParticipationRequestRepository extends JpaRepository<Group
 
     List<GroupParticipationRequest> findAllByUserId(String userId);
 
+    List<GroupParticipationRequest> findAllByGroupIn(List<Group> groups);
+
     void deleteByUserIdAndGroupParticipationRequestId(String userId, String groupParticipationRequest);
 }
