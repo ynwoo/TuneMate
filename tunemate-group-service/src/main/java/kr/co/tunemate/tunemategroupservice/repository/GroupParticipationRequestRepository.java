@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface GroupParticipationRequestRepository extends JpaRepository<GroupParticipationRequest, Long> {
-    Optional<GroupParticipationRequest> findByUserIdAndGroupParticipationRequestId(String userId, String groupParticipationRequestId);
+    Optional<GroupParticipationRequest> findByGroupParticipationRequestId(String groupParticipationRequestId);
     void deleteByGroupParticipationRequestId(String groupParticipationRequest);
 }

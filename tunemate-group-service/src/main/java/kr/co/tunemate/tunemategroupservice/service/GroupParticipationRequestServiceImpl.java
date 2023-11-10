@@ -4,6 +4,7 @@ import kr.co.tunemate.tunemategroupservice.entity.Group;
 import kr.co.tunemate.tunemategroupservice.entity.GroupParticipation;
 import kr.co.tunemate.tunemategroupservice.entity.GroupParticipationRequest;
 import kr.co.tunemate.tunemategroupservice.exception.IllegalRequestException;
+import kr.co.tunemate.tunemategroupservice.exception.NoAuthorizationForItemException;
 import kr.co.tunemate.tunemategroupservice.exception.NoSuchItemException;
 import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRequestRepository;
@@ -63,7 +64,12 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
     @Transactional
     @Override
     public void acceptGroupParticipationRequest(String userId, String groupParticipationRequestId) {
-        GroupParticipationRequest groupParticipationRequest = groupParticipationRequestRepository.findByUserIdAndGroupParticipationRequestId(userId, groupParticipationRequestId).orElseThrow(() -> new NoSuchItemException("존재하지 않는 참여요청이거나 공고의 작성자가 아닙니다.", HttpStatus.NOT_FOUND));
+        GroupParticipationRequest groupParticipationRequest = groupParticipationRequestRepository.findByGroupParticipationRequestId(groupParticipationRequestId).orElseThrow(() -> new NoSuchItemException("존재하지 않는 참여요청입니다.", HttpStatus.NOT_FOUND));
+
+        if (!groupParticipationRequest.getGroup().getHostId().equals(userId)) {
+            throw new NoAuthorizationForItemException("공고 작성자만 공고에 대한 참여요청을 수락할 수 있습니다.", HttpStatus.FORBIDDEN);
+        }
+
         groupParticipationRequestRepository.delete(groupParticipationRequest);
 
         groupParticipationRepository.findByUserIdAndGroup(userId, groupParticipationRequest.getGroup()).ifPresentOrElse(
