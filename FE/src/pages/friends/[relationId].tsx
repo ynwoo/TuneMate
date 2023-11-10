@@ -1,68 +1,92 @@
+import styles from "@/styles/ChatPage.module.css";
 import ChatList from "@/components/chat/ChatList/ChatList";
+import Search from "@/components/input/Search/Search";
 import useChatsQuery from "@/hooks/queries/social/useChatsQuery";
 import useChat from "@/hooks/useChat";
 import Props from "@/types";
-import { ChatRoom, MessageRequest } from "@/types/chat";
+import { MessageRequest } from "@/types/chat";
+import { ChatFilter } from "@/utils/filter";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
-
-// const data = {
-//   chatRoomId: 1,
-//   messages: [
-//     {
-//       content:
-//         "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos omnis quas sint accusamus et error perspiciatis sequi repudiandae, commodi fugiat blanditiis unde dolores culpa maiores, itaque iusto a ratione eaque! Ad, repudiandae totam, cum consequuntur facere maxime ab voluptates id, nam ipsa pariatur nobis explicabo perferendis doloribus molestiae et deleniti!",
-//       readCount: 1,
-//       relationId: 1,
-//       senderName: "aa",
-//       senderNo: 1,
-//       time: "aa1",
-//       type: "Message",
-//     },
-//     {
-//       content: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos",
-//       readCount: 1,
-//       relationId: 1,
-//       senderName: "aa",
-//       senderNo: 1,
-//       time: "aa2",
-//       type: "Message",
-//     },
-//     {
-//       content: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos",
-//       readCount: 1,
-//       relationId: 1,
-//       senderName: "aa",
-//       senderNo: 1,
-//       time: "aa3",
-//       type: "Message",
-//     },
-//   ],
-// } as ChatRoom;
-
-const messageRequest: MessageRequest = {
-  content: "aa",
-  relationId: 7,
-  senderName: "aa",
-  senderNo: "cb899bc8-33a9-43a6-938c-76b0ec286c77",
-};
+import { useMemo, useCallback, useState, ChangeEvent, useEffect } from "react";
+import { Storage } from "@/utils/storage";
+import { Button } from "react-bootstrap";
+import ChatNavbar from "@/components/navbar/ChatNavbar/ChatNavbar";
+import useMyChatRoomsQuery from "@/hooks/queries/social/useMyChatRoomsQuery";
 
 interface ChatPageProps extends Props {}
 
 const ChatPage = ({}: ChatPageProps) => {
+  const [content, setContent] = useState<string>("");
   const params = useParams();
   const relationId = Number(params?.relationId as string);
-  console.log(relationId);
 
-  const { subscribe, publish, chatRooms } = useChat();
-  // const { data: ChatRoom } = useChatsQuery(relationId);
-  console.log(chatRooms);
+  const { connect, disconnect, subscribe, publish, chatRooms } = useChat();
+  const { data: prevChatRoom } = useChatsQuery(relationId);
+  const { data: myChatRooms } = useMyChatRoomsQuery();
+
+  const chatRoom = useMemo(() => {
+    const newChatRoom = chatRooms.find(
+      ({ chatRoomId }) => chatRoomId === relationId
+    );
+    if (!prevChatRoom || !newChatRoom) return undefined;
+    newChatRoom.messages = [...prevChatRoom.messages, ...newChatRoom.messages];
+    return ChatFilter.chatRoom(newChatRoom);
+  }, [prevChatRoom, chatRooms, relationId]);
+
+  const messageRequest: MessageRequest = useMemo(
+    () => ({
+      content: "",
+      relationId,
+      senderName: Storage.getUserName(),
+      senderNo: Storage.getUserId(),
+      time: "",
+    }),
+    [relationId]
+  );
+
+  // search에 메시지를 입력했을 때 호출되는 함수
+  const onInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setContent(e.currentTarget.value);
+  }, []);
+
+  // search의 전송 버튼을 클릭했을 때 호출되는 함수
+  const onSubmit = useCallback(() => {
+    publish({ ...messageRequest, content });
+    setContent("");
+    console.log(content);
+  }, [publish, messageRequest, content]);
+
+  const moveScrollDown = () => {
+    window.scrollTo(0, document.body.scrollHeight);
+  };
+
+  useEffect(() => {
+    moveScrollDown();
+  }, []);
 
   return (
-    <div>
-      {/* <ChatList chatRoom={{}}} /> */}
-      <button onClick={() => subscribe(relationId)}>subscribe</button>
-      <button onClick={() => publish(messageRequest)}>publish</button>
+    <div className={styles["chat-page"]}>
+      <ChatNavbar
+        className={styles["chat-page__chat_navbar"]}
+        onModal={() => {}}
+      />
+      <Search
+        className={styles["chat-page__search"]}
+        value={content}
+        onInput={onInput}
+        onSubmit={onSubmit}
+      />
+      {chatRoom && <ChatList chatRoom={ChatFilter.chatRoom(chatRoom)} />}
+      <Button onClick={() => connect(myChatRooms)}>connect</Button>
+      <Button onClick={disconnect}>disconnect</Button>
+      <Button onClick={() => subscribe(relationId)}>subscribe</Button>
+      <Button onClick={() => publish(messageRequest)}>publish</Button>
+      <Button
+        className={styles["chat-page__button--scroll-down"]}
+        onClick={moveScrollDown}
+      >
+        아래로
+      </Button>
     </div>
   );
 };

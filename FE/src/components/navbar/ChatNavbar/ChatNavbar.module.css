@@ -1,0 +1,9 @@
+.chat-navbar {
+  display: flex;
+  justify-content: space-between;
+  height: var(--top-navbar-height);
+}
+
+.chat-navbar__item {
+  padding: 1rem;
+}

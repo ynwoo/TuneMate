@@ -11,7 +11,7 @@ const ProfilePage = () => {
   const [imgSrc, setImgSrc] = useState(
     "https://3.bp.blogspot.com/-XKyHG9ipUuk/WxvKRN9CeYI/AAAAAAABMn8/usJ7TuHvS4s8Qff7wFV6iY6vtRwM3bQwgCLcBGAs/s400/music_headphone_man.png"
   );
-  const [spotifyUserId, setSpotifyUserId] = useState('');
+  const [spotifyUserId, setSpotifyUserId] = useState("");
 
   const [deleteMode, setDeleteMode] = useState(false);
 
@@ -21,23 +21,23 @@ const ProfilePage = () => {
     } else {
       setDeleteMode(true);
     }
-  }
+  };
 
   useEffect(() => {
-    const userId = '23cb91d3-78ac-45b0-995a-38f8bd348dff'
-    const getUserPlaylist = async() => {
+    const userId = "23cb91d3-78ac-45b0-995a-38f8bd348dff";
+    const getUserPlaylist = async () => {
       const repPlaylistData = await getIndividualPlayListRepresentative();
       console.log(repPlaylistData);
     };
-    const getUserProfile = async() => {
-        const userData = await getUserInfo(userId)
-        console.log(userData);
-        setName(userData.name);
-        setSpotifyUserId(userData.spotifyUserId)
-        getUserPlaylist()
+    const getUserProfile = async () => {
+      const userData = await getUserInfo(userId);
+      console.log(userData);
+      setName(userData.name);
+      setSpotifyUserId(userData.spotifyUserId);
+      getUserPlaylist();
     };
     getUserProfile();
-  }, [])
+  }, []);
 
   const data = [
     {
