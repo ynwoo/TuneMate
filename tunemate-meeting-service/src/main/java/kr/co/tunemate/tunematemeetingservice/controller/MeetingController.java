@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(value = "*", allowedHeaders = "*")
@@ -52,6 +53,21 @@ public class MeetingController {
 
     }
 
+    @GetMapping("meetings/detail/{meetingId}")
+    @Operation(summary = "만남 목록 상세 조회", description = "선택 한 친구와 설정한 만남의 상세 정보를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 성공."),
+            @ApiResponse(responseCode = "403", description = "권한이 없습니다."),
+            @ApiResponse(responseCode = "404", description = "만남 일정 기본키(meetingId)가 존재하지 않습니다.")
+
+    })
+    public ResponseEntity<ResponseMeetingList> getDetailMeetings(@RequestHeader("UserId") String userId, @PathVariable("meetingId") Long meetingId){
+        Optional<Meeting> meeting = meetingService.findMeeting(meetingId);
+        if(meeting.isEmpty()) throw new NotFoundException("만남 일정 기본키(meetingId)가 존재하지 않습니다.", HttpStatus.NOT_FOUND);
+        RelationInfo relationInfo = socialServiceClient.isExistRelation(meeting.get().getRelationId()); // relationId 가 없다면 404 에러 발생
+        grantCheck(relationInfo,userId);
+        return ResponseEntity.ok(meetingService.getDetailMeeting(meeting.get()));
+    }
 
     @Operation(summary = "만남 일정 생성", description = "선택 한 친구와 만남을 생성합니다.")
     @ApiResponses(value = {

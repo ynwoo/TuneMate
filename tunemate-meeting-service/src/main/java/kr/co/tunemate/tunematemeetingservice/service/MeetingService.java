@@ -16,4 +16,6 @@ public interface MeetingService {
     void deleteMeeting(long meetingId);
 
     Optional<Meeting> findMeeting(long meetingId);
+
+    ResponseMeetingList getDetailMeeting(Meeting meeting);
 }

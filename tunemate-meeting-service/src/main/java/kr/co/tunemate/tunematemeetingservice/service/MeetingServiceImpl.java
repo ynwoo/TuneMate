@@ -54,4 +54,15 @@ public class MeetingServiceImpl implements MeetingService{
     public Optional<Meeting> findMeeting(long meetingId){
         return meetingRepository.findById(meetingId);
     }
+
+    @Override
+    public ResponseMeetingList getDetailMeeting(Meeting meeting) {
+        ResponseMeetingList responseMeetingList = new ResponseMeetingList();
+        responseMeetingList.setMeetingId(meeting.getId());
+        responseMeetingList.setMemo(meeting.getMemo());
+        responseMeetingList.setConcert(groupServiceClient.getConcertInfo(meeting.getConcertId()));
+        responseMeetingList.setDatetime(meeting.getDatetime());
+        responseMeetingList.setRelationId(meeting.getRelationId());
+        return responseMeetingList;
+    }
 }
