@@ -1,9 +1,10 @@
-import { createContext, useRef, useCallback, useState } from "react";
+import { createContext, useRef, useCallback, useState, useEffect } from "react";
 import { Client } from "@stomp/stompjs";
 import Props from "@/types";
 import { Stomp } from "@/utils/stomp";
 import { Friend } from "@/types/social";
 import { ChatRoom, MessageRequest } from "@/types/chat";
+import useMyChatRoomsQuery from "@/hooks/queries/social/useMyChatRoomsQuery";
 
 export interface ChatContextState {
   connect: (relationIds?: number[]) => void;
@@ -22,6 +23,7 @@ type ChatProvider = Props;
 const ChatProvider = ({ children }: ChatProvider) => {
   const client = useRef<Client | undefined>(undefined);
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
+  const { data: myChatRooms } = useMyChatRoomsQuery();
   const subscibeCallback = useCallback(
     (data: any) => {
       console.log(data);
@@ -73,6 +75,16 @@ const ChatProvider = ({ children }: ChatProvider) => {
       Stomp.publish(client.current, messageRequest);
     }
   }, []);
+
+  useEffect(() => {
+    if (connect && myChatRooms) {
+      const prevChatRooms = chatRooms.map(({ chatRoomId }) => chatRoomId);
+      const newChatRooms = myChatRooms.filter(
+        (chatRoomId) => !prevChatRooms.includes(chatRoomId)
+      );
+      connect(newChatRooms);
+    }
+  }, [chatRooms, connect, myChatRooms]);
 
   return (
     <ChatContext.Provider
