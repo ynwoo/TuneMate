@@ -19,7 +19,7 @@ const ChatPage = ({}: ChatPageProps) => {
   const params = useParams();
   const relationId = Number(params?.relationId as string);
 
-  const { connect, subscribe, publish, chatRooms } = useChat();
+  const { connect, disconnect, subscribe, publish, chatRooms } = useChat();
   const { data: prevChatRoom } = useChatsQuery(relationId);
 
   const chatRoom = useMemo(() => {
@@ -63,7 +63,10 @@ const ChatPage = ({}: ChatPageProps) => {
 
   return (
     <div className={styles["chat-page"]}>
-      <ChatNavbar className={styles["chat-page__chat_navbar"]} />
+      <ChatNavbar
+        className={styles["chat-page__chat_navbar"]}
+        onModal={() => {}}
+      />
       <Search
         className={styles["chat-page__search"]}
         value={content}
@@ -72,6 +75,7 @@ const ChatPage = ({}: ChatPageProps) => {
       />
       {chatRoom && <ChatList chatRoom={ChatFilter.chatRoom(chatRoom)} />}
       <Button onClick={connect}>connect</Button>
+      <Button onClick={disconnect}>disconnect</Button>
       <Button onClick={() => subscribe(relationId)}>subscribe</Button>
       <Button onClick={() => publish(messageRequest)}>publish</Button>
       <Button

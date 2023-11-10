@@ -1,0 +1,28 @@
+.container {
+  background-color: var(--light-gray-color);
+  padding: 1vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3vh;
+}
+
+.playlist-upper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 70vw;
+  padding: 1vh 0vh;
+}
+
+.playlist-box {
+  height: 100%;
+}
+
+.modal-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

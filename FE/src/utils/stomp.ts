@@ -5,25 +5,38 @@ import { Client } from "@stomp/stompjs";
 import { Storage } from "./storage";
 
 export const Stomp = Object.freeze({
-  connect(onConnect?: () => void) {
+  connect() {
     const accessToken = Storage.getAccessToken();
     const client = new Client({
       brokerURL: `${SOCKET_URL.brokerURL()}?Authorization=${accessToken}`,
-      reconnectDelay: 2000, // 자동 재연결
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
+      // reconnectDelay: 2000, // 자동 재연결
+      // heartbeatIncoming: 4000,
+      // heartbeatOutgoing: 4000,
     });
 
-    client.onStompError = (data) => {
-      console.error(data);
-    };
-    if (onConnect) {
-      client.onConnect = onConnect;
-    }
     client.activate();
 
     return client;
   },
+  // connect(onConnect?: () => void) {
+  //   const accessToken = Storage.getAccessToken();
+  //   const client = new Client({
+  //     brokerURL: `${SOCKET_URL.brokerURL()}?Authorization=${accessToken}`,
+  //     reconnectDelay: 2000, // 자동 재연결
+  //     heartbeatIncoming: 4000,
+  //     heartbeatOutgoing: 4000,
+  //   });
+
+  //   client.onStompError = (data) => {
+  //     console.error(data);
+  //   };
+  //   if (onConnect) {
+  //     client.onConnect = onConnect;
+  //   }
+  //   client.activate();
+
+  //   return client;
+  // },
 
   disconnect(client: Client) {
     client.deactivate();
@@ -35,7 +48,10 @@ export const Stomp = Object.freeze({
     callback: (data: any) => void
   ) {
     const subscribeUrl = SOCKET_URL.subscribeURL(relationId);
-    client.subscribe(subscribeUrl, callback);
+    // client.subscribe(subscribeUrl, callback);
+    client.subscribe(subscribeUrl, (data) => {
+      console.log(data);
+    });
   },
 
   publish(client: Client, messageRequest: MessageRequest) {

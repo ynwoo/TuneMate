@@ -1,5 +1,14 @@
 import { faBell } from "@fortawesome/free-regular-svg-icons/faBell";
-import { faBars, faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faBars,
+  faCirclePlay,
+  faUser,
+  faMusic,
+  faTrash,
+  faGripLines,
+  faCircleCheck,
+} from "@fortawesome/free-solid-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { faHouse } from "@fortawesome/free-solid-svg-icons/faHouse";
 import { faMessage } from "@fortawesome/free-solid-svg-icons/faMessage";
@@ -7,7 +16,6 @@ import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./icons.module.css";
 import { faComment, faPaperPlane } from "@fortawesome/free-regular-svg-icons";
-import { faMusic } from "@fortawesome/free-solid-svg-icons/faMusic";
 import Props from "@/types";
 import { classNameWrapper } from "@/utils/className";
 
@@ -101,6 +109,18 @@ const Icon = {
       icon={faBars}
       size={size}
     />
+  ),
+  PlayMusic: ({ size = "2xl" }: IconProps) => (
+    <FontAwesomeIcon className={styles.gray} icon={faCirclePlay} size={size} />
+  ),
+  Delete: ({ size = "2xl" }: IconProps) => (
+    <FontAwesomeIcon className={styles.gray} icon={faTrash} size={size} />
+  ),
+  Handle: ({ size = "2xl" }: IconProps) => (
+    <FontAwesomeIcon className={styles.gray} icon={faGripLines} size={size} />
+  ),
+  CircleCheck: ({ size = "2xl" }: IconProps) => (
+    <FontAwesomeIcon className={styles.icon} icon={faCircleCheck} size={size} />
   ),
 };
 
