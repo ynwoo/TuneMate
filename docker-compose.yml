@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  backend:
+    image: ynwoo/tunemate-meeting:latest
+    build:
+      context: ./tunemate-meeting-service
+      dockerfile: Dockerfile
