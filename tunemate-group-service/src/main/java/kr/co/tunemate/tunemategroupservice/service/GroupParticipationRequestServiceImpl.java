@@ -42,7 +42,13 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
             throw new IllegalRequestException("마감일 지남/작성자에 의한 마감/인원 초과 로 인해 참가 요청을 생성할 수 없습니다.", HttpStatus.BAD_REQUEST);
         }
 
-        // TODO: 이미 참여중이거나 참여요청이 있는 경우 예외처리
+        groupParticipationRepository.findByUserIdAndGroup(userId, group).ifPresent(groupParticipation -> {
+            throw new IllegalRequestException("이미 참여중인 공고입니다.", HttpStatus.BAD_REQUEST);
+        });
+
+        groupParticipationRequestRepository.findByUserIdAndGroup(userId, group).ifPresent(groupParticipationRequest -> {
+            throw new IllegalRequestException("이미 참여요청이 존재합니다.", HttpStatus.BAD_REQUEST);
+        });
 
         GroupParticipationRequest groupParticipationRequest = GroupParticipationRequest.builder()
                 .groupParticipationRequestId(UUID.randomUUID().toString())
