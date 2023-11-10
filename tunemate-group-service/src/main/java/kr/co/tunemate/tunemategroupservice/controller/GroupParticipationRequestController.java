@@ -1,6 +1,8 @@
 package kr.co.tunemate.tunemategroupservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import kr.co.tunemate.tunemategroupservice.service.GroupParticipationRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +22,20 @@ public class GroupParticipationRequestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(description = "공고에 대한 참여요청을 작성자가 수락합니다.")
+    @Operation(summary = "공고에 대한 참여요청을 작성자가 수락", description = "공고에 대한 참여요청을 작성자가 수락합니다.")
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "200", description =
+                            """
+                            성공
+
+                            이미 참여중인 공고에 대한 참여요청인 경우
+                            """
+                    ),
+                    @ApiResponse(responseCode = "403", description = "공고 작성자가 아닌 사용자가 참여요청 수락을 시도하는 경우"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 participationId에 대해 요청하는 경우")
+            }
+    )
     @PostMapping("/group-participation-requests/{groupParticipationRequestId}")
     public ResponseEntity acceptGroupParticipationRequest(@RequestHeader("UserId") String userId, @PathVariable String groupParticipationRequestId) {
         groupParticipationRequestService.acceptGroupParticipationRequest(userId, groupParticipationRequestId);
@@ -28,7 +43,14 @@ public class GroupParticipationRequestController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(description = "공고에 대한 참여요청을 작성자가 거절합니다.")
+    @Operation(summary = "공고에 대한 참여요청을 작성자가 거절", description = "공고에 대한 참여요청을 작성자가 거절합니다.")
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "200", description = "성공"),
+                    @ApiResponse(responseCode = "403", description = "공고 작성자가 아닌 사용자가 참여요청 거절을 시도한 경우"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 groupParticipationRequestId로 요청하는 경우")
+            }
+    )
     @DeleteMapping("/group-participation-requests/{groupParticipationRequestId}")
     public ResponseEntity denyGroupParticipationRequest(@RequestHeader("UserId") String userId, @PathVariable String groupParticipationRequestId) {
         groupParticipationRequestService.denyGroupParticipationRequest(userId, groupParticipationRequestId);
