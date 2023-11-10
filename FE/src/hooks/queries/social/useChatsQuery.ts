@@ -8,7 +8,6 @@ const useChatsQuery = (relationId: Friend["relationId"]) => {
   const query = useQuery({
     queryKey: QueryKey.useChatsQuery(relationId),
     queryFn: () => getChats(relationId),
-    // staleTime: 0,
   });
 
   return query;
