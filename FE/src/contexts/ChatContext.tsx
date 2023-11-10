@@ -1,14 +1,14 @@
-import { createContext, useRef, useCallback, useState, useEffect } from "react";
-import { Client } from "@stomp/stompjs";
+import { createContext, useCallback, useState, useEffect } from "react";
 import Props from "@/types";
 import { Stomp } from "@/utils/stomp";
 import { Friend } from "@/types/social";
 import { ChatRoom, MessageRequest } from "@/types/chat";
 import useMyChatRoomsQuery from "@/hooks/queries/social/useMyChatRoomsQuery";
+import useStompClient from "@/hooks/useStompClient";
+import { CHAT_SOCKET_URL } from "@/constants/url";
 
 export interface ChatContextState {
   connect: (relationIds?: number[]) => void;
-  disconnect: () => void;
   subscribe: (relationId: Friend["relationId"]) => void;
   publish: (messageRequest: MessageRequest) => void;
   chatRooms: ChatRoom[];
@@ -18,12 +18,11 @@ export const ChatContext = createContext<ChatContextState>(
   {} as ChatContextState
 );
 
-type ChatProvider = Props;
-
-const ChatProvider = ({ children }: ChatProvider) => {
-  const client = useRef<Client | undefined>(undefined);
+const ChatProvider = ({ children }: Props) => {
+  const { stompClient, connect: defaultConnect } = useStompClient();
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
   const { data: myChatRooms } = useMyChatRoomsQuery();
+
   const subscibeCallback = useCallback(
     (data: any) => {
       console.log(data);
@@ -46,35 +45,46 @@ const ChatProvider = ({ children }: ChatProvider) => {
     [chatRooms]
   );
 
-  const connect = useCallback(
-    (relationIds?: Friend["relationId"][]) => {
-      if (client.current) return;
-      Stomp.connect(client, relationIds, subscibeCallback);
-    },
-    [subscibeCallback]
-  );
-
-  const disconnect = useCallback(() => {
-    if (client.current) {
-      Stomp.disconnect(client.current);
-      client.current = undefined;
-    }
-  }, []);
-
   const subscribe = useCallback(
     (relationId: Friend["relationId"]) => {
-      if (client.current) {
-        Stomp.subscribe(client.current, relationId, subscibeCallback);
+      if (stompClient.current) {
+        Stomp.subscribe(
+          stompClient.current,
+          CHAT_SOCKET_URL.subscribeURL(relationId),
+          subscibeCallback
+        );
       }
     },
-    [subscibeCallback]
+    [stompClient, subscibeCallback]
   );
 
-  const publish = useCallback((messageRequest: MessageRequest) => {
-    if (client.current) {
-      Stomp.publish(client.current, messageRequest);
-    }
-  }, []);
+  const publish = useCallback(
+    (messageRequest: MessageRequest) => {
+      if (stompClient.current) {
+        Stomp.publish(
+          stompClient.current,
+          CHAT_SOCKET_URL.publishURL(),
+          messageRequest
+        );
+      }
+    },
+    [stompClient]
+  );
+
+  const connect = useCallback(
+    (relationIds?: Friend["relationId"][]) => {
+      const onConnect = () => {
+        if (relationIds) {
+          relationIds.forEach((relationId) => {
+            subscribe(relationId);
+            console.log(`${relationId}번 채팅 방 연결 성공`);
+          });
+        }
+      };
+      defaultConnect(onConnect);
+    },
+    [defaultConnect, subscribe]
+  );
 
   useEffect(() => {
     if (connect && myChatRooms) {
@@ -90,7 +100,6 @@ const ChatProvider = ({ children }: ChatProvider) => {
     <ChatContext.Provider
       value={{
         connect,
-        disconnect,
         subscribe,
         publish,
         chatRooms,

@@ -29,4 +29,7 @@
 .friend-item__icon {
   flex: 1;
   padding-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  text-align: center;
 }

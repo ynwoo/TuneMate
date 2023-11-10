@@ -8,7 +8,6 @@ import { TokenResponse } from "@/types/user";
 import { useRouter } from "next/router";
 import { getUserInfo } from "@/api/user";
 import { useEffect } from "react";
-import useChat from "@/hooks/useChat";
 import { useSetRecoilState } from "recoil";
 import { userInfoState } from "@/store/userInfo";
 
@@ -32,9 +31,9 @@ const LoginPage = () => {
   const setCookie = () => {
     const userId = "cb899bc8-33a9-43a6-938c-76b0ec286c77";
     const accessToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTk1OTYyODUsImlzcyI6IlR1bmVtYXRlIn0.dgCWKb7xqcQSN7_rBH2ZrBjXmm_MSVJ-P95r6xHVi-tT5fRYcYrL4uHT4jkB-E8E";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTk2MDUyMTAsImlzcyI6IlR1bmVtYXRlIn0.zqc8FKWO3Klo0VBOBn7VFF8D3OwPBuDNnizuQpK0Nvmw2Bz2qI93WYvO4z2iDI7h";
     const refreshToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiY2I4OTliYzgtMzNhOS00M2E2LTkzOGMtNzZiMGVjMjg2Yzc3IiwiZXhwIjoxNzAwNzk4Njg1LCJpc3MiOiJUdW5lbWF0ZSJ9.sERpGxBzX8ZYral05d1o1SHXekgEGQXvbS9LeXAmKSf0JDA4pcQcHRDr6OoQ-dG1";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiY2I4OTliYzgtMzNhOS00M2E2LTkzOGMtNzZiMGVjMjg2Yzc3IiwiZXhwIjoxNzAwODA3NjEwLCJpc3MiOiJUdW5lbWF0ZSJ9.knDPq0x0rWUhigUIKKPOwJGdoEWNnyPQ5JNevnB12VLcDaF2h9JbC5HVJERQiKqV";
     Cookie.setTokenResponse({ userId, accessToken, refreshToken });
     location.reload();
   };
