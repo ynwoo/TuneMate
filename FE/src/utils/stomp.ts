@@ -5,41 +5,41 @@ import { Client } from "@stomp/stompjs";
 import { Storage } from "./storage";
 
 export const Stomp = Object.freeze({
-  connect() {
+  connect(
+    client: any,
+    relationIds?: Friend["relationId"][],
+    subscibeCallback?: (data: any) => void
+  ) {
+    console.log("relationIds", relationIds);
+
     const accessToken = Storage.getAccessToken();
-    const client = new Client({
+    client.current = new Client({
       brokerURL: `${SOCKET_URL.brokerURL()}?Authorization=${accessToken}`,
-      // reconnectDelay: 2000, // 자동 재연결
-      // heartbeatIncoming: 4000,
-      // heartbeatOutgoing: 4000,
+      reconnectDelay: 2000, // 자동 재연결
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
+      onConnect: () => {
+        console.log("웹소켓 연결 성공!!!", client.current);
+        if (relationIds && subscibeCallback) {
+          relationIds.forEach((relationId) => {
+            Stomp.subscribe(client.current, relationId, subscibeCallback);
+            console.log(`${relationId}번 방 연결 성공`);
+          });
+        }
+      },
+      onStompError: (data) => {
+        console.error(data);
+      },
     });
 
-    client.activate();
-
-    return client;
+    client.current.activate();
+    console.log("connect 실행", client.current);
   },
-  // connect(onConnect?: () => void) {
-  //   const accessToken = Storage.getAccessToken();
-  //   const client = new Client({
-  //     brokerURL: `${SOCKET_URL.brokerURL()}?Authorization=${accessToken}`,
-  //     reconnectDelay: 2000, // 자동 재연결
-  //     heartbeatIncoming: 4000,
-  //     heartbeatOutgoing: 4000,
-  //   });
-
-  //   client.onStompError = (data) => {
-  //     console.error(data);
-  //   };
-  //   if (onConnect) {
-  //     client.onConnect = onConnect;
-  //   }
-  //   client.activate();
-
-  //   return client;
-  // },
 
   disconnect(client: Client) {
     client.deactivate();
+
+    console.log("disconnect 실행", client);
   },
 
   subscribe(
@@ -48,10 +48,9 @@ export const Stomp = Object.freeze({
     callback: (data: any) => void
   ) {
     const subscribeUrl = SOCKET_URL.subscribeURL(relationId);
-    // client.subscribe(subscribeUrl, callback);
-    client.subscribe(subscribeUrl, (data) => {
-      console.log(data);
-    });
+    client.subscribe(subscribeUrl, callback);
+
+    console.log("subscribe 실행", client);
   },
 
   publish(client: Client, messageRequest: MessageRequest) {
@@ -60,5 +59,7 @@ export const Stomp = Object.freeze({
       destination: publishURL,
       body: JSON.stringify(messageRequest),
     });
+
+    console.log("publish 실행", client);
   },
 });

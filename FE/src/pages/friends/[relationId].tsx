@@ -11,6 +11,7 @@ import { useMemo, useCallback, useState, ChangeEvent, useEffect } from "react";
 import { Storage } from "@/utils/storage";
 import { Button } from "react-bootstrap";
 import ChatNavbar from "@/components/navbar/ChatNavbar/ChatNavbar";
+import useMyChatRoomsQuery from "@/hooks/queries/social/useMyChatRoomsQuery";
 
 interface ChatPageProps extends Props {}
 
@@ -21,6 +22,7 @@ const ChatPage = ({}: ChatPageProps) => {
 
   const { connect, disconnect, subscribe, publish, chatRooms } = useChat();
   const { data: prevChatRoom } = useChatsQuery(relationId);
+  const { data: myChatRooms } = useMyChatRoomsQuery();
 
   const chatRoom = useMemo(() => {
     const newChatRoom = chatRooms.find(
@@ -37,6 +39,7 @@ const ChatPage = ({}: ChatPageProps) => {
       relationId,
       senderName: Storage.getUserName(),
       senderNo: Storage.getUserId(),
+      time: "",
     }),
     [relationId]
   );
@@ -74,7 +77,7 @@ const ChatPage = ({}: ChatPageProps) => {
         onSubmit={onSubmit}
       />
       {chatRoom && <ChatList chatRoom={ChatFilter.chatRoom(chatRoom)} />}
-      <Button onClick={connect}>connect</Button>
+      <Button onClick={() => connect(myChatRooms)}>connect</Button>
       <Button onClick={disconnect}>disconnect</Button>
       <Button onClick={() => subscribe(relationId)}>subscribe</Button>
       <Button onClick={() => publish(messageRequest)}>publish</Button>
