@@ -22,7 +22,6 @@ type ChatProvider = Props;
 const ChatProvider = ({ children }: ChatProvider) => {
   const client = useRef<Client | undefined>(undefined);
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
-
   const subscibeCallback = useCallback(
     (data: any) => {
       console.log(data);
