@@ -27,6 +27,8 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
                 .userId(userId)
                 .build();
 
+        log.info("사용자(userId: {})가 공고(groupId: {})에 대해서 참여 요청을 생성했습니다.", userId, groupId);
+
         groupParticipationRequestRepository.save(groupParticipationRequest);
     }
 }
