@@ -29,7 +29,7 @@ function PlaylistDetails({ playlistDetails, accessToken }) {
   }, [playlistDetails]); // 새로운 플레이리스트가 선택되었을 때만 실행
 
   function handlePlay(track) {
-    setPick(track.track.uri);
+    setPick(track);
     console.log("p", pick);
   }
 

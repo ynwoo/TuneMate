@@ -38,12 +38,13 @@ export default function CustomPlayer({ accessToken, playTrack }) {
   if (!accessToken) return null;
 
   return (
-    <div className="custom-player">
+    <div className="custom-player" style={{ width: 300, height: 200 }}>
       <div className="custom-controls">
         <button onClick={playAllTracks}>전체 재생</button>
       </div>
       {play && (
         <SpotifyPlayer
+          // style={{ height: 30 }}
           token={accessToken}
           showSaveIcon
           callback={(state) => {
