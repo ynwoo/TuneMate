@@ -15,4 +15,6 @@ public interface CommonPlaylistService {
     void deleteTrack(String userId,String playlistId, TrackDeleteRequestDto trackDeleteRequestDto);
 
     void changeTrack(String userId,String playlistId, TrackChangeRequestDto trackChangeRequestDto);
+
+    RelationInfoDto getRelationInfo(long relationId);
 }

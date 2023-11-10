@@ -49,7 +49,7 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
         // AuthService 에 Token 요청
         MemberInfo memberInfo = requestMemberInfo(userId);
         String token = getToken(memberInfo);
-
+        System.out.println(token);
         PlaylistResponseDto playlistResponseDto = webClientBuilder.build().get().uri(uriBuilder -> uriBuilder.path("/playlists/"+playlistId).queryParam("fields","description,id,name,images,tracks(items(track(album(images),artists(name),id,name,uri)))").build()).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
                 .retrieve().bodyToMono(PlaylistResponseDto.class).block();
 
@@ -160,6 +160,13 @@ public class CommonPlaylistServiceImpl implements CommonPlaylistService{
         String token = getToken(memberInfo);
         webClientBuilder.build().method(HttpMethod.PUT).uri("/playlists/{playlist_id}/tracks",playlistId).header("Authorization", "Bearer " + token)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(BodyInserters.fromValue(trackChangeRequestDto)).retrieve().bodyToMono(String.class).block();
+    }
+
+    @Override
+    public RelationInfoDto getRelationInfo(long relationId) {
+        RelationInfoDto relationInfoDto = socialServiceClient.getRelationInfo(relationId);
+        System.out.println(relationInfoDto);
+        return relationInfoDto;
     }
 
 

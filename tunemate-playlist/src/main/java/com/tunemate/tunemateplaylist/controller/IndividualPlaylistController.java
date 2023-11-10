@@ -45,6 +45,7 @@ public class IndividualPlaylistController {
 	@Operation(summary = "개인 플레이리스트 트랙 추가", description = "개인의 플레이리스트에 트랙(곡)을 추가합니다.")
 	public void createTrack(@RequestHeader("UserId") String userId, @RequestBody TrackCreateDto trackCreateDto,
 		@PathVariable("playlistId") String playlistId) throws ParseException {
+		individualPlaylistService.checkValid(playlistId,userId);
 		individualPlaylistService.createTrack(userId, trackCreateDto, playlistId);
 	}
 
@@ -77,6 +78,7 @@ public class IndividualPlaylistController {
 	@Operation(summary = "개인 플레이리스트 트랙 삭제", description = "개인 플레이리스트에 트랙(곡)을 삭제합니다.")
 	public void deleteTrack(@RequestHeader("UserId") String userId,
 		@RequestBody TrackDeleteRequestDto trackDeleteRequestDto, @PathVariable("playlistId") String playlistId) {
+		individualPlaylistService.checkValid(playlistId,userId);
 		individualPlaylistService.deleteTrack(userId, playlistId, trackDeleteRequestDto);
 
 	}
@@ -93,6 +95,7 @@ public class IndividualPlaylistController {
 		"range_length": 1 // 1로 고정""")
 	public void changeTrack(@RequestHeader("UserId") String userId,
 		@RequestBody TrackChangeRequestDto trackChangeRequestDto, @PathVariable("playlistId") String playlistId) {
+		individualPlaylistService.checkValid(playlistId,userId);
 		individualPlaylistService.changeTrack(userId, playlistId, trackChangeRequestDto);
 	}
 

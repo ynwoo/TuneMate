@@ -4,10 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.tunemate.tunemateplaylist.dto.*;
+import com.tunemate.tunemateplaylist.exception.NotFoundException;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,11 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import com.tunemate.tunemateplaylist.dto.PlaylistCreateDto;
-import com.tunemate.tunemateplaylist.dto.PlaylistResponseDto;
-import com.tunemate.tunemateplaylist.dto.TrackChangeRequestDto;
-import com.tunemate.tunemateplaylist.dto.TrackCreateDto;
-import com.tunemate.tunemateplaylist.dto.TrackDeleteRequestDto;
 import com.tunemate.tunemateplaylist.service.CommonPlaylistServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,25 +43,27 @@ public class CommonPlaylistController {
 	private final Map<String, List<SseEmitter>> SseEmitters = new ConcurrentHashMap<>();
 
 	// 공동 플레이리스트 조회
-	@GetMapping("/playlists/{playlistId}")
+	@GetMapping("/playlists/{relationId}")
 	@Operation(summary = "공동 플레이리스트 조회", description = "공동 플레이리스트를 조회합니다.\n" +
 		"공통 플리 조회는 PostMan에서 테스트(SSE라 그런듯?)")
-	public ResponseEntity<SseEmitter> getCommonPlaylist(@PathVariable("playlistId") String playlistId,
+	public ResponseEntity<SseEmitter> getCommonPlaylist(@PathVariable("relationId") Long relationId,
 		@RequestHeader("UserId") String userId) throws IOException {
-		System.out.println("연결 : " + userId);
+		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(relationId);
+		grantCheck(relationInfoDto,userId);
+		if(relationInfoDto.getPlaylistId() == null){ // 공통 플레이리스트를 생성하지 않은 경우
+			throw new NotFoundException("공통 플레이리스트가 없습니다.",HttpStatus.NOT_FOUND);
+		}
+		String playlistId = relationInfoDto.getPlaylistId();
 		SseEmitter sseEmitter = new SseEmitter(1800000l);
 		SseEmitters.computeIfAbsent(playlistId, k -> new ArrayList<>()).add(sseEmitter);
-
 		// sse 연결 끝나면 객체 삭제
 		sseEmitter.onCompletion(() -> {
-			System.out.println("연결끝났어~");
 			SseEmitters.get(playlistId).remove(sseEmitter);
 		});
 		// sse 연결 시간 초과 시 객체 삭제
 		sseEmitter.onTimeout(() -> {
 			SseEmitters.get(playlistId).remove(sseEmitter);
 		});
-		System.out.println(SseEmitters);
 		PlaylistResponseDto playlistResponseDto = commonPlaylistService.getIndividualPlaylist(userId, playlistId);
 		sseEmitter.send(playlistResponseDto, MediaType.APPLICATION_JSON);
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -74,6 +75,11 @@ public class CommonPlaylistController {
 	@Operation(summary = "공동 플레이리스트 생성", description = "공동 플레이리스트를 생성합니다.")
 	public void createCommonPlaylist(@RequestHeader("UserId") String userId,
 		@RequestBody PlaylistCreateDto playlistCreateDto) throws ParseException {
+		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(playlistCreateDto.getRelationId());
+		grantCheck(relationInfoDto,userId);
+		if(relationInfoDto.getPlaylistId() != null){ // 공통 플레이리스트를 생성하지 않은 경우
+			throw new NotFoundException("공통 플레이리스트가 이미 존재합니다.",HttpStatus.BAD_REQUEST);
+		}
 		commonPlaylistService.createPlaylist(userId, playlistCreateDto);
 	}
 
@@ -97,22 +103,27 @@ public class CommonPlaylistController {
 	}
 
 	// 공동 플레이리스트에 트랙 추가
-	@PostMapping("/playlists/{playlistId}/tracks")
+	@PostMapping("/playlists/{relationId}/tracks")
 	@Operation(summary = "공동 플레이리스트 트랙 추가", description = "공동 플레이리스트에 트랙(곡)을 추가합니다.")
-	public void createTrack(@RequestHeader("UserId") String userId, @PathVariable("playlistId") String playlistId,
+	public void createTrack(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId,
 		@RequestBody TrackCreateDto trackCreateDto) throws IOException, ParseException {
-		commonPlaylistService.createTrack(userId, playlistId, trackCreateDto);
-		updatePlaylistAndSendResponse(userId, playlistId);
+		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(relationId);
+		// 추가 하는 사람 userId 와 relationInfoDto 의 user1Id 와 user2Id 를 비교해서 일치하지 않으면 에러발생
+		grantCheck(relationInfoDto,userId);
+		commonPlaylistService.createTrack(userId, relationInfoDto.getPlaylistId(), trackCreateDto);
+		updatePlaylistAndSendResponse(userId, relationInfoDto.getPlaylistId());
 
 	}
 
 	// 공동 플레이리스트에 트랙 삭제
-	@DeleteMapping("/playlists/{playlistId}/tracks")
+	@DeleteMapping("/playlists/{relationId}/tracks")
 	@Operation(summary = "공동 플레이리스트 트랙 삭제", description = "공동 플레이리스트에 트랙(곡)을 삭제합니다.")
-	public void deleteTrack(@RequestHeader("UserId") String userId, @PathVariable("playlistId") String playlistId,
+	public void deleteTrack(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId,
 		@RequestBody TrackDeleteRequestDto trackDeleteRequestDto) throws IOException {
-		commonPlaylistService.deleteTrack(userId, playlistId, trackDeleteRequestDto);
-		updatePlaylistAndSendResponse(userId, playlistId);
+		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(relationId);
+		grantCheck(relationInfoDto,userId);
+		commonPlaylistService.deleteTrack(userId, relationInfoDto.getPlaylistId(), trackDeleteRequestDto);
+		updatePlaylistAndSendResponse(userId, relationInfoDto.getPlaylistId());
 
 	}
 
@@ -126,9 +137,17 @@ public class CommonPlaylistController {
 		"insert_before": 3, // 삽입 위치 인덱스 (위에 있는 곡 아래로 내릴 때는 [삽입 위치 인덱스 + 1] 로 해주어야함)
 		  
 		"range_length": 1 // 1로 고정""")
-	public void changeTrack(@RequestHeader("UserId") String userId, @PathVariable("playlistId") String playlistId,
+	public void changeTrack(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId,
 		@RequestBody TrackChangeRequestDto trackChangeRequestDto) {
-		commonPlaylistService.changeTrack(userId, playlistId, trackChangeRequestDto);
-		updatePlaylistAndSendResponse(userId, playlistId);
+		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(relationId);
+		grantCheck(relationInfoDto,userId);
+		commonPlaylistService.changeTrack(userId, relationInfoDto.getPlaylistId(), trackChangeRequestDto);
+		updatePlaylistAndSendResponse(userId, relationInfoDto.getPlaylistId());
+	}
+
+	public void grantCheck(RelationInfoDto relationInfoDto, String userId){
+		if(!relationInfoDto.getUser1Id().equals(userId) && !relationInfoDto.getUser2Id().equals(userId)){
+			throw new NotFoundException("권한이 없습니다.", HttpStatus.FORBIDDEN);
+		}
 	}
 }

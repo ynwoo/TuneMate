@@ -26,7 +26,9 @@ public class FeignClientDecoder implements ErrorDecoder {
                 }
                 break;
             case 404:
-                break;
+                System.out.println("에러에러");
+                return new ResponseStatusException(HttpStatus.valueOf(response.status()),
+                        "relationId가 존재하지 않습니다.");
             default:
                 return new Exception(response.reason());
 
