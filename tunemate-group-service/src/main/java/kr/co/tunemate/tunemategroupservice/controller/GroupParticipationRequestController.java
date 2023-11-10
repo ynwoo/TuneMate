@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class GroupParticipationRequestController {
     private final GroupParticipationRequestService groupParticipationRequestService;
 
-    @PostMapping("/{groupId}/participation-request")
+    @PostMapping("/{groupId}/participation-requests")
     public ResponseEntity postParticipationRequest(@RequestHeader("UserId") String userId, @PathVariable String groupId) {
         groupParticipationRequestService.saveGroupParticipationRequest(userId, groupId);
 
