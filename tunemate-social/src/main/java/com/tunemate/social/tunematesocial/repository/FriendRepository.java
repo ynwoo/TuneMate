@@ -19,6 +19,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
 	Optional<Friend> findByUser1IdAndAndUser2Id(String id1, String id2);
 
-	@Query("select new com.tunemate.social.tunematesocial.dto.response.MyChatRoomListDto(f.id) from Friend f where f.user1Id = :userId or f.user2Id = :userId")
+	@Query("select new com.tunemate.social.tunematesocial.dto.response.MyChatRoomListDto(f.id) from Friend as f where f.user1Id = :userId or f.user2Id = :userId")
 	List<MyChatRoomListDto> findChatRoomIdByUserId(@Param("userId") String userId);
 }
