@@ -19,6 +19,9 @@ const ChatPage = ({}: ChatPageProps) => {
   const [content, setContent] = useState<string>("");
   const params = useParams();
   const relationId = Number(params?.relationId as string);
+  const [messageRequest, setMessageRequest] = useState<MessageRequest>(
+    {} as MessageRequest
+  );
 
   const { connect, disconnect, subscribe, publish, chatRooms } = useChat();
   const { data: prevChatRoom } = useChatsQuery(relationId);
@@ -32,17 +35,6 @@ const ChatPage = ({}: ChatPageProps) => {
     newChatRoom.messages = [...prevChatRoom.messages, ...newChatRoom.messages];
     return ChatFilter.chatRoom(newChatRoom);
   }, [prevChatRoom, chatRooms, relationId]);
-
-  const messageRequest: MessageRequest = useMemo(
-    () => ({
-      content: "",
-      relationId,
-      senderName: Storage.getUserName(),
-      senderNo: Storage.getUserId(),
-      time: "",
-    }),
-    [relationId]
-  );
 
   // search에 메시지를 입력했을 때 호출되는 함수
   const onInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -63,6 +55,16 @@ const ChatPage = ({}: ChatPageProps) => {
   useEffect(() => {
     moveScrollDown();
   }, []);
+
+  useEffect(() => {
+    setMessageRequest({
+      content: "",
+      relationId,
+      senderName: Storage.getUserName(),
+      senderNo: Storage.getUserId(),
+      time: "",
+    });
+  }, [relationId]);
 
   return (
     <div className={styles["chat-page"]}>
