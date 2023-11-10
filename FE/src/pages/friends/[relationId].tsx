@@ -44,7 +44,6 @@ const ChatPage = ({}: ChatPageProps) => {
   const onSubmit = useCallback(() => {
     publish({ ...messageRequest, content });
     setContent("");
-    console.log(content);
   }, [publish, messageRequest, content]);
 
   const moveScrollDown = () => {
@@ -53,7 +52,7 @@ const ChatPage = ({}: ChatPageProps) => {
 
   useEffect(() => {
     moveScrollDown();
-  }, []);
+  });
 
   useEffect(() => {
     setMessageRequest({
@@ -78,10 +77,6 @@ const ChatPage = ({}: ChatPageProps) => {
         onSubmit={onSubmit}
       />
       {chatRoom && <ChatList chatRoom={ChatFilter.chatRoom(chatRoom)} />}
-      <Button onClick={() => connect(myChatRooms)}>connect</Button>
-      <Button onClick={disconnect}>disconnect</Button>
-      <Button onClick={() => subscribe(relationId)}>subscribe</Button>
-      <Button onClick={() => publish(messageRequest)}>publish</Button>
       <Button
         className={styles["chat-page__button--scroll-down"]}
         onClick={moveScrollDown}
