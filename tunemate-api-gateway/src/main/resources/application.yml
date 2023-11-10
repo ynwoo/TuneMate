@@ -9,9 +9,8 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOrigins:
+              - "https://tunemate.co.kr"
               - "http://localhost:3000"
-              - "http://k9a603.p.ssafy.io:3000"
-              - "http://tunemate.co.kr"
             allowedHeaders: "*"
             allowedMethods:
               - PUT
@@ -85,6 +84,19 @@ spring:
             - Path=/group-service/v3/api-docs
           filters:
             - RewritePath=/group-service/(?<segment>.*), /$\{segment}
+        - id: meeting-service
+          uri: lb://meeting-service
+          predicates:
+            - Path=/api/v1/meeting-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/meeting-service/(?<segment>.*), /$\{segment}
+        - id: meeting-service-api-docs
+          uri: lb://meeting-service
+          predicates:
+            - Path=/meeting-service/v3/api-docs
+          filters:
+            - RewritePath=/meeting-service/(?<segment>.*), /$\{segment}
         - id: recommend-service
           uri: lb://recommendation-service
           predicates:
