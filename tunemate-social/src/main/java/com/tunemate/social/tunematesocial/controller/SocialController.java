@@ -3,7 +3,7 @@ package com.tunemate.social.tunematesocial.controller;
 import java.util.List;
 
 import com.tunemate.social.tunematesocial.dto.response.MyChatRoomListDto;
-import com.tunemate.social.tunematesocial.dto.response.RelationIdsResponseDto;
+import com.tunemate.social.tunematesocial.dto.response.RelationResponseDto;
 import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 import com.tunemate.social.tunematesocial.service.ChatService;
 
@@ -19,8 +19,6 @@ import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResp
 import com.tunemate.social.tunematesocial.service.SocialService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
@@ -151,15 +149,15 @@ public class SocialController {
 
 	@GetMapping("/relation/{relationId}")
 	@Operation(summary = "relationId로 relation 조회", description = """
-		relationId를 받고 해당 relation이 존재하면 두 유저의 아이디, 없으면 null을 반환합니다.
+		relationId를 받고 해당 relation이 존재하면 해당 친구 관계의 정보, 없으면 NOT_FOUND를 반환합니다.
 				
 		마이크로 서비스간 통신용""")
 	public ResponseEntity<?> getRelationById(@PathVariable("relationId") Long relationId) {
-		RelationIdsResponseDto ids = socialService.getRelationId(relationId);
-		if (ids == null) {
+		RelationResponseDto relationInfo = socialService.getRelationInfo(relationId);
+		if (relationInfo == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
-		return ResponseEntity.ok(ids);
+		return ResponseEntity.ok(relationInfo);
 	}
 
 	/**
