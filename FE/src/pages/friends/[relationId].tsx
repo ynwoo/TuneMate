@@ -67,7 +67,7 @@ const ChatPage = ({}: ChatPageProps) => {
   return (
     <div className={styles["chat-page"]}>
       <ChatNavbar
-        className={styles["chat-page__chat_navbar"]}
+        className={styles["chat-page__chat-navbar"]}
         onModal={() => {}}
       />
       <Search
