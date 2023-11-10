@@ -17,6 +17,7 @@ interface MessageRequest {
   senderName: string; // 보낸 사람 이름
   senderNo: UserInfo["userId"]; // 보낸 사람의 기본키
   content: string; // 메세지 내용
+  time: string;
 }
 
 interface Chat {

@@ -3,7 +3,7 @@ import { UserInfo } from "./user";
 interface Friend extends FriendRequest {
   type: "friend";
   relationId: number;
-  freindId: UserInfo["userId"];
+  friendId: UserInfo["userId"];
   commonPlayListId: string;
 }
 

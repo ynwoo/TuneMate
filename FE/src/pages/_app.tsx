@@ -19,18 +19,34 @@ const queryClient = new QueryClient({
 
 export default function App({ Component, pageProps }: AppProps) {
   const pathname = usePathname();
-  const isLoginPage = useMemo(() => pathname === "/", [pathname]);
+  const hasNavbar = useMemo(() => {
+    if (!pathname) return false;
+
+    // login-page
+    if (pathname === "/") {
+      return true;
+    }
+
+    const pathList = pathname.split("/");
+
+    // chat-page
+    if (pathList[1] === "friends" && !isNaN(Number(pathList[2]))) {
+      return true;
+    }
+
+    return false;
+  }, [pathname]);
 
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <ChatProvider>
           <>
-            {!isLoginPage && <TopNavbar />}
-            <div className={isLoginPage ? "login" : "main"}>
+            {!hasNavbar && <TopNavbar />}
+            <div className={hasNavbar ? "login" : "main"}>
               <Component {...pageProps} />
             </div>
-            {!isLoginPage && <BottomNavbar />}
+            {!hasNavbar && <BottomNavbar />}
           </>
         </ChatProvider>
       </QueryClientProvider>

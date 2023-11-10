@@ -2,13 +2,15 @@ import { TokenResponse } from "@/types/user";
 
 export const Storage = Object.freeze({
   getItem(name: string) {
-    const value = localStorage.getItem(name);
+    const value =
+      typeof window !== undefined ? sessionStorage.getItem(name) : null;
     return value ? JSON.parse(value) : null;
   },
 
   setItem(name: string, item: any) {
-    if (!item) return;
-    localStorage.setItem(name, JSON.stringify(item));
+    if (typeof window !== undefined && item) {
+      sessionStorage.setItem(name, JSON.stringify(item));
+    }
   },
 
   getAccessToken(): string {
@@ -35,6 +37,14 @@ export const Storage = Object.freeze({
     Storage.setItem("userId", userId);
   },
 
+  getUserName(): string {
+    return Storage.getItem("userName");
+  },
+
+  setUserName(userName: string) {
+    Storage.setItem("userName", userName);
+  },
+
   getSpotifyAccessToken(): string {
     return Storage.getItem("spotifyAccessToken");
   },
@@ -58,6 +68,8 @@ export const Storage = Object.freeze({
   },
 
   clear() {
-    localStorage.clear();
+    if (typeof window !== undefined) {
+      localStorage.clear();
+    }
   },
 });
