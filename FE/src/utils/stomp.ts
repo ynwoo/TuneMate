@@ -15,7 +15,6 @@ export const Stomp = Object.freeze({
     const accessToken = Storage.getAccessToken();
     client.current = new Client({
       brokerURL: `${SOCKET_URL.brokerURL()}?Authorization=${accessToken}`,
-      reconnectDelay: 2000, // 자동 재연결
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
       onConnect: () => {
