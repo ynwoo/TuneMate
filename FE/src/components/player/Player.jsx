@@ -16,7 +16,6 @@ export default function CustomPlayer({ accessToken, playTrack }) {
   };
 
   useEffect(() => {
-    console.log(playList);
     setPlayList(playTrack);
   }, [playTrack]);
 
@@ -39,23 +38,23 @@ export default function CustomPlayer({ accessToken, playTrack }) {
 
   return (
     <div className="custom-player" style={{ width: 300, height: 200 }}>
-      <div className="custom-controls">
+      {/* <div className="custom-controls">
         <button onClick={playAllTracks}>전체 재생</button>
-      </div>
-      {play && (
-        <SpotifyPlayer
-          // style={{ height: 30 }}
-          token={accessToken}
-          showSaveIcon
-          callback={(state) => {
-            if (!state.isPlaying && state.duration - state.position < 1000) {
-              playNextTrack();
-            }
-          }}
-          play={play}
-          uris={playTrack.length > 0 ? playTrack : []}
-        />
-      )}
+      </div> */}
+      {/* {play && ( */}
+      <SpotifyPlayer
+        // style={{ height: 30 }}
+        token={accessToken}
+        showSaveIcon
+        callback={(state) => {
+          if (!state.isPlaying && state.duration - state.position < 1000) {
+            playNextTrack();
+          }
+        }}
+        play={play}
+        uris={playTrack.length > 0 ? playTrack : []}
+      />
+      {/* )} */}
     </div>
   );
 }

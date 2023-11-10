@@ -4,11 +4,11 @@ import Image from "next/image";
 import styles from "@/styles/PlayerPage.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useRecoilState } from "recoil";
-import { PickTrack } from "@/store/atom";
+import { PickTrackState } from "@/store/atom";
 
 function PlaylistDetails({ playlistDetails, accessToken }) {
   const [playTrack, setPlayTrack] = useState([]);
-  const [pick, setPick] = useRecoilState(PickTrack);
+  const [PickTrack, setPickTrack] = useRecoilState(PickTrackState);
   // 페이지 로드 시 플레이리스트의 모든 곡을 playTrack에 추가
   useEffect(() => {
     if (playlistDetails) {
@@ -19,18 +19,9 @@ function PlaylistDetails({ playlistDetails, accessToken }) {
     }
   }, [playlistDetails]);
 
-  useEffect(() => {
-    if (playlistDetails) {
-      const allUris = playlistDetails.tracks.items.map(
-        (track) => track.track.uri
-      );
-      setPlayTrack(allUris);
-    }
-  }, [playlistDetails]); // 새로운 플레이리스트가 선택되었을 때만 실행
-
   function handlePlay(track) {
-    setPick(track);
-    console.log("p", pick);
+    setPickTrack(track.track);
+    console.log("p", PickTrack);
   }
 
   if (!playlistDetails) {
@@ -47,7 +38,7 @@ function PlaylistDetails({ playlistDetails, accessToken }) {
 
       <h5>곡 목록</h5>
       <div>
-        <Player accessToken={accessToken} playTrack={playTrack} />
+        {/* <Player accessToken={accessToken} playTrack={playTrack} /> */}
       </div>
       <div>
         {playlistDetails.tracks.items.map((track, index) => (

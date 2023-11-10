@@ -30,9 +30,9 @@ const LoginPage = () => {
   const setCookie = () => {
     const userId = "ab1b4b7f-abb2-4bf1-920f-b437233b4f47";
     const accessToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhYjFiNGI3Zi1hYmIyLTRiZjEtOTIwZi1iNDM3MjMzYjRmNDciLCJleHAiOjE2OTk1OTU0NzMsImlzcyI6IlR1bmVtYXRlIn0.SCFwvK1ZHZ_pDz5TNB08aG9W7PY6MBcR_-j5O0tyuO9sXZTYTz7M3sDs8ObpY_rx";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhYjFiNGI3Zi1hYmIyLTRiZjEtOTIwZi1iNDM3MjMzYjRmNDciLCJleHAiOjE2OTk2MDI5NjksImlzcyI6IlR1bmVtYXRlIn0.fpiqFNMizmmX1M54APqDADOFaDUxD_BN7baxSwE8DPUZpxPd0PZtYzSUH_mfd_LG";
     const refreshToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiYWIxYjRiN2YtYWJiMi00YmYxLTkyMGYtYjQzNzIzM2I0ZjQ3IiwiZXhwIjoxNzAwNzk3ODczLCJpc3MiOiJUdW5lbWF0ZSJ9.G6yUc7ZF2oEg-yjrDzX_5zJGPgdQ8Dmz4mx3JTDXPZxK4ZGmCI-8mHz4YokxtfxY";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiYWIxYjRiN2YtYWJiMi00YmYxLTkyMGYtYjQzNzIzM2I0ZjQ3IiwiZXhwIjoxNzAwODA1MzY5LCJpc3MiOiJUdW5lbWF0ZSJ9.1S6NRcs4pb44DIwx2XrlILFe8PpiLISRYkW1KUJW_uCBJTpCCTY8KfyLOCqy53n7";
     Cookie.setTokenResponse({ userId, accessToken, refreshToken });
     location.reload();
   };
