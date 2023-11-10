@@ -1,10 +1,12 @@
 import SpotifyPlayer from "react-spotify-web-playback";
 import { useEffect, useState } from "react";
+import { playlistState } from "@/store/atom";
+import { useRecoilState } from "recoil";
 
-export default function CustomPlayer({ accessToken, playTrack, playlist }) {
+export default function CustomPlayer({ accessToken, playTrack }) {
   const [play, setPlay] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-
+  const [playList, setPlayList] = useRecoilState(playlistState);
   const playAllTracks = () => {
     if (playTrack && playTrack.length > 0) {
       setPlay(true);
@@ -12,6 +14,11 @@ export default function CustomPlayer({ accessToken, playTrack, playlist }) {
       console.error("playTrack is undefined or empty.");
     }
   };
+
+  useEffect(() => {
+    console.log(playList);
+    setPlayList(playTrack);
+  }, [playTrack]);
 
   const playNextTrack = () => {
     if (currentTrackIndex < playTrack.length - 1) {
@@ -21,12 +28,6 @@ export default function CustomPlayer({ accessToken, playTrack, playlist }) {
     }
     setPlay(true);
   };
-
-  useEffect(() => {
-    if (!playTrack || playTrack.length === 0) {
-      setPlay(false);
-    }
-  }, [playTrack]);
 
   useEffect(() => {
     if (!playTrack || playTrack.length === 0) {

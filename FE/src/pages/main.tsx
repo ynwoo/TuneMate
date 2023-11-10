@@ -17,7 +17,6 @@ const MainPage = () => {
         className={styles["main-page__item"]}
         accessToken={accessToken}
       />
-      ;
     </div>
   );
 };
