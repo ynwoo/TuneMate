@@ -19,4 +19,6 @@ public interface IndividualPlaylistService {
     void deleteTrack(String userId, String playlistId, TrackDeleteRequestDto trackDeleteRequestDto);
 
     void changeTrack(String userId, String playlistId, TrackChangeRequestDto trackChangeRequestDto);
+
+    boolean checkValid(String playlistId, String userId);
 }

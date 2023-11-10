@@ -147,19 +147,38 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         String token = getToken(memberInfo);
 
         String playlistId = playlistIdDto.getPlaylistId();
-        Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("플레이 리스트가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
-        playlist.setPlaylistSpotifyId(playlistId);
-
-        individualPlaylistTrackRepository.deleteAllByPlaylistId(playlist.getId());
-
-        PlaylistResponseDto playlistResponseDto = webClientBuilder.build().get().uri(uriBuilder -> uriBuilder.path("/playlists/"+playlistId).queryParam("fields","description,id,name,images,tracks(items(track(album(images),artists(name),id,name,uri)))").build()).header("Authorization", "Bearer " + token)
-                .retrieve().bodyToMono(PlaylistResponseDto.class).block();
-        for(ItemsDto itemsDto: playlistResponseDto.getTracks().getItems()){
-            Track track = new Track();
-            track.setTrackSpotifyId(itemsDto.getTrack().getUri());
-            track.setPlaylist(playlist);
-            individualPlaylistTrackRepository.save(track);
+        Playlist playlist; //= individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("플레이 리스트가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
+        Optional<Playlist> playlist1 = individualPlaylistRepository.findByUserId(userId);
+        if(playlist1.isPresent()){
+            playlist = playlist1.get();
+            playlist.setPlaylistSpotifyId(playlistId);
+            PlaylistResponseDto playlistResponseDto = webClientBuilder.build().get().uri(uriBuilder -> uriBuilder.path("/playlists/"+playlistId).queryParam("fields","description,id,name,images,tracks(items(track(album(images),artists(name),id,name,uri)))").build()).header("Authorization", "Bearer " + token)
+                    .retrieve().bodyToMono(PlaylistResponseDto.class).block();
+            for(ItemsDto itemsDto: playlistResponseDto.getTracks().getItems()){
+                Track track = new Track();
+                track.setTrackSpotifyId(itemsDto.getTrack().getUri());
+                track.setPlaylist(playlist);
+                individualPlaylistTrackRepository.save(track);
+            }
         }
+        else{
+            playlist = new Playlist();
+            playlist.setPlaylistSpotifyId(playlistIdDto.getPlaylistId());
+            playlist.setUserId(userId);
+            individualPlaylistRepository.save(playlist);
+        }
+//        playlist.setPlaylistSpotifyId(playlistId);
+//
+//        individualPlaylistTrackRepository.deleteAllByPlaylistId(playlist.getId());
+//
+//        PlaylistResponseDto playlistResponseDto = webClientBuilder.build().get().uri(uriBuilder -> uriBuilder.path("/playlists/"+playlistId).queryParam("fields","description,id,name,images,tracks(items(track(album(images),artists(name),id,name,uri)))").build()).header("Authorization", "Bearer " + token)
+//                .retrieve().bodyToMono(PlaylistResponseDto.class).block();
+//        for(ItemsDto itemsDto: playlistResponseDto.getTracks().getItems()){
+//            Track track = new Track();
+//            track.setTrackSpotifyId(itemsDto.getTrack().getUri());
+//            track.setPlaylist(playlist);
+//            individualPlaylistTrackRepository.save(track);
+//        }
 
     }
 
@@ -200,6 +219,19 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
 
         webClientBuilder.build().method(HttpMethod.PUT).uri("/playlists/{playlist_id}/tracks",playlistId).header("Authorization", "Bearer " + token)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(BodyInserters.fromValue(trackChangeRequestDto)).retrieve().bodyToMono(String.class).block();
+    }
+
+    // 예외 처리 (자신의 대표 플레이리스트에 접근하는 경우 403, 대표 플레이리스트가 없는 경우 404)
+    @Override
+    public boolean checkValid(String playlistId, String userId) {
+        Optional<Playlist> playlist = individualPlaylistRepository.findByUserId(userId);
+        if(playlist.isPresent()){
+            if(!playlist.get().getUserId().equals(userId)) throw new NotFoundException("권한이 없습니다.",HttpStatus.FORBIDDEN);
+            return true;
+        }
+        else{
+            throw new NotFoundException("대표 플레이리스트가 존재하지 않습니다.", HttpStatus.NOT_FOUND);
+        }
     }
 
     private MemberInfo requestMemberInfo(String userId) {
