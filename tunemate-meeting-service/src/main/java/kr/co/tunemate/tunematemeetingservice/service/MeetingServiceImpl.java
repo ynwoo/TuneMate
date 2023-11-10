@@ -20,7 +20,6 @@ public class MeetingServiceImpl implements MeetingService{
     private GroupServiceClient groupServiceClient;
     @Override
     public void createMeeting(MeetingResponseDto meetingResponseDto) {
-        System.out.println(meetingResponseDto.getDatetime());
         Meeting meeting = Meeting.builder()
                 .memo(meetingResponseDto.getMemo())
                 .relationId(meetingResponseDto.getRelationId())

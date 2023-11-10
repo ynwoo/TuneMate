@@ -63,8 +63,8 @@ public class MeetingController {
     @PostMapping("meetings")
     public ResponseEntity createMeeting(@RequestHeader("UserId") String userId, @RequestBody MeetingResponseDto meetingResponseDto){
 
-        socialServiceClient.isExistRelation(meetingResponseDto.getRelationId()); // relationId 가 없다면 404 에러 발생
-
+        RelationInfo relationInfo = socialServiceClient.isExistRelation(meetingResponseDto.getRelationId()); // relationId 가 없다면 404 에러 발생
+        grantCheck(relationInfo, userId);
         meetingService.createMeeting(meetingResponseDto);
         return ResponseEntity.ok(HttpStatus.OK);
 
@@ -82,8 +82,6 @@ public class MeetingController {
 
         meetingService.findMeeting(meetingId).ifPresentOrElse(meeting -> {
                     RelationInfo relationInfo = socialServiceClient.isExistRelation(meeting.getRelationId());
-                    System.out.println(relationInfo.getUser1Id());
-                    System.out.println(relationInfo.getUser2Id());
                     if(!relationInfo.getUser1Id().equals(userId) && !relationInfo.getUser2Id().equals(userId)) throw new NotFoundException("삭제 권한이 없습니다.",HttpStatus.FORBIDDEN); // 만남에 참여하지 않은 사람이 삭제하려는 경우 403
 
                 },
