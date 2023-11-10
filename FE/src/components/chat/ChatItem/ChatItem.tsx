@@ -24,6 +24,7 @@ const ChatItem = ({ className, item }: ChatItemProps) => {
     >
       <p className={styles["chat-item__image"]}>{item.senderName}</p>
       <p className={styles["chat-item__text"]}>{item.content}</p>
+      <p className={styles["chat-item__text"]}>{item.readCount}</p>
     </li>
   );
 };

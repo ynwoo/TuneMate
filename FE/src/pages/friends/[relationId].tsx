@@ -11,7 +11,6 @@ import { useMemo, useCallback, useState, ChangeEvent, useEffect } from "react";
 import { Storage } from "@/utils/storage";
 import { Button } from "react-bootstrap";
 import ChatNavbar from "@/components/navbar/ChatNavbar/ChatNavbar";
-import useMyChatRoomsQuery from "@/hooks/queries/social/useMyChatRoomsQuery";
 
 interface ChatPageProps extends Props {}
 
@@ -23,9 +22,8 @@ const ChatPage = ({}: ChatPageProps) => {
     {} as MessageRequest
   );
 
-  const { connect, disconnect, subscribe, publish, chatRooms } = useChat();
+  const { publish, chatRooms } = useChat();
   const { data: prevChatRoom } = useChatsQuery(relationId);
-  const { data: myChatRooms } = useMyChatRoomsQuery();
 
   const chatRoom = useMemo(() => {
     const newChatRoom = chatRooms.find(
@@ -67,7 +65,7 @@ const ChatPage = ({}: ChatPageProps) => {
   return (
     <div className={styles["chat-page"]}>
       <ChatNavbar
-        className={styles["chat-page__chat_navbar"]}
+        className={styles["chat-page__chat-navbar"]}
         onModal={() => {}}
       />
       <Search
