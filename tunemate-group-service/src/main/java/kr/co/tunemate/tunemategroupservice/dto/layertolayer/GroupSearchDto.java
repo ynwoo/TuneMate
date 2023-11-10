@@ -1,4 +1,4 @@
-package kr.co.tunemate.tunemategroupservice.dto;
+package kr.co.tunemate.tunemategroupservice.dto.layertolayer;
 
 import lombok.*;
 

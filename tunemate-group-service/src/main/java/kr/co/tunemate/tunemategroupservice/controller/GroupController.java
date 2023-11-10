@@ -2,8 +2,8 @@ package kr.co.tunemate.tunemategroupservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.ValidationException;
-import kr.co.tunemate.tunemategroupservice.dto.GroupDto;
-import kr.co.tunemate.tunemategroupservice.dto.GroupSearchDto;
+import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupDto;
+import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupSearchDto;
 import kr.co.tunemate.tunemategroupservice.service.GroupService;
 import kr.co.tunemate.tunemategroupservice.vo.RequestGroup;
 import kr.co.tunemate.tunemategroupservice.vo.ResponseGroup;
