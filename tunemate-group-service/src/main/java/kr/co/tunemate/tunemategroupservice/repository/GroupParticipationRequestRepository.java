@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface GroupParticipationRequestRepository extends JpaRepository<GroupParticipationRequest, Long> {
     Optional<GroupParticipationRequest> findByUserIdAndGroupParticipationRequestId(String userId, String groupParticipationRequestId);
-    void deleteByGroupParticipationRequestId(String groupParticipationRequest);
+    void deleteByUserIdAndGroupParticipationRequestId(String userId, String groupParticipationRequest);
 }
