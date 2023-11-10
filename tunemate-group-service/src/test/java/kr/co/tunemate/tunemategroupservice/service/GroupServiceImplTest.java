@@ -1,6 +1,6 @@
 package kr.co.tunemate.tunemategroupservice.service;
 
-import kr.co.tunemate.tunemategroupservice.dto.GroupDto;
+import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupDto;
 import kr.co.tunemate.tunemategroupservice.entity.Group;
 import kr.co.tunemate.tunemategroupservice.exception.NoAuthorizationForItemException;
 import kr.co.tunemate.tunemategroupservice.repository.GroupRepository;

@@ -1,7 +1,7 @@
 package kr.co.tunemate.tunemategroupservice.service;
 
-import kr.co.tunemate.tunemategroupservice.dto.GroupDto;
-import kr.co.tunemate.tunemategroupservice.dto.GroupSearchDto;
+import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupDto;
+import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupSearchDto;
 
 import java.util.List;
 

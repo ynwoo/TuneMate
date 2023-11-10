@@ -1,4 +1,4 @@
-package kr.co.tunemate.tunemategroupservice.dto;
+package kr.co.tunemate.tunemategroupservice.dto.layertolayer;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;

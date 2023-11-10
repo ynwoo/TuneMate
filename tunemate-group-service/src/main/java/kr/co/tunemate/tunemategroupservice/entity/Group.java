@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Entity(name = "group_table")
 @SQLDelete(sql = "UPDATE group SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
+@ToString
 public class Group extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
