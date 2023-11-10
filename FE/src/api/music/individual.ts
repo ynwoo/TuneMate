@@ -11,11 +11,19 @@ const createIndividualPlayList = async (newPlayList: NewPlayList) => {
 };
 
 // 개인 대표 플레이리스트 조회
-const getIndividualPlayListRepresentative = async (): Promise<PlayList> => {
-  const response = await api.get<PlayList>(
-    `${INDIVIDUAL_PLAYLISTS_URL}-representative`
-  );
-  return response.data;
+const getIndividualPlayListRepresentative = async (): Promise<PlayList | null> => {
+  try{
+    const response = await api.get<PlayList | null>(
+      `${INDIVIDUAL_PLAYLISTS_URL}-representative`
+    );
+    if (response) {
+    return response.data;
+    } else {
+    return null;
+    }
+  } catch (err) {
+    throw err;
+  }
 };
 
 // 개인 플레이리스트 목록조회
