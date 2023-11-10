@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class GroupParticipationRequestController {
     private final GroupParticipationRequestService groupParticipationRequestService;
 
+    @Operation(description = "공고참여요청을 생성합니다.")
     @PostMapping("/groups/{groupId}/participation-requests")
     public ResponseEntity postParticipationRequest(@RequestHeader("UserId") String userId, @PathVariable String groupId) {
         groupParticipationRequestService.saveGroupParticipationRequest(userId, groupId);
