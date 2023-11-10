@@ -86,6 +86,29 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
         );
     }
 
+    /**
+     * 공고에 대한 참여요청을 공고 작성자가 거절합니다.
+     *
+     * @param userId                      거절을 요청한 사용자 UUID
+     * @param groupParticipationRequestId 거절 대상 참여요청 UUID
+     */
+    @Transactional
+    @Override
+    public void denyGroupParticipationRequest(String userId, String groupParticipationRequestId) {
+        groupParticipationRequestRepository.findByGroupParticipationRequestId(groupParticipationRequestId).ifPresentOrElse(
+                groupParticipationRequest -> {
+                    if (!groupParticipationRequest.getGroup().getHostId().equals(userId)) {
+                        throw new NoAuthorizationForItemException("공고 작성자만 공고에 대한 참여요청을 거절할 수 있습니다.", HttpStatus.FORBIDDEN);
+                    }
+
+                    groupParticipationRequestRepository.delete(groupParticipationRequest);
+                },
+                () -> {
+                    throw new NoSuchItemException("존재하지 않는 공고참여 요청입니다.", HttpStatus.NOT_FOUND);
+                }
+        );
+    }
+
     private static boolean canParticipate(Group group) {
         return group.getClosedByHost() || group.getDeadline().isBefore(LocalDateTime.now()) || group.getParticipantsCnt() >= group.getCapacity();
     }
