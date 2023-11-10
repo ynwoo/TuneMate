@@ -16,7 +16,7 @@ public class GroupParticipationRequest extends BaseTimeEntity {
     private Long id;
     @Column(nullable = false, unique = true)
     private String groupParticipationRequestId;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
     private String userId;
 }
