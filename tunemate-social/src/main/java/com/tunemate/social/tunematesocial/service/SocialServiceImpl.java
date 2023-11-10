@@ -22,6 +22,8 @@ import com.tunemate.social.tunematesocial.entity.ChatPerson;
 import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 import com.tunemate.social.tunematesocial.entity.Friend;
 import com.tunemate.social.tunematesocial.entity.FriendRequest;
+import com.tunemate.social.tunematesocial.exception.BaseException;
+import com.tunemate.social.tunematesocial.exception.code.SocialErrorCode;
 import com.tunemate.social.tunematesocial.repository.ChatPersonRepository;
 import com.tunemate.social.tunematesocial.repository.ChattingRoomRepository;
 import com.tunemate.social.tunematesocial.repository.FriendRepository;
@@ -56,6 +58,24 @@ public class SocialServiceImpl implements SocialService {
 	 */
 	@Override
 	public void addFriendRequest(String myId, FriendRequestDto friendRequestDto) {
+		// 이미 친구 인지 확인
+		Optional<Friend> relation1 = friendRepository.findByUser1IdAndAndUser2Id(myId,
+			friendRequestDto.getUserId());
+
+		Optional<Friend> relation2 = friendRepository.findByUser1IdAndAndUser2Id(
+			friendRequestDto.getUserId(), myId);
+
+		if (relation1.isPresent() || relation2.isPresent()) {
+			throw new BaseException(SocialErrorCode.ALREADY_FRIEND);
+		}
+		// 이미 보낸 요청인지 확인
+		Optional<FriendRequest> optionalFriendRequest = friendRequestRepository.findByRequestedUserIdAndRequestingUserId(
+			friendRequestDto.getUserId(), myId);
+
+		if (optionalFriendRequest.isPresent()) {
+			throw new BaseException(SocialErrorCode.ALREADY_SENT_REQUEST);
+		}
+
 		// Dto -> Entity 변환
 		FriendRequest friendRequest = FriendRequest.builder()
 			.requestingUserId(myId)
@@ -120,7 +140,7 @@ public class SocialServiceImpl implements SocialService {
 
 		if (friendRequestOptional.isEmpty()) {
 			log.debug("해당하는 친구 요청이 없습니다.");
-			return;
+			throw new BaseException(SocialErrorCode.FRIEND_REQUEST_NOT_FOUND);
 		}
 
 		FriendRequest friendRequest = friendRequestOptional.get();
@@ -143,8 +163,10 @@ public class SocialServiceImpl implements SocialService {
 		// 친구 신청 목록에서 제거
 		friendRequestRepository.delete(friendRequest);
 
+		Long id = friend.getId();
+		log.debug("영속성 테스트: " + id);
 		// 채팅 방 생성
-		long relationId = friendRepository.findByUser1IdAndAndUser2Id(myId, newFriendId).get(0).getId();
+		long relationId = friendRepository.findByUser1IdAndAndUser2Id(myId, newFriendId).get().getId();
 		ChattingRoom chattingRoom = new ChattingRoom();
 		chattingRoom.setChatRoomId(relationId);
 		chattingRoom.setMessages(new ArrayList<>());
@@ -158,7 +180,7 @@ public class SocialServiceImpl implements SocialService {
 
 		if (friendRequestOptional.isEmpty()) {
 			log.debug("해당하는 친구 요청이 없습니다.");
-			return;
+			throw new BaseException(SocialErrorCode.FRIEND_REQUEST_NOT_FOUND);
 		}
 
 		FriendRequest friendRequest = friendRequestOptional.get();
@@ -172,7 +194,7 @@ public class SocialServiceImpl implements SocialService {
 
 		if (byId.isEmpty()) {
 			log.debug("해당하는 친구 관계가 없습니다.");
-			return;
+			throw new BaseException(SocialErrorCode.RELATION_ID_NOT_FOUND);
 		}
 
 		Friend friend = byId.get();
@@ -256,7 +278,7 @@ public class SocialServiceImpl implements SocialService {
 		Optional<Friend> byCommonPlaylistId = friendRepository.findByCommonPlaylistId(playlistId);
 		if (byCommonPlaylistId.isEmpty()) {
 			log.debug("해당 플레이리스트 아이디를 가진 친구 관계가 없습니다");
-			return null;
+			throw new BaseException(SocialErrorCode.HOST_ID_NOT_FOUND);
 		}
 
 		// host Id 제공

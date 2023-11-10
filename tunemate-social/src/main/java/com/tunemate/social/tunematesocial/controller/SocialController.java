@@ -80,7 +80,7 @@ public class SocialController {
 		친구 요청을 수락하여 친구가 되는 기능입니다.""")
 	public ResponseEntity<?> acceptFriendRequest(@PathVariable("userId") String newFriendId,
 		@RequestHeader("UserId") String userId) {
-		log.debug(userId + "님이 " + newFriendId + "님의 친구 요청을 수락하였습니다.");
+		log.debug(userId + "님이 " + newFriendId + "님의 친구 요청을 수락");
 
 		socialService.acceptFriendRequest(userId, newFriendId);
 
@@ -98,7 +98,7 @@ public class SocialController {
 		친구 요청을 거절하는 기능입니다.""")
 	public ResponseEntity<?> declineFriendRequest(@PathVariable("userId") String notFriendId,
 		@RequestHeader("UserId") String userId) {
-		log.debug(userId + "님이 " + notFriendId + "님의 친구 요청을 거절하였습니다.");
+		log.debug(userId + "님이 " + notFriendId + "님의 친구 요청을 거절");
 
 		socialService.declineFriendRequest(userId, notFriendId);
 
