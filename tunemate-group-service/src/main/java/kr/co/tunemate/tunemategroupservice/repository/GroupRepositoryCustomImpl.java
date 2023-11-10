@@ -3,7 +3,7 @@ package kr.co.tunemate.tunemategroupservice.repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.co.tunemate.tunemategroupservice.dto.GroupSearchDto;
+import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupSearchDto;
 import kr.co.tunemate.tunemategroupservice.entity.Group;
 import lombok.RequiredArgsConstructor;
 
