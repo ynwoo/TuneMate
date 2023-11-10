@@ -29,7 +29,7 @@ const TopNavbar = () => {
   // const pathname = usePathname();
 
   return (
-    <div className={styles["top-navbar"]}>
+    <nav className={styles["top-navbar"]}>
       <div className={styles["top-navbar__item"]} onClick={router.back}>
         <Icon.Back />
         {/* <p>{pageTitleByPathname(pathname)}</p> */}
@@ -38,7 +38,7 @@ const TopNavbar = () => {
       <Link href={"/friends/requests"} className={styles["top-navbar__item"]}>
         <Icon.Alarm />
       </Link>
-    </div>
+    </nav>
   );
 };
 

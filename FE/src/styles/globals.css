@@ -11,8 +11,8 @@
   --text-color: #666666;
   --gradation-color: linear-gradient(var(--main-color), var(--white-color));
 
-  --top-navbar-height: 10vh;
-  --bottom-navbar-height: 10vh;
+  --top-navbar-height: 4rem;
+  --bottom-navbar-height: 4rem;
   --main-height: 80vh;
 }
 
