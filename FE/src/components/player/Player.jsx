@@ -1,14 +1,32 @@
 import SpotifyPlayer from "react-spotify-web-playback";
-import { useEffect, useState } from "react";
-import { playlistState } from "@/store/atom";
-import { useRecoilState } from "recoil";
+import { useEffect, useState, useMemo } from "react";
+import {
+  playlistState,
+  ListInfoState,
+  PickTrackState,
+  MainplaylistState,
+  PickTrackUriState,
+  currentTrackIndexState,
+} from "@/store/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 export default function CustomPlayer({ accessToken, playTrack }) {
   const [play, setPlay] = useState(false);
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const ListInfo = useRecoilValue(ListInfoState);
+  const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(
+    currentTrackIndexState
+  );
+  const [PickTrack, setPickTrack] = useRecoilState(PickTrackState); // Ensure setPickTrack is defined
+  const PickTrackUri = useRecoilValue(PickTrackUriState);
+  const Mainplaylist = useRecoilValue(MainplaylistState);
   const [playList, setPlayList] = useRecoilState(playlistState);
+  const [playTracks, setPlayTracks] = useState(playTrack);
+
+  console.log("playTrack", playTrack);
+  console.log("MainList", Mainplaylist);
+
   const playAllTracks = () => {
-    if (playTrack && playTrack.length > 0) {
+    if (Mainplaylist && Mainplaylist.length > 0) {
       setPlay(true);
     } else {
       console.error("playTrack is undefined or empty.");
@@ -16,11 +34,11 @@ export default function CustomPlayer({ accessToken, playTrack }) {
   };
 
   useEffect(() => {
-    setPlayList(playTrack);
-  }, [playTrack]);
-
+    setPlayList(Mainplaylist);
+  }, [Mainplaylist]);
+  console.log("currentTrackIndex", currentTrackIndex);
   const playNextTrack = () => {
-    if (currentTrackIndex < playTrack.length - 1) {
+    if (currentTrackIndex < Mainplaylist.length - 1) {
       setCurrentTrackIndex((prevIndex) => prevIndex + 1);
     } else {
       setCurrentTrackIndex(0);
@@ -29,21 +47,33 @@ export default function CustomPlayer({ accessToken, playTrack }) {
   };
 
   useEffect(() => {
-    if (!playTrack || playTrack.length === 0) {
+    if (!Mainplaylist || Mainplaylist.length === 0) {
       setPlay(false);
     }
-  }, [playTrack]);
+  }, [Mainplaylist]);
+
+  useEffect(() => {
+    // PickTrackUri 값이 변경될 때마다 해당 URI로 트랙을 변경
+    if (PickTrackUri) {
+      setPlayTracks([PickTrackUri]);
+      setPlay(true);
+    }
+  }, [PickTrackUri, setPlayTracks]); // Ensure to include setPlayTrack in the dependency array
 
   if (!accessToken) return null;
 
+  const newArr = useMemo(() => {
+    return Mainplaylist.slice(currentTrackIndex).concat(
+      Mainplaylist.slice(0, currentTrackIndex)
+    );
+  }, [Mainplaylist, currentTrackIndex]);
+
   return (
     <div className="custom-player" style={{ width: 300, height: 200 }}>
-      {/* <div className="custom-controls">
+      <div className="custom-controls">
         <button onClick={playAllTracks}>전체 재생</button>
-      </div> */}
-      {/* {play && ( */}
+      </div>
       <SpotifyPlayer
-        // style={{ height: 30 }}
         token={accessToken}
         showSaveIcon
         callback={(state) => {
@@ -52,9 +82,8 @@ export default function CustomPlayer({ accessToken, playTrack }) {
           }
         }}
         play={play}
-        uris={playTrack.length > 0 ? playTrack : []}
+        uris={newArr}
       />
-      {/* )} */}
     </div>
   );
 }

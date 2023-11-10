@@ -4,11 +4,22 @@ import Image from "next/image";
 import styles from "@/styles/PlayerPage.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useRecoilState } from "recoil";
-import { PickTrackState } from "@/store/atom";
+import {
+  PickTrackState,
+  MainplaylistState,
+  PickTrackUriState,
+  currentTrackIndexState,
+} from "@/store/atom";
 
-function PlaylistDetails({ playlistDetails, accessToken }) {
+function PlaylistDetails({ playlistDetails }) {
   const [playTrack, setPlayTrack] = useState([]);
   const [PickTrack, setPickTrack] = useRecoilState(PickTrackState);
+  const [PickTrackUri, setPickTrackUri] = useRecoilState(PickTrackUriState);
+  const [Mainplaylist, setMainplaylist] = useRecoilState(MainplaylistState);
+  const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(
+    currentTrackIndexState
+  );
+
   // 페이지 로드 시 플레이리스트의 모든 곡을 playTrack에 추가
   useEffect(() => {
     if (playlistDetails) {
@@ -16,12 +27,14 @@ function PlaylistDetails({ playlistDetails, accessToken }) {
         (track) => track.track.uri
       );
       setPlayTrack(allUris);
+      setMainplaylist(allUris);
     }
   }, [playlistDetails]);
 
-  function handlePlay(track) {
+  function handlePlay(track, index) {
     setPickTrack(track.track);
-    console.log("p", PickTrack);
+    setPickTrackUri(track.track.uri);
+    setCurrentTrackIndex(index);
   }
 
   if (!playlistDetails) {
@@ -45,7 +58,7 @@ function PlaylistDetails({ playlistDetails, accessToken }) {
           <span key={index} style={{ cursor: "pointer", margin: 10 }}>
             <div
               style={{ display: "flex", border: "1px solid blue" }}
-              onClick={() => handlePlay(track)}
+              onClick={() => handlePlay(track, index)}
             >
               <Image
                 src={track.track.album.images[0].url}

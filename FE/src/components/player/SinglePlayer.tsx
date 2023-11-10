@@ -6,19 +6,22 @@ import { useMemo, useEffect, useState } from "react";
 import Image from "next/image";
 import AlbumArt from "./AlbumArt";
 import { playlistState } from "@/store/atom";
-import { ListInfoState } from "@/store/atom";
+import { ListInfoState, MainplaylistState } from "@/store/atom";
 
 export default function SinglePlayer() {
   const PickTrack = useRecoilValue(PickTrackState);
   const ListInfo = useRecoilValue(ListInfoState);
+  const Mainplaylist = useRecoilValue(MainplaylistState);
   const [play, setPlay] = useState([]);
   const [accessToken, setAccessToken] = useState<string>("");
   const [playuri, setPlayuri] = useState<string>("");
   const [trackImg, setTrackImg] = useState<string>("");
-  console.log("Playyyy", ListInfo);
+  // console.log("Mainplaylist", Mainplaylist);
+  // console.log("PickTrack", PickTrack);
+
   useEffect(() => {
     if (PickTrack) {
-      console.log(PickTrack, "2");
+      // console.log(PickTrack, "2");
       setPlay(PickTrack);
       setPlayuri(PickTrack.uri);
       setTrackImg(PickTrack.album.images[0].url);
@@ -35,8 +38,6 @@ export default function SinglePlayer() {
     const spotifyAccessToken = Storage.getSpotifyAccessToken;
     setAccessToken(spotifyAccessToken);
   }, []);
-
-  console.log("first", ListInfo);
 
   if (!ListInfo) {
     return <></>;
