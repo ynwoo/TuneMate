@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tunemate.social.tunematesocial.client.UserServiceClient;
 import com.tunemate.social.tunematesocial.dto.ChatDto;
@@ -57,6 +58,7 @@ public class SocialServiceImpl implements SocialService {
 	 * @param friendRequestDto
 	 */
 	@Override
+	@Transactional
 	public void addFriendRequest(String myId, FriendRequestDto friendRequestDto) {
 		// 이미 친구 인지 확인
 		Optional<Friend> relation1 = friendRepository.findByUser1IdAndAndUser2Id(myId,
@@ -133,6 +135,7 @@ public class SocialServiceImpl implements SocialService {
 	}
 
 	@Override
+	@Transactional
 	public void acceptFriendRequest(String myId, String newFriendId) {
 		// 친구 요청 기록 가져오기
 		Optional<FriendRequest> friendRequestOptional = friendRequestRepository.findByRequestedUserIdAndRequestingUserId(
@@ -174,6 +177,7 @@ public class SocialServiceImpl implements SocialService {
 	}
 
 	@Override
+	@Transactional
 	public void declineFriendRequest(String myId, String notFriendId) {
 		Optional<FriendRequest> friendRequestOptional = friendRequestRepository.findByRequestedUserIdAndRequestingUserId(
 			myId, notFriendId);
@@ -189,6 +193,7 @@ public class SocialServiceImpl implements SocialService {
 	}
 
 	@Override
+	@Transactional
 	public void addPlaylistIdAndHost(PlaylistRequestDto playlistRequestDto) {
 		Optional<Friend> byId = friendRepository.findById(playlistRequestDto.getRelationId());
 
@@ -274,6 +279,7 @@ public class SocialServiceImpl implements SocialService {
 	}
 
 	@Override
+	@Transactional
 	public String getHostId(String playlistId) {
 		Optional<Friend> byCommonPlaylistId = friendRepository.findByCommonPlaylistId(playlistId);
 		if (byCommonPlaylistId.isEmpty()) {
