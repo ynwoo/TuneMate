@@ -28,6 +28,7 @@ public class MessageController {
     @MessageMapping("/chat")
     public void message(@Payload ChatDto message, SimpMessageHeaderAccessor headerAccessor){
         headerAccessor.getSessionAttributes().put("username",message.getSenderName());
+        log.info("채팅방 번호 : "+message.getRelationId());
         message.setTime(LocalDateTime.now());
         message.setReadCount(1);
         simpMessageSendingOperations.convertAndSend("/topic/"+message.getRelationId(),chatService.getChat(message.getRelationId(),message));
