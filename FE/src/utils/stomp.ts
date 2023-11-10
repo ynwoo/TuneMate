@@ -1,31 +1,20 @@
-import { SOCKET_URL } from "@/constants/url";
-import { Friend } from "@/types/social";
 import { MessageRequest } from "@/types/chat";
 import { Client } from "@stomp/stompjs";
 import { Storage } from "./storage";
 
 export const Stomp = Object.freeze({
-  connect(
-    client: any,
-    relationIds?: Friend["relationId"][],
-    subscibeCallback?: (data: any) => void
-  ) {
-    console.log("relationIds", relationIds);
+  connect(client: any, url: string, onConnect: () => void) {
+    if (client.current) {
+      onConnect();
+      return;
+    }
 
     const accessToken = Storage.getAccessToken();
     client.current = new Client({
-      brokerURL: `${SOCKET_URL.brokerURL()}?Authorization=${accessToken}`,
+      brokerURL: `${url}?Authorization=${accessToken}`,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
-      onConnect: () => {
-        console.log("웹소켓 연결 성공!!!", client.current);
-        if (relationIds && subscibeCallback) {
-          relationIds.forEach((relationId) => {
-            Stomp.subscribe(client.current, relationId, subscibeCallback);
-            console.log(`${relationId}번 방 연결 성공`);
-          });
-        }
-      },
+      onConnect,
       onStompError: (data) => {
         console.error(data);
       },
@@ -41,21 +30,15 @@ export const Stomp = Object.freeze({
     console.log("disconnect 실행", client);
   },
 
-  subscribe(
-    client: Client,
-    relationId: Friend["relationId"],
-    callback: (data: any) => void
-  ) {
-    const subscribeUrl = SOCKET_URL.subscribeURL(relationId);
-    client.subscribe(subscribeUrl, callback);
+  subscribe(client: Client, url: string, callback: (data: any) => void) {
+    client.subscribe(url, callback);
 
     console.log("subscribe 실행", client);
   },
 
-  publish(client: Client, messageRequest: MessageRequest) {
-    const publishURL = SOCKET_URL.publishURL();
+  publish(client: Client, url: string, messageRequest: MessageRequest) {
     client.publish({
-      destination: publishURL,
+      destination: url,
       body: JSON.stringify(messageRequest),
     });
 

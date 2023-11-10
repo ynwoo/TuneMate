@@ -28,6 +28,18 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
   const unReadCount = useMemo(() => {
     if (!chatRoom) return 0;
 
+    // let count = 0;
+    // for (let index = chatRoom.messages.length - 1; index >= 0; index--) {
+    //   const { senderNo, readCount } = chatRoom.messages[index];
+    //   if (senderNo === Storage.getUserId() || readCount === CHAT.read) {
+    //     return count;
+    //   }
+
+    //   count++;
+    // }
+
+    // return count;
+
     return ChatFilter.messages(chatRoom.messages).filter(
       ({ readCount, senderNo }) =>
         senderNo !== Storage.getUserId() && readCount === CHAT.unRead

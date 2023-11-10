@@ -1,6 +1,7 @@
 import BottomNavbar from "@/components/navbar/BottomNavbar/BottomNavbar";
 import TopNavbar from "@/components/navbar/TopNavbar/TopNavbar";
 import ChatProvider from "@/contexts/ChatContext";
+import StompClientProvider from "@/contexts/StompClientContext";
 import "@/styles/globals.css";
 import "@/styles/reset.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
@@ -40,15 +41,17 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        <ChatProvider>
-          <>
-            {!hasNavbar && <TopNavbar />}
-            <div className={hasNavbar ? "login" : "main"}>
-              <Component {...pageProps} />
-            </div>
-            {!hasNavbar && <BottomNavbar />}
-          </>
-        </ChatProvider>
+        <StompClientProvider>
+          <ChatProvider>
+            <>
+              {!hasNavbar && <TopNavbar />}
+              <div className={hasNavbar ? "login" : "main"}>
+                <Component {...pageProps} />
+              </div>
+              {!hasNavbar && <BottomNavbar />}
+            </>
+          </ChatProvider>
+        </StompClientProvider>
       </QueryClientProvider>
     </RecoilRoot>
   );
