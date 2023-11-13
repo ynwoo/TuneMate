@@ -3,6 +3,7 @@ package com.tunemate.social.tunematesocial.controller;
 import java.util.List;
 
 
+import com.tunemate.social.tunematesocial.dto.ChattingListDto;
 import com.tunemate.social.tunematesocial.dto.response.MyChatRoomListDto;
 import com.tunemate.social.tunematesocial.dto.response.RelationResponseDto;
 import com.tunemate.social.tunematesocial.entity.ChattingRoom;
@@ -187,8 +188,8 @@ public class SocialController {
 			@ApiResponse(responseCode = "403", description = "relationId 에 포함되지 않은 사람이 채팅 기록을 조회 하는 경우"),
 			@ApiResponse(responseCode = "404", description = "relationId 가 없는 경우")
 	})
-	public ResponseEntity<ChattingRoom> getChatRecord(@RequestHeader("UserId") String userId,
-		@PathVariable("relationId") Long relationId) {
+	public ResponseEntity<ChattingListDto> getChatRecord(@RequestHeader("UserId") String userId,
+														 @PathVariable("relationId") Long relationId) {
 		socialService.checkUser(relationId,userId);
 		socialService.setChats(relationId, userId);
 		socialService.setChatPerson(relationId, userId);

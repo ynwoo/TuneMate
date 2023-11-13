@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.tunemate.social.tunematesocial.dto.ChattingListDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -282,13 +283,17 @@ public class SocialServiceImpl implements SocialService {
 	}
 
 	@Override
-	public ChattingRoom getChats(long relationId) {
-		return chattingRoomRepository.findByChatRoomId(relationId);
+	public ChattingListDto getChats(long relationId) {
+		ChattingRoom chattingRoom = chattingRoomRepository.findByChatRoomId(relationId);
+		ChattingListDto chattingListDto = new ChattingListDto();
+		chattingListDto.setChatRoomId(chattingRoom.getChatRoomId());
+		chattingListDto.setMessages(chattingRoom.getMessages());
+		return chattingListDto;
 	}
 
 	@Override
 	public void setChats(long relationId, String userId) {
-		ChattingRoom chatRecord = this.getChats(relationId);
+		ChattingRoom chatRecord = chattingRoomRepository.findByChatRoomId(relationId);
 		List<ChatDto> list = chatRecord.getMessages();
 		for (int i = list.size() - 1; i >= 0; i--) {
 			if (list.get(i).getReadCount() == 0)

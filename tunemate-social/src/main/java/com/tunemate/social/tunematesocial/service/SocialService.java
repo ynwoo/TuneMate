@@ -2,6 +2,7 @@ package com.tunemate.social.tunematesocial.service;
 
 import java.util.List;
 
+import com.tunemate.social.tunematesocial.dto.ChattingListDto;
 import com.tunemate.social.tunematesocial.dto.UserIdDto;
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
@@ -25,7 +26,7 @@ public interface SocialService {
 
 	String getHostId(String playlistId);
 
-	ChattingRoom getChats(long relationId);
+	ChattingListDto getChats(long relationId);
 
 	void setChats(long relationId, String userId);
 
