@@ -1,0 +1,11 @@
+.chat-menu {
+  display: flex;
+  flex-direction: column;
+  right: 0;
+}
+
+.chat-menu__exit {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+}

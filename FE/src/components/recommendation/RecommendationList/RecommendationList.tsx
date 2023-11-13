@@ -4,6 +4,7 @@ import { FriendRequest, RecommendationFriend } from "@/types/social";
 import RecommendationItem from "../RecommendationItem/RecommendationItem";
 import { classNameWrapper } from "@/utils/className";
 import styles from "./RecommendationList.module.css";
+import Nothing from "@/components/nothing/Nothing/Nothing";
 
 interface RecommendListProps extends Props {
   recommendations: (FriendRequest | RecommendationFriend)[];

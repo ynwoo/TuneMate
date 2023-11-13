@@ -1,0 +1,15 @@
+.chat-menu-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-menu-item__title {
+  background-color: var(--main-color);
+  flex-shrink: 0;
+  padding: 0.5rem;
+}
+
+.chat-menu-item__content {
+  flex: 1;
+  padding: 0.5rem;
+}

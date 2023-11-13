@@ -9,10 +9,13 @@
 .button-with-modal__modal {
   display: flex;
   flex-direction: column;
+  padding: 2em;
+  height: 100%;
 }
 
 .button-with-modal__modal--text {
   text-align: center;
+  margin-bottom: 1em;
 }
 
 .button-with-modal__modal--button-container {
@@ -44,5 +47,16 @@
 
 .red:hover {
   background-color: var(--red-color);
+  color: var(--white-color);
+}
+
+.white {
+  border: 1px solid var(--white-color);
+  background-color: var(--white-color);
+  color: var(--red-color);
+}
+
+.white:hover {
+  background-color: var(--white-color);
   color: var(--white-color);
 }
