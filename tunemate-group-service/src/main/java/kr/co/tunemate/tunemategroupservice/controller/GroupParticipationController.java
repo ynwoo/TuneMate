@@ -24,7 +24,7 @@ public class GroupParticipationController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공")
     })
-    @GetMapping("/me/participation-groups")
+    @GetMapping("/me/group-participations")
     public ResponseEntity<List<ResponseGroupParticipation>> getParticipationGroups(@RequestHeader("UserId") String userId) {
         List<ResponseGroupParticipation> responseGroupParticipations = groupParticipationService.findByUserId(userId).stream()
                 .map(groupParticipationDto -> modelMapper.map(groupParticipationDto, ResponseGroupParticipation.class))
