@@ -70,7 +70,7 @@ class SongDto(BaseModel):
 class ResponseDto(BaseModel):
     userId: str
     name: str
-    img: str
+    img: Optional[str]
     playlistId: str
     similarity: float
 
