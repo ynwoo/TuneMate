@@ -23,7 +23,7 @@ public class RequestGroup {
     @Schema(description = "마감일시")
     @NotNull
     private LocalDateTime deadline;
-    @Schema(example = "5c6bbfj6-921f-4b03-a2ba-50123123klw", description = "콘서트 UUID")
+    @Schema(example = "52", description = "콘서트 ID")
     @NotNull
     private String concertId;
 }
