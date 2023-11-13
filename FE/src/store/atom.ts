@@ -32,3 +32,8 @@ export const currentTrackIndexState = atom<Track>({
   key: "currentTrackIndexState",
   default: undefined,
 });
+
+export const AlubumArtState = atom<string>({
+  key: "AlubumArtState",
+  default: undefined,
+});

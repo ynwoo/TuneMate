@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Player from "./Player";
 import Image from "next/image";
 import styles from "@/styles/PlayerPage.module.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import { useRecoilState } from "recoil";
 import {
   PickTrackState,
