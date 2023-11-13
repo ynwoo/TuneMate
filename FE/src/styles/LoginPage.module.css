@@ -5,6 +5,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100vh;
+  width: 100vw;
 }
 
 .login-page__title {
@@ -13,4 +15,5 @@
 }
 
 .login-page__button {
+  margin-top: 2rem;
 }
