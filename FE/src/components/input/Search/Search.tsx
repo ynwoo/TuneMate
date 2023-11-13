@@ -20,6 +20,7 @@ const Search = ({ className, onInput, onSubmit, value }: SearchProps) => {
   return (
     <div className={classNameWrapper(styles.search, className)}>
       <input
+        autoFocus
         className={styles["search__input"]}
         type="search"
         onChange={onInput}

@@ -71,10 +71,12 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
       >
         <Link
           className={styles["friend-item__icon"]}
-          href={`/friends/${item.relationId}`}
+          href={`/friends/${item.relationId}/${item.friendId}`}
         >
           <Icon.Message size="xl" />
-          {unReadCount}
+          <p className={styles["friend-item__icon--chat-count"]}>
+            {unReadCount}
+          </p>
         </Link>
         <Link
           className={styles["friend-item__icon"]}

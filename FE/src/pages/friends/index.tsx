@@ -1,19 +1,16 @@
 import FriendList from "@/components/friend/FriendList/FriendList";
-import { Friend } from "@/types/social";
 import styles from "@/styles/FriendsPage.module.css";
 import useSocialFriendsQuery from "@/hooks/queries/social/useSocialFriendsQuery";
-
-// const data = [
-//   { freindId: "0", name: "ss1" },
-//   { freindId: "1", name: "ss2" },
-//   { freindId: "2", name: "ss3" },
-//   { freindId: "3", name: "ss4" },
-//   { freindId: "4", name: "ss5" },
-//   { freindId: "5", name: "ss6" },
-// ] as Friend[];
+import Nothing from "@/components/nothing/Nothing/Nothing";
 
 const FriendsPage = () => {
   const { data: friends } = useSocialFriendsQuery();
+
+  if (!friends?.length) {
+    return (
+      <Nothing className={styles["nothing"]}>친구가 존재하지 않습니다.</Nothing>
+    );
+  }
 
   return (
     <div className={styles["friends-page"]}>

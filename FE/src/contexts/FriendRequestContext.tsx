@@ -27,7 +27,6 @@ const FriendRequestProvider = ({ children }: Props) => {
   >([]);
 
   const { data: sendSocialFriendRequests } = useSendSocialFriendRequestsQuery();
-  console.log(sendSocialFriendRequests);
 
   const subscibeCallback = useCallback(
     (data: any) => {
