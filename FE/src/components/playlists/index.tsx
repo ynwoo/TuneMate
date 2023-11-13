@@ -37,7 +37,7 @@ const Playlist = ({
       playlistId,
       changeTrackIndex,
     });
-    console.log('순서바꾸기 api 끝')
+    console.log("순서바꾸기 api 끝");
   };
 
   const handleChange = (result: any) => {
@@ -52,7 +52,7 @@ const Playlist = ({
       } else {
         return result.destination.index;
       }
-    }
+    };
     const changeTrackIndex: ChangeTrackIndex = {
       range_start: rangeStart,
       insert_before: insertBefore(),
@@ -60,7 +60,7 @@ const Playlist = ({
     };
     setPlaylistData(newData);
     changePlaylistOrder(changeTrackIndex);
-    console.log('순서 바꾸기 끝')
+    console.log("순서 바꾸기 끝");
   };
 
   const onModal = useCallback(
@@ -120,10 +120,15 @@ const Playlist = ({
       </div>
       <Modal isOpen={isOpen} toggle={closeToggle}>
         <div className={styles["modal-box"]}>
-          <div>
+          <div className={styles["modal-content"]}>
+            <Text type="title" content="노래 추가하기" />
+          </div>
+          <div className={styles["division-line"]}/>
+          <div className={styles["modal-content"]}>
             <Text type="title" content="플레이리스트 이름 바꾸기" />
           </div>
-          <div onClick={handleDeleteMode}>
+          <div className={styles["division-line"]}/>
+          <div className={styles["modal-content"]} onClick={handleDeleteMode}>
             <Text type="title" content="노래 삭제하기" />
           </div>
         </div>
