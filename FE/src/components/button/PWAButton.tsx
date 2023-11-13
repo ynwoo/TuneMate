@@ -26,13 +26,15 @@ const PWAButton = () => {
   }, []);
 
   return (
-    <button
-      className={classNameWrapper(styles["button"], styles["red"])}
-      id="install"
-      hidden
-    >
-      앱 설치하기
-    </button>
+    <>
+      <button
+        className={classNameWrapper(styles["button"], styles["red"])}
+        id="install"
+        hidden
+      >
+        앱 설치하기
+      </button>
+    </>
   );
 };
 
