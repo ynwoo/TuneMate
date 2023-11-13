@@ -5,7 +5,6 @@ import { MessageResponse } from "@/types/chat";
 import { Storage } from "@/utils/storage";
 import { useMemo } from "react";
 import ProfileImage from "@/components/image/ProfileImage/ProfileImage";
-import Icon from "@/components/icons";
 import { Time } from "@/utils/time";
 
 interface ChatItemProps extends Props {
@@ -27,8 +26,12 @@ const ChatItem = ({ className, item }: ChatItemProps) => {
       )}
     >
       <p className={styles["chat-item__image"]}>
-        <Icon.Profile />
-        {/* <ProfileImage src="" alt="" type="friend" /> */}
+        <ProfileImage
+          className={styles["friend-item__user--image"]}
+          src={item.img ?? "/favicon.ico"}
+          alt="친구 프로필"
+          type="friend"
+        />
       </p>
       <div className={styles["chat-item__content"]}>
         <p className={styles["chat-item__content--name"]}>{item.senderName}</p>

@@ -55,13 +55,12 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
           styles["friend-item__user"]
         )}
       >
-        {/* <ProfileImage
+        <ProfileImage
           className={styles["friend-item__user--image"]}
-          src="https://i.scdn.co/image/ab67757000003b824e172b7776591b79a63fcea9"
+          src={item.img ?? "/favicon.ico"}
           alt="친구 프로필"
           type="friend"
-        /> */}
-        <Icon.Profile />
+        />
         <p>{item.name}</p>
       </Link>
       <div
