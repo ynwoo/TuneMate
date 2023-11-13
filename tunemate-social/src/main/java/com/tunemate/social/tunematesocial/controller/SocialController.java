@@ -2,21 +2,26 @@ package com.tunemate.social.tunematesocial.controller;
 
 import java.util.List;
 
-import com.tunemate.social.tunematesocial.dto.response.MyChatRoomListDto;
-import com.tunemate.social.tunematesocial.dto.response.RelationResponseDto;
-import com.tunemate.social.tunematesocial.entity.ChattingRoom;
-import com.tunemate.social.tunematesocial.service.ChatService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
+import com.tunemate.social.tunematesocial.dto.response.MyChatRoomListDto;
 import com.tunemate.social.tunematesocial.dto.response.MyFriendResponseDto;
 import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResponseDto;
+import com.tunemate.social.tunematesocial.dto.response.RelationResponseDto;
+import com.tunemate.social.tunematesocial.entity.ChattingRoom;
+import com.tunemate.social.tunematesocial.service.ChatService;
 import com.tunemate.social.tunematesocial.service.SocialService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -75,7 +80,9 @@ public class SocialController {
 	@PostMapping("/acceptance/{userId}")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "요청 수락 성공."),
-		@ApiResponse(responseCode = "404", description = "존재하지 않는 요청입니다.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+		@ApiResponse(responseCode = "404", description = "존재하지 않는 요청입니다.",
+			content = @Content(
+				schema = @Schema(implementation = com.tunemate.social.tunematesocial.exception.ErrorResponse.class)))
 	})
 	@Operation(summary = "친구 요청 수락", description = """
 		친구 요청을 수락하여 친구가 되는 기능입니다.""")
@@ -91,7 +98,7 @@ public class SocialController {
 	@PostMapping("/decline/{userId}")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "요청 거절 성공."),
-		@ApiResponse(responseCode = "404", description = "존재하지 않는 친구 요청입니다.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+		@ApiResponse(responseCode = "404", description = "존재하지 않는 친구 요청입니다.")
 	})
 	@Operation(summary = "친구 요청 거절", description = """
 		친구 요청을 거절하는 기능입니다.""")
@@ -107,7 +114,7 @@ public class SocialController {
 	@PostMapping("/common-playlist")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "요청 성공."),
-		@ApiResponse(responseCode = "404", description = "해당 친구관계가 없습니다.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+		@ApiResponse(responseCode = "404", description = "해당 친구관계가 없습니다.")
 	})
 	@Operation(summary = "플리id 및 host 정보 저장", description = """
 		마이크로 서비스간 통신용""")
@@ -134,7 +141,7 @@ public class SocialController {
 	@GetMapping("/host/{playlistId}")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "요청 성공."),
-		@ApiResponse(responseCode = "404", description = "해당 플레이리스트의 host가 없습니다.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+		@ApiResponse(responseCode = "404", description = "해당 플레이리스트의 host가 없습니다.")
 	})
 	@Operation(summary = "Host Id 제공", description = """
 		playlist id를 받으면 그 플레이 리스트에 해당하는 host id를 제공합니다.
