@@ -23,7 +23,7 @@ export default function CustomPlayer({ accessToken, playTrack }) {
   const [playTracks, setPlayTracks] = useState(playTrack);
 
   console.log("playTrack", playTrack);
-  console.log("MainList", Mainplaylist);
+  console.log("ListInfo", ListInfo);
 
   const playAllTracks = () => {
     if (Mainplaylist && Mainplaylist.length > 0) {

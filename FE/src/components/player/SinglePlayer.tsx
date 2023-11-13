@@ -61,39 +61,11 @@ export default function SinglePlayer() {
       }}
     >
       <div>
-        {/* <AlbumArt trackImg={trackImg} /> */}
         {AlubumArt && (
           <Image src={AlubumArt} alt={AlubumArt} width={200} height={200} />
         )}
       </div>
-      <div
-        style={{
-          // position: "fixed",
-          // top: 0,
-          // left: 0,
-          width: "100%",
-          // padding: "16px",
-          backgroundColor: "#ffffff", // Adjust as needed
-          transition: "bottom 0.5s ease-in-out",
-          bottom: isSlideUp ? "0" : "-100%", // Set to the height of your container
-        }}
-        className="animate__animated animate__slideInUp"
-        onClick={handleClick}
-      >
-        <div
-          style={{
-            position: "fixed",
-            bottom: -380,
-            width: "100%",
-            backgroundColor: "white",
-            alignItems: "center",
-            justifyContent: "center",
-            display: "flex",
-          }}
-        >
-          {playuri && <Player accessToken={accessToken} playTrack={playuri} />}
-        </div>
-      </div>
+      {playuri && <Player accessToken={accessToken} playTrack={playuri} />}
     </div>
   );
 }

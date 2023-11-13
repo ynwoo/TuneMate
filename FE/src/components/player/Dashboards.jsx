@@ -10,6 +10,7 @@ import { Storage } from "@/utils/storage";
 import { ListInfoState } from "@/store/atom";
 import { useRecoilState } from "recoil";
 import SinglePlayer from "./SinglePlayer";
+import Player from "@/components/player/Player";
 
 const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIEND_ID;
 const spotifyApi = new SpotifyWebApi(clientId);
@@ -121,7 +122,6 @@ export default function Dashboard({ accessToken, className }) {
           width: "100%",
         }}
       />
-
       <div style={{ overflowY: "auto" }}>
         {searchResults.map((track) => (
           <TrackSearchResult
@@ -134,7 +134,6 @@ export default function Dashboard({ accessToken, className }) {
         ))}
       </div>
       <div>
-        <SinglePlayer />
         <h3>대표 플레이 리스트 선택</h3>
         <select className="form-select" onChange={handleSelectChange}>
           <option value="">플레이리스트 선택</option>

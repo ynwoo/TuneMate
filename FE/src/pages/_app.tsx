@@ -9,8 +9,6 @@ import { usePathname } from "next/navigation";
 import { useMemo, useEffect, useState } from "react";
 import { RecoilRoot, useRecoilValue } from "recoil";
 import SinglePlayer from "@/components/player/SinglePlayer";
-import Slide from "@/components/player/Slide";
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -30,8 +28,8 @@ export default function App({ Component, pageProps }: AppProps) {
           <>
             {!isLoginPage && <TopNavbar />}
             <div className={isLoginPage ? "login" : "main"}>
-              <Slide />
-              {/* <SinglePlayer /> */}
+              {/* <Slide /> */}
+              <SinglePlayer />
               <Component {...pageProps} />
             </div>
             {!isLoginPage && <BottomNavbar />}
