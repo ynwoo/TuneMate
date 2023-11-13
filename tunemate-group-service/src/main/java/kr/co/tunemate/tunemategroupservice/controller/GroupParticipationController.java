@@ -8,9 +8,7 @@ import kr.co.tunemate.tunemategroupservice.vo.ResponseGroupParticipation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,6 +29,19 @@ public class GroupParticipationController {
                 .toList();
 
         return ResponseEntity.ok(responseGroupParticipations);
+    }
+
+    @Operation(summary = "참여중인 공고 탈퇴", description = "참여중인 공고를 탈퇴합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "성공"),
+            @ApiResponse(responseCode = "403", description = "공고참여가 되어있는 사용자가 아닌 다른 사용자가 탈퇴를 요청하는 경우"),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 공고참여인 경우")
+    })
+    @DeleteMapping("/me/group-participations/{groupParticipationId}")
+    public ResponseEntity deleteGroupParticipation(@RequestHeader("UserId") String userId, @PathVariable String groupParticipationId) {
+        groupParticipationService.deleteByGroupParticipationId(userId, groupParticipationId);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
