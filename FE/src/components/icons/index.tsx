@@ -8,6 +8,7 @@ import {
   faTrash,
   faGripLines,
   faCircleCheck,
+  faSquarePlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { faHouse } from "@fortawesome/free-solid-svg-icons/faHouse";
@@ -121,6 +122,12 @@ const Icon = {
   ),
   CircleCheck: ({ size = "2xl" }: IconProps) => (
     <FontAwesomeIcon className={styles.icon} icon={faCircleCheck} size={size} />
+  ),
+  Plus: ({ size = "2xl" }: IconProps) => (
+    <FontAwesomeIcon className={styles.icon} icon={faPlus} size={size} />
+  ),
+  SquarePlus: ({ size = "2xl" }: IconProps) => (
+    <FontAwesomeIcon className={styles.gray} icon={faSquarePlus} size={size} />
   ),
 };
 
