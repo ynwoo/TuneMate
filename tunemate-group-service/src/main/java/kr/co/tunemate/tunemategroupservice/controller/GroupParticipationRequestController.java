@@ -45,8 +45,23 @@ public class GroupParticipationRequestController {
             }
     )
     @GetMapping("/me/sent-participation-requests")
-    public ResponseEntity<List<ResponseGroupParticipationRequest>> getMyGroupParticipationRequests(@RequestHeader("UserId") String userId) {
+    public ResponseEntity<List<ResponseGroupParticipationRequest>> getSentGroupParticipationRequests(@RequestHeader("UserId") String userId) {
         List<ResponseGroupParticipationRequest> responseGroupParticipationRequests = groupParticipationRequestService.findAllByUserId(userId).stream().map(groupParticipationRequestDto ->
+                modelMapper.map(groupParticipationRequestDto, ResponseGroupParticipationRequest.class)
+        ).toList();
+
+        return ResponseEntity.ok(responseGroupParticipationRequests);
+    }
+
+    @Operation(summary = "받은 공고참여요청 목록 조회", description = "사용자가 받은 공고참여요청 목록을 조회합니다.")
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "200", description = "성공")
+            }
+    )
+    @GetMapping("/me/received-participation-requests")
+    public ResponseEntity<List<ResponseGroupParticipationRequest>> getReceivedGroupParticipationRequests(@RequestHeader("UserId") String userId) {
+        List<ResponseGroupParticipationRequest> responseGroupParticipationRequests = groupParticipationRequestService.findAllRequestedParticipationByUserId(userId).stream().map(groupParticipationRequestDto ->
                 modelMapper.map(groupParticipationRequestDto, ResponseGroupParticipationRequest.class)
         ).toList();
 
