@@ -28,7 +28,7 @@ const ChatItem = ({ className, item }: ChatItemProps) => {
       <p className={styles["chat-item__image"]}>
         <ProfileImage
           className={styles["friend-item__user--image"]}
-          src={item.img ?? "/favicon.ico"}
+          src={"/favicon.ico"}
           alt="친구 프로필"
           type="friend"
         />
