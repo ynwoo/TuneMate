@@ -36,4 +36,6 @@ public interface SocialService {
 	List<UserIdDto> getRequestUserId(String userId);
 
 	RelationResponseDto getRelationInfo(Long relationId);
+
+	void checkUser(Long relationId, String userId);
 }
