@@ -32,10 +32,15 @@ const ChatItem = ({ className, item }: ChatItemProps) => {
       </p>
       <div className={styles["chat-item__content"]}>
         <p className={styles["chat-item__content--name"]}>{item.senderName}</p>
-        <div className={styles["chat-item__content-container"]}>
+        <div
+          className={classNameWrapper(
+            styles["chat-item__content-container"],
+            !isMyChat && styles["reverse"]
+          )}
+        >
           <p className={styles["chat-item__content--text"]}>{item.content}</p>
           <div className={styles["chat-item__content--info-container"]}>
-            {item.readCount && (
+            {Number(item.readCount) !== 0 && (
               <p className={styles["chat-item__content--info"]}>
                 {item.readCount}
               </p>
