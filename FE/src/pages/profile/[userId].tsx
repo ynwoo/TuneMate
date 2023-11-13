@@ -23,14 +23,13 @@ const ProfilePage = () => {
     "https://3.bp.blogspot.com/-XKyHG9ipUuk/WxvKRN9CeYI/AAAAAAABMn8/usJ7TuHvS4s8Qff7wFV6iY6vtRwM3bQwgCLcBGAs/s400/music_headphone_man.png"
   );
   const [menuContent, setMenuContent] = useState<any[]>([]);
-  const { userId } = Cookie.getTokenResponse();
-  const spotifyUserId = Storage.getSpotifyUserId();
   const { isOpen, openToggle, closeToggle } = useMenu();
   const [playlistName, setPlaylistName] = useState("");
   const [myPlaylist, setMyPlaylist] = useState<any[]>([]);
   const [playlistId, setPlaylistId] = useState("");
 
   const getSpotifyPlaylists = async () => {
+    const spotifyUserId = Storage.getSpotifyUserId();
     const playlistList = await getIndividualPlayLists(spotifyUserId);
     console.log(playlistList);
     const dataset = [...playlistList];
@@ -100,6 +99,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const getUserProfile = async () => {
+      const { userId } = Cookie.getTokenResponse();
       const userData = await getUserInfo(userId);
       console.log(userData);
       setName(userData.name);
@@ -109,13 +109,13 @@ const ProfilePage = () => {
   }, []);
 
   const deleteTrack = async (index: number) => {
-    const data: DeleteTrack= {
+    const data: DeleteTrack = {
       playlistId: playlistId,
       uri: `spotify:track:${myPlaylist[index].id}`,
       positions: [index],
     };
     console.log(data.uri);
-    const response = await deleteIndividualPlayListTrack(data)
+    const response = await deleteIndividualPlayListTrack(data);
   };
 
   const handleDelete = (index: number) => {
