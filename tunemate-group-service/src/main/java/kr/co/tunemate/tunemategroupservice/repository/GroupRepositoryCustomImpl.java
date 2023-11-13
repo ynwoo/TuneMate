@@ -25,7 +25,7 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
                         eqHostName(groupSearchDto.getHostName()),
                         likeTitle(groupSearchDto.getTitle()),
                         likeContent(groupSearchDto.getContent()),
-                        isJoinable(groupSearchDto.getJoinable())
+                        isJoinable(groupSearchDto.getJoinableOnly())
                 )
                 .orderBy(group.createdAt.desc())
                 .fetch();

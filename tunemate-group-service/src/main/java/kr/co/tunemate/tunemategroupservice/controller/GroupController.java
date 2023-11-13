@@ -93,12 +93,12 @@ public class GroupController {
                                                               @RequestParam(required = false) String hostName,
                                                               @RequestParam(required = false) String title,
                                                               @RequestParam(required = false) String content,
-                                                              @RequestParam(required = false) Boolean joinable) {
+                                                              @RequestParam Boolean joinableOnly) {
         GroupSearchDto groupSearchDto = GroupSearchDto.builder()
                 .hostName(hostName)
                 .title(title)
                 .content(content)
-                .joinable(joinable)
+                .joinableOnly(joinableOnly)
                 .build();
 
         List<ResponseGroup> responseGroups = groupService.searchAll(groupSearchDto).stream().map(groupDto -> modelMapper.map(groupDto, ResponseGroup.class)).toList();
