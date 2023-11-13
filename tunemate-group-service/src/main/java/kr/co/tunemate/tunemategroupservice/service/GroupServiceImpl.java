@@ -23,6 +23,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupDto saveGroup(GroupDto groupDto) {
+        // TODO: 콘서트가 존재하는지 검증
         groupDto.setGroupId(UUID.randomUUID().toString());
         Group group = modelMapper.map(groupDto, Group.class);
 

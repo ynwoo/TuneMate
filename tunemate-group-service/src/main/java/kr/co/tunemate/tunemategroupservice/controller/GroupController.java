@@ -1,6 +1,8 @@
 package kr.co.tunemate.tunemategroupservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.ValidationException;
 import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupDto;
 import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupSearchDto;
@@ -24,6 +26,10 @@ public class GroupController {
     private final ModelMapper modelMapper;
 
     @Operation(description = "공고를 생성합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "성공"),
+            @ApiResponse(responseCode = "400", description = "필수 입력 값이 없는 경우, 콘서트가 존재하지 않는 경우")
+    })
     @PostMapping
     public ResponseEntity saveGroup(@RequestHeader("UserId") String userId, @RequestBody RequestGroup requestGroup) {
         GroupDto groupDto = modelMapper.map(requestGroup, GroupDto.class);
@@ -33,6 +39,10 @@ public class GroupController {
     }
 
     @Operation(description = "공고 UUID로 공고를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 groupId로 조회하는 경우")
+    })
     @GetMapping("/{groupId}")
     public ResponseEntity<ResponseGroup> getGroupByGroupId(@RequestHeader("UserId") String userId, @PathVariable String groupId) {
         GroupDto groupDto = groupService.getGroupByGroupId(groupId);
@@ -42,6 +52,12 @@ public class GroupController {
     }
 
     @Operation(description = "공고를 수정합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "400", description = "필수 입력 값이 없는 경우"),
+            @ApiResponse(responseCode = "403", description = "작성자가 아닌 사용자가 수정을 요청하는 경우"),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 groupId로 요청하는 경우")
+    })
     @PutMapping
     public ResponseEntity<ResponseGroup> putGroup(@RequestHeader("UserId") String userId, @RequestBody RequestGroup requestGroup) {
         if (ObjectUtils.isEmpty(requestGroup.getGroupId())) {
@@ -56,6 +72,10 @@ public class GroupController {
     }
 
     @Operation(description = "공고 작성자가 공고를 마감합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "403", description = "공고 작성자가 아닌 사람이 마감 요청할 경우"),
+    })
     @PatchMapping("/{groupId}")
     public ResponseEntity closeGroup(@RequestHeader("UserId") String userId, @PathVariable String groupId) {
         groupService.closeGroup(userId, groupId);
@@ -64,6 +84,9 @@ public class GroupController {
     }
 
     @Operation(description = "공고 목록을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공")
+    })
     @GetMapping
     public ResponseEntity<List<ResponseGroup>> searchAllGroup(@RequestHeader("UserId") String userId,
                                                               @RequestParam(required = false) String hostName,
@@ -83,6 +106,9 @@ public class GroupController {
     }
 
     @Operation(description = "공고를 삭제합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공")
+    })
     @DeleteMapping("/{groupId}")
     public ResponseEntity deleteGroup(@RequestHeader("UserId") String userId, @PathVariable String groupId) {
         groupService.deleteGroupByGroupId(userId, groupId);
