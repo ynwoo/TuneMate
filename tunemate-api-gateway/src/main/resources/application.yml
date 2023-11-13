@@ -134,6 +134,8 @@ springdoc:
         name: Music Service
       - url: /group-service/v3/api-docs
         name: Group Service
+      - url: /meeting-service/v3/api-docs
+        name: Meeting Service
 
 jwt:
   private-key: ${jwt-private-key}
