@@ -69,11 +69,10 @@ class SongDto(BaseModel):
 
 class ResponseDto(BaseModel):
     userId: str
-    spotifyUserId: str
     name: str
-    email: str
-    imageUrl: str
-    spotifyAccessToken: str
+    img: str
+    playlistId: str
+    similarity: float
 
 
 # 노래 추천
