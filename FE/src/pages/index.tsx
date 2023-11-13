@@ -31,9 +31,9 @@ const LoginPage = () => {
   const setCookie = () => {
     const userId = "cb899bc8-33a9-43a6-938c-76b0ec286c77";
     const accessToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTk2MDUyMTAsImlzcyI6IlR1bmVtYXRlIn0.zqc8FKWO3Klo0VBOBn7VFF8D3OwPBuDNnizuQpK0Nvmw2Bz2qI93WYvO4z2iDI7h";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTk4NTUyODAsImlzcyI6IlR1bmVtYXRlIn0.X6GKvuw_aBFcmusDjUsgjym1WQyO5Vkt7KDWGt7Ebt_CEPf1lTXwrV4Rel2uuK4q";
     const refreshToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiY2I4OTliYzgtMzNhOS00M2E2LTkzOGMtNzZiMGVjMjg2Yzc3IiwiZXhwIjoxNzAwODA3NjEwLCJpc3MiOiJUdW5lbWF0ZSJ9.knDPq0x0rWUhigUIKKPOwJGdoEWNnyPQ5JNevnB12VLcDaF2h9JbC5HVJERQiKqV";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiY2I4OTliYzgtMzNhOS00M2E2LTkzOGMtNzZiMGVjMjg2Yzc3IiwiZXhwIjoxNzAxMDU3NjgwLCJpc3MiOiJUdW5lbWF0ZSJ9.q01BM8cYd4Uque0mX8NmyasjtaEpu74HFSq2-uVrcm-2mu2nPYQftYW4josGOZ_r";
     Cookie.setTokenResponse({ userId, accessToken, refreshToken });
     location.reload();
   };
@@ -52,7 +52,9 @@ const LoginPage = () => {
       <br />
       <Link href={"/main"}>메인 페이지 이동</Link>
       <br />
-      <button onClick={setCookie}>쿠키 넣기!!!!!</button>
+      {process.env.NODE_ENV === "development" && (
+        <button onClick={setCookie}>쿠키 넣기!!!!!</button>
+      )}
     </div>
   );
 };

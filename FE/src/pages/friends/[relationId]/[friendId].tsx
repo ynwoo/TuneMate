@@ -9,8 +9,12 @@ import { ChatFilter } from "@/utils/filter";
 import { useParams } from "next/navigation";
 import { useMemo, useCallback, useState, ChangeEvent, useEffect } from "react";
 import { Storage } from "@/utils/storage";
-import { Button } from "react-bootstrap";
 import ChatNavbar from "@/components/navbar/ChatNavbar/ChatNavbar";
+import useModal from "@/hooks/useModal";
+import Modal from "@/components/modal/Modal";
+import ChatMenu from "@/components/chat/ChatMenu/ChatMenu";
+import useDeleteSocialFriendMutation from "@/hooks/mutations/social/useDeleteSocialFriendMutation";
+import Icon from "@/components/icons";
 
 interface ChatPageProps extends Props {}
 
@@ -18,12 +22,16 @@ const ChatPage = ({}: ChatPageProps) => {
   const [content, setContent] = useState<string>("");
   const params = useParams();
   const relationId = Number(params?.relationId as string);
+  const friendId = params?.friendId as string;
   const [messageRequest, setMessageRequest] = useState<MessageRequest>(
     {} as MessageRequest
   );
 
   const { publish, chatRooms } = useChat();
   const { data: prevChatRoom } = useChatsQuery(relationId);
+
+  const { closeToggle, isOpen, openToggle } = useModal();
+  const { mutate: deleteSocialFriend } = useDeleteSocialFriendMutation();
 
   const chatRoom = useMemo(() => {
     const newChatRoom = chatRooms.find(
@@ -66,7 +74,7 @@ const ChatPage = ({}: ChatPageProps) => {
     <div className={styles["chat-page"]}>
       <ChatNavbar
         className={styles["chat-page__chat-navbar"]}
-        onModal={() => {}}
+        onModal={openToggle}
       />
       <Search
         className={styles["chat-page__search"]}
@@ -75,12 +83,22 @@ const ChatPage = ({}: ChatPageProps) => {
         onSubmit={onSubmit}
       />
       {chatRoom && <ChatList chatRoom={ChatFilter.chatRoom(chatRoom)} />}
-      <Button
+      <div
         className={styles["chat-page__button--scroll-down"]}
         onClick={moveScrollDown}
       >
-        아래로
-      </Button>
+        <Icon.Down />
+      </div>
+      <Modal
+        isOpen={isOpen}
+        toggle={closeToggle}
+        className={styles["chat-page__modal-container"]}
+      >
+        <ChatMenu
+          className={styles["chat-page__modal"]}
+          onDelete={() => deleteSocialFriend(friendId)}
+        />
+      </Modal>
     </div>
   );
 };

@@ -21,7 +21,6 @@ const StompClientProvider = ({ children }: StompClientProviderProps) => {
 
   const connect = useCallback(
     (onConnect: () => void) => {
-      if (stompClient.current) return;
       Stomp.connect(stompClient, CHAT_SOCKET_URL.brokerURL(), onConnect);
     },
     [stompClient]
