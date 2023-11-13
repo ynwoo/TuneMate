@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @EqualsAndHashCode
 @ToString
 public class GroupDto {
@@ -17,12 +16,11 @@ public class GroupDto {
     private String hostName;
     private String title;
     private Integer capacity;
-    private Integer participantsCnt;
+    private Integer participantsCnt = 1;
     private String concertId;
     private LocalDateTime startDateTime;
     private LocalDateTime deadline;
     private String content;
-    @Builder.Default
     private Boolean closedByHost = false;
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
