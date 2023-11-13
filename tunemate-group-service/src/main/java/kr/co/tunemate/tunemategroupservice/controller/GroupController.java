@@ -34,7 +34,7 @@ public class GroupController {
     @PostMapping
     public ResponseEntity saveGroup(@RequestHeader("UserId") String userId, @RequestBody RequestGroup requestGroup) {
         GroupDto groupDto = modelMapper.map(requestGroup, GroupDto.class);
-        groupService.saveGroup(groupDto);
+        groupService.saveGroup(userId, groupDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
