@@ -3,14 +3,16 @@
 }
 
 .reverse {
-  justify-content: flex-end;
+  flex-direction: row-reverse;
 }
 
 .chat-item__elm {
 }
 
 .chat-item__image {
+  margin: 0 1rem;
 }
 
 .chat-item__text {
+  margin: 0 0.3rem;
 }

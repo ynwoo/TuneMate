@@ -13,7 +13,7 @@ const ChatList = ({ chatRoom, className }: ChatListProps) => {
     <ul className={classNameWrapper(styles["chat-list"], className)}>
       {chatRoom.messages.map((message) => (
         <ChatItem
-          key={message.time}
+          key={`${message.senderNo}_${message.time}`}
           className={styles["chat-list__item"]}
           item={message}
         />

@@ -1,0 +1,28 @@
+.chat-page {
+  padding-bottom: 4rem;
+}
+
+.chat-page__search {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  width: 100%;
+  margin: 0;
+}
+
+.chat-page__button--scroll-down {
+  position: fixed;
+  bottom: 4rem;
+  right: 0;
+}
+
+.chat-page__chat-navbar {
+  position: sticky;
+  background-color: var(--white-color);
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4rem;
+}

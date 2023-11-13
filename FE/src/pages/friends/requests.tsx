@@ -17,10 +17,12 @@ const data = [
 
 const FriendsRequests = () => {
   const { data: friendsRequests } = useSocialFriendRequestsQuery();
-  // const { data: friendsRequests } = { data };
+
   return (
     <div className={styles["friends-requests-page"]}>
-      {friendsRequests && <RecommendationList recommendations={data} />}
+      {friendsRequests && (
+        <RecommendationList recommendations={friendsRequests} />
+      )}
     </div>
   );
 };
