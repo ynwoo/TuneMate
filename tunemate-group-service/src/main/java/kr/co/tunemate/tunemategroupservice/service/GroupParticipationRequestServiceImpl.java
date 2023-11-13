@@ -73,6 +73,21 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
     }
 
     /**
+     * 사용자가 받은 공고참여요청 목록을 조회합니다.
+     *
+     * @param userId 사용자 UUID
+     * @return
+     */
+    @Override
+    public List<GroupParticipationRequestDto> findAllRequestedParticipationByUserId(String userId) {
+        List<Group> groups = groupRepository.getReferencesByHostId(userId);
+
+        return groupParticipationRequestRepository.findAllByGroupIn(groups).stream().map(groupParticipationRequest ->
+                modelMapper.map(groupParticipationRequest, GroupParticipationRequestDto.class)
+        ).toList();
+    }
+
+    /**
      * 공고에 대한 참여요청을 공고 작성자가 수락합니다.
      *
      * @param userId                      수락을 요청한 사용자 UUID

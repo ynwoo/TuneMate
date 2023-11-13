@@ -9,6 +9,8 @@ public interface GroupParticipationRequestService {
 
     List<GroupParticipationRequestDto> findAllByUserId(String userId);
 
+    List<GroupParticipationRequestDto> findAllRequestedParticipationByUserId(String userId);
+
     void acceptGroupParticipationRequest(String userId, String groupParticipationRequestId);
 
     void denyGroupParticipationRequest(String userId, String groupParticipationRequestId);
