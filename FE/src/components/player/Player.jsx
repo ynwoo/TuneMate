@@ -12,6 +12,7 @@ import {
 } from "@/store/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Image from "next/image";
+import styles from "@/components/player/Album.module.css";
 
 export default function CustomPlayer({ accessToken, playTrack }) {
   const [play, setPlay] = useState(false);
@@ -93,7 +94,8 @@ export default function CustomPlayer({ accessToken, playTrack }) {
         uris={reSongUrl}
       />
       <div
-        style={{ display: "flex", justifyContent: "center", marginTop: 100 }}
+        style={{ display: "flex", justifyContent: "center", marginTop: 50 }}
+        className={styles.rotatingImageContainer}
       >
         <Image src={AlubumArt} width={200} height={200} />
       </div>
