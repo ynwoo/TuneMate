@@ -14,6 +14,7 @@
 .recommendation-item__user {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .recommendation-item__user--image {
@@ -29,8 +30,9 @@
 .recommendation-item__ratio {
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   text-align: center;
-  margin-left: 2vw;
+  margin-left: 1rem;
 }
 
 .recommendation-item__button-container {
