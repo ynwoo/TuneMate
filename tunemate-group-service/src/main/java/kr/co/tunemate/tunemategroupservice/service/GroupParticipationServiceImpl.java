@@ -1,12 +1,14 @@
 package kr.co.tunemate.tunemategroupservice.service;
 
 import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupParticipationDto;
+import kr.co.tunemate.tunemategroupservice.entity.GroupParticipation;
 import kr.co.tunemate.tunemategroupservice.exception.BaseException;
 import kr.co.tunemate.tunemategroupservice.exception.code.GroupErrorCode;
 import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,8 +35,15 @@ public class GroupParticipationServiceImpl implements GroupParticipationService 
      *
      * @param groupParticipationId 공고참여 UUID
      */
+    @Transactional
     @Override
     public void deleteByGroupParticipationId(String userId, String groupParticipationId) {
-        groupParticipationRepository.findByGroupParticipationId(groupParticipationId).orElseThrow(() -> new BaseException("존재하지 않는 공고참여입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus()));
+        GroupParticipation groupParticipation = groupParticipationRepository.findByGroupParticipationId(groupParticipationId).orElseThrow(() -> new BaseException("존재하지 않는 공고참여입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus()));
+
+        if (!groupParticipation.getUserId().equals(userId)) {
+            throw new BaseException("자신의 공고참여에 대해서만 탈퇴를 요청할 수 있습니다.", GroupErrorCode.NO_AUTHORIZATION_FOR_ITEM_EXCEPTION.getHttpStatus());
+        }
+
+        groupParticipationRepository.delete(groupParticipation);
     }
 }
