@@ -27,4 +27,17 @@ interface SendFriendRequest {
   musicalTasteSimilarity: string;
 }
 
-export type { Friend, FriendRequest, RecommendationFriend, SendFriendRequest };
+interface FriendRequestMessage {
+  accept: boolean;
+  receiveUserId: Friend["friendId"];
+  requestUserId: UserInfo["userId"];
+  relationId?: Friend["relationId"];
+}
+
+export type {
+  Friend,
+  FriendRequest,
+  RecommendationFriend,
+  SendFriendRequest,
+  FriendRequestMessage,
+};

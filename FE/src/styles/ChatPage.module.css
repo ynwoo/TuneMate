@@ -11,17 +11,27 @@
   width: 100%;
   margin: 0;
 }
-
 .chat-page__button--scroll-down {
   position: fixed;
-  bottom: 4rem;
-  right: 0;
+  top: 5rem;
+  right: 0.7rem;
+  cursor: pointer;
 }
 
 .chat-page__chat-navbar {
-  position: fixed;
+  position: sticky;
+  background-color: var(--white-color);
   top: 0;
   right: 0;
   left: 0;
   height: 4rem;
+}
+
+.chat-page__modal-container.chat-page__modal-container {
+  justify-content: end;
+}
+
+.chat-page__modal {
+  height: 100vh;
+  width: 60vw;
 }
