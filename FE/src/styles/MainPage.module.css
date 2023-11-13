@@ -6,3 +6,8 @@
 .main-page__item {
   flex-grow: 1;
 }
+
+.main-page__concert {
+  display: flex;
+  justify-content: space-between;
+}
