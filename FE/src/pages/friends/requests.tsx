@@ -5,6 +5,7 @@ import useFriendRequest from "@/hooks/useFriendRequest";
 import { useMemo } from "react";
 import { Storage } from "@/utils/storage";
 import useSocialFriendIdsQuery from "@/hooks/queries/social/useSocialFriendIdsQuery";
+import Nothing from "@/components/nothing/Nothing/Nothing";
 
 const FriendsRequests = () => {
   const { data: friendIds } = useSocialFriendIdsQuery();
@@ -32,6 +33,10 @@ const FriendsRequests = () => {
 
     return friendRequestMessages;
   }, [friendIds, friendRequestMessages, friendsRequests]);
+
+  if (!friendsRequests?.length) {
+    return <Nothing>받은 친구 요청이 없습니다.</Nothing>;
+  }
 
   return (
     <div className={styles["friends-requests-page"]}>
