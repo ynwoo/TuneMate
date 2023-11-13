@@ -9,5 +9,10 @@ import java.util.Optional;
 
 public interface GroupParticipationRepository extends JpaRepository<GroupParticipation, Long> {
     Optional<GroupParticipation> findByUserIdAndGroup(String userId, Group group);
+
+    Optional<GroupParticipation> findByGroupParticipationId(String groupParticipationId);
+
     List<GroupParticipation> findAllByUserId(String userId);
+
+    void deleteByGroupParticipationId(String groupParticipationId);
 }
