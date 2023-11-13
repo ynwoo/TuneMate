@@ -1,11 +1,12 @@
 package kr.co.tunemate.tunematemeetingservice.service;
 
-import kr.co.tunemate.tunematemeetingservice.domain.Meeting;
+
 import kr.co.tunemate.tunematemeetingservice.dto.MeetingResponseDto;
+import kr.co.tunemate.tunematemeetingservice.dto.RelationInfo;
 import kr.co.tunemate.tunematemeetingservice.dto.ResponseMeetingList;
 
 import java.util.List;
-import java.util.Optional;
+
 
 public interface MeetingService {
 
@@ -15,7 +16,12 @@ public interface MeetingService {
 
     void deleteMeeting(long meetingId);
 
-    Optional<Meeting> findMeeting(long meetingId);
+    RelationInfo findMeeting(long meetingId);
 
-    ResponseMeetingList getDetailMeeting(Meeting meeting);
+    ResponseMeetingList getDetailMeeting(long meetingId);
+
+    void changeMeetingInfo(MeetingResponseDto newMeeting, String userId, Long meetingId);
+
+
+    void checkValid(String userId, Long meetingId);
 }

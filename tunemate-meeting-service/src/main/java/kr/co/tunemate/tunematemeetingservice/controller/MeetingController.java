@@ -5,26 +5,19 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import kr.co.tunemate.tunematemeetingservice.client.SocialServiceClient;
-import kr.co.tunemate.tunematemeetingservice.domain.Meeting;
 import kr.co.tunemate.tunematemeetingservice.dto.MeetingResponseDto;
 import kr.co.tunemate.tunematemeetingservice.dto.RelationInfo;
 import kr.co.tunemate.tunematemeetingservice.dto.ResponseMeetingList;
-import kr.co.tunemate.tunematemeetingservice.exception.GlobalExceptionHandler;
 import kr.co.tunemate.tunematemeetingservice.exception.NotFoundException;
 import kr.co.tunemate.tunematemeetingservice.service.MeetingService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+
 
 @RestController
 @CrossOrigin(value = "*", allowedHeaders = "*")
@@ -62,11 +55,11 @@ public class MeetingController {
 
     })
     public ResponseEntity<ResponseMeetingList> getDetailMeetings(@RequestHeader("UserId") String userId, @PathVariable("meetingId") Long meetingId){
-        Optional<Meeting> meeting = meetingService.findMeeting(meetingId);
-        if(meeting.isEmpty()) throw new NotFoundException("만남 일정 기본키(meetingId)가 존재하지 않습니다.", HttpStatus.NOT_FOUND);
-        RelationInfo relationInfo = socialServiceClient.isExistRelation(meeting.get().getRelationId()); // relationId 가 없다면 404 에러 발생
+
+        RelationInfo relationInfo = meetingService.findMeeting(meetingId);
         grantCheck(relationInfo,userId);
-        return ResponseEntity.ok(meetingService.getDetailMeeting(meeting.get()));
+        ResponseMeetingList responseMeetingList = meetingService.getDetailMeeting(meetingId);
+        return ResponseEntity.ok(responseMeetingList);
     }
 
     @Operation(summary = "만남 일정 생성", description = "선택 한 친구와 만남을 생성합니다.")
@@ -96,15 +89,23 @@ public class MeetingController {
     @DeleteMapping("meetings/{meetingId}")
     public ResponseEntity deleteMeeting(@RequestHeader("UserId") String userId, @PathVariable("meetingId") long meetingId){
 
-        meetingService.findMeeting(meetingId).ifPresentOrElse(meeting -> {
-                    RelationInfo relationInfo = socialServiceClient.isExistRelation(meeting.getRelationId());
-                    if(!relationInfo.getUser1Id().equals(userId) && !relationInfo.getUser2Id().equals(userId)) throw new NotFoundException("삭제 권한이 없습니다.",HttpStatus.FORBIDDEN); // 만남에 참여하지 않은 사람이 삭제하려는 경우 403
-
-                },
-                () ->{
-                    throw new NotFoundException("meetingId가 존재 하지 않습니다.",HttpStatus.NOT_FOUND); // meetingId가 존재하지 않는 경우 404에러
-                });
+        meetingService.checkValid(userId,meetingId);
         meetingService.deleteMeeting(meetingId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "만남 일정 수정", description = "선택 한 친구와 설정한 만남을 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "수정 성공."),
+            @ApiResponse(responseCode = "403", description = "수정 권한이 없습니다."),
+            @ApiResponse(responseCode = "404", description = "meetingId와 일치하는 만남 일정이 존재 하지 않습니다.")
+
+    })
+    @PutMapping("meetings/{meetingId}")
+    public ResponseEntity changeMeetingInfo(@RequestHeader("UserId") String userId, @PathVariable("meetingId") long meetingId, @RequestBody MeetingResponseDto meetingDto){
+        RelationInfo relationInfo = meetingService.findMeeting(meetingId);
+        grantCheck(relationInfo,userId);
+        meetingService.changeMeetingInfo(meetingDto,userId, meetingId);
         return ResponseEntity.ok().build();
     }
 
