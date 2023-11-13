@@ -7,18 +7,23 @@ import {
   MainplaylistState,
   PickTrackUriState,
   currentTrackIndexState,
+  reSongUrlState,
+  AlubumArtState,
 } from "@/store/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
+import Image from "next/image";
 
 export default function CustomPlayer({ accessToken, playTrack }) {
   const [play, setPlay] = useState(false);
   const ListInfo = useRecoilValue(ListInfoState);
+  const AlubumArt = useRecoilValue(AlubumArtState);
   const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(
     currentTrackIndexState
   );
   const [PickTrack, setPickTrack] = useRecoilState(PickTrackState); // Ensure setPickTrack is defined
   const PickTrackUri = useRecoilValue(PickTrackUriState);
   const Mainplaylist = useRecoilValue(MainplaylistState);
+  const reSongUrl = useRecoilValue(reSongUrlState);
   const [playList, setPlayList] = useRecoilState(playlistState);
   const [playTracks, setPlayTracks] = useState(playTrack);
 
@@ -51,14 +56,17 @@ export default function CustomPlayer({ accessToken, playTrack }) {
       setPlay(false);
     }
   }, [Mainplaylist]);
-
   useEffect(() => {
     // PickTrackUri 값이 변경될 때마다 해당 URI로 트랙을 변경
     if (PickTrackUri) {
       setPlayTracks([PickTrackUri]);
       setPlay(true);
+    } else if (reSongUrl) {
+      // reSongUrl이 있다면 해당 URI로 트랙을 변경
+      setPlayTracks([reSongUrl]);
+      setPlay(true);
     }
-  }, [PickTrackUri, setPlayTracks]); // Ensure to include setPlayTrack in the dependency array
+  }, [PickTrackUri, reSongUrl, setPlayTracks, setPlay]); // Ensure to include setPlay in the dependency array
 
   if (!accessToken) return null;
 
@@ -71,7 +79,7 @@ export default function CustomPlayer({ accessToken, playTrack }) {
   return (
     <div className="custom-player" style={{ width: 300, height: 200 }}>
       <div className="custom-controls">
-        <button onClick={playAllTracks}>전체 재생</button>
+        {/* <button onClick={playAllTracks}>전체 재생</button> */}
       </div>
       <SpotifyPlayer
         token={accessToken}
@@ -82,8 +90,13 @@ export default function CustomPlayer({ accessToken, playTrack }) {
           }
         }}
         play={play}
-        uris={newArr}
+        uris={reSongUrl}
       />
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: 100 }}
+      >
+        <Image src={AlubumArt} width={200} height={200} />
+      </div>
     </div>
   );
 }

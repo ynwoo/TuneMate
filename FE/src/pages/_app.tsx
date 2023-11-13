@@ -30,7 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <div className={isLoginPage ? "login" : "main"}>
               {/* <Slide /> */}
               <SinglePlayer />
-              <Component {...pageProps} />
+              <Component {...pageProps} style={{ zIndex: 21 }} />
             </div>
             {!isLoginPage && <BottomNavbar />}
           </>
