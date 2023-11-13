@@ -44,8 +44,12 @@ public class SocialController {
 	@PostMapping("/friend-request")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "신청 성공."),
-		@ApiResponse(responseCode = "409", description = "이미 친구입니다.", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-		@ApiResponse(responseCode = "409", description = "이미 보낸 요청입니다.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+		@ApiResponse(responseCode = "409", description = "이미 친구입니다.",
+			content = @Content(
+				schema = @Schema(implementation = com.tunemate.social.tunematesocial.exception.ErrorResponse.class))),
+		@ApiResponse(responseCode = "409", description = "이미 보낸 요청입니다.",
+			content = @Content(
+				schema = @Schema(implementation = com.tunemate.social.tunematesocial.exception.ErrorResponse.class)))
 	})
 	@Operation(summary = "친구 신청", description = """
 		선택한 친구에게 친구 요청을 보냅니다.""")
@@ -87,7 +91,7 @@ public class SocialController {
 	@PostMapping("/decline/{userId}")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "요청 거절 성공."),
-		@ApiResponse(responseCode = "404", description = "존재하지 않는 요청입니다.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+		@ApiResponse(responseCode = "404", description = "존재하지 않는 친구 요청입니다.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
 	})
 	@Operation(summary = "친구 요청 거절", description = """
 		친구 요청을 거절하는 기능입니다.""")
