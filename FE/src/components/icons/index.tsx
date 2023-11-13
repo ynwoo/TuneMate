@@ -123,9 +123,6 @@ const Icon = {
   CircleCheck: ({ size = "2xl" }: IconProps) => (
     <FontAwesomeIcon className={styles.icon} icon={faCircleCheck} size={size} />
   ),
-  Plus: ({ size = "2xl" }: IconProps) => (
-    <FontAwesomeIcon className={styles.icon} icon={faPlus} size={size} />
-  ),
   SquarePlus: ({ size = "2xl" }: IconProps) => (
     <FontAwesomeIcon className={styles.gray} icon={faSquarePlus} size={size} />
   ),
