@@ -74,7 +74,7 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
         <div className={styles["recommendation-item__user"]}>
           <ProfileImage
             className={styles["recommendation-item__user--image"]}
-            src="https://i.scdn.co/image/ab67757000003b824e172b7776591b79a63fcea9"
+            src={item.img ?? "/favicon.ico"}
             alt="내 프로필"
             type="recommendation"
           />
@@ -94,9 +94,9 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
               className={styles["recommendation-item__button-item"]}
               onClick={onAccept}
               modalMessage="친구요청을 보내시겠습니까?"
-              color="blue"
+              color="white"
             >
-              <Icon.Plus size="lg" />
+              <Icon.Recommendation size="lg" />
             </ButtonWithModal>
           )}
         </div>
