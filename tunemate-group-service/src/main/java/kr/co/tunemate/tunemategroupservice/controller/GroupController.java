@@ -28,7 +28,8 @@ public class GroupController {
     @Operation(description = "공고를 생성합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "성공"),
-            @ApiResponse(responseCode = "400", description = "필수 입력 값이 없는 경우, 콘서트가 존재하지 않는 경우")
+            @ApiResponse(responseCode = "400", description = "필수 입력 값이 없는 경우"),
+            @ApiResponse(responseCode = "404", description = "콘서트가 존재하지 않는 경우")
     })
     @PostMapping
     public ResponseEntity saveGroup(@RequestHeader("UserId") String userId, @RequestBody RequestGroup requestGroup) {
