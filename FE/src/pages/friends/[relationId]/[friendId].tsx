@@ -9,7 +9,6 @@ import { ChatFilter } from "@/utils/filter";
 import { useParams } from "next/navigation";
 import { useMemo, useCallback, useState, ChangeEvent, useEffect } from "react";
 import { Storage } from "@/utils/storage";
-import { Button } from "react-bootstrap";
 import ChatNavbar from "@/components/navbar/ChatNavbar/ChatNavbar";
 import useModal from "@/hooks/useModal";
 import Modal from "@/components/modal/Modal";
@@ -27,8 +26,6 @@ const ChatPage = ({}: ChatPageProps) => {
   const [messageRequest, setMessageRequest] = useState<MessageRequest>(
     {} as MessageRequest
   );
-
-  console.log(relationId, friendId);
 
   const { publish, chatRooms } = useChat();
   const { data: prevChatRoom } = useChatsQuery(relationId);
