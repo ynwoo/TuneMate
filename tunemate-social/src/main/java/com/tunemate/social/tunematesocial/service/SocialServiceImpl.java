@@ -339,4 +339,11 @@ public class SocialServiceImpl implements SocialService {
 			.similarity(friend.getMusicalTasteSimilarity())
 			.build();
 	}
+
+	@Override
+	public void checkUser(Long relationId, String userId) {
+		Optional<Friend> friend = friendRepository.findById(relationId);
+		if(friend.isEmpty()) throw new BaseException(SocialErrorCode.RELATION_ID_NOT_FOUND);
+		if(!friend.get().getUser1Id().equals(userId) &&  !friend.get().getUser2Id().equals(userId)) throw new BaseException(SocialErrorCode.NOT_AUTHORITY);
+	}
 }
