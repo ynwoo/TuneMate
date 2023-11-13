@@ -7,7 +7,7 @@ interface PlayList {
   name: string;
   snapshot_id: string;
   tracks: {
-    items: Item[];
+    items: any[];
   };
 }
 
@@ -38,15 +38,15 @@ interface NewCommonPlayList extends NewPlayList {
   relationId: number;
 }
 
-interface TotalPlayList {
-  href: string;
-  items: PlayListDetail[];
-  limit: number;
-  next: string | null;
-  offset: number;
-  previous: string | null;
-  total: number;
-}
+// interface TotalPlayList {
+//   href: string;
+//   items: PlayListDetail[];
+//   limit: number;
+//   next: string | null;
+//   offset: number;
+//   previous: string | null;
+//   total: number;
+// }
 
 export type {
   PlayList,
