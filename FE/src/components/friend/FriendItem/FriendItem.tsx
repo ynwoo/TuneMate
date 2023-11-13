@@ -28,22 +28,22 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
   const unReadCount = useMemo(() => {
     if (!chatRoom) return 0;
 
-    // let count = 0;
-    // for (let index = chatRoom.messages.length - 1; index >= 0; index--) {
-    //   const { senderNo, readCount } = chatRoom.messages[index];
-    //   if (senderNo === Storage.getUserId() || readCount === CHAT.read) {
-    //     return count;
-    //   }
+    let count = 0;
+    for (let index = chatRoom.messages.length - 1; index >= 0; index--) {
+      const { senderNo, readCount } = chatRoom.messages[index];
+      if (senderNo === Storage.getUserId() || readCount === CHAT.read) {
+        return count;
+      }
 
-    //   count++;
-    // }
+      count++;
+    }
 
-    // return count;
+    return count;
 
-    return ChatFilter.messages(chatRoom.messages).filter(
-      ({ readCount, senderNo }) =>
-        senderNo !== Storage.getUserId() && readCount === CHAT.unRead
-    ).length;
+    // return ChatFilter.messages(chatRoom.messages).filter(
+    //   ({ readCount, senderNo }) =>
+    //     senderNo !== Storage.getUserId() && readCount === CHAT.unRead
+    // ).length;
   }, [chatRoom]);
 
   return (
@@ -57,7 +57,7 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
       >
         <ProfileImage
           className={styles["friend-item__user--image"]}
-          src="https://i.scdn.co/image/ab67757000003b824e172b7776591b79a63fcea9"
+          src={item.img ?? "/favicon.ico"}
           alt="친구 프로필"
           type="friend"
         />
