@@ -11,10 +11,6 @@ import com.tunemate.social.tunematesocial.dto.response.RelationResponseDto;
 import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 
 public interface SocialService {
-	/**
-	 * 친구 신청
-	 * @param friendRequestDto
-	 */
 	void addFriendRequest(String myId, FriendRequestDto friendRequestDto);
 
 	List<ReceivedFriendRequestResponseDto> getFriendRequests(String myId);

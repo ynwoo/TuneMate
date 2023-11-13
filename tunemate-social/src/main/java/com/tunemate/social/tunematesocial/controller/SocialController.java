@@ -2,6 +2,7 @@ package com.tunemate.social.tunematesocial.controller;
 
 import java.util.List;
 
+
 import com.tunemate.social.tunematesocial.dto.response.MyChatRoomListDto;
 import com.tunemate.social.tunematesocial.dto.response.RelationResponseDto;
 import com.tunemate.social.tunematesocial.entity.ChattingRoom;
@@ -12,15 +13,30 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
+import com.tunemate.social.tunematesocial.dto.response.MyChatRoomListDto;
 import com.tunemate.social.tunematesocial.dto.response.MyFriendResponseDto;
 import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResponseDto;
+import com.tunemate.social.tunematesocial.dto.response.RelationResponseDto;
+import com.tunemate.social.tunematesocial.entity.ChattingRoom;
+import com.tunemate.social.tunematesocial.service.ChatService;
 import com.tunemate.social.tunematesocial.service.SocialService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,13 +54,16 @@ public class SocialController {
 		this.chatService = chatService;
 	}
 
-	/**
-	 * 친구 신청하는 API입니다.
-	 * @param friendRequestDto
-	 * @param userId
-	 * @return
-	 */
 	@PostMapping("/friend-request")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "신청 성공."),
+		@ApiResponse(responseCode = "400", description = "이미 친구입니다.",
+			content = @Content(
+				schema = @Schema(implementation = com.tunemate.social.tunematesocial.exception.ErrorResponse.class))),
+		@ApiResponse(responseCode = "409", description = "이미 보낸 요청입니다.",
+			content = @Content(
+				schema = @Schema(implementation = com.tunemate.social.tunematesocial.exception.ErrorResponse.class)))
+	})
 	@Operation(summary = "친구 신청", description = """
 		선택한 친구에게 친구 요청을 보냅니다.""")
 	public ResponseEntity<?> addFriendRequest(@RequestBody FriendRequestDto friendRequestDto,
@@ -55,11 +74,6 @@ public class SocialController {
 		return ResponseEntity.ok().build();
 	}
 
-	/**
-	 * 받은 친구요청 목록을 조회하는 API입니다.
-	 * @param userId
-	 * @return
-	 */
 	@GetMapping("/friend-requests")
 	@Operation(summary = "받은 친구 요청 목록 조회", description = """
 		나에게 온 친구 요청 목록을 조회합니다.""")
@@ -71,13 +85,13 @@ public class SocialController {
 		return ResponseEntity.ok(friendRequests);
 	}
 
-	/**
-	 * 해당 친구 요청을 수락하는 API입니다.
-	 * @param newFriendId
-	 * @param userId
-	 * @return
-	 */
 	@PostMapping("/acceptance/{userId}")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "요청 수락 성공."),
+		@ApiResponse(responseCode = "404", description = "존재하지 않는 요청입니다.",
+			content = @Content(
+				schema = @Schema(implementation = com.tunemate.social.tunematesocial.exception.ErrorResponse.class)))
+	})
 	@Operation(summary = "친구 요청 수락", description = """
 		친구 요청을 수락하여 친구가 되는 기능입니다.""")
 	public ResponseEntity<?> acceptFriendRequest(@PathVariable("userId") String newFriendId,
@@ -89,13 +103,11 @@ public class SocialController {
 		return ResponseEntity.ok().build();
 	}
 
-	/**
-	 * 해당 친구 요청을 거절하는 API입니다.
-	 * @param notFriendId
-	 * @param userId
-	 * @return
-	 */
 	@PostMapping("/decline/{userId}")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "요청 거절 성공."),
+		@ApiResponse(responseCode = "404", description = "존재하지 않는 친구 요청입니다.")
+	})
 	@Operation(summary = "친구 요청 거절", description = """
 		친구 요청을 거절하는 기능입니다.""")
 	public ResponseEntity<?> declineFriendRequest(@PathVariable("userId") String notFriendId,
@@ -107,12 +119,11 @@ public class SocialController {
 		return ResponseEntity.ok().build();
 	}
 
-	/**
-	 * 공동 플레이리스트id와 host id를 저장하는 API입니다.
-	 * @param playlistRequestDto
-	 * @return
-	 */
 	@PostMapping("/common-playlist")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "요청 성공."),
+		@ApiResponse(responseCode = "404", description = "해당 친구관계가 없습니다.")
+	})
 	@Operation(summary = "플리id 및 host 정보 저장", description = """
 		마이크로 서비스간 통신용""")
 	public ResponseEntity<?> addCommonPlayListInfo(@RequestBody PlaylistRequestDto playlistRequestDto) {
@@ -123,11 +134,6 @@ public class SocialController {
 		return ResponseEntity.ok().build();
 	}
 
-	/**
-	 * 친구 목록을 조회합니다.
-	 * @param userId
-	 * @return
-	 */
 	@GetMapping("/friends")
 	@Operation(summary = "친구 목록 조회", description = """
 		친구 목록을 조회합니다.""")
@@ -141,6 +147,10 @@ public class SocialController {
 	}
 
 	@GetMapping("/host/{playlistId}")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "요청 성공."),
+		@ApiResponse(responseCode = "404", description = "해당 플레이리스트의 host가 없습니다.")
+	})
 	@Operation(summary = "Host Id 제공", description = """
 		playlist id를 받으면 그 플레이 리스트에 해당하는 host id를 제공합니다.
 				
@@ -150,6 +160,10 @@ public class SocialController {
 	}
 
 	@GetMapping("/relation/{relationId}")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "요청 성공."),
+		@ApiResponse(responseCode = "404", description = "해당 친구관계가 없습니다.")
+	})
 	@Operation(summary = "relationId로 relation 조회", description = """
 		relationId를 받고 해당 relation이 존재하면 해당 친구 관계의 정보, 없으면 NOT_FOUND를 반환합니다.
 				

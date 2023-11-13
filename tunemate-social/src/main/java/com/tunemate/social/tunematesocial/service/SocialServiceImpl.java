@@ -53,10 +53,6 @@ public class SocialServiceImpl implements SocialService {
 		this.chatPersonRepository = chatPersonRepository;
 	}
 
-	/**
-	 * 친구 신청
-	 * @param friendRequestDto
-	 */
 	@Override
 	@Transactional
 	public void addFriendRequest(String myId, FriendRequestDto friendRequestDto) {
@@ -102,13 +98,9 @@ public class SocialServiceImpl implements SocialService {
 		List<String> idList = byRequestedUserId.stream()
 			.map(FriendRequest::getRequestingUserId)
 			.collect(Collectors.toList());
-		// log.debug("내게 친구 신청한 사용자 아이디 리스트 : " + idList);
 
-		// 범수가 idList Feign으로 가져가서 여기에 유저의 id, name, image 정보 리스트 가져다 줄꺼임
 		// 사용자 정보 리스트
 		List<UserInfoDto> userInfoList = userServiceClient.getMembersByUserIdIn(idList);
-
-		// log.debug("내게 친구 신청한 사용자 정보 리스트 : " + userInfoList);
 
 		// 리스트 크기가 같다고 가정
 		int size = byRequestedUserId.size();
@@ -166,8 +158,6 @@ public class SocialServiceImpl implements SocialService {
 		// 친구 신청 목록에서 제거
 		friendRequestRepository.delete(friendRequest);
 
-		Long id = friend.getId();
-		log.debug("영속성 테스트: " + id);
 		// 채팅 방 생성
 		long relationId = friendRepository.findByUser1IdAndAndUser2Id(myId, newFriendId).get().getId();
 		ChattingRoom chattingRoom = new ChattingRoom();
@@ -293,8 +283,7 @@ public class SocialServiceImpl implements SocialService {
 
 	@Override
 	public ChattingRoom getChats(long relationId) {
-		ChattingRoom chattingRoom = chattingRoomRepository.findByChatRoomId(relationId);
-		return chattingRoom;
+		return chattingRoomRepository.findByChatRoomId(relationId);
 	}
 
 	@Override

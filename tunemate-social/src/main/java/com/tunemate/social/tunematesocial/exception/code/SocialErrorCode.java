@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum SocialErrorCode implements ErrorCode {
-	ALREADY_FRIEND(HttpStatus.CONFLICT, "Already friend"),
+	ALREADY_FRIEND(HttpStatus.BAD_REQUEST, "Already friend"),
 	ALREADY_SENT_REQUEST(HttpStatus.CONFLICT, "Friend request already sent"),
 
 	FRIEND_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "Friend request not found"),
