@@ -14,7 +14,18 @@ import org.springframework.web.bind.annotation.*;
 public class GroupParticipationRequestController {
     private final GroupParticipationRequestService groupParticipationRequestService;
 
-    @Operation(description = "공고참여요청을 생성합니다.")
+    @Operation(summary = "공고참여요청을 생성", description = "공고참여요청을 생성합니다.")
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "201", description ="성공"),
+                    @ApiResponse(responseCode = "400", description = """
+                            1. 마감 됐거나 인원이 초과된 경우
+                            2. 이미 참여중인 공고인 경우
+                            3. 이미 참여요청이 있는 경우
+                            """),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 groupId로 요청 하는 경우")
+            }
+    )
     @PostMapping("/groups/{groupId}/participation-requests")
     public ResponseEntity postParticipationRequest(@RequestHeader("UserId") String userId, @PathVariable String groupId) {
         groupParticipationRequestService.saveGroupParticipationRequest(userId, groupId);
