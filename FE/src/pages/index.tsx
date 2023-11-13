@@ -8,7 +8,6 @@ import { TokenResponse } from "@/types/user";
 import { useRouter } from "next/router";
 import { getUserInfo } from "@/api/user";
 import { useEffect } from "react";
-import useChat from "@/hooks/useChat";
 import { useSetRecoilState } from "recoil";
 import { userInfoState } from "@/store/userInfo";
 
@@ -32,9 +31,9 @@ const LoginPage = () => {
   const setCookie = () => {
     const userId = "cb899bc8-33a9-43a6-938c-76b0ec286c77";
     const accessToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTk1OTYyODUsImlzcyI6IlR1bmVtYXRlIn0.dgCWKb7xqcQSN7_rBH2ZrBjXmm_MSVJ-P95r6xHVi-tT5fRYcYrL4uHT4jkB-E8E";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTk4NTg2OTcsImlzcyI6IlR1bmVtYXRlIn0.lvTTx9pP8Zuvc3r0URXocC5fU-MoMeloAPMmBkR4s3UPouQ0cXKIAyqL8mRHZmBn";
     const refreshToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiY2I4OTliYzgtMzNhOS00M2E2LTkzOGMtNzZiMGVjMjg2Yzc3IiwiZXhwIjoxNzAwNzk4Njg1LCJpc3MiOiJUdW5lbWF0ZSJ9.sERpGxBzX8ZYral05d1o1SHXekgEGQXvbS9LeXAmKSf0JDA4pcQcHRDr6OoQ-dG1";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiY2I4OTliYzgtMzNhOS00M2E2LTkzOGMtNzZiMGVjMjg2Yzc3IiwiZXhwIjoxNzAxMDYxMDk3LCJpc3MiOiJUdW5lbWF0ZSJ9.ot-pGOx1bvsKZGQBerzROkUggc2MIBdNInWJxJcH-LzWFrq0c4PIGnACorhryGw6";
     Cookie.setTokenResponse({ userId, accessToken, refreshToken });
     location.reload();
   };
@@ -53,7 +52,9 @@ const LoginPage = () => {
       <br />
       <Link href={"/main"}>메인 페이지 이동</Link>
       <br />
-      <button onClick={setCookie}>쿠키 넣기!!!!!</button>
+      {process.env.NODE_ENV === "development" && (
+        <button onClick={setCookie}>쿠키 넣기!!!!!</button>
+      )}
     </div>
   );
 };
