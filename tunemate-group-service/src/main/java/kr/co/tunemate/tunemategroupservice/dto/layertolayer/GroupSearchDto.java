@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class GroupSearchDto {
     private String hostName;
-    private Boolean joinable;
+    private Boolean joinableOnly;
     private String title;
     private String content;
 }
