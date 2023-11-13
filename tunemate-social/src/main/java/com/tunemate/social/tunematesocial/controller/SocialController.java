@@ -49,7 +49,7 @@ public class SocialController {
 	@PostMapping("/friend-request")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "신청 성공."),
-		@ApiResponse(responseCode = "409", description = "이미 친구입니다.",
+		@ApiResponse(responseCode = "400", description = "이미 친구입니다.",
 			content = @Content(
 				schema = @Schema(implementation = com.tunemate.social.tunematesocial.exception.ErrorResponse.class))),
 		@ApiResponse(responseCode = "409", description = "이미 보낸 요청입니다.",
