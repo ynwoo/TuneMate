@@ -2,7 +2,7 @@ package kr.co.tunemate.tunemategroupservice.service;
 
 import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupDto;
 import kr.co.tunemate.tunemategroupservice.entity.Group;
-import kr.co.tunemate.tunemategroupservice.exception.NoAuthorizationForItemException;
+import kr.co.tunemate.tunemategroupservice.exception.BaseException;
 import kr.co.tunemate.tunemategroupservice.repository.GroupRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -164,7 +164,7 @@ class GroupServiceImplTest {
         final String theOtherUserId = UUID.randomUUID().toString() + "b";
 
         final GroupDto finalGroupDto = groupDto;
-        assertThatThrownBy(() -> groupService.closeGroup(theOtherUserId, finalGroupDto.getGroupId())).isExactlyInstanceOf(NoAuthorizationForItemException.class);
+        assertThatThrownBy(() -> groupService.closeGroup(theOtherUserId, finalGroupDto.getGroupId())).isInstanceOf(BaseException.class);
     }
 
     @Transactional

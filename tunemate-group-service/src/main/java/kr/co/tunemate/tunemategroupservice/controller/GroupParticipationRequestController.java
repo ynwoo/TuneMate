@@ -83,7 +83,7 @@ public class GroupParticipationRequestController {
 
     @Operation(summary = "공고에 대한 참여요청을 작성자가 거절", description = "공고에 대한 참여요청을 작성자가 거절합니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "204", description = "성공"),
             @ApiResponse(responseCode = "403", description = "공고 작성자가 아닌 사용자가 참여요청 거절을 시도한 경우"),
             @ApiResponse(responseCode = "404", description = "존재하지 않는 groupParticipationRequestId로 요청하는 경우")
     })
@@ -91,6 +91,6 @@ public class GroupParticipationRequestController {
     public ResponseEntity denyGroupParticipationRequest(@RequestHeader("UserId") String userId, @PathVariable String groupParticipationRequestId) {
         groupParticipationRequestService.denyGroupParticipationRequest(userId, groupParticipationRequestId);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
