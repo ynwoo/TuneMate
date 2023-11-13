@@ -5,6 +5,7 @@ import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupSearchDto;
 import kr.co.tunemate.tunemategroupservice.entity.Group;
 import kr.co.tunemate.tunemategroupservice.exception.NoAuthorizationForItemException;
 import kr.co.tunemate.tunemategroupservice.exception.NoSuchItemException;
+import kr.co.tunemate.tunemategroupservice.repository.ConcertRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,11 +20,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
+    private final ConcertRepository concertRepository;
     private final ModelMapper modelMapper;
 
     @Override
     public GroupDto saveGroup(GroupDto groupDto) {
-        // TODO: 콘서트가 존재하는지 검증
+        concertRepository.findById(Long.valueOf(groupDto.getConcertId())).orElseThrow(() -> new NoSuchItemException("존재하지 않는 콘서트입니다.", HttpStatus.NOT_FOUND));
+
         groupDto.setGroupId(UUID.randomUUID().toString());
         Group group = modelMapper.map(groupDto, Group.class);
 
