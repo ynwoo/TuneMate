@@ -23,10 +23,12 @@ public class GroupServiceImpl implements GroupService {
     private final ModelMapper modelMapper;
 
     @Override
-    public GroupDto saveGroup(GroupDto groupDto) {
+    public GroupDto saveGroup(String userId, GroupDto groupDto) {
         concertRepository.findById(Long.valueOf(groupDto.getConcertId())).orElseThrow(() -> new BaseException("존재하지 않는 콘서트입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus()));
 
         groupDto.setGroupId(UUID.randomUUID().toString());
+        groupDto.setHostId(userId);
+        groupDto.setHostName("동기요청으로 가져오기");
         Group group = modelMapper.map(groupDto, Group.class);
 
         group = groupRepository.save(group);

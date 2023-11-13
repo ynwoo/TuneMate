@@ -6,7 +6,7 @@ import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupSearchDto;
 import java.util.List;
 
 public interface GroupService {
-    GroupDto saveGroup(GroupDto groupDto);
+    GroupDto saveGroup(String userId, GroupDto groupDto);
 
     GroupDto getGroupByGroupId(String groupId);
 
