@@ -10,13 +10,14 @@ type SongInfo = {
   title: string;
   artist: string;
   cover: string;
+  index: number
   id: string;
 };
 
 interface PlaylistItemProps extends Props {
   value: SongInfo;
   index: number;
-  onRequestDelete: (id: string) => void;
+  onRequestDelete: (idx: number) => void;
   isDeleteMode: boolean;
 }
 
@@ -24,7 +25,7 @@ const PlaylistItem = ({ value, index, onRequestDelete, isDeleteMode }: PlaylistI
   const { title, artist, cover, id } = value;
 
   return (
-    <Draggable draggableId={value.id} index={index}>
+    <Draggable draggableId={id} index={index}>
       {(provided) => (
         <div
           {...provided.draggableProps}
@@ -41,7 +42,7 @@ const PlaylistItem = ({ value, index, onRequestDelete, isDeleteMode }: PlaylistI
               </div>
               <div className={styles["item-right"]}>
                 {isDeleteMode
-                ? <div onClick={() => onRequestDelete(id)}>
+                ? <div onClick={() => onRequestDelete(index)}>
                   <Icon.Delete />
                 </div>
                 : <div {...provided.dragHandleProps} >
