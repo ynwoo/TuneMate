@@ -15,6 +15,11 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     private final MemberRepository memberRepository;
     private final JwtTokenUtil jwtTokenUtil;
 
+    /**
+     * Tunemate 리프레시 토큰을 사용해서 액세스 토큰을 재발급합니다.
+     * @param refreshToken tunemate 리프레시 토큰
+     * @return
+     */
     @Override
     public ReissueDto reissueAccessToken(String refreshToken) {
         jwtTokenUtil.validateRefreshToken(refreshToken);
