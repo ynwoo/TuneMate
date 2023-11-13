@@ -249,7 +249,8 @@ def root(UserId: str | None = Header(default=None)):
         cursor.execute(sql, recommend[i])
         playlistId = cursor.fetchall()[0][0]
         userOb = request(recommend[i])
-        if userOb.get("userId") is None || userOb.get("name") is None:
+        print(userOb)
+        if userOb is None or userOb.get("userId") is None or userOb.get("name") is None:
             responseList.append(ReturnDto(userId="dummy", img="dummy", name="dummy",
                                       playlist=playlistId, similarity=similaritys[i]))
         else:
