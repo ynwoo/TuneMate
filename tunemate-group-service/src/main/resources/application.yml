@@ -25,7 +25,7 @@ eureka:
 openapi:
   service:
     version: ${openapi-service-version}
-    url: ${openapi-service-url} # api gateway url
+    url: ${openapi-service-url}
 
 logging:
   level:
