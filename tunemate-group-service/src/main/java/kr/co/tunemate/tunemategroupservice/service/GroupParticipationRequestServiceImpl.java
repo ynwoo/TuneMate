@@ -1,5 +1,6 @@
 package kr.co.tunemate.tunemategroupservice.service;
 
+import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupParticipationRequestDto;
 import kr.co.tunemate.tunemategroupservice.entity.Group;
 import kr.co.tunemate.tunemategroupservice.entity.GroupParticipation;
 import kr.co.tunemate.tunemategroupservice.entity.GroupParticipationRequest;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -50,15 +52,24 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
             throw new IllegalRequestException("이미 참여요청이 존재합니다.", HttpStatus.BAD_REQUEST);
         });
 
-        GroupParticipationRequest groupParticipationRequest = GroupParticipationRequest.builder()
-                .groupParticipationRequestId(UUID.randomUUID().toString())
-                .group(group)
-                .userId(userId)
-                .build();
+        GroupParticipationRequest groupParticipationRequest = GroupParticipationRequest.builder().groupParticipationRequestId(UUID.randomUUID().toString()).group(group).userId(userId).build();
 
         log.info("사용자(userId: {})가 공고 {} 에 대해서 참여 요청을 생성했습니다.", userId, group);
 
         groupParticipationRequestRepository.save(groupParticipationRequest);
+    }
+
+    /**
+     * 사용자가 보낸 공고참여요청 목록을 조회합니다.
+     *
+     * @param userId 사용자 UUID
+     * @return
+     */
+    @Override
+    public List<GroupParticipationRequestDto> findAllByUserId(String userId) {
+        return groupParticipationRequestRepository.findAllByUserId(userId).stream().map(
+                groupParticipationRequest -> modelMapper.map(groupParticipationRequest, GroupParticipationRequestDto.class)
+        ).toList();
     }
 
     /**
@@ -78,18 +89,12 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
 
         groupParticipationRequestRepository.delete(groupParticipationRequest);
 
-        groupParticipationRepository.findByUserIdAndGroup(userId, groupParticipationRequest.getGroup()).ifPresentOrElse(
-                groupParticipation -> {
+        groupParticipationRepository.findByUserIdAndGroup(userId, groupParticipationRequest.getGroup()).ifPresentOrElse(groupParticipation -> {
                 }, // 이미 참여중인 공고에 대한 참여요청을 수락하려 하는 경우
                 () -> {
-                    GroupParticipation groupParticipation = GroupParticipation.builder()
-                            .groupParticipationId(UUID.randomUUID().toString())
-                            .group(groupParticipationRequest.getGroup())
-                            .userId(groupParticipationRequest.getUserId())
-                            .build();
+                    GroupParticipation groupParticipation = GroupParticipation.builder().groupParticipationId(UUID.randomUUID().toString()).group(groupParticipationRequest.getGroup()).userId(groupParticipationRequest.getUserId()).build();
                     groupParticipationRepository.save(groupParticipation);
-                }
-        );
+                });
     }
 
     /**
@@ -101,18 +106,15 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
     @Transactional
     @Override
     public void denyGroupParticipationRequest(String userId, String groupParticipationRequestId) {
-        groupParticipationRequestRepository.findByGroupParticipationRequestId(groupParticipationRequestId).ifPresentOrElse(
-                groupParticipationRequest -> {
-                    if (!groupParticipationRequest.getGroup().getHostId().equals(userId)) {
-                        throw new NoAuthorizationForItemException("공고 작성자만 공고에 대한 참여요청을 거절할 수 있습니다.", HttpStatus.FORBIDDEN);
-                    }
+        groupParticipationRequestRepository.findByGroupParticipationRequestId(groupParticipationRequestId).ifPresentOrElse(groupParticipationRequest -> {
+            if (!groupParticipationRequest.getGroup().getHostId().equals(userId)) {
+                throw new NoAuthorizationForItemException("공고 작성자만 공고에 대한 참여요청을 거절할 수 있습니다.", HttpStatus.FORBIDDEN);
+            }
 
-                    groupParticipationRequestRepository.delete(groupParticipationRequest);
-                },
-                () -> {
-                    throw new NoSuchItemException("존재하지 않는 공고참여 요청입니다.", HttpStatus.NOT_FOUND);
-                }
-        );
+            groupParticipationRequestRepository.delete(groupParticipationRequest);
+        }, () -> {
+            throw new NoSuchItemException("존재하지 않는 공고참여 요청입니다.", HttpStatus.NOT_FOUND);
+        });
     }
 
     private static boolean canParticipate(Group group) {
