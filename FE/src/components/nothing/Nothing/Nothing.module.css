@@ -1,12 +1,18 @@
 .nothing {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: inherit;
-  width: inherit;
-  position: absolute;
+  /* position: absolute;
   top: 50%;
   left: auto;
-  right: auto;
+  right: auto; */
+  height: var(--main-height);
+  width: 100vw;
+  max-height: var(--max-height);
+  max-width: var(--max-width);
+}
+
+.nothing__text {
 }

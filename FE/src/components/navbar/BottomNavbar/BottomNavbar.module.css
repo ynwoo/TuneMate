@@ -5,6 +5,7 @@
   right: 0;
   height: var(--bottom-navbar-height);
   width: inherit;
+  max-width: var(--max-width);
   display: grid;
   background-color: var(--main-color);
   grid-template-columns: repeat(4, 1fr);
