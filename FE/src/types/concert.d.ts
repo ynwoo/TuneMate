@@ -1,5 +1,5 @@
 interface Concert {
-  concertId: number;
+  id: number;
   imageUrl: string;
   title: string;
   place: string;
@@ -9,15 +9,15 @@ interface Concert {
 }
 
 interface Genre {
-  type: 'genre';
-  option: 'Bal' | 'Roc' | 'Rap' | 'Jaz' | 'Por' | 'Fes' | 'Ind';
+  type: "genre";
+  option: "Bal" | "Roc" | "Rap" | "Jaz" | "Por" | "Fes" | "Ind";
 }
 
 interface PlaylistId {
-  type: 'playlistId';
+  type: "playlistId";
   option: string;
 }
 
 type ConcertSearchOption = Genre | PlaylistId;
 
-export type { Concert, ConcertSearchOption };
+export type { Concert, ConcertSearchOption, Genre, PlaylistId };
