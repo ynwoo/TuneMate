@@ -4,16 +4,14 @@ import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupParticipationRe
 import kr.co.tunemate.tunemategroupservice.entity.Group;
 import kr.co.tunemate.tunemategroupservice.entity.GroupParticipation;
 import kr.co.tunemate.tunemategroupservice.entity.GroupParticipationRequest;
-import kr.co.tunemate.tunemategroupservice.exception.IllegalRequestException;
-import kr.co.tunemate.tunemategroupservice.exception.NoAuthorizationForItemException;
-import kr.co.tunemate.tunemategroupservice.exception.NoSuchItemException;
+import kr.co.tunemate.tunemategroupservice.exception.BaseException;
+import kr.co.tunemate.tunemategroupservice.exception.code.GroupErrorCode;
 import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRequestRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +28,10 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
     private final GroupParticipationRequestRepository groupParticipationRequestRepository;
     private final ModelMapper modelMapper;
 
+    private static boolean canParticipate(Group group) {
+        return group.getClosedByHost() || group.getDeadline().isBefore(LocalDateTime.now()) || group.getParticipantsCnt() >= group.getCapacity();
+    }
+
     /**
      * 사용자가 공고에 대해 참여 요청을 생성합니다.
      *
@@ -38,18 +40,18 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
      */
     @Override
     public void saveGroupParticipationRequest(String userId, String groupId) {
-        Group group = groupRepository.findByGroupId(groupId).orElseThrow(() -> new NoSuchItemException("존재하지 않는 공고입니다.", HttpStatus.NOT_FOUND));
+        Group group = groupRepository.findByGroupId(groupId).orElseThrow(() -> new BaseException("존재하지 않는 공고입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus()));
 
         if (canParticipate(group)) {
-            throw new IllegalRequestException("마감일 지남/작성자에 의한 마감/인원 초과 로 인해 참가 요청을 생성할 수 없습니다.", HttpStatus.BAD_REQUEST);
+            throw new BaseException("마감일 지남/작성자에 의한 마감/인원 초과 로 인해 참가 요청을 생성할 수 없습니다.", GroupErrorCode.ILLEGAL_REQUEST.getHttpStatus());
         }
 
         groupParticipationRepository.findByUserIdAndGroup(userId, group).ifPresent(groupParticipation -> {
-            throw new IllegalRequestException("이미 참여중인 공고입니다.", HttpStatus.BAD_REQUEST);
+            throw new BaseException("이미 참여중인 공고입니다.", GroupErrorCode.ILLEGAL_REQUEST.getHttpStatus());
         });
 
         groupParticipationRequestRepository.findByUserIdAndGroup(userId, group).ifPresent(groupParticipationRequest -> {
-            throw new IllegalRequestException("이미 참여요청이 존재합니다.", HttpStatus.BAD_REQUEST);
+            throw new BaseException("이미 참여요청이 존재합니다.", GroupErrorCode.ILLEGAL_REQUEST.getHttpStatus());
         });
 
         GroupParticipationRequest groupParticipationRequest = GroupParticipationRequest.builder().groupParticipationRequestId(UUID.randomUUID().toString()).group(group).userId(userId).build();
@@ -96,10 +98,10 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
     @Transactional
     @Override
     public void acceptGroupParticipationRequest(String userId, String groupParticipationRequestId) {
-        GroupParticipationRequest groupParticipationRequest = groupParticipationRequestRepository.findByGroupParticipationRequestId(groupParticipationRequestId).orElseThrow(() -> new NoSuchItemException("존재하지 않는 참여요청입니다.", HttpStatus.NOT_FOUND));
+        GroupParticipationRequest groupParticipationRequest = groupParticipationRequestRepository.findByGroupParticipationRequestId(groupParticipationRequestId).orElseThrow(() -> new BaseException("존재하지 않는 참여요청입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus()));
 
         if (!groupParticipationRequest.getGroup().getHostId().equals(userId)) {
-            throw new NoAuthorizationForItemException("공고 작성자만 공고에 대한 참여요청을 수락할 수 있습니다.", HttpStatus.FORBIDDEN);
+            throw new BaseException("공고 작성자만 공고에 대한 참여요청을 수락할 수 있습니다.", GroupErrorCode.NO_AUTHORIZATION_FOR_ITEM_EXCEPTION.getHttpStatus());
         }
 
         groupParticipationRequestRepository.delete(groupParticipationRequest);
@@ -123,16 +125,12 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
     public void denyGroupParticipationRequest(String userId, String groupParticipationRequestId) {
         groupParticipationRequestRepository.findByGroupParticipationRequestId(groupParticipationRequestId).ifPresentOrElse(groupParticipationRequest -> {
             if (!groupParticipationRequest.getGroup().getHostId().equals(userId)) {
-                throw new NoAuthorizationForItemException("공고 작성자만 공고에 대한 참여요청을 거절할 수 있습니다.", HttpStatus.FORBIDDEN);
+                throw new BaseException("공고 작성자만 공고에 대한 참여요청을 거절할 수 있습니다.", GroupErrorCode.NO_AUTHORIZATION_FOR_ITEM_EXCEPTION.getHttpStatus());
             }
 
             groupParticipationRequestRepository.delete(groupParticipationRequest);
         }, () -> {
-            throw new NoSuchItemException("존재하지 않는 공고참여 요청입니다.", HttpStatus.NOT_FOUND);
+            throw new BaseException("존재하지 않는 공고참여 요청입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus());
         });
-    }
-
-    private static boolean canParticipate(Group group) {
-        return group.getClosedByHost() || group.getDeadline().isBefore(LocalDateTime.now()) || group.getParticipantsCnt() >= group.getCapacity();
     }
 }

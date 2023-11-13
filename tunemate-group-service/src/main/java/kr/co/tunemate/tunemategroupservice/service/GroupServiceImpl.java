@@ -3,13 +3,12 @@ package kr.co.tunemate.tunemategroupservice.service;
 import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupDto;
 import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupSearchDto;
 import kr.co.tunemate.tunemategroupservice.entity.Group;
-import kr.co.tunemate.tunemategroupservice.exception.NoAuthorizationForItemException;
-import kr.co.tunemate.tunemategroupservice.exception.NoSuchItemException;
+import kr.co.tunemate.tunemategroupservice.exception.BaseException;
+import kr.co.tunemate.tunemategroupservice.exception.code.GroupErrorCode;
 import kr.co.tunemate.tunemategroupservice.repository.ConcertRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +24,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupDto saveGroup(GroupDto groupDto) {
-        concertRepository.findById(Long.valueOf(groupDto.getConcertId())).orElseThrow(() -> new NoSuchItemException("존재하지 않는 콘서트입니다.", HttpStatus.NOT_FOUND));
+        concertRepository.findById(Long.valueOf(groupDto.getConcertId())).orElseThrow(() -> new BaseException("존재하지 않는 콘서트입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus()));
 
         groupDto.setGroupId(UUID.randomUUID().toString());
         Group group = modelMapper.map(groupDto, Group.class);
@@ -37,23 +36,24 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupDto getGroupByGroupId(String groupId) {
-        Group group = groupRepository.findByGroupId(groupId).orElseThrow(() -> new NoSuchItemException("존재하지 않는 공고입니다.", HttpStatus.NOT_FOUND));
+        Group group = groupRepository.findByGroupId(groupId).orElseThrow(() -> new BaseException("존재하지 않는 공고입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus()));
 
         return modelMapper.map(group, GroupDto.class);
     }
 
     /**
      * 공고를 수정합니다.
+     *
      * @param groupDto 공고 수정 내용
      * @return
      */
     @Transactional
     @Override
     public GroupDto putGroup(String userId, GroupDto groupDto) {
-        Group group = groupRepository.findByGroupId(groupDto.getGroupId()).orElseThrow(() -> new NoSuchItemException("존재하지 않는 공고입니다.", HttpStatus.NOT_FOUND));
+        Group group = groupRepository.findByGroupId(groupDto.getGroupId()).orElseThrow(() -> new BaseException("존재하지 않는 공고입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus()));
 
         if (!group.getHostId().equals(userId)) {
-            throw new NoAuthorizationForItemException("공고 작성자만 수정이 가능합니다.", HttpStatus.FORBIDDEN);
+            throw new BaseException("공고 작성자만 수정이 가능합니다.", GroupErrorCode.NO_AUTHORIZATION_FOR_ITEM_EXCEPTION.getHttpStatus());
         }
 
         Group modifiedGroup = group.toBuilder()
@@ -71,16 +71,17 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * 공고를 마감합니다.
-     * @param userId 요청자 UUID
+     *
+     * @param userId  요청자 UUID
      * @param groupId 마감대상 공고 UUID
      */
     @Transactional
     @Override
     public void closeGroup(String userId, String groupId) {
-        Group group = groupRepository.findByGroupId(groupId).orElseThrow(() -> new NoSuchItemException("존재하지 않는 공고입니다.", HttpStatus.NOT_FOUND));
+        Group group = groupRepository.findByGroupId(groupId).orElseThrow(() -> new BaseException("존재하지 않는 공고입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus()));
 
         if (!group.getHostId().equals(userId)) {
-            throw new NoAuthorizationForItemException("공고 작성자만 마감이 가능합니다.", HttpStatus.FORBIDDEN);
+            throw new BaseException("공고 작성자만 마감이 가능합니다.", GroupErrorCode.NO_AUTHORIZATION_FOR_ITEM_EXCEPTION.getHttpStatus());
         }
 
         Group closedGroup = group.toBuilder()
@@ -92,6 +93,7 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * 검색 조건을 적용하여 공고를 조회합니다.
+     *
      * @param groupSearchDto 검색 조건들
      * @return
      */
@@ -102,7 +104,8 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * 공고를 삭제합니다.
-     * @param userId 요청자 UUID
+     *
+     * @param userId  요청자 UUID
      * @param groupId 삭제대상 공고 UUID
      */
     @Override

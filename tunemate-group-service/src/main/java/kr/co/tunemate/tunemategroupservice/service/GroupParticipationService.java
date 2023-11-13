@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface GroupParticipationService {
     List<GroupParticipationDto> findByUserId(String userId);
+
+    void deleteByGroupParticipationId(String userId, String groupParticipationId);
 }
