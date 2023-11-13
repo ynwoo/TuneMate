@@ -7,13 +7,23 @@ import Icon from "../icons";
 import Modal from "../modal/Modal";
 import useModal from "@/hooks/useModal";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { updateIndividualPlayListTrack } from "@/api/music/individual";
+import { ChangeTrackIndex } from "@/types/spotify";
+import { PlayList } from "@/types/playList";
 
 interface PlaylistProps extends Props {
   data: any[];
-  onRequestDelete: (id: string) => void;
+  playlistName: string;
+  playlistId: PlayList["id"];
+  onRequestDelete: (index: number) => void;
 }
 
-const Playlist = ({ data, onRequestDelete }: PlaylistProps) => {
+const Playlist = ({
+  data,
+  playlistName,
+  playlistId,
+  onRequestDelete,
+}: PlaylistProps) => {
   const { closeToggle, isOpen, openToggle } = useModal();
   const [playlistData, setPlaylistData] = useState(data);
   const [deleteMode, setDeleteMode] = useState(false);
@@ -22,12 +32,35 @@ const Playlist = ({ data, onRequestDelete }: PlaylistProps) => {
     setPlaylistData([...data]);
   }, [data]);
 
+  const changePlaylistOrder = async (changeTrackIndex: ChangeTrackIndex) => {
+    const change = await updateIndividualPlayListTrack({
+      playlistId,
+      changeTrackIndex,
+    });
+    console.log("순서바꾸기 api 끝");
+  };
+
   const handleChange = (result: any) => {
     if (!result.destination) return;
     const newData = [...playlistData];
     const [reorderedItem] = newData.splice(result.source.index, 1);
     newData.splice(result.destination.index, 0, reorderedItem);
+    const rangeStart = result.source.index;
+    const insertBefore = () => {
+      if (rangeStart === 1) {
+        return result.destination.index + 1;
+      } else {
+        return result.destination.index;
+      }
+    };
+    const changeTrackIndex: ChangeTrackIndex = {
+      range_start: rangeStart,
+      insert_before: insertBefore(),
+      range_length: 1,
+    };
     setPlaylistData(newData);
+    changePlaylistOrder(changeTrackIndex);
+    console.log("순서 바꾸기 끝");
   };
 
   const onModal = useCallback(
@@ -47,13 +80,11 @@ const Playlist = ({ data, onRequestDelete }: PlaylistProps) => {
     [closeToggle]
   );
 
-  const playlistname = "플레이리스트 1";
-
   return (
     <>
       <div className={styles["container"]}>
         <div className={styles["playlist-upper"]}>
-          <Text type="playlist" content={playlistname} />
+          <Text type="playlist" content={playlistName} />
           {deleteMode ? (
             <div onClick={() => setDeleteMode(false)}>
               <Icon.CircleCheck />
@@ -89,10 +120,15 @@ const Playlist = ({ data, onRequestDelete }: PlaylistProps) => {
       </div>
       <Modal isOpen={isOpen} toggle={closeToggle}>
         <div className={styles["modal-box"]}>
-          <div>
+          <div className={styles["modal-content"]}>
+            <Text type="title" content="노래 추가하기" />
+          </div>
+          <div className={styles["division-line"]}/>
+          <div className={styles["modal-content"]}>
             <Text type="title" content="플레이리스트 이름 바꾸기" />
           </div>
-          <div onClick={handleDeleteMode}>
+          <div className={styles["division-line"]}/>
+          <div className={styles["modal-content"]} onClick={handleDeleteMode}>
             <Text type="title" content="노래 삭제하기" />
           </div>
         </div>
