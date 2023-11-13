@@ -74,7 +74,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         MemberInfo memberInfo = requestMemberInfo(userId);
         String token = getToken(memberInfo);
         Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("플레이 리스트가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
-        individualPlaylistTrackRepository.findByTrackSpotifyIdAndPlaylist(trackCreateDto.getUris().get(0),playlist).ifPresentOrElse(track -> {throw new NotFoundException("중복된 노래가 존재합니다.",HttpStatus.FORBIDDEN);},() -> { // 중복 노래가 있는 경우 처리(나중에 에러 핸들링 해야함)
+        individualPlaylistTrackRepository.findByTrackSpotifyIdAndPlaylist(trackCreateDto.getUris().get(0),playlist).ifPresentOrElse(track -> {throw new NotFoundException("중복된 노래가 존재합니다.",HttpStatus.BAD_REQUEST);},() -> { // 중복 노래가 있는 경우 처리(나중에 에러 핸들링 해야함)
             String str = webClientBuilder.build().post().uri("/playlists/{playlist_id}/tracks",playlist.getPlaylistSpotifyId()).header("Authorization", "Bearer " + token)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(BodyInserters.fromValue(trackCreateDto)).retrieve().bodyToMono(String.class).block();
@@ -86,7 +86,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
 
         String spotifyUri = trackCreateDto.getUris().get(0);
         if(tracksRepository.findBySpotifyUri(spotifyUri).size() != 0){
-            throw new NotFoundException("이미 데이터베이스에 노래가 존재합니다.", HttpStatus.FORBIDDEN);
+            return;
         }
         String str = webClientBuilder.build().get().uri("/tracks/{id}",spotifyUri.split(":")[2]).header("Authorization", "Bearer " + token).header("Accept-Language", "ko-KR")
                 .retrieve().bodyToMono(String.class).block();

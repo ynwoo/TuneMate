@@ -51,6 +51,7 @@ public class IndividualPlaylistController {
 	@Operation(summary = "개인 플레이리스트 트랙 추가", description = "개인의 플레이리스트에 트랙(곡)을 추가합니다.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "트랙 추가 성공."),
+			@ApiResponse(responseCode = "400", description = "개인 플레이리스트에 해당 노래가 이미 있습니다."),
 			@ApiResponse(responseCode = "403", description = "권한이 없습니다."),
 			@ApiResponse(responseCode = "404", description = "플레이리스트가 없습니다.")
 
