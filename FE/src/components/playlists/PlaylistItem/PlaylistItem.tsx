@@ -42,7 +42,7 @@ const PlaylistItem = ({ value, index, onRequestDelete, isDeleteMode }: PlaylistI
               </div>
               <div className={styles["item-right"]}>
                 {isDeleteMode
-                ? <div onClick={() => onRequestDelete(id)}>
+                ? <div onClick={() => onRequestDelete(index)}>
                   <Icon.Delete />
                 </div>
                 : <div {...provided.dragHandleProps} >
