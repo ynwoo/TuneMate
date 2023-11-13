@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import Props from "@/types";
-import { UserInfo } from "@/types/user";
 import IndividualProfile from "@/components/profile/IndividualProfile/IndividualProfile";
 import Playlist from "@/components/playlists";
 import {
   createIndividualPlayList,
+  deleteIndividualPlayListTrack,
   getIndividualPlayListRepresentative,
   getIndividualPlayLists,
   updateIndividualPlayList,
 } from "@/api/music/individual";
 import { getUserInfo } from "@/api/user";
 import { Storage } from "@/utils/storage";
-import axios from "axios";
 import { Cookie } from "@/utils/cookie";
 import NonCloseableMenu from "@/components/menus/NonCloseable";
 import useMenu from "@/hooks/useMenu";
 import PlaylistData from "@/components/playlists/PlaylistData/PlaylistData";
+import { DeleteTrack } from "@/types/spotify";
 
 const ProfilePage = () => {
   const [name, setName] = useState("Name");
@@ -108,10 +108,21 @@ const ProfilePage = () => {
     getUserProfile();
   }, []);
 
+  const deleteTrack = async (index: number) => {
+    const data: DeleteTrack= {
+      playlistId: playlistId,
+      uri: `spotify:track:${myPlaylist[index].id}`,
+      positions: [index],
+    };
+    console.log(data.uri);
+    const response = await deleteIndividualPlayListTrack(data)
+  };
+
   const handleDelete = (index: number) => {
     setMyPlaylist((prevData) =>
       prevData.filter((music) => music.index !== index)
     );
+    deleteTrack(index);
     console.log(myPlaylist);
   };
 
