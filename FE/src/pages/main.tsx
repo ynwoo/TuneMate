@@ -16,6 +16,7 @@ import {
   AlubumArtState,
 } from "@/store/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { Track } from "@/types/spotify";
 
 const initConcertSearchOption: ConcertSearchOption = {
   type: "genre",
@@ -38,14 +39,13 @@ const MainPage = () => {
   const [ListInfo, setListInfo] = useRecoilState(ListInfoState);
   console.log("recommendedSongs", recommendedSongs);
 
-  const handleSongClick = (song) => {
+  const handleSongClick = (song: Track) => {
     // 클릭된 곡의 URI를 PickTrackState에 저장
-    console.log(song);
+    console.log("song", song);
     // setPickTrack(song);
-    setReAlbumArt(song.img);
-    setListInfo(song.uri);
+    setListInfo(song);
     setResongUrl(song.uri);
-    setAlubumArt(song.img);
+    setAlubumArt(song.albums.images[0].url);
   };
 
   return (
