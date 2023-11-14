@@ -18,7 +18,7 @@ interface FriendRequest {
   distance: string;
   name: string;
   img: string;
-  musicalTasteSimilarity: string;
+  similarity: string;
 }
 
 interface SendFriendRequest {

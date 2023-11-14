@@ -29,14 +29,3 @@
 .top-navbar__item--back {
   cursor: pointer;
 }
-
-.top-navbar__unread-count {
-  background-color: var(--red-color);
-  border-radius: 50%;
-  width: 1em;
-  height: 1em;
-  text-align: center;
-  font-size: 0.8rem;
-  padding: 0.2em;
-  color: var(--white-color);
-}
