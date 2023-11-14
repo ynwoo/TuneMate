@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "group_table")
-@SQLDelete(sql = "UPDATE group SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE group_table SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 @ToString
 public class Group extends BaseTimeEntity {
