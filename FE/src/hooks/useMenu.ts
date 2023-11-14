@@ -2,35 +2,35 @@ import { usePathname } from "next/navigation";
 import { useState, useCallback, useEffect } from "react";
 
 export default function useMenu() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  const openToggle = useCallback(() => {
-    setIsOpen(true);
+  const openMenu = useCallback(() => {
+    setIsMenuOpen(true);
   }, []);
 
-  const closeToggle = useCallback(() => {
-    setIsOpen(false);
+  const closeMenu = useCallback(() => {
+    setIsMenuOpen(false);
     document.body.style.overflow = "auto";
   }, []);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [isOpen]);
+  }, [isMenuOpen]);
 
   useEffect(() => {
-    if (setIsOpen) {
-      setIsOpen(false);
+    if (setIsMenuOpen) {
+      setIsMenuOpen(false);
     }
   }, [pathname]);
 
   return {
-    isOpen,
-    openToggle,
-    closeToggle,
+    isMenuOpen,
+    openMenu,
+    closeMenu,
   };
 }

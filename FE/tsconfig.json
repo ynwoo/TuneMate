@@ -21,7 +21,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/components/player/Dashboards.jsx"
+    "src/components/player/Dashboards.jsx",
+    "src/components/playlists/SearchTrack/SearchTrack.jsx"
   ],
   "exclude": ["node_modules"]
 }
