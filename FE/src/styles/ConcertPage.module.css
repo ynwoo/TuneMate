@@ -1,6 +1,14 @@
+.concerts-page {
+}
+
+.concerts-page__search {
+  margin: 1em;
+}
+
 .concert-detail-page {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   padding: 1em 0.5em;
 }
