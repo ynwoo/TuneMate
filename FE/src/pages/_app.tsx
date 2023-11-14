@@ -42,16 +42,6 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        {/* <ChatProvider>
-          <>
-            {!isLoginPage && <TopNavbar />}
-            <div className={isLoginPage ? "login" : "main"}>
-              
-              <Component {...pageProps} style={{ zIndex: 21 }} />
-            </div>
-            {!isLoginPage && <BottomNavbar />}
-          </>
-        </ChatProvider> */}
         <StompClientProvider>
           <ChatProvider>
             <FriendRequestProvider>

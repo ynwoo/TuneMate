@@ -14,10 +14,7 @@ interface ChatItemProps extends Props {
 }
 
 const ChatItem = ({ className, item }: ChatItemProps) => {
-  const isMyChat = useMemo(
-    () => Storage.getUserId() === item.senderNo,
-    [item.senderNo]
-  );
+  const isMyChat = useMemo(() => Storage.getUserId() === item.senderNo, [item.senderNo]);
 
   const params = useParams();
   const friendId = params?.friendId as string;
@@ -30,11 +27,7 @@ const ChatItem = ({ className, item }: ChatItemProps) => {
 
   return (
     <li
-      className={classNameWrapper(
-        styles["chat-item"],
-        !isMyChat && styles["reverse"],
-        className
-      )}
+      className={classNameWrapper(styles["chat-item"], !isMyChat && styles["reverse"], className)}
     >
       <p className={styles["chat-item__image"]}>
         <ProfileImage
@@ -55,13 +48,9 @@ const ChatItem = ({ className, item }: ChatItemProps) => {
           <p className={styles["chat-item__content--text"]}>{item.content}</p>
           <div className={styles["chat-item__content--info-container"]}>
             {Number(item.readCount) !== 0 && (
-              <p className={styles["chat-item__content--info"]}>
-                {item.readCount}
-              </p>
+              <p className={styles["chat-item__content--info"]}>{item.readCount}</p>
             )}
-            <p className={styles["chat-item__content--time"]}>
-              {Time.hourAndMinute(item.time)}
-            </p>
+            <p className={styles["chat-item__content--time"]}>{Time.HHmm(item.time)}</p>
           </div>
         </div>
       </div>

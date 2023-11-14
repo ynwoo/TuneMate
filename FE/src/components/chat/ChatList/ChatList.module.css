@@ -1,6 +1,18 @@
 .chat-list {
 }
 
+.chat-list__date {
+  text-align: center;
+  font-size: 0.8rem;
+  background-color: var(--gray-color);
+  color: var(--white-color);
+  opacity: 0.5;
+  width: max-content;
+  margin: 3em auto;
+  padding: 0.5em 1em;
+  border-radius: 2em;
+}
+
 .chat-list__item {
   margin-top: 3vh;
 }
