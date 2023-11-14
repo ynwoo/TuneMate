@@ -46,7 +46,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <>
             {!isLoginPage && <TopNavbar />}
             <div className={isLoginPage ? "login" : "main"}>
-              <SinglePlayer />
+              
               <Component {...pageProps} style={{ zIndex: 21 }} />
             </div>
             {!isLoginPage && <BottomNavbar />}
@@ -58,6 +58,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <>
                 {!hasNavbar && <TopNavbar />}
                 <div className={hasNavbar ? "login" : "main"}>
+                  <SinglePlayer />
                   <Component {...pageProps} />
                 </div>
                 {!hasNavbar && <BottomNavbar />}
