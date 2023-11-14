@@ -23,23 +23,6 @@ const ChatProvider = ({ children }: Props) => {
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
   const { data: myChatRooms } = useMyChatRoomsQuery();
 
-  const refreshChatRooms = useCallback(
-    (newChatRoom: ChatRoom) => {
-      // 기존 chatroom 있는지 찾기
-      let prevChatRoomId = chatRooms.findIndex(
-        ({ chatRoomId }) => chatRoomId === newChatRoom.chatRoomId
-      );
-
-      // 기존 chatroom 없으면 배열 마지막에 삽입
-      if (prevChatRoomId === -1) prevChatRoomId = chatRooms.length;
-
-      const newChatRooms = [...chatRooms];
-      newChatRooms[prevChatRoomId] = newChatRoom;
-      setChatRooms(newChatRooms);
-    },
-    [chatRooms, setChatRooms]
-  );
-
   const subscibeCallback = useCallback(
     (data: any) => {
       console.log(data);
