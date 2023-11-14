@@ -4,26 +4,26 @@ import Props from "@/types";
 import { classNameWrapper } from "@/utils/className";
 
 interface MenuProps extends Props {
-  isOpen: boolean;
+  isMenuOpen: boolean;
   children: JSX.Element | JSX.Element[];
 }
 
 const NonCloseableMenu = ({
   className,
-  isOpen,
+  isMenuOpen,
   children,
 }: MenuProps) => {
   return (
     <>
-    {isOpen && (
+    {isMenuOpen && (
         <div
-          className={classNameWrapper(className, styles["modal-overlay"])}
+          className={classNameWrapper(className, styles["menu-overlay"])}
           onClick={(e) => {
             e.stopPropagation();
           }}
         >
           <div
-            className={styles["modal-box"]}
+            className={styles["menu-box"]}
             onClick={(e) => e.stopPropagation()}
           >
             {children}

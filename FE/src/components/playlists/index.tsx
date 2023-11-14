@@ -16,6 +16,7 @@ interface PlaylistProps extends Props {
   playlistName: string;
   playlistId: PlayList["id"];
   onRequestDelete: (index: number) => void;
+  setModalOpen: () => void;
 }
 
 const Playlist = ({
@@ -23,6 +24,7 @@ const Playlist = ({
   playlistName,
   playlistId,
   onRequestDelete,
+  setModalOpen,
 }: PlaylistProps) => {
   const { closeToggle, isOpen, openToggle } = useModal();
   const [playlistData, setPlaylistData] = useState(data);
@@ -69,6 +71,15 @@ const Playlist = ({
       openToggle();
     },
     [openToggle]
+  );
+
+  const openSearch = useCallback(
+    (e: MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation();
+      setModalOpen();
+      closeToggle();
+    },
+    [closeToggle]
   );
 
   const handleDeleteMode = useCallback(
@@ -120,7 +131,7 @@ const Playlist = ({
       </div>
       <Modal isOpen={isOpen} toggle={closeToggle}>
         <div className={styles["modal-box"]}>
-          <div className={styles["modal-content"]}>
+          <div className={styles["modal-content"]} onClick={openSearch}>
             <Text type="title" content="노래 추가하기" />
           </div>
           <div className={styles["division-line"]}/>

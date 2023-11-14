@@ -6,3 +6,17 @@
 .main-page__item {
   flex-grow: 1;
 }
+
+.main-page__content {
+  margin: 1em;
+}
+
+.main-page__content--item-container {
+  display: flex;
+  justify-content: space-between;
+  overflow-x: scroll;
+}
+
+.main-page__content--item {
+  margin-right: 1rem;
+}

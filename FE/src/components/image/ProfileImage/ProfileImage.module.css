@@ -10,19 +10,19 @@
 }
 
 .recommendation {
-  height: 20vw;
-  width: 20vw;
+  height: 5rem;
+  width: 5rem;
 }
 
 .friend {
-  height: 10vw;
-  width: 10vw;
+  height: 2.5rem;
+  width: 2.5rem;
 }
 
 .profile {
-  height: 50vw;
-  width: 50vw;
+  height: 12rem;
+  width: 12rem;
   background-color: var(--white-color);
-  border: 2vh solid var(--main-color);
+  border: 0.5rem solid var(--main-color);
   border-radius: 50%;
 }

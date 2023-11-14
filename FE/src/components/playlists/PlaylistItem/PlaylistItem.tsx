@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Props from "@/types";
 import styles from "./PlaylistItem.module.css";
 import Cover from "../Cover/Cover";
@@ -12,6 +12,7 @@ type SongInfo = {
   cover: string;
   index: number
   id: string;
+  uri: string;
 };
 
 interface PlaylistItemProps extends Props {
@@ -22,7 +23,7 @@ interface PlaylistItemProps extends Props {
 }
 
 const PlaylistItem = ({ value, index, onRequestDelete, isDeleteMode }: PlaylistItemProps) => {
-  const { title, artist, cover, id } = value;
+  const { title, artist, cover, id, uri } = value;
 
   return (
     <Draggable draggableId={id} index={index}>
