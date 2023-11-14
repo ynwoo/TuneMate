@@ -62,9 +62,9 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
 
         GroupParticipationRequest groupParticipationRequest = GroupParticipationRequest.builder().groupParticipationRequestId(UUID.randomUUID().toString()).group(group).userId(userId).build();
 
-        log.info("사용자(userId: {})가 공고 {} 에 대해서 참여 요청을 생성했습니다.", userId, group);
-
         groupParticipationRequestRepository.save(groupParticipationRequest);
+
+        log.info("사용자(userId: {})가 공고 {} 에 대해서 참여 요청 {})을 생성했습니다.", userId, group, groupParticipationRequest);
     }
 
     /**
@@ -75,6 +75,8 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
      */
     @Override
     public List<GroupParticipationRequestDto> findAllByUserId(String userId) {
+        log.info("사용자(userId: {})가 보낸 공고참여요청 목록을 조회합니다.", userId);
+
         return groupParticipationRequestRepository.findAllByUserId(userId).stream().map(
                 groupParticipationRequest -> {
                     GroupParticipationRequestDto groupParticipationRequestDto = modelMapper.map(groupParticipationRequest, GroupParticipationRequestDto.class);
@@ -95,6 +97,8 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
      */
     @Override
     public List<GroupParticipationRequestDto> findAllRequestedParticipationByUserId(String userId) {
+        log.info("사용자(userId: {})가 받은 공고참여요청 목록을 조회합니다.", userId);
+
         List<Group> groups = groupRepository.getReferencesByHostId(userId);
 
         return groupParticipationRequestRepository.findAllByGroupIn(groups).stream().map(groupParticipationRequest -> {
@@ -120,7 +124,7 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
     /**
      * 공고에 대한 참여요청을 공고 작성자가 수락합니다.
      *
-     * @param userId                      수락을 요청한 사용자 UUID
+     * @param userId                      공고 작성자 UUID
      * @param groupParticipationRequestId 수락 대상 참여요청 UUID
      */
     @Transactional
@@ -135,17 +139,20 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
         groupParticipationRequestRepository.delete(groupParticipationRequest);
 
         groupParticipationRepository.findByUserIdAndGroup(groupParticipationRequest.getUserId(), groupParticipationRequest.getGroup()).ifPresentOrElse(groupParticipation -> {
+                    log.info("참여요청 사용자(userId: {})는 이미 공고에 참여하고 있습니다.", groupParticipationRequest.getUserId());
                 }, // 이미 참여중인 공고에 대한 참여요청을 수락하려 하는 경우
                 () -> {
                     GroupParticipation groupParticipation = GroupParticipation.builder().groupParticipationId(UUID.randomUUID().toString()).group(groupParticipationRequest.getGroup()).userId(groupParticipationRequest.getUserId()).build();
                     groupParticipationRepository.save(groupParticipation);
+
+                    log.info("참여요청 사용자(userId: {})의 참여요청{}이 수락되었습니다.", groupParticipationRequest.getUserId(), groupParticipationRequest);
                 });
     }
 
     /**
      * 공고에 대한 참여요청을 공고 작성자가 거절합니다.
      *
-     * @param userId                      거절을 요청한 사용자 UUID
+     * @param userId                      공고 작성자 UUID
      * @param groupParticipationRequestId 거절 대상 참여요청 UUID
      */
     @Transactional
@@ -157,6 +164,8 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
             }
 
             groupParticipationRequestRepository.delete(groupParticipationRequest);
+
+            log.info("참여요청 사용자(userId: {})의 참여요청{}이 거절되었습니다.", groupParticipationRequest.getUserId(), groupParticipationRequest);
         }, () -> {
             throw new BaseException("존재하지 않는 공고참여 요청입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus());
         });

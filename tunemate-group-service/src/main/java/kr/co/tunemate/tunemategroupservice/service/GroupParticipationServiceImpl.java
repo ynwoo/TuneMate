@@ -7,12 +7,14 @@ import kr.co.tunemate.tunemategroupservice.exception.BaseException;
 import kr.co.tunemate.tunemategroupservice.exception.code.GroupErrorCode;
 import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GroupParticipationServiceImpl implements GroupParticipationService {
@@ -27,6 +29,8 @@ public class GroupParticipationServiceImpl implements GroupParticipationService 
      */
     @Override
     public List<GroupParticipationDto> findByUserId(String userId) {
+        log.info("사용자(userId: {})가 참여중인 공고 목록을 조회합니다.", userId);
+
         return groupParticipationRepository.findAllByUserId(userId).stream()
                 .map(groupParticipation -> {
                     GroupParticipationDto groupParticipationDto = modelMapper.map(groupParticipation, GroupParticipationDto.class);
@@ -46,6 +50,8 @@ public class GroupParticipationServiceImpl implements GroupParticipationService 
     @Transactional
     @Override
     public void deleteByGroupParticipationId(String userId, String groupParticipationId) {
+        log.info("사용자(userId: {})가 참여중인 공고(groupParticipationId: {})를 탈퇴합니다.", userId, groupParticipationId);
+
         GroupParticipation groupParticipation = groupParticipationRepository.findByGroupParticipationId(groupParticipationId).orElseThrow(() -> new BaseException("존재하지 않는 공고참여입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus()));
 
         if (!groupParticipation.getUserId().equals(userId)) {
