@@ -86,7 +86,7 @@ export const connectChatRoom = async (relationId: Friend["relationId"]) => {
 
 // 채팅 방 퇴장(삭제 아님)
 export const disconnectChatRoom = async (relationId: Friend["relationId"]) => {
-  await api.post(`${SOCIAL_SERVICE_URL}/chat-out/${relationId}`);
+  await api.delete(`${SOCIAL_SERVICE_URL}/chat-out/${relationId}`);
 };
 
 type ChatRoomResponse = {
