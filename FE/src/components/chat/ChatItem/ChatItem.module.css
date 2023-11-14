@@ -4,15 +4,49 @@
 
 .reverse {
   flex-direction: row-reverse;
-}
-
-.chat-item__elm {
+  text-align: end;
 }
 
 .chat-item__image {
   margin: 0 1rem;
 }
 
-.chat-item__text {
-  margin: 0 0.3rem;
+.chat-item__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-item__content--name {
+  font-size: 0.8rem;
+  margin-bottom: 0.2rem;
+}
+
+.chat-item__content-container {
+  display: flex;
+}
+
+.chat-item__content--text {
+  background-color: var(--white-color);
+  padding: 0.5em;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.chat-item__content--info-container {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  justify-content: end;
+  margin-bottom: 0.2rem;
+  font-size: 0.6em;
+}
+
+.chat-item__content--info {
+  color: red;
+  margin-bottom: 0.2rem;
+}
+
+.chat-item__content--time {
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
 }

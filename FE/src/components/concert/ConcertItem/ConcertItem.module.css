@@ -1,0 +1,23 @@
+.concert-item {
+  display: flex;
+  cursor: pointer;
+}
+
+.concert-item__image {
+  height: 100%;
+  flex-shrink: 0;
+}
+
+.concert-item__content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem;
+  text-align: center;
+}
+
+.concert-item__content--date {
+  font-size: 0.8rem;
+}

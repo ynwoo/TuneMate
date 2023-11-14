@@ -126,7 +126,7 @@ const ProfilePage = () => {
   }, []);
 
   const deleteTrack = async (index: number) => {
-    const data: DeleteTrack= {
+    const data: DeleteTrack = {
       playlistId: playlistId,
       uri: myPlaylist[index].uri,
       positions: [index],

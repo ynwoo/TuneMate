@@ -1,23 +1,40 @@
-import { Storage } from "@/utils/storage";
-import Dashboard from "../components/player/Dashboards";
-import { useState, useEffect } from "react";
 import styles from "@/styles/MainPage.module.css";
+import { ConcertSearchOption } from "@/types/concert";
+import useConcertsQuery from "@/hooks/queries/concert/useConcertsQuery";
+import ConcertCard from "@/components/concert/ConcertCard/ConcertCard";
+import MainContent from "@/components/container/MainContent/MainContent";
+import { useCallback } from "react";
+import { useRouter } from "next/router";
+
+const initConcertSearchOption: ConcertSearchOption = {
+  type: "genre",
+  option: "Bal",
+};
 
 const MainPage = () => {
-  const [accessToken, setAccessToken] = useState<string>("");
+  const { data: concerts } = useConcertsQuery(initConcertSearchOption);
+  const router = useRouter();
 
-  useEffect(() => {
-    const spotifyAccessToken = Storage.getSpotifyAccessToken;
-    setAccessToken(spotifyAccessToken);
+  const onConcert = useCallback(() => {
+    router.push("/concerts");
   }, []);
 
   return (
     <div className={styles["main-page"]}>
-      <Dashboard
-        className={styles["main-page__item"]}
-        accessToken={accessToken}
-      />
-      ;
+      <MainContent
+        className={styles["main-page__content"]}
+        title="공연"
+        onClick={onConcert}
+      >
+        <ul className={styles["main-page__content--item-container"]}>
+          {concerts?.map((concert) => (
+            <ConcertCard
+              className={styles["main-page__content--item"]}
+              item={concert}
+            />
+          ))}
+        </ul>
+      </MainContent>
     </div>
   );
 };

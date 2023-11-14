@@ -8,6 +8,8 @@ import {
   faTrash,
   faGripLines,
   faCircleCheck,
+  faRightFromBracket,
+  faArrowDown,
   faSquarePlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
@@ -111,6 +113,23 @@ const Icon = {
       size={size}
     />
   ),
+
+  Exit: ({ size = "2xl", className }: IconProps) => (
+    <FontAwesomeIcon
+      className={classNameWrapper(styles.icon, className)}
+      icon={faRightFromBracket}
+      size={size}
+    />
+  ),
+
+  Down: ({ size = "2xl", className }: IconProps) => (
+    <FontAwesomeIcon
+      className={classNameWrapper(styles.icon, className)}
+      icon={faArrowDown}
+      size={size}
+    />
+  ),
+
   PlayMusic: ({ size = "2xl" }: IconProps) => (
     <FontAwesomeIcon className={styles.gray} icon={faCirclePlay} size={size} />
   ),
@@ -122,9 +141,6 @@ const Icon = {
   ),
   CircleCheck: ({ size = "2xl" }: IconProps) => (
     <FontAwesomeIcon className={styles.icon} icon={faCircleCheck} size={size} />
-  ),
-  Plus: ({ size = "2xl" }: IconProps) => (
-    <FontAwesomeIcon className={styles.icon} icon={faPlus} size={size} />
   ),
   SquarePlus: ({ size = "2xl" }: IconProps) => (
     <FontAwesomeIcon className={styles.gray} icon={faSquarePlus} size={size} />

@@ -9,8 +9,12 @@ import { ChatFilter } from "@/utils/filter";
 import { useParams } from "next/navigation";
 import { useMemo, useCallback, useState, ChangeEvent, useEffect } from "react";
 import { Storage } from "@/utils/storage";
-import { Button } from "react-bootstrap";
 import ChatNavbar from "@/components/navbar/ChatNavbar/ChatNavbar";
+import useModal from "@/hooks/useModal";
+import Modal from "@/components/modal/Modal";
+import ChatMenu from "@/components/chat/ChatMenu/ChatMenu";
+import useDeleteSocialFriendMutation from "@/hooks/mutations/social/useDeleteSocialFriendMutation";
+import Icon from "@/components/icons";
 
 interface ChatPageProps extends Props {}
 
@@ -18,17 +22,17 @@ const ChatPage = ({}: ChatPageProps) => {
   const [content, setContent] = useState<string>("");
   const params = useParams();
   const relationId = Number(params?.relationId as string);
-  const [messageRequest, setMessageRequest] = useState<MessageRequest>(
-    {} as MessageRequest
-  );
+  const friendId = params?.friendId as string;
+  const [messageRequest, setMessageRequest] = useState<MessageRequest>({} as MessageRequest);
 
   const { publish, chatRooms } = useChat();
   const { data: prevChatRoom } = useChatsQuery(relationId);
 
+  const { closeToggle, isOpen, openToggle } = useModal();
+  const { mutate: deleteSocialFriend } = useDeleteSocialFriendMutation();
+
   const chatRoom = useMemo(() => {
-    const newChatRoom = chatRooms.find(
-      ({ chatRoomId }) => chatRoomId === relationId
-    );
+    const newChatRoom = chatRooms.find(({ chatRoomId }) => chatRoomId === relationId);
     if (!newChatRoom) return prevChatRoom;
     return ChatFilter.chatRoom(newChatRoom);
   }, [prevChatRoom, chatRooms, relationId]);
@@ -63,25 +67,37 @@ const ChatPage = ({}: ChatPageProps) => {
   }, [relationId]);
 
   return (
-    <div className={styles["chat-page"]}>
-      <ChatNavbar
-        className={styles["chat-page__chat-navbar"]}
-        onModal={() => {}}
-      />
+    <>
+      <div className={styles["chat-page"]}>
+        <ChatNavbar className={styles["chat-page__chat-navbar"]} onModal={openToggle} />
+        {/* <div className={styles["chat-page__button--scroll-down"]} onClick={moveScrollDown}>
+        <Icon.Down />
+      </div> */}
+        {chatRoom && (
+          <ChatList
+            className={styles["chat-page__chat-list"]}
+            chatRoom={ChatFilter.chatRoom(chatRoom)}
+          />
+        )}
+
+        <Modal
+          isOpen={isOpen}
+          toggle={closeToggle}
+          className={styles["chat-page__modal-container"]}
+        >
+          <ChatMenu
+            className={styles["chat-page__modal"]}
+            onDelete={() => deleteSocialFriend(friendId)}
+          />
+        </Modal>
+      </div>
       <Search
         className={styles["chat-page__search"]}
         value={content}
         onInput={onInput}
         onSubmit={onSubmit}
       />
-      {chatRoom && <ChatList chatRoom={ChatFilter.chatRoom(chatRoom)} />}
-      <Button
-        className={styles["chat-page__button--scroll-down"]}
-        onClick={moveScrollDown}
-      >
-        아래로
-      </Button>
-    </div>
+    </>
   );
 };
 

@@ -4,6 +4,8 @@ import { classNameWrapper } from "@/utils/className";
 import { MessageResponse } from "@/types/chat";
 import { Storage } from "@/utils/storage";
 import { useMemo } from "react";
+import ProfileImage from "@/components/image/ProfileImage/ProfileImage";
+import { Time } from "@/utils/time";
 
 interface ChatItemProps extends Props {
   item: MessageResponse;
@@ -14,6 +16,7 @@ const ChatItem = ({ className, item }: ChatItemProps) => {
     () => Storage.getUserId() === item.senderNo,
     [item.senderNo]
   );
+
   return (
     <li
       className={classNameWrapper(
@@ -22,9 +25,35 @@ const ChatItem = ({ className, item }: ChatItemProps) => {
         className
       )}
     >
-      <p className={styles["chat-item__image"]}>{item.senderName}</p>
-      <p className={styles["chat-item__text"]}>{item.content}</p>
-      <p className={styles["chat-item__text"]}>{item.readCount}</p>
+      <p className={styles["chat-item__image"]}>
+        <ProfileImage
+          className={styles["friend-item__user--image"]}
+          src={"/favicon.ico"}
+          alt="친구 프로필"
+          type="friend"
+        />
+      </p>
+      <div className={styles["chat-item__content"]}>
+        <p className={styles["chat-item__content--name"]}>{item.senderName}</p>
+        <div
+          className={classNameWrapper(
+            styles["chat-item__content-container"],
+            !isMyChat && styles["reverse"]
+          )}
+        >
+          <p className={styles["chat-item__content--text"]}>{item.content}</p>
+          <div className={styles["chat-item__content--info-container"]}>
+            {Number(item.readCount) !== 0 && (
+              <p className={styles["chat-item__content--info"]}>
+                {item.readCount}
+              </p>
+            )}
+            <p className={styles["chat-item__content--time"]}>
+              {Time.hourAndMinute(item.time)}
+            </p>
+          </div>
+        </div>
+      </div>
     </li>
   );
 };

@@ -5,8 +5,10 @@ import { FriendRequestMessage } from "@/types/social";
 
 export const Stomp = Object.freeze({
   connect(client: any, url: string, onConnect: () => void) {
+    console.log(client.current);
+
     if (client.current) {
-      onConnect();
+      setTimeout(onConnect, 1000);
       return;
     }
 

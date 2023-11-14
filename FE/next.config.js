@@ -1,11 +1,10 @@
 /** @type {import('next').NextConfig} */
+const withPlugins = require("next-compose-plugins");
+const withPWA = require("next-pwa");
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: [
-      "3.bp.blogspot.com",
-      "www.musickorea.asia",
-    ],
+    domains: ["3.bp.blogspot.com", "www.musickorea.asia"],
     remotePatterns: [
       {
         protocol: "https",
@@ -19,8 +18,26 @@ const nextConfig = {
         port: "",
         pathname: "/640/**",
       },
+      {
+        protocol: "http",
+        hostname: "ticketimage.interpark.com",
+        port: "",
+        pathname: "/rz/image/**",
+      },
     ],
   },
 };
 
-module.exports = nextConfig;
+module.exports = withPlugins(
+  [
+    [
+      withPWA,
+      {
+        pwa: {
+          dest: "public",
+        },
+      },
+    ],
+  ],
+  nextConfig
+);
