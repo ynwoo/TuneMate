@@ -1,5 +1,6 @@
 package kr.co.tunemate.tunemategroupservice.service;
 
+import kr.co.tunemate.tunemategroupservice.client.UserServiceClient;
 import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupDto;
 import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupSearchDto;
 import kr.co.tunemate.tunemategroupservice.entity.Group;
@@ -11,6 +12,7 @@ import kr.co.tunemate.tunemategroupservice.repository.ConcertRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRequestRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupRepository;
+import kr.co.tunemate.tunemategroupservice.vo.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -27,6 +29,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final ConcertRepository concertRepository;
     private final GroupParticipationRepository groupParticipationRepository;
+    private final UserServiceClient userServiceClient;
     private final ModelMapper modelMapper;
 
     @Transactional
@@ -36,9 +39,16 @@ public class GroupServiceImpl implements GroupService {
 
         concertRepository.findById(Long.valueOf(groupDto.getConcertId())).orElseThrow(() -> new BaseException("존재하지 않는 콘서트입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus()));
 
+        List<UserInfo> userInfos = userServiceClient.getUserInfo(List.of(userId));
+        if (userInfos.isEmpty()) {
+            throw new BaseException("존재하지 않는 사용자입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus());
+        }
+
+        UserInfo userInfo = userInfos.get(0);
+
         groupDto.setGroupId(UUID.randomUUID().toString());
         groupDto.setHostId(userId);
-        groupDto.setHostName("동기요청으로 가져오기"); // TODO: 동기요청
+        groupDto.setHostName(userInfo.getName());
         Group group = modelMapper.map(groupDto, Group.class);
 
         group = groupRepository.save(group);
