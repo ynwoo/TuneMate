@@ -1,4 +1,4 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import Props from "@/types";
 import Image from "next/image";
 import styles from "./ProfileImage.module.css";
@@ -8,7 +8,7 @@ interface ProfileImageProps extends Props {
   src: string;
   alt: string;
   type: "recommendation" | "friend" | "profile";
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLElement>) => void;
 }
 
 const ProfileImage = ({

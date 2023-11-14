@@ -1,4 +1,4 @@
-import React from "react";
+import React, { MouseEvent, useCallback } from "react";
 import Props from "@/types";
 import { Friend } from "@/types/social";
 import styles from "./FriendItem.module.css";
@@ -7,6 +7,7 @@ import Link from "next/link";
 import ProfileImage from "@/components/image/ProfileImage/ProfileImage";
 import { classNameWrapper } from "@/utils/className";
 import useChatRoom from "@/hooks/chat/useChatRoom";
+import { useRouter } from "next/router";
 
 interface FriendItemProps extends Props {
   item: Friend;
@@ -14,17 +15,38 @@ interface FriendItemProps extends Props {
 
 const FriendItem = ({ item, className }: FriendItemProps) => {
   const { unReadCount, lastMessage } = useChatRoom(item.relationId);
+  const router = useRouter();
+
+  const onChat = useCallback((e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    router.push(`/friends/${item.relationId}/${item.friendId}`);
+  }, []);
+
+  const onProfile = useCallback((e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    router.push(`/profile/${item.friendId}`);
+  }, []);
+
+  const onSharedProfile = useCallback((e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    router.push(`/profile/${item.friendId}`);
+  }, []);
+
+  console.log("unReadCount", unReadCount);
 
   return (
-    <li className={[styles["friend-item-container"], className].join(" ")}>
-      <Link
-        href={`/profile/${item.friendId}`}
+    <li
+      className={[styles["friend-item-container"], className].join(" ")}
+      onClick={onChat}
+    >
+      <div
         className={classNameWrapper(
           styles["friend-item"],
           styles["friend-item__user"]
         )}
       >
         <ProfileImage
+          onClick={onProfile}
           className={styles["friend-item__user--image"]}
           src={item.img ?? "/favicon.ico"}
           alt="친구 프로필"
@@ -36,7 +58,7 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
             {lastMessage?.content}
           </p>
         </div>
-      </Link>
+      </div>
       <div
         className={classNameWrapper(
           styles["friend-item"],
@@ -44,22 +66,18 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
         )}
       >
         <Link
-          className={styles["friend-item__icon"]}
-          href={`/profile/${item.relationId}`}
-        >
-          <Icon.Music size="xl" />
-        </Link>
-        <Link
           className={classNameWrapper(styles["friend-item__icon"])}
           href={`/friends/${item.relationId}/${item.friendId}`}
         >
-          <Icon.Message size="xl" />
           {unReadCount > 0 && (
             <p className={styles["friend-item__icon--chat-count"]}>
               {unReadCount}
             </p>
           )}
         </Link>
+        <div className={styles["friend-item__icon"]} onClick={onSharedProfile}>
+          <Icon.Music size="xl" />
+        </div>
       </div>
     </li>
   );

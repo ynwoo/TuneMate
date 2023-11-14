@@ -2,15 +2,21 @@ import styles from "@/styles/FriendsRequestsPage.module.css";
 import useSocialFriendRequestsQuery from "@/hooks/queries/social/useSocialFriendRequestsQuery";
 import RecommendationList from "@/components/recommendation/RecommendationList/RecommendationList";
 import useFriendRequest from "@/hooks/useFriendRequest";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Storage } from "@/utils/storage";
 import useSocialFriendIdsQuery from "@/hooks/queries/social/useSocialFriendIdsQuery";
 import Nothing from "@/components/nothing/Nothing/Nothing";
 
 const FriendsRequests = () => {
   const { data: friendIds } = useSocialFriendIdsQuery();
-  const { data: friendsRequests } = useSocialFriendRequestsQuery();
+  const { data: friendsRequests, refetch } = useSocialFriendRequestsQuery();
   const { friendRequestMessages } = useFriendRequest();
+
+  useEffect(() => {
+    if (refetch) {
+      refetch();
+    }
+  }, [refetch, friendRequestMessages]);
 
   const sendFriendsRequests = useMemo(() => {
     return friendRequestMessages.filter(
