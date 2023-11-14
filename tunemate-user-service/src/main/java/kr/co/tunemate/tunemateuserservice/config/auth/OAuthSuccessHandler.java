@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -62,8 +63,8 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtTokenUtil.issueAccessToken(userId);
         String refreshToken = jwtTokenUtil.issueRefreshToken(userId);
 
-        List<String> images = (List<String>) oAuth2User.getAttribute("images");
-        String imageUrl = images.isEmpty() ? null : images.get(0);
+        List<Map> images = (List<Map>) oAuth2User.getAttribute("images");
+        String imageUrl = images.isEmpty() ? null : (String) images.get(0).get("url");
 
         MemberDto memberDto = MemberDto.builder()
                 .userId(userId)
