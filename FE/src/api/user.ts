@@ -24,6 +24,7 @@ export const getUserInfo = async (
   Storage.setSpotifyAccessToken(userInfo.spotifyAccessToken);
   Storage.setSpotifyUserId(userInfo.spotifyUserId);
   Storage.setUserName(userInfo.name);
+  Storage.setImageUrl(userInfo.imageUrl);
   return userInfo;
 };
 
