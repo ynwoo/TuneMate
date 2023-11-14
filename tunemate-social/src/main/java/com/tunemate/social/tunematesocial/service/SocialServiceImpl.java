@@ -311,6 +311,7 @@ public class SocialServiceImpl implements SocialService {
 	@Override
 	public void setChatPerson(long relationId, String userId) {
 		Friend friend = friendRepository.findById(relationId).get();
+		if (chatPersonRepository.findByFriendAndUserId(friend,userId) != null) return;
 		ChatPerson chatPerson = ChatPerson.builder().userId(userId).friend(friend).build();
 		chatPersonRepository.save(chatPerson);
 	}
