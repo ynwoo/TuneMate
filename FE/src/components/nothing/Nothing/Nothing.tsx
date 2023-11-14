@@ -9,7 +9,7 @@ interface NothingProps extends Props {
 const Nothing = ({ children, className }: NothingProps) => {
   return (
     <div className={classNameWrapper(styles["nothing"], className)}>
-      <p>{children}</p>
+      <p className={styles["nothing__text"]}>{children}</p>
     </div>
   );
 };

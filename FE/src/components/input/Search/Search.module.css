@@ -3,10 +3,12 @@
   align-items: stretch;
   height: 3rem;
   background-color: var(--white-color);
+  max-width: var(--max-width);
 }
 
 .search__input {
   flex-grow: 1;
+  width: 100%;
   border: 0;
 }
 

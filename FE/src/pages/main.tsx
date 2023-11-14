@@ -21,10 +21,17 @@ const MainPage = () => {
 
   return (
     <div className={styles["main-page"]}>
-      <MainContent title="공연" onClick={onConcert}>
-        <ul className={styles["main-page__concert"]}>
-          {concerts?.slice(0, 4).map((concert) => (
-            <ConcertCard item={concert} />
+      <MainContent
+        className={styles["main-page__content"]}
+        title="공연"
+        onClick={onConcert}
+      >
+        <ul className={styles["main-page__content--item-container"]}>
+          {concerts?.map((concert) => (
+            <ConcertCard
+              className={styles["main-page__content--item"]}
+              item={concert}
+            />
           ))}
         </ul>
       </MainContent>
