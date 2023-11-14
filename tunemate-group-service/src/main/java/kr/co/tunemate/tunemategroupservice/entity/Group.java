@@ -31,8 +31,6 @@ public class Group extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer capacity;
     @Column(nullable = false)
-    private Integer participantsCnt;
-    @Column(nullable = false)
     private String concertId;
     @CreatedDate
     private LocalDateTime startDateTime;

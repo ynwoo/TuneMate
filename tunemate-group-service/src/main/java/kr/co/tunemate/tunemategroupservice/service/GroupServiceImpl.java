@@ -50,11 +50,20 @@ public class GroupServiceImpl implements GroupService {
         return modelMapper.map(group, GroupDto.class);
     }
 
+    /**
+     * 공고를 조회합니다.
+     * @param groupId 공고 UUID
+     * @return
+     */
     @Override
     public GroupDto getGroupByGroupId(String groupId) {
         Group group = groupRepository.findByGroupId(groupId).orElseThrow(() -> new BaseException("존재하지 않는 공고입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus()));
+        Long participantsCnt = groupParticipationRepository.countByGroup(group);
 
-        return modelMapper.map(group, GroupDto.class);
+        GroupDto groupDto = modelMapper.map(group, GroupDto.class);
+        groupDto.setParticipantsCnt(participantsCnt);
+
+        return groupDto;
     }
 
     /**
@@ -116,7 +125,14 @@ public class GroupServiceImpl implements GroupService {
     @Transactional
     @Override
     public List<GroupDto> searchAll(GroupSearchDto groupSearchDto) {
-        return groupRepository.searchAll(groupSearchDto).stream().map(group -> modelMapper.map(group, GroupDto.class)).toList();
+        return groupRepository.searchAll(groupSearchDto).stream().map(group -> {
+            Long participantsCnt = groupParticipationRepository.countByGroup(group);
+
+            GroupDto groupDto = modelMapper.map(group, GroupDto.class);
+            groupDto.setParticipantsCnt(participantsCnt);
+
+            return groupDto;
+        }).toList();
     }
 
     /**

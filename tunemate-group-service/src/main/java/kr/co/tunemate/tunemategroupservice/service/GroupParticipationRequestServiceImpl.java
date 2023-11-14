@@ -1,5 +1,7 @@
 package kr.co.tunemate.tunemategroupservice.service;
 
+import kr.co.tunemate.tunemategroupservice.client.UserServiceClient;
+import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupDto;
 import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupParticipationRequestDto;
 import kr.co.tunemate.tunemategroupservice.entity.Group;
 import kr.co.tunemate.tunemategroupservice.entity.GroupParticipation;
@@ -9,6 +11,7 @@ import kr.co.tunemate.tunemategroupservice.exception.code.GroupErrorCode;
 import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRequestRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupRepository;
+import kr.co.tunemate.tunemategroupservice.vo.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -26,10 +29,13 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
     private final GroupRepository groupRepository;
     private final GroupParticipationRepository groupParticipationRepository;
     private final GroupParticipationRequestRepository groupParticipationRequestRepository;
+    private final UserServiceClient userServiceClient;
     private final ModelMapper modelMapper;
 
-    private static boolean canParticipate(Group group) {
-        return group.getClosedByHost() || group.getDeadline().isBefore(LocalDateTime.now()) || group.getParticipantsCnt() >= group.getCapacity();
+    private boolean canParticipate(Group group) {
+        Long paricipationsCnt = groupParticipationRepository.countByGroup(group);
+
+        return group.getClosedByHost() || group.getDeadline().isBefore(LocalDateTime.now()) || paricipationsCnt >= group.getCapacity();
     }
 
     /**
@@ -70,7 +76,14 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
     @Override
     public List<GroupParticipationRequestDto> findAllByUserId(String userId) {
         return groupParticipationRequestRepository.findAllByUserId(userId).stream().map(
-                groupParticipationRequest -> modelMapper.map(groupParticipationRequest, GroupParticipationRequestDto.class)
+                groupParticipationRequest -> {
+                    GroupParticipationRequestDto groupParticipationRequestDto = modelMapper.map(groupParticipationRequest, GroupParticipationRequestDto.class);
+                    GroupDto groupDto = modelMapper.map(groupParticipationRequest.getGroup(), GroupDto.class);
+
+                    groupParticipationRequestDto.setGroupDto(groupDto);
+
+                    return groupParticipationRequestDto;
+                }
         ).toList();
     }
 
@@ -84,8 +97,23 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
     public List<GroupParticipationRequestDto> findAllRequestedParticipationByUserId(String userId) {
         List<Group> groups = groupRepository.getReferencesByHostId(userId);
 
-        return groupParticipationRequestRepository.findAllByGroupIn(groups).stream().map(groupParticipationRequest ->
-                modelMapper.map(groupParticipationRequest, GroupParticipationRequestDto.class)
+        return groupParticipationRequestRepository.findAllByGroupIn(groups).stream().map(groupParticipationRequest -> {
+                    List<UserInfo> userInfos = userServiceClient.getUserInfo(List.of(userId));
+
+                    if (userInfos.isEmpty()) {
+                        throw new BaseException("존재하지 않는 사용자입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus());
+                    }
+
+                    UserInfo userInfo = userInfos.get(0);
+
+                    GroupParticipationRequestDto groupParticipationRequestDto = modelMapper.map(groupParticipationRequest, GroupParticipationRequestDto.class);
+                    GroupDto groupDto = modelMapper.map(groupParticipationRequest.getGroup(), GroupDto.class);
+
+                    groupParticipationRequestDto.setGroupDto(groupDto);
+                    groupParticipationRequestDto.setUserInfo(userInfo);
+
+                    return groupParticipationRequestDto;
+                }
         ).toList();
     }
 
@@ -106,7 +134,7 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
 
         groupParticipationRequestRepository.delete(groupParticipationRequest);
 
-        groupParticipationRepository.findByUserIdAndGroup(userId, groupParticipationRequest.getGroup()).ifPresentOrElse(groupParticipation -> {
+        groupParticipationRepository.findByUserIdAndGroup(groupParticipationRequest.getUserId(), groupParticipationRequest.getGroup()).ifPresentOrElse(groupParticipation -> {
                 }, // 이미 참여중인 공고에 대한 참여요청을 수락하려 하는 경우
                 () -> {
                     GroupParticipation groupParticipation = GroupParticipation.builder().groupParticipationId(UUID.randomUUID().toString()).group(groupParticipationRequest.getGroup()).userId(groupParticipationRequest.getUserId()).build();
