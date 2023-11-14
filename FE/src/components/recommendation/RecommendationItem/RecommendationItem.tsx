@@ -11,7 +11,6 @@ import useDeclineSocialFriendRequestMutation from "@/hooks/mutations/social/useD
 import Icon from "@/components/icons";
 import ButtonWithModal from "@/components/button/ButtonWithModal";
 import useSendSocialFriendRequestMutation from "@/hooks/mutations/social/useSendSocialFriendRequestMutation";
-import useSocialFriendsQuery from "@/hooks/queries/social/useSocialFriendsQuery";
 
 interface RecommendItemProps extends Props {
   item: FriendRequest | RecommendationFriend;
@@ -25,24 +24,24 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
     useDeclineSocialFriendRequestMutation();
   const { mutate: sendSocialFriendRequest } =
     useSendSocialFriendRequestMutation();
+  console.log(item);
 
   const { isFriendRequest, onAccept, onDecline } = useMemo(() => {
-    const isFriendRequest = item.type === "friendRequest";
+    const isFriendRequest = item.musicalTasteSimilarity ? true : false;
     const onAccept = (e: MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       if (isFriendRequest) {
         // 친구 요청 수락
         acceptFriendRequest(item.userId);
       } else {
-        const { userId, distance, similarity } = item;
-        console.log(distance, similarity);
+        const { userId, distance, musicalTasteSimilarity } = item;
 
         // 친구 요청 보내기
         // TODO: 친구 요청 중복 제거 구현 필요
         sendSocialFriendRequest({
           userId,
-          distance: "100",
-          musicalTasteSimilarity: String(similarity),
+          distance: distance,
+          musicalTasteSimilarity: String(musicalTasteSimilarity),
         });
       }
     };
@@ -61,6 +60,8 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
     declineFriendRequest,
     sendSocialFriendRequest,
   ]);
+
+  console.log(isFriendRequest);
 
   const onMoveProfilePage = useCallback(() => {
     router.push(`/profile/${item.userId}`);
@@ -87,7 +88,7 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
           {/* TODO: distance 구현 예정 */}
           {/* <p>{item.distance ?? 0}km</p> */}
           <p>
-            {(Number(item.similarity) * 100).toFixed(0)}
+            {(Number(item.musicalTasteSimilarity) * 100).toFixed(0)}
             <Icon.Music size="lg" />
           </p>
           {!isFriendRequest && (
