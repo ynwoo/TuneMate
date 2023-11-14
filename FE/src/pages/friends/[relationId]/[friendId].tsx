@@ -15,6 +15,7 @@ import Modal from "@/components/modal/Modal";
 import ChatMenu from "@/components/chat/ChatMenu/ChatMenu";
 import useDeleteSocialFriendMutation from "@/hooks/mutations/social/useDeleteSocialFriendMutation";
 import Icon from "@/components/icons";
+import useDisconnectChatRoomMutation from "@/hooks/mutations/social/useDisconnectChatRoomMutation";
 
 interface ChatPageProps extends Props {}
 
@@ -32,6 +33,7 @@ const ChatPage = ({}: ChatPageProps) => {
 
   const { closeToggle, isOpen, openToggle } = useModal();
   const { mutate: deleteSocialFriend } = useDeleteSocialFriendMutation();
+  const { mutate: disconnectChatRoom } = useDisconnectChatRoomMutation();
 
   const chatRoom = useMemo(() => {
     const newChatRoom = chatRooms.find(
@@ -68,6 +70,10 @@ const ChatPage = ({}: ChatPageProps) => {
       senderNo: Storage.getUserId(),
       time: "",
     });
+
+    return () => {
+      disconnectChatRoom(relationId);
+    };
   }, [relationId]);
 
   return (
