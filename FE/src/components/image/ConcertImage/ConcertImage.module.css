@@ -2,6 +2,16 @@
 }
 
 .concert-image img {
-  /* height: inherit;
-  width: inherit; */
+  height: inherit;
+  width: inherit;
+}
+
+.list {
+  height: 5rem;
+  width: 4rem;
+}
+
+.detail {
+  height: 15rem;
+  width: 12rem;
 }

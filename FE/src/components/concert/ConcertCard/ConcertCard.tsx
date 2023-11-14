@@ -12,7 +12,7 @@ const ConcertCard = ({ className, item }: ConcertCardProps) => {
   return (
     <li className={classNameWrapper(styles["concert-card"], className)}>
       <div className={styles["concert-card__image"]}>
-        <ConcertImage src={item.imageUrl} alt={item.title} />
+        <ConcertImage src={item.imageUrl} alt={item.title} type="list" />
       </div>
     </li>
   );

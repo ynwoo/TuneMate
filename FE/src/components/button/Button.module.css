@@ -53,10 +53,10 @@
 .white {
   border: 1px solid var(--white-color);
   background-color: var(--white-color);
-  color: var(--red-color);
+  color: var(--blue-color);
 }
 
 .white:hover {
   background-color: var(--white-color);
-  color: var(--white-color);
+  color: var(--red-color);
 }

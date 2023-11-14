@@ -55,7 +55,6 @@ a {
 
 .main {
   min-height: var(--main-height);
-  /* margin-bottom: var(--bottom-navbar-height); */
   background-color: var(--white-color);
 }
 
