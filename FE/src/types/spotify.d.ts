@@ -21,7 +21,7 @@ interface Item {
 }
 
 interface Track {
-  albums: Album;
+  album: Album;
   uri: string;
 }
 
