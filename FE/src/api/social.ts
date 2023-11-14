@@ -36,8 +36,11 @@ export const sendSocialFriendRequest = async (
 };
 
 // 친구 요청 수락
-export const acceptSocialFriendRequest = async (userId: UserInfo["userId"]) => {
-  await api.post<void>(`${SOCIAL_SERVICE_URL}/acceptance/${userId}`);
+export const acceptSocialFriendRequest = async (
+  userId: UserInfo["userId"]
+): Promise<{ relationId: Friend["relationId"] }> => {
+  const response = await api.post(`${SOCIAL_SERVICE_URL}/acceptance/${userId}`);
+  return response.data;
 };
 
 // 친구 요청 거절

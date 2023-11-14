@@ -11,6 +11,7 @@ import useDeclineSocialFriendRequestMutation from "@/hooks/mutations/social/useD
 import Icon from "@/components/icons";
 import ButtonWithModal from "@/components/button/ButtonWithModal";
 import useSendSocialFriendRequestMutation from "@/hooks/mutations/social/useSendSocialFriendRequestMutation";
+import useSocialFriendsQuery from "@/hooks/queries/social/useSocialFriendsQuery";
 
 interface RecommendItemProps extends Props {
   item: FriendRequest | RecommendationFriend;
