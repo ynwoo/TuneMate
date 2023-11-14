@@ -80,7 +80,7 @@ class Images(BaseModel):
 
 class Music(BaseModel):
     album: Images
-    artists: str
+    artists: List[str]
     name: str
     uri: str
 
@@ -181,8 +181,9 @@ def song(UserId: str | None = Header(default=None)):
         songData = cursor.fetchone()
         # responseData.append(SongDto(title=songData["title"], img=songData["image"], artist=songData["artist"],
         #                             uri=songData["spotify_uri"]))
+        artist = []
         img = Images(images=[{"uri" : songData["image"]}])
-        responseData.append(Music(name=songData["title"],artists=songData["artist"],uri=songData["spotify_uri"],album=img))
+        responseData.append(Music(name=songData["title"],artists=songData["artist"].split(","),uri=songData["spotify_uri"],album=img))
 
     return responseData
 
