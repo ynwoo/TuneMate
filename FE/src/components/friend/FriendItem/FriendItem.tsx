@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import Props from "@/types";
 import { Friend } from "@/types/social";
 import styles from "./FriendItem.module.css";
@@ -6,45 +6,14 @@ import Icon from "@/components/icons";
 import Link from "next/link";
 import ProfileImage from "@/components/image/ProfileImage/ProfileImage";
 import { classNameWrapper } from "@/utils/className";
-import useChat from "@/hooks/useChat";
-import { Storage } from "@/utils/storage";
-import { CHAT } from "@/constants/chat";
-import { ChatFilter } from "@/utils/filter";
+import useChatRoom from "@/hooks/chat/useChatRoom";
 
 interface FriendItemProps extends Props {
   item: Friend;
 }
 
 const FriendItem = ({ item, className }: FriendItemProps) => {
-  const { chatRooms } = useChat();
-
-  // 해당하는 채팅방
-  const chatRoom = useMemo(
-    () => chatRooms.find(({ chatRoomId }) => chatRoomId === item.relationId),
-    [chatRooms, item.relationId]
-  );
-
-  // 상대방이 보낸 메시지 중에서 안 읽은 메시지 개수
-  const unReadCount = useMemo(() => {
-    if (!chatRoom) return 0;
-
-    let count = 0;
-    for (let index = chatRoom.messages.length - 1; index >= 0; index--) {
-      const { senderNo, readCount } = chatRoom.messages[index];
-      if (senderNo === Storage.getUserId() || readCount === CHAT.read) {
-        return count;
-      }
-
-      count++;
-    }
-
-    return count;
-
-    // return ChatFilter.messages(chatRoom.messages).filter(
-    //   ({ readCount, senderNo }) =>
-    //     senderNo !== Storage.getUserId() && readCount === CHAT.unRead
-    // ).length;
-  }, [chatRoom]);
+  const { unReadCount, lastMessage } = useChatRoom(item.relationId);
 
   return (
     <li className={[styles["friend-item-container"], className].join(" ")}>
@@ -61,7 +30,12 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
           alt="친구 프로필"
           type="friend"
         />
-        <p>{item.name}</p>
+        <div className={styles["friend-item__user--content-container"]}>
+          <p className={styles["friend-item__user--name"]}>{item.name}</p>
+          <p className={styles["friend-item__user--message"]}>
+            {lastMessage?.content}
+          </p>
+        </div>
       </Link>
       <div
         className={classNameWrapper(
@@ -71,18 +45,20 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
       >
         <Link
           className={styles["friend-item__icon"]}
-          href={`/friends/${item.relationId}/${item.friendId}`}
-        >
-          <Icon.Message size="xl" />
-          <p className={styles["friend-item__icon--chat-count"]}>
-            {unReadCount}
-          </p>
-        </Link>
-        <Link
-          className={styles["friend-item__icon"]}
           href={`/profile/${item.relationId}`}
         >
           <Icon.Music size="xl" />
+        </Link>
+        <Link
+          className={classNameWrapper(styles["friend-item__icon"])}
+          href={`/friends/${item.relationId}/${item.friendId}`}
+        >
+          <Icon.Message size="xl" />
+          {unReadCount > 0 && (
+            <p className={styles["friend-item__icon--chat-count"]}>
+              {unReadCount}
+            </p>
+          )}
         </Link>
       </div>
     </li>
