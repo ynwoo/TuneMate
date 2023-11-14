@@ -1,5 +1,6 @@
 package kr.co.tunemate.tunemategroupservice.service;
 
+import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupDto;
 import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupParticipationDto;
 import kr.co.tunemate.tunemategroupservice.entity.GroupParticipation;
 import kr.co.tunemate.tunemategroupservice.exception.BaseException;
@@ -27,7 +28,14 @@ public class GroupParticipationServiceImpl implements GroupParticipationService 
     @Override
     public List<GroupParticipationDto> findByUserId(String userId) {
         return groupParticipationRepository.findAllByUserId(userId).stream()
-                .map(groupParticipation -> modelMapper.map(groupParticipation, GroupParticipationDto.class)).toList();
+                .map(groupParticipation -> {
+                    GroupParticipationDto groupParticipationDto = modelMapper.map(groupParticipation, GroupParticipationDto.class);
+                    GroupDto groupDto = modelMapper.map(groupParticipation.getGroup(), GroupDto.class);
+
+                    groupParticipationDto.setGroupDto(groupDto);
+
+                    return groupParticipationDto;
+                }).toList();
     }
 
     /**

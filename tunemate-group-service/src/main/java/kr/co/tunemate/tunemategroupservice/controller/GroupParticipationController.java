@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import kr.co.tunemate.tunemategroupservice.service.GroupParticipationService;
+import kr.co.tunemate.tunemategroupservice.vo.ResponseGroup;
 import kr.co.tunemate.tunemategroupservice.vo.ResponseGroupParticipation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -25,7 +26,13 @@ public class GroupParticipationController {
     @GetMapping("/me/group-participations")
     public ResponseEntity<List<ResponseGroupParticipation>> getParticipationGroups(@RequestHeader("UserId") String userId) {
         List<ResponseGroupParticipation> responseGroupParticipations = groupParticipationService.findByUserId(userId).stream()
-                .map(groupParticipationDto -> modelMapper.map(groupParticipationDto, ResponseGroupParticipation.class))
+                .map(groupParticipationDto -> {
+                    ResponseGroupParticipation responseGroupParticipation = modelMapper.map(groupParticipationDto, ResponseGroupParticipation.class);
+                    ResponseGroup responseGroup = modelMapper.map(groupParticipationDto.getGroupDto(), ResponseGroup.class);
+                    responseGroupParticipation.setResponseGroup(responseGroup);
+
+                    return responseGroupParticipation;
+                })
                 .toList();
 
         return ResponseEntity.ok(responseGroupParticipations);

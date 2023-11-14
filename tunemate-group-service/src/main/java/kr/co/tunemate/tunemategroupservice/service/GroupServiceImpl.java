@@ -3,9 +3,13 @@ package kr.co.tunemate.tunemategroupservice.service;
 import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupDto;
 import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupSearchDto;
 import kr.co.tunemate.tunemategroupservice.entity.Group;
+import kr.co.tunemate.tunemategroupservice.entity.GroupParticipation;
+import kr.co.tunemate.tunemategroupservice.entity.GroupParticipationRequest;
 import kr.co.tunemate.tunemategroupservice.exception.BaseException;
 import kr.co.tunemate.tunemategroupservice.exception.code.GroupErrorCode;
 import kr.co.tunemate.tunemategroupservice.repository.ConcertRepository;
+import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRepository;
+import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRequestRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -20,6 +24,7 @@ import java.util.UUID;
 public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final ConcertRepository concertRepository;
+    private final GroupParticipationRepository groupParticipationRepository;
     private final ModelMapper modelMapper;
 
     @Transactional
@@ -33,6 +38,14 @@ public class GroupServiceImpl implements GroupService {
         Group group = modelMapper.map(groupDto, Group.class);
 
         group = groupRepository.save(group);
+
+        GroupParticipation groupParticipation = GroupParticipation.builder()
+                .groupParticipationId(UUID.randomUUID().toString())
+                .group(group)
+                .userId(userId)
+                .build();
+
+        groupParticipationRepository.save(groupParticipation);
 
         return modelMapper.map(group, GroupDto.class);
     }
