@@ -13,6 +13,7 @@ export const MainplaylistState = atom<string[]>({
   default: [] as string[], // 사용 사례에 따라 적절한 기본값 설정
 });
 
+// pick한 곡의 모든 정보
 export const PickTrackState = atom<Track>({
   key: "PickTrackState",
   default: undefined,

@@ -28,7 +28,7 @@ export default function SinglePlayer() {
   const [playuri, setPlayuri] = useState<string>("");
   const [trackImg, setTrackImg] = useState<string>("");
   // console.log("Mainplaylist", Mainplaylist);
-  // console.log("PickTrack", PickTrack);
+  console.log("PickTrack", PickTrack);
   // console.log("reSongUrl", reSongUrl);
   // console.log("Mainplaylist", Mainplaylist);
 
