@@ -38,9 +38,11 @@ const TopNavbar = () => {
       </div>
 
       <Link href={"/friends/requests"} className={styles["top-navbar__item"]}>
-        <p className={styles["top-navbar__unread-count"]}>
-          {unreadFriendRequestCount}
-        </p>
+        {unreadFriendRequestCount > 0 && (
+          <p className={styles["top-navbar__unread-count"]}>
+            {unreadFriendRequestCount}
+          </p>
+        )}
         <Icon.Alarm />
       </Link>
     </nav>

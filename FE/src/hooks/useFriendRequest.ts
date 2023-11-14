@@ -13,7 +13,7 @@ const useFriendRequest = () => {
   }, []);
 
   const unreadFriendRequestCount = useMemo(() => {
-    if (!userId) return;
+    if (!userId) return 0;
 
     const newFriendRequestIds = context.friendRequestMessages
       .filter(({ receiveUserId }) => receiveUserId === userId)
