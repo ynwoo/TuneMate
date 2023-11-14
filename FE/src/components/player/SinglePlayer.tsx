@@ -14,6 +14,7 @@ import {
   reSongUrlState,
 } from "@/store/atom";
 import "animate.css/animate.min.css";
+import { Track } from "@/types/spotify";
 
 export default function SinglePlayer() {
   const PickTrack = useRecoilValue(PickTrackState);
@@ -22,7 +23,7 @@ export default function SinglePlayer() {
   const reAlbumArt = useRecoilValue(reAlbumArtState);
   const reSongUrl = useRecoilValue(reSongUrlState);
   const [AlubumArt, setAlbumArt] = useRecoilState(AlubumArtState);
-  const [play, setPlay] = useState([]);
+  const [play, setPlay] = useState<Track | undefined>(undefined);
   const [accessToken, setAccessToken] = useState<string>("");
   const [playuri, setPlayuri] = useState<string>("");
   const [trackImg, setTrackImg] = useState<string>("");

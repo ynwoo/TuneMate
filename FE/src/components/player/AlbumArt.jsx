@@ -22,24 +22,23 @@ const AlbumArt = ({ trackImg }) => {
     ["#e58e82", "#6f569f"],
   ];
 
-//   const pageChangeFunc = () => {
-//     document.querySelector(
-//       `.${styles.contentWrap}`
-//     ).style.background = `linear-gradient(120deg, ${bgArray[pageNum][0]}, ${bgArray[pageNum][1]})`;
+  //   const pageChangeFunc = () => {
+  //     document.querySelector(
+  //       `.${styles.contentWrap}`
+  //     ).style.background = `linear-gradient(120deg, ${bgArray[pageNum][0]}, ${bgArray[pageNum][1]})`;
 
-    document.querySelectorAll(".album").forEach((album, index) => {
-      if (pageNum === index) {
-        album.classList.add("active");
-      } else {
-        album.classList.remove("active");
-      }
-    });
-
-    const diskInnerElement = document.querySelector(".disk_inner");
-    if (diskInnerElement) {
-      diskInnerElement.style.background = bgArray[pageNum][0];
+  document.querySelectorAll(".album").forEach((album, index) => {
+    if (pageNum === index) {
+      album.classList.add("active");
+    } else {
+      album.classList.remove("active");
     }
-  };
+  });
+
+  const diskInnerElement = document.querySelector(".disk_inner");
+  if (diskInnerElement) {
+    diskInnerElement.style.background = bgArray[pageNum][0];
+  }
 
   useEffect(() => {
     pageChangeFunc();

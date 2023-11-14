@@ -21,8 +21,11 @@ interface Item {
 }
 
 interface Track {
-  albums: Album;
+  album: Album;
   uri: string;
+  id: string;
+  name: string;
+  artists: Artist[];
 }
 
 interface Album {
