@@ -3,7 +3,11 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--white-color);
+  cursor: pointer;
+}
+.friend-item-container:hover {
+  background-color: var(--light-gray-color);
 }
 
 .friend-item {
