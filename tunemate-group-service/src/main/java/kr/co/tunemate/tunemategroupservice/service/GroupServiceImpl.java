@@ -22,6 +22,7 @@ public class GroupServiceImpl implements GroupService {
     private final ConcertRepository concertRepository;
     private final ModelMapper modelMapper;
 
+    @Transactional
     @Override
     public GroupDto saveGroup(String userId, GroupDto groupDto) {
         concertRepository.findById(Long.valueOf(groupDto.getConcertId())).orElseThrow(() -> new BaseException("존재하지 않는 콘서트입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus()));
@@ -99,6 +100,7 @@ public class GroupServiceImpl implements GroupService {
      * @param groupSearchDto 검색 조건들
      * @return
      */
+    @Transactional
     @Override
     public List<GroupDto> searchAll(GroupSearchDto groupSearchDto) {
         return groupRepository.searchAll(groupSearchDto).stream().map(group -> modelMapper.map(group, GroupDto.class)).toList();
@@ -110,6 +112,7 @@ public class GroupServiceImpl implements GroupService {
      * @param userId  요청자 UUID
      * @param groupId 삭제대상 공고 UUID
      */
+    @Transactional
     @Override
     public void deleteGroupByGroupId(String userId, String groupId) {
         groupRepository.deleteByHostIdAndGroupId(userId, groupId);
