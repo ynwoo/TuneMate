@@ -8,13 +8,13 @@ import "@/styles/reset.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import type { AppProps } from "next/app";
 import { usePathname } from "next/navigation";
-import { useMemo } from "react";
-import { RecoilRoot } from "recoil";
+import { useMemo, useEffect, useState } from "react";
+import { RecoilRoot, useRecoilValue } from "recoil";
 import SinglePlayer from "@/components/player/SinglePlayer";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 20_000,
+      staleTime: 20000,
     },
   },
 });
