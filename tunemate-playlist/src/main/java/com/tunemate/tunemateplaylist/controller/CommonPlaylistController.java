@@ -45,7 +45,7 @@ public class CommonPlaylistController {
 	private final Map<String, List<SseEmitter>> SseEmitters = new ConcurrentHashMap<>();
 
 	// 공동 플레이리스트 조회
-	@GetMapping("/playlists/{relationId}")
+	@GetMapping(value = "/playlists/{relationId}",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	@Operation(summary = "공동 플레이리스트 조회", description = "공동 플레이리스트를 조회합니다.\n" +
 		"공통 플리 조회는 PostMan에서 테스트(SSE라 그런듯?)")
 	@ApiResponses(value = {
