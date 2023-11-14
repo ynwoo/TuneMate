@@ -1,0 +1,25 @@
+/* slide.module.css */
+
+.box {
+  height: 200px;
+  width: 300px;
+  overflow: hidden;
+  border: 1px solid red;
+  background: #ff0;
+  position: relative;
+  transition: height 0.3s ease-out; /* height 변화에 대한 전환 효과 */
+}
+
+.hid-box {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  transition: top 0.3s ease-out; /* top 변화에 대한 전환 효과 */
+  background: #428bca;
+  height: 100%;
+}
+
+.box:hover .hid-box {
+  top: 0;
+}
