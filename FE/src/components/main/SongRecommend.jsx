@@ -9,10 +9,12 @@ export default function SongRecommend() {
   const [ListInfo, setLiseInfo] = useRecoilState(ListInfoState);
   // const ListInfoInfo = useRecoilValue(ListInfoState);
 
-  // const handleSongClick = (song) => {
-  //   // 클릭된 곡의 URI를 PickTrackState에 저장
-  //   setLiseInfo(song);
-  // };
+  const handleSongClick = (song) => {
+    // 클릭된 곡의 URI를 PickTrackState에 저장
+    setLiseInfo(song);
+    console.log("song", song);
+    console.log("recommendedSongs", recommendedSongs);
+  };
 
   return (
     <div>

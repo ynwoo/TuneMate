@@ -6,6 +6,7 @@ import {
   ListInfoState,
   reSongUrlState,
   reAlbumArtState,
+  AlubumArtState,
 } from "@/store/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import SinglePlayer from "@/components/player/SinglePlayer";
@@ -15,6 +16,7 @@ export default function SongRecommend() {
   const [pickTrack, setPickTrack] = useRecoilState(PickTrackState);
   const [resongUrl, setResongUrl] = useRecoilState(reSongUrlState);
   const [reAlbumArt, setReAlbumArt] = useRecoilState(reAlbumArtState);
+  const [AlubumArt, setAlubumArt] = useRecoilState(AlubumArtState);
   // const ListInfo = useRecoilValue(ListInfoState);
   const [ListInfo, setListInfo] = useRecoilState(ListInfoState);
 
@@ -25,6 +27,7 @@ export default function SongRecommend() {
     setReAlbumArt(song.img);
     setListInfo(song.uri);
     setResongUrl(song.uri);
+    setAlubumArt(song.img);
   };
 
   return (

@@ -28,7 +28,7 @@ export default function CustomPlayer({ accessToken, playTrack }) {
   const [playList, setPlayList] = useRecoilState(playlistState);
   const [playTracks, setPlayTracks] = useState(playTrack);
 
-  console.log("playTrack", playTrack);
+  // console.log("playTrack", playTrack);
   console.log("ListInfo", ListInfo);
 
   const playAllTracks = () => {
@@ -79,9 +79,8 @@ export default function CustomPlayer({ accessToken, playTrack }) {
 
   return (
     <div className="custom-player" style={{ width: 300, height: 200 }}>
-      <div className="custom-controls">
-        {/* <button onClick={playAllTracks}>전체 재생</button> */}
-      </div>
+      <div className="custom-controls"></div>
+      <button onClick={playAllTracks}>전체 재생</button>
       <SpotifyPlayer
         token={accessToken}
         showSaveIcon
@@ -91,13 +90,13 @@ export default function CustomPlayer({ accessToken, playTrack }) {
           }
         }}
         play={play}
-        uris={reSongUrl}
+        uris={newArr}
       />
       <div
         style={{ display: "flex", justifyContent: "center", marginTop: 50 }}
         className={styles.rotatingImageContainer}
       >
-        <Image src={AlubumArt} width={200} height={200} />
+        <Image src={AlubumArt} alt={AlubumArt} width={200} height={200} />
       </div>
     </div>
   );

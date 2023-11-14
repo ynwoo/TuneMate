@@ -27,44 +27,59 @@ export default function SinglePlayer() {
   const [playuri, setPlayuri] = useState<string>("");
   const [trackImg, setTrackImg] = useState<string>("");
   // console.log("Mainplaylist", Mainplaylist);
-  console.log("PickTrack", PickTrack);
-  console.log("reSongUrl", reSongUrl);
+  // console.log("PickTrack", PickTrack);
+  // console.log("reSongUrl", reSongUrl);
+  // console.log("Mainplaylist", Mainplaylist);
 
   useEffect(() => {
     if (PickTrack) {
+      // console.log(PickTrack, "2");
       setPlay(PickTrack);
-      // console.log("PIck", PickTrack);
-
-      if (reSongUrl && reAlbumArt) {
-        // setPlayuri(reSongUrl);
-        setAlbumArt(reAlbumArt);
-      } else if (
-        PickTrack.album &&
-        PickTrack.album.images &&
-        PickTrack.album.images.length > 0
-      ) {
-        setPlayuri(PickTrack.uri);
-        setAlbumArt(PickTrack.album.images[0].url);
-      }
+      setPlayuri(PickTrack.uri);
+      setAlbumArt(PickTrack.album.images[0].url);
       console.log("왔어");
     } else if (ListInfo) {
       setPlay(ListInfo);
-      if (reSongUrl && reAlbumArt) {
-        // setPlayuri(reSongUrl);
-        setAlbumArt(reAlbumArt);
-      } else if (
-        ListInfo.album &&
-        ListInfo.album.images &&
-        ListInfo.album.images.length > 0
-      ) {
-        setPlayuri(ListInfo.uri);
-        setAlbumArt(ListInfo.album.images[0].url);
-      }
+      setPlayuri(ListInfo.uri);
+      setAlbumArt(ListInfo.album.images[0].url);
       console.log("안왔어");
-      console.log(reAlbumArt);
-      console.log(reSongUrl);
     }
-  }, [ListInfo, PickTrack, reSongUrl, reAlbumArt]);
+  }, [ListInfo, PickTrack]);
+
+  // useEffect(() => {
+  //   if (PickTrack) {
+  //     setPlay(PickTrack);
+
+  //     if (reSongUrl && AlubumArt) {
+  //       setPlayuri(reSongUrl);
+  //       setAlbumArt(AlubumArt);
+  //     } else if (
+  //       PickTrack.album &&
+  //       PickTrack.album.images &&
+  //       PickTrack.album.images.length > 0
+  //     ) {
+  //       setPlayuri(PickTrack.uri);
+  //       setAlbumArt(PickTrack.album.images[0].url);
+  //     }
+  //     console.log("왔어");
+  //   } else if (ListInfo) {
+  //     setPlay(ListInfo);
+  //     if (reSongUrl && AlubumArt) {
+  //       // setPlayuri(reSongUrl);
+  //       setAlbumArt(AlubumArt);
+  //     } else if (
+  //       ListInfo.album &&
+  //       ListInfo.album.images &&
+  //       ListInfo.album.images.length > 0
+  //     ) {
+  //       setPlayuri(ListInfo.uri);
+  //       setAlbumArt(ListInfo.album.images[0].url);
+  //     }
+  //     console.log("안왔어");
+  //     console.log(AlubumArt);
+  //     console.log(reSongUrl);
+  //   }
+  // }, [ListInfo, PickTrack, reSongUrl, reAlbumArt]);
 
   useEffect(() => {
     const spotifyAccessToken = Storage.getSpotifyAccessToken;
@@ -106,9 +121,11 @@ export default function SinglePlayer() {
       onClick={toggleTransform}
     >
       {/* 내용 */}
-      {playuri && <Player accessToken={accessToken} playTrack={playuri} />}
+      {/* {playuri && <Player accessToken={accessToken} playTrack={playuri} />}
+      {reSongUrl && <Player accessToken={accessToken} playTrack={reSongUrl} />} */}
 
-      {reSongUrl && <Player accessToken={accessToken} playTrack={reSongUrl} />}
+      {<Player accessToken={accessToken} playTrack={playuri} />}
+      {/* {<Player accessToken={accessToken} playTrack={reSongUrl} />} */}
     </div>
   );
 }
