@@ -129,7 +129,7 @@ public class SocialServiceImpl implements SocialService {
 
 	@Override
 	@Transactional
-	public void acceptFriendRequest(String myId, String newFriendId) {
+	public Long acceptFriendRequest(String myId, String newFriendId) {
 		// 친구 요청 기록 가져오기
 		Optional<FriendRequest> friendRequestOptional = friendRequestRepository.findByRequestedUserIdAndRequestingUserId(
 			myId, newFriendId);
@@ -165,6 +165,7 @@ public class SocialServiceImpl implements SocialService {
 		chattingRoom.setChatRoomId(relationId);
 		chattingRoom.setMessages(new ArrayList<>());
 		chattingRoomRepository.save(chattingRoom);
+		return relationId;
 	}
 
 	@Override

@@ -9,14 +9,13 @@ import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
 import com.tunemate.social.tunematesocial.dto.response.MyFriendResponseDto;
 import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResponseDto;
 import com.tunemate.social.tunematesocial.dto.response.RelationResponseDto;
-import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 
 public interface SocialService {
 	void addFriendRequest(String myId, FriendRequestDto friendRequestDto);
 
 	List<ReceivedFriendRequestResponseDto> getFriendRequests(String myId);
 
-	void acceptFriendRequest(String myId, String newFriendId);
+	Long acceptFriendRequest(String myId, String newFriendId);
 
 	void declineFriendRequest(String myId, String notFriendId);
 
