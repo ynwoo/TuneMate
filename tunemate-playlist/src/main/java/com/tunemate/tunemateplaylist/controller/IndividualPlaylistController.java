@@ -1,5 +1,6 @@
 package com.tunemate.tunemateplaylist.controller;
 
+import com.tunemate.tunemateplaylist.dto.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.json.simple.parser.ParseException;
@@ -15,16 +16,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tunemate.tunemateplaylist.dto.PlaylistCreateDto;
-import com.tunemate.tunemateplaylist.dto.PlaylistIdDto;
-import com.tunemate.tunemateplaylist.dto.PlaylistResponseDto;
-import com.tunemate.tunemateplaylist.dto.TrackChangeRequestDto;
-import com.tunemate.tunemateplaylist.dto.TrackCreateDto;
-import com.tunemate.tunemateplaylist.dto.TrackDeleteRequestDto;
 import com.tunemate.tunemateplaylist.service.IndividualPlaylistService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(value = "*", allowedHeaders = "*")
@@ -134,6 +131,19 @@ public class IndividualPlaylistController {
 		@RequestBody TrackChangeRequestDto trackChangeRequestDto, @PathVariable("playlistId") String playlistId) {
 		individualPlaylistService.checkValid(playlistId,userId);
 		individualPlaylistService.changeTrack(userId, playlistId, trackChangeRequestDto);
+	}
+
+	// 선택한 사람의 정보를 조회
+	@GetMapping("/info/{userId}")
+	@Operation(summary = "선택한 사람의 정보를 조횝합니다.", description = """
+		추천 또는 친구의 UUID, 사진, 이름, 대표 플레이리스트에 대한 정보를 조회합니다.""")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "조회 성공."),
+			@ApiResponse(responseCode = "404", description = "해당 사용자가 없습니다.")
+
+	})
+	public IndividualDto getIndividualInfo(@RequestHeader("UserId") String userId, @PathVariable("userId") String selectUserId){
+		return individualPlaylistService.getIndividualInfo(userId,selectUserId);
 	}
 
 }

@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -240,5 +241,19 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
 
     private String getToken(MemberInfo memberInfo) {
         return memberInfo.getSpotifyAccessToken();
+    }
+
+    @Override
+    public IndividualDto getIndividualInfo(String userId, String selectUserId){
+        List<String> userList = new ArrayList<>();
+        userList.add(selectUserId);
+        List<IndividualDto> individualDto = userServiceClient.getIndividualInfo(userList);
+        if(individualDto.size()==0) throw new NotFoundException("해당 사용자가 없습니다.",HttpStatus.NOT_FOUND);
+        IndividualDto userInfo = individualDto.get(0);
+        Optional<Playlist> playlist = individualPlaylistRepository.findByUserId(selectUserId);
+        if(playlist.isPresent()){
+            userInfo.setPlaylistId(playlist.get().getPlaylistSpotifyId());
+        }
+        return userInfo;
     }
 }

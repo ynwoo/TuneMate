@@ -21,4 +21,6 @@ public interface IndividualPlaylistService {
     void changeTrack(String userId, String playlistId, TrackChangeRequestDto trackChangeRequestDto);
 
     boolean checkValid(String playlistId, String userId);
+
+    IndividualDto getIndividualInfo(String userId, String selectUserId);
 }
