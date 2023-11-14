@@ -46,6 +46,7 @@
 
 .friend-item__user--content-container {
   display: flex;
+  max-width: 10em;
   flex-direction: column;
   justify-content: space-between;
 
@@ -59,4 +60,7 @@
 }
 .friend-item__user--message {
   font-size: 0.8rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }

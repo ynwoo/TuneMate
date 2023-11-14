@@ -44,10 +44,10 @@ const useChatRoom = (relationId: Friend["relationId"]) => {
   }, [chatRoom]);
 
   useEffect(() => {
-    if (prevChatRoom) {
+    if (prevChatRoom && !chatRoom) {
       refreshChatRooms(prevChatRoom);
     }
-  }, [prevChatRoom]);
+  }, [prevChatRoom, chatRoom]);
 
   return { chatRoom, unReadCount, lastMessage };
 };
