@@ -15,7 +15,7 @@ import {
   reAlbumArtState,
   AlubumArtState,
 } from "@/store/atom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { Track } from "@/types/spotify";
 
 const initConcertSearchOption: ConcertSearchOption = {
@@ -29,6 +29,10 @@ const MainPage = () => {
 
   const onConcert = useCallback(() => {
     router.push("/concerts");
+  }, []);
+
+  const onPlayer = useCallback(() => {
+    router.push("/player");
   }, []);
 
   const { data: recommendedSongs } = useRecommendationSongsQuery();
@@ -45,59 +49,36 @@ const MainPage = () => {
     // setPickTrack(song);
     setListInfo(song);
     setResongUrl(song.uri);
-    setAlubumArt(song.album.images[0].url);
+    setAlubumArt(song.album.images[0].uri);
   };
 
   return (
-    <div>
-      <div className={styles["main-page"]}>
-        <MainContent
-          className={styles["main-page__content"]}
-          title="공연"
-          onClick={onConcert}
-        >
-          <ul className={styles["main-page__content--item-container"]}>
-            {concerts?.map((concert) => (
-              <ConcertCard
-                className={styles["main-page__content--item"]}
-                item={concert}
-              />
-            ))}
-          </ul>
-        </MainContent>
-      </div>
-      <div>
-        <h1>Recommended Songs</h1>
-        {/* <SinglePlayer /> */}
-        <ul
-          style={{
-            display: "flex",
-            overflowX: "auto",
-            padding: 0,
-            listStyle: "none",
-          }}
-        >
+    <div className={styles["main-page"]}>
+      <MainContent className={styles["main-page__content"]} title="공연" onClick={onConcert}>
+        <ul className={styles["main-page__content--item-container"]}>
+          {concerts?.map((concert) => (
+            <ConcertCard className={styles["main-page__content--item"]} item={concert} />
+          ))}
+        </ul>
+      </MainContent>
+      <MainContent className={styles["main-page__content"]} title="추천곡" onClick={onPlayer}>
+        <ul className={styles["main-page__content--item-container"]}>
           {recommendedSongs?.map((song) => (
             <li
               key={song.name}
               onClick={() => handleSongClick(song)}
-              style={{ marginRight: "10px" }}
+              className={styles["main-page__content--item"]}
             >
               <div>
-                <Image
-                  src={song.album.images[0].url}
-                  alt={song.name}
-                  width={100}
-                  height={100}
-                />
-                <p>{song.name}</p>
-                <p>{song.artists?.[0].name}</p>
+                <Image src={song.album.images[0].uri} alt={song.name} width={100} height={100} />
+                {/* <p>{song.name}</p> */}
+                {/* <p>{song.artists?.[0].name}</p> */}
                 {/* <p>{song.uri}</p> */}
               </div>
             </li>
           ))}
         </ul>
-      </div>
+      </MainContent>
     </div>
   );
 };

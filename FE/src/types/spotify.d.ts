@@ -43,9 +43,9 @@ interface Artist {
 }
 
 interface Image {
-  url: string;
-  height: number;
-  width: number;
+  uri: string;
+  height?: number;
+  width?: number;
 }
 
 interface Owner {
