@@ -57,6 +57,8 @@ a {
 .main {
   min-height: var(--main-height);
   background-color: var(--white-color);
+  display: flex;
+  flex-direction: column;
 }
 
 .login {

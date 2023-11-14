@@ -23,7 +23,9 @@ const ChatPage = ({}: ChatPageProps) => {
   const params = useParams();
   const relationId = Number(params?.relationId as string);
   const friendId = params?.friendId as string;
-  const [messageRequest, setMessageRequest] = useState<MessageRequest>({} as MessageRequest);
+  const [messageRequest, setMessageRequest] = useState<MessageRequest>(
+    {} as MessageRequest
+  );
 
   const { publish, chatRooms } = useChat();
   const { data: prevChatRoom } = useChatsQuery(relationId);
@@ -32,7 +34,9 @@ const ChatPage = ({}: ChatPageProps) => {
   const { mutate: deleteSocialFriend } = useDeleteSocialFriendMutation();
 
   const chatRoom = useMemo(() => {
-    const newChatRoom = chatRooms.find(({ chatRoomId }) => chatRoomId === relationId);
+    const newChatRoom = chatRooms.find(
+      ({ chatRoomId }) => chatRoomId === relationId
+    );
     if (!newChatRoom) return prevChatRoom;
     return ChatFilter.chatRoom(newChatRoom);
   }, [prevChatRoom, chatRooms, relationId]);
@@ -69,7 +73,10 @@ const ChatPage = ({}: ChatPageProps) => {
   return (
     <>
       <div className={styles["chat-page"]}>
-        <ChatNavbar className={styles["chat-page__chat-navbar"]} onModal={openToggle} />
+        <ChatNavbar
+          className={styles["chat-page__chat-navbar"]}
+          onModal={openToggle}
+        />
         {/* <div className={styles["chat-page__button--scroll-down"]} onClick={moveScrollDown}>
         <Icon.Down />
       </div> */}
@@ -96,6 +103,7 @@ const ChatPage = ({}: ChatPageProps) => {
         value={content}
         onInput={onInput}
         onSubmit={onSubmit}
+        type="chat"
       />
     </>
   );
