@@ -1,4 +1,4 @@
-.modal-overlay {
+.menu-overlay {
   z-index: 10;
   width: 100vw;
   height: 100vh;
@@ -12,7 +12,7 @@
   overflow: hidden;
 }
 
-.modal-box {
+.menu-box {
   display: block;
   background: white;
   max-width: 80vw;
