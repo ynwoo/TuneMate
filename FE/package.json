@@ -17,11 +17,8 @@
     "@stomp/stompjs": "^7.0.0",
     "@tanstack/react-query": "^4.33.0",
     "@types/react-beautiful-dnd": "^13.1.7",
-<<<<<<< HEAD
     "animate.css": "^4.1.1",
-=======
     "@types/uuid": "^9.0.7",
->>>>>>> 475f0e9b7f7413a0d50fe41f14aff5da838c8f17
     "axios": "^1.5.0",
     "next": "14.0.1",
     "next-compose-plugins": "^2.2.1",
@@ -32,13 +29,9 @@
     "react-dom": "^18",
     "react-spotify-web-playback": "^0.14.1",
     "recoil": "^0.7.7",
-<<<<<<< HEAD
     "sass": "^1.69.5",
-    "spotify-web-api-node": "^5.0.2"
-=======
     "spotify-web-api-node": "^5.0.2",
     "uuid": "^9.0.1"
->>>>>>> 475f0e9b7f7413a0d50fe41f14aff5da838c8f17
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.3",
