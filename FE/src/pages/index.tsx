@@ -8,11 +8,12 @@ import { TokenResponse } from "@/types/user";
 import { useRouter } from "next/router";
 import { getUserInfo } from "@/api/user";
 import { useEffect } from "react";
-import useChat from "@/hooks/useChat";
+import { useSetRecoilState } from "recoil";
+import { userInfoState } from "@/store/userInfo";
 
 const LoginPage = () => {
   const router = useRouter();
-  const { connect } = useChat();
+  const setUserInfo = useSetRecoilState(userInfoState);
 
   useEffect(() => {
     Storage.clear();
@@ -20,19 +21,19 @@ const LoginPage = () => {
     Storage.setTokenResponse(tokenResponse);
     const userId = Storage.getUserId();
     if (userId) {
-      getUserInfo(userId).then(() => {
-        connect();
+      getUserInfo(userId).then((data) => {
+        setUserInfo(data);
         router.push("/main");
       });
     }
-  }, [router, connect]);
+  }, [router, setUserInfo]);
 
   const setCookie = () => {
-    const userId = "23cb91d3-78ac-45b0-995a-38f8bd348dff";
+    const userId = "cb899bc8-33a9-43a6-938c-76b0ec286c77";
     const accessToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIyM2NiOTFkMy03OGFjLTQ1YjAtOTk1YS0zOGY4YmQzNDhkZmYiLCJleHAiOjE2OTk1MTQwNDcsImlzcyI6IlR1bmVtYXRlIn0.p9n_B4j0jmehzVOizEnr9i3amXmu94RlY0doR-4M8WWBFhNORcYBk4RxB5ucvZ-K";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjYjg5OWJjOC0zM2E5LTQzYTYtOTM4Yy03NmIwZWMyODZjNzciLCJleHAiOjE2OTk2MDUyMTAsImlzcyI6IlR1bmVtYXRlIn0.zqc8FKWO3Klo0VBOBn7VFF8D3OwPBuDNnizuQpK0Nvmw2Bz2qI93WYvO4z2iDI7h";
     const refreshToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiMjNjYjkxZDMtNzhhYy00NWIwLTk5NWEtMzhmOGJkMzQ4ZGZmIiwiZXhwIjoxNzAwNzE2NDQ3LCJpc3MiOiJUdW5lbWF0ZSJ9.VyqWOe9NUcl7gS2B2wFVburpaLuZNJ4XRakuYmpEnp3Ta0Dj0RCy3eS5yvmQP3XT";
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiY2I4OTliYzgtMzNhOS00M2E2LTkzOGMtNzZiMGVjMjg2Yzc3IiwiZXhwIjoxNzAwODA3NjEwLCJpc3MiOiJUdW5lbWF0ZSJ9.knDPq0x0rWUhigUIKKPOwJGdoEWNnyPQ5JNevnB12VLcDaF2h9JbC5HVJERQiKqV";
     Cookie.setTokenResponse({ userId, accessToken, refreshToken });
     location.reload();
   };
