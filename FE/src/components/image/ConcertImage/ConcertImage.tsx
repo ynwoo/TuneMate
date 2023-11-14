@@ -7,19 +7,30 @@ import { classNameWrapper } from "@/utils/className";
 interface ConcertImageProps extends Props {
   src: string;
   alt: string;
+  type: "list" | "detail";
   onClick?: () => void;
 }
 
-const ConcertImage = ({ src, alt, className, onClick }: ConcertImageProps) => {
+const ConcertImage = ({
+  src,
+  alt,
+  className,
+  onClick,
+  type,
+}: ConcertImageProps) => {
   return (
     <div
-      className={classNameWrapper(className, styles["concert-image"])}
+      className={classNameWrapper(
+        className,
+        styles["concert-image"],
+        styles[type]
+      )}
       onClick={onClick}
     >
       <Image
         src={src}
         alt={alt}
-        width={80}
+        width={100}
         height={100}
         priority
         style={{ objectFit: "cover" }}

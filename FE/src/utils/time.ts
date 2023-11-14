@@ -13,4 +13,9 @@ export const Time = Object.freeze({
     const regex = /\d{4}-\d{2}-\d{2}/;
     return time.match(regex)?.[0] ?? "";
   },
+
+  period: (startDate: string, endDate: string) =>
+    `${Time.yearAndHourAndMinute(startDate)} ~ ${Time.yearAndHourAndMinute(
+      endDate
+    )}`,
 });
