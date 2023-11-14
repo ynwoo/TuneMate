@@ -11,6 +11,10 @@ import { usePathname } from "next/navigation";
 import { useMemo, useEffect, useState } from "react";
 import { RecoilRoot, useRecoilValue } from "recoil";
 import SinglePlayer from "@/components/player/SinglePlayer";
+import Dashboard from "@/components/player/Dashboards";
+import { Storage } from "@/utils/storage";
+import styles from "@/styles/MainPage.module.css";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -20,7 +24,15 @@ const queryClient = new QueryClient({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [accessToken, setAccessToken] = useState<string>("");
+
+  useEffect(() => {
+    const spotifyAccessToken = Storage.getSpotifyAccessToken;
+    setAccessToken(spotifyAccessToken);
+  }, []);
+
   const pathname = usePathname();
+
   const hasNavbar = useMemo(() => {
     if (!pathname) return false;
 
@@ -42,16 +54,6 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        {/* <ChatProvider>
-          <>
-            {!isLoginPage && <TopNavbar />}
-            <div className={isLoginPage ? "login" : "main"}>
-              
-              <Component {...pageProps} style={{ zIndex: 21 }} />
-            </div>
-            {!isLoginPage && <BottomNavbar />}
-          </>
-        </ChatProvider> */}
         <StompClientProvider>
           <ChatProvider>
             <FriendRequestProvider>
@@ -59,6 +61,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 {!hasNavbar && <TopNavbar />}
                 <div className={hasNavbar ? "login" : "main"}>
                   <SinglePlayer />
+
                   <Component {...pageProps} />
                 </div>
                 {!hasNavbar && <BottomNavbar />}

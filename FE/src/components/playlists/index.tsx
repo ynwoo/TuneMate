@@ -10,6 +10,8 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { updateIndividualPlayListTrack } from "@/api/music/individual";
 import { ChangeTrackIndex } from "@/types/spotify";
 import { PlayList } from "@/types/playList";
+import { MainplaylistState } from "@/store/atom";
+import { useRecoilState } from "recoil";
 
 interface PlaylistProps extends Props {
   data: any[];
@@ -64,6 +66,17 @@ const Playlist = ({
     changePlaylistOrder(changeTrackIndex);
     console.log("순서 바꾸기 끝");
   };
+
+  const [Mainplaylist, setMainplaylist] = useRecoilState(MainplaylistState);
+
+  console.log("playlistData", playlistData);
+
+  useEffect(() => {
+    const uriArray = playlistData.map((item) => item.uri);
+    setMainplaylist(uriArray);
+    console.log("uriArray", uriArray);
+    console.log("Mainplaylist", Mainplaylist);
+  }, []);
 
   const onModal = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
@@ -134,11 +147,11 @@ const Playlist = ({
           <div className={styles["modal-content"]} onClick={openSearch}>
             <Text type="title" content="노래 추가하기" />
           </div>
-          <div className={styles["division-line"]}/>
+          <div className={styles["division-line"]} />
           <div className={styles["modal-content"]}>
             <Text type="title" content="플레이리스트 이름 바꾸기" />
           </div>
-          <div className={styles["division-line"]}/>
+          <div className={styles["division-line"]} />
           <div className={styles["modal-content"]} onClick={handleDeleteMode}>
             <Text type="title" content="노래 삭제하기" />
           </div>

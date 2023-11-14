@@ -14,6 +14,7 @@ import {
   reSongUrlState,
   reAlbumArtState,
   AlubumArtState,
+  PickTrackUriState,
 } from "@/store/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { Track } from "@/types/spotify";
@@ -33,10 +34,10 @@ const MainPage = () => {
 
   const { data: recommendedSongs } = useRecommendationSongsQuery();
   const [resongUrl, setResongUrl] = useRecoilState(reSongUrlState);
-  const [reAlbumArt, setReAlbumArt] = useRecoilState(reAlbumArtState);
   const [AlubumArt, setAlubumArt] = useRecoilState(AlubumArtState);
-  // const ListInfo = useRecoilValue(ListInfoState);
+  const [PickTrack, setPickTrack] = useRecoilState(PickTrackState);
   const [ListInfo, setListInfo] = useRecoilState(ListInfoState);
+  const [PickTrackUri, setPickTrackUri] = useRecoilState(PickTrackUriState);
   console.log("recommendedSongs", recommendedSongs);
 
   const handleSongClick = (song: Track) => {
@@ -44,8 +45,12 @@ const MainPage = () => {
     console.log("song", song);
     // setPickTrack(song);
     setListInfo(song);
-    setResongUrl(song.uri);
-    setAlubumArt(song.albums.images[0].url);
+    setPickTrack(song);
+    setPickTrackUri(song.uri);
+    setAlubumArt(song.album.images[0]);
+
+    console.log("ListInfo", ListInfo.album.images[0].url);
+    console.log("AlubumArt", AlubumArt);
   };
 
   return (
@@ -79,19 +84,20 @@ const MainPage = () => {
         >
           {recommendedSongs?.map((song) => (
             <li
-              key={song.title}
+              key={song.name}
               onClick={() => handleSongClick(song)}
               style={{ marginRight: "10px" }}
             >
               <div>
                 <Image
-                  src={song.album.images[0].url}
-                  alt={song.title}
+                  src={song.album.images[0].uri}
+                  alt={song.name}
                   width={100}
                   height={100}
                 />
                 <p>{song.name}</p>
                 <p>{song.artists}</p>
+                <p>{song.album.images[0].uri}</p>
                 {/* <p>{song.uri}</p> */}
               </div>
             </li>

@@ -28,7 +28,7 @@ export default function CustomPlayer({ accessToken, playTrack }) {
   const [playList, setPlayList] = useRecoilState(playlistState);
   const [playTracks, setPlayTracks] = useState(playTrack);
 
-  // console.log("playTrack", playTrack);
+  console.log("playTrack", playTrack);
   console.log("ListInfo", ListInfo);
 
   const playAllTracks = () => {
@@ -38,7 +38,7 @@ export default function CustomPlayer({ accessToken, playTrack }) {
       console.error("playTrack is undefined or empty.");
     }
   };
-
+  console.log("Mainplaylist", Mainplaylist);
   useEffect(() => {
     setPlayList(Mainplaylist);
   }, [Mainplaylist]);
@@ -62,12 +62,8 @@ export default function CustomPlayer({ accessToken, playTrack }) {
     if (PickTrackUri) {
       setPlayTracks([PickTrackUri]);
       setPlay(true);
-    } else if (reSongUrl) {
-      // reSongUrl이 있다면 해당 URI로 트랙을 변경
-      setPlayTracks([reSongUrl]);
-      setPlay(true);
     }
-  }, [PickTrackUri, reSongUrl, setPlayTracks, setPlay]); // Ensure to include setPlay in the dependency array
+  }, [PickTrackUri, setPlayTracks, setPlay]); // Ensure to include setPlay in the dependency array
 
   if (!accessToken) return null;
 
@@ -90,7 +86,7 @@ export default function CustomPlayer({ accessToken, playTrack }) {
           }
         }}
         play={play}
-        uris={newArr}
+        uris={playTrack}
       />
       <div
         style={{ display: "flex", justifyContent: "center", marginTop: 50 }}

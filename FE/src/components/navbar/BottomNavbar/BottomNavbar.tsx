@@ -17,9 +17,6 @@ const BottomNavbar = () => {
       <Link href="/recommendation" className={styles["bottom-navbar__item"]}>
         <Icon.Recommendation />
       </Link>
-      <Link href="/player" className={styles["bottom-navbar__item"]}>
-        <Icon.Recommendation />
-      </Link>
     </nav>
   );
 };

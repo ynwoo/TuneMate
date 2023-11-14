@@ -42,7 +42,7 @@ const ProfilePage = () => {
   const [myPlaylist, setMyPlaylist] = useState<any[]>([]);
   const [playlistId, setPlaylistId] = useState("");
   const { closeToggle, isOpen, openToggle } = useModal();
-  const {popToast, toastStatus, toastMsg} = useToast();
+  const { popToast, toastStatus, toastMsg } = useToast();
 
   const getSpotifyPlaylists = async () => {
     const spotifyUserId = Storage.getSpotifyUserId();
@@ -73,7 +73,7 @@ const ProfilePage = () => {
 
   const getUserPlaylist = async () => {
     const repPlaylistData = await getIndividualPlayListRepresentative();
-    console.log(repPlaylistData);
+    console.log("repPlaylistData", repPlaylistData);
     if (repPlaylistData.id !== null) {
       setPlaylistName(repPlaylistData.name);
       setPlaylistId(repPlaylistData.id);
@@ -94,7 +94,7 @@ const ProfilePage = () => {
         const newData = {
           title: baseData.name,
           artist: trackArtist,
-          cover: baseData.album.images[2].url,
+          cover: baseData.album.images[0].url,
           id: baseData.id,
           uri: baseData.uri,
           index: index,
@@ -133,7 +133,7 @@ const ProfilePage = () => {
     };
     console.log(data.uri);
     const response = await deleteIndividualPlayListTrack(data);
-    popToast('삭제되었습니다')
+    popToast("삭제되었습니다");
   };
 
   const handleDelete = (index: number) => {
@@ -148,17 +148,17 @@ const ProfilePage = () => {
     const data: AddTrack = {
       playlistId: playlistId,
       uris: [uri],
-      position: myPlaylist.length
-    }
+      position: myPlaylist.length,
+    };
     const response = await createIndividualPlayListTrack(data);
-    popToast('노래가 추가되었습니다');
-  }
+    popToast("노래가 추가되었습니다");
+  };
 
   const handleAdd = (data: TrackInfo) => {
-    setMyPlaylist([...myPlaylist, ...[data]])
-    addTrack(data.uri)
+    setMyPlaylist([...myPlaylist, ...[data]]);
+    addTrack(data.uri);
     console.log(myPlaylist);
-  }
+  };
 
   return (
     <div>
