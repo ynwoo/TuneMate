@@ -33,18 +33,23 @@
   flex: 1;
   padding-left: 0.5rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
   text-align: center;
+}
+
+.friend-item__icon--chat-time {
+  font-size: 0.8rem;
+  width: max-content;
 }
 
 .friend-item__icon--chat-count {
   background-color: var(--red-color);
   border-radius: 50%;
-  width: 1em;
-  height: 1em;
+  width: max-content;
   text-align: center;
   font-size: 0.8rem;
-  padding: 0.2em;
+  padding: 0.5em;
   color: var(--white-color);
 }
 
