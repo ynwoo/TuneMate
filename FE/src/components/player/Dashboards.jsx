@@ -7,6 +7,11 @@ import useUpdateIndividualPlayListMutation from "@/hooks/mutations/music/individ
 import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
 import { spotifyApi as spotify } from "@/api";
 import { Storage } from "@/utils/storage";
+import { ListInfoState } from "@/store/atom";
+import { useRecoilState } from "recoil";
+import SinglePlayer from "./SinglePlayer";
+import Player from "@/components/player/Player";
+
 const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIEND_ID;
 const spotifyApi = new SpotifyWebApi(clientId);
 
@@ -18,6 +23,7 @@ export default function Dashboard({ accessToken, className }) {
   const [playlistDetails, setPlaylistDetails] = useState(null);
   const [playlistTracks, setPlaylistTracks] = useState([]);
   const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
+  const [ListInfo, setListInfo] = useRecoilState(ListInfoState);
   const { mutate: updateIndividualPlayList } =
     useUpdateIndividualPlayListMutation();
   const { data: individualPlayListRepresentative } =
@@ -36,6 +42,12 @@ export default function Dashboard({ accessToken, className }) {
   function handleselect() {
     updateIndividualPlayList(selectedPlaylistId);
   }
+  useEffect(() => {
+    if (individualPlayListRepresentative) {
+      setListInfo(individualPlayListRepresentative.tracks.items[0].track);
+    }
+    // setInfo(individualPlayListRepresentative.tracks.items[0]);
+  });
 
   useEffect(() => {
     if (!accessToken) return;
@@ -46,7 +58,7 @@ export default function Dashboard({ accessToken, className }) {
     if (playlistDetails) {
       setPlaylistTracks(playlistDetails.tracks.items);
     }
-  }, [playlistDetails]);
+  }, [playlistDetails, setListInfo]);
 
   useEffect(() => {
     if (!search) return setSearchResults([]);
@@ -110,7 +122,6 @@ export default function Dashboard({ accessToken, className }) {
           width: "100%",
         }}
       />
-
       <div style={{ overflowY: "auto" }}>
         {searchResults.map((track) => (
           <TrackSearchResult
