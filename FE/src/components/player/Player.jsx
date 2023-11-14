@@ -76,7 +76,7 @@ export default function CustomPlayer({ accessToken, playTrack }) {
   return (
     <div className="custom-player" style={{ width: 300, height: 200 }}>
       <div className="custom-controls"></div>
-      <button onClick={playAllTracks}>전체 재생</button>
+      {/* <button onClick={playAllTracks}>전체 재생</button> */}
       <SpotifyPlayer
         token={accessToken}
         showSaveIcon

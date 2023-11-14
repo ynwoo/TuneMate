@@ -97,7 +97,6 @@ const MainPage = () => {
                 />
                 <p>{song.name}</p>
                 <p>{song.artists}</p>
-                <p>{song.album.images[0].uri}</p>
                 {/* <p>{song.uri}</p> */}
               </div>
             </li>
