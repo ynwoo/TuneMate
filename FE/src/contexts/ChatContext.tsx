@@ -11,7 +11,6 @@ export interface ChatContextState {
   connect: (relationIds?: number[]) => void;
   subscribe: (relationId: Friend["relationId"]) => void;
   publish: (messageRequest: MessageRequest) => void;
-  refreshChatRooms: (newChatRoom: ChatRoom) => void;
   chatRooms: ChatRoom[];
 }
 
@@ -24,25 +23,24 @@ const ChatProvider = ({ children }: Props) => {
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
   const { data: myChatRooms } = useMyChatRoomsQuery();
 
-  const refreshChatRooms = (newChatRoom: ChatRoom) => {
-    // 기존 chatroom 있는지 찾기
-    let prevChatRoomId = chatRooms.findIndex(
-      ({ chatRoomId }) => chatRoomId === newChatRoom.chatRoomId
-    );
-
-    // 기존 chatroom 없으면 배열 마지막에 삽입
-    if (prevChatRoomId === -1) prevChatRoomId = chatRooms.length;
-
-    const newChatRooms = [...chatRooms];
-    newChatRooms[prevChatRoomId] = newChatRoom;
-    setChatRooms(newChatRooms);
-  };
-
   const subscibeCallback = useCallback(
     (data: any) => {
+      console.log(data);
+
       // 새로운 chatroom
       const newChatRoom: ChatRoom = JSON.parse(data.body);
-      refreshChatRooms(newChatRoom);
+
+      // 기존 chatroom 있는지 찾기
+      let prevChatRoomId = chatRooms.findIndex(
+        ({ chatRoomId }) => chatRoomId === newChatRoom.chatRoomId
+      );
+
+      // 기존 chatroom 없으면 배열 마지막에 삽입
+      if (prevChatRoomId === -1) prevChatRoomId = chatRooms.length;
+
+      const newChatRooms = [...chatRooms];
+      newChatRooms[prevChatRoomId] = newChatRoom;
+      setChatRooms(newChatRooms);
     },
     [chatRooms]
   );
@@ -105,7 +103,6 @@ const ChatProvider = ({ children }: Props) => {
         subscribe,
         publish,
         chatRooms,
-        refreshChatRooms,
       }}
     >
       {children}
