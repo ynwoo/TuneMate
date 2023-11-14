@@ -52,6 +52,10 @@ public class GroupParticipationServiceImpl implements GroupParticipationService 
             throw new BaseException("자신의 공고참여에 대해서만 탈퇴를 요청할 수 있습니다.", GroupErrorCode.NO_AUTHORIZATION_FOR_ITEM_EXCEPTION.getHttpStatus());
         }
 
+        if (groupParticipation.getGroup().getHostId().equals(userId)) {
+            throw new BaseException("공고 작성자는 탈퇴를 할 수 없고 삭제만 가능합니다.", GroupErrorCode.ILLEGAL_REQUEST.getHttpStatus());
+        }
+
         groupParticipationRepository.delete(groupParticipation);
     }
 }

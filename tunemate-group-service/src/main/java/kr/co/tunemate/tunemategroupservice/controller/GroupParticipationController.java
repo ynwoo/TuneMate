@@ -41,6 +41,7 @@ public class GroupParticipationController {
     @Operation(summary = "참여중인 공고 탈퇴", description = "참여중인 공고를 탈퇴합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "성공"),
+            @ApiResponse(responseCode = "400", description = "공고 작성자가 탈퇴를 요청하는 경우"),
             @ApiResponse(responseCode = "403", description = "공고참여가 되어있는 사용자가 아닌 다른 사용자가 탈퇴를 요청하는 경우"),
             @ApiResponse(responseCode = "404", description = "존재하지 않는 공고참여인 경우")
     })
