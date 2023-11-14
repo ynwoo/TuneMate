@@ -11,6 +11,7 @@ import {
   faRightFromBracket,
   faArrowDown,
   faSquarePlus,
+  faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { faHouse } from "@fortawesome/free-solid-svg-icons/faHouse";
@@ -126,6 +127,14 @@ const Icon = {
     <FontAwesomeIcon
       className={classNameWrapper(styles.icon, className)}
       icon={faArrowDown}
+      size={size}
+    />
+  ),
+
+  Search: ({ size = "2xl", className }: IconProps) => (
+    <FontAwesomeIcon
+      className={classNameWrapper(styles.icon, className)}
+      icon={faMagnifyingGlass}
       size={size}
     />
   ),

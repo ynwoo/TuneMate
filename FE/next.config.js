@@ -18,6 +18,12 @@ const nextConfig = {
         port: "",
         pathname: "/640/**",
       },
+      {
+        protocol: "http",
+        hostname: "ticketimage.interpark.com",
+        port: "",
+        pathname: "/rz/image/**",
+      },
     ],
   },
 };

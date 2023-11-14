@@ -1,0 +1,21 @@
+.main-content {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--max-width);
+}
+
+.main-content__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main-content__title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5em;
+}
+
+.main-content__button {
+  font-size: 0.8rem;
+  cursor: pointer;
+}

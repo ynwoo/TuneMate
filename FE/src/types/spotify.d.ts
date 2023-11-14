@@ -21,7 +21,11 @@ interface Item {
 }
 
 interface Track {
-  albums: Album;
+  album: Album;
+  uri: string;
+  id: string;
+  name: string;
+  artists: Artist[];
 }
 
 interface Album {
@@ -51,23 +55,23 @@ interface Owner {
   };
   href: string;
   id: string;
-  type: 'user';
+  type: "user";
   uri: string;
 }
 
 interface AddTrack {
-  playlistId: PlayList['id'];
+  playlistId: PlayList["id"];
   uris: string[];
   position: number;
 }
 interface DeleteTrack {
-  playlistId: PlayList['id'];
+  playlistId: PlayList["id"];
   uri: string;
   positions: number[];
 }
 
 interface ChangeTrack {
-  playlistId: PlayList['id'];
+  playlistId: PlayList["id"];
   changeTrackIndex: ChangeTrackIndex;
 }
 

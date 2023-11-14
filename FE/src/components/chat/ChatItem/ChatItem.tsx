@@ -6,6 +6,8 @@ import { Storage } from "@/utils/storage";
 import { useMemo } from "react";
 import ProfileImage from "@/components/image/ProfileImage/ProfileImage";
 import { Time } from "@/utils/time";
+import { useParams } from "next/navigation";
+import useSocialFriendQuery from "@/hooks/queries/social/useSocialFriendQuery";
 
 interface ChatItemProps extends Props {
   item: MessageResponse;
@@ -16,6 +18,15 @@ const ChatItem = ({ className, item }: ChatItemProps) => {
     () => Storage.getUserId() === item.senderNo,
     [item.senderNo]
   );
+
+  const params = useParams();
+  const friendId = params?.friendId as string;
+  const { data: friend } = useSocialFriendQuery(friendId);
+
+  const src = useMemo(() => {
+    const src = isMyChat ? Storage.getImageUrl() : friend?.img;
+    return src ?? "/favicon.ico";
+  }, []);
 
   return (
     <li
@@ -28,7 +39,7 @@ const ChatItem = ({ className, item }: ChatItemProps) => {
       <p className={styles["chat-item__image"]}>
         <ProfileImage
           className={styles["friend-item__user--image"]}
-          src={"/favicon.ico"}
+          src={src}
           alt="친구 프로필"
           type="friend"
         />

@@ -1,0 +1,15 @@
+.concert-info-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.concert-info-list__item {
+  margin: 0.5em 0;
+}
+
+.concert-info-list__link {
+  display: inline;
+  width: max-content;
+  text-align: center;
+  margin: 1em auto;
+}

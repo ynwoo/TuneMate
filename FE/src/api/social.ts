@@ -36,8 +36,11 @@ export const sendSocialFriendRequest = async (
 };
 
 // 친구 요청 수락
-export const acceptSocialFriendRequest = async (userId: UserInfo["userId"]) => {
-  await api.post<void>(`${SOCIAL_SERVICE_URL}/acceptance/${userId}`);
+export const acceptSocialFriendRequest = async (
+  userId: UserInfo["userId"]
+): Promise<{ relationId: Friend["relationId"] }> => {
+  const response = await api.post(`${SOCIAL_SERVICE_URL}/acceptance/${userId}`);
+  return response.data;
 };
 
 // 친구 요청 거절
@@ -83,7 +86,7 @@ export const connectChatRoom = async (relationId: Friend["relationId"]) => {
 
 // 채팅 방 퇴장(삭제 아님)
 export const disconnectChatRoom = async (relationId: Friend["relationId"]) => {
-  await api.post(`${SOCIAL_SERVICE_URL}/chat-out/${relationId}`);
+  await api.delete(`${SOCIAL_SERVICE_URL}/chat-out/${relationId}`);
 };
 
 type ChatRoomResponse = {

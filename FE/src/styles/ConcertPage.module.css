@@ -1,0 +1,25 @@
+.concerts-page {
+}
+
+.concerts-page__search {
+  margin: 1em;
+}
+
+.concert-detail-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1em 0.5em;
+}
+
+.concert-detail-page__title {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 1em;
+}
+
+.concert-detail-page__info {
+  margin-top: 1em;
+  width: 80%;
+}
