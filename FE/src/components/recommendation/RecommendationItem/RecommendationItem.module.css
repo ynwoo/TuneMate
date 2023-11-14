@@ -38,8 +38,6 @@
 .recommendation-item__button-container {
   display: flex;
   margin-left: auto;
-  margin-right: auto;
-  margin-top: 1em;
 }
 
 .recommendation-item__button-item {
