@@ -59,9 +59,9 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
               {Time.createAt(lastMessage.time)}
             </p>
           )}
-          {/* {unReadCount > 0 && ( */}
-          <p className={styles["friend-item__icon--chat-count"]}>{unReadCount}</p>
-          {/* )} */}
+          {unReadCount > 0 && (
+            <p className={styles["friend-item__icon--chat-count"]}>{unReadCount}</p>
+          )}
         </div>
         <div className={styles["friend-item__icon"]} onClick={onSharedProfile}>
           <Icon.Music size="xl" />

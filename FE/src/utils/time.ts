@@ -69,7 +69,12 @@ export const Time = Object.freeze({
       return Time.HHmm(time);
     }
 
-    // 다른 날이면 MMdd
-    return Time.MMdd(time);
+    // 같은 년도면 MMdd
+    if (date.getFullYear() === now.getFullYear()) {
+      return Time.MMdd(time);
+    }
+
+    // 다른 년도면 yyyyMMdd
+    return Time.yyyyMMdd(time);
   },
 });
