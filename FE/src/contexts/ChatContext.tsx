@@ -1,13 +1,14 @@
-import { createContext, useRef, useCallback, useState, useEffect } from "react";
-import { Client } from "@stomp/stompjs";
+import { createContext, useCallback, useState, useEffect } from "react";
 import Props from "@/types";
 import { Stomp } from "@/utils/stomp";
 import { Friend } from "@/types/social";
 import { ChatRoom, MessageRequest } from "@/types/chat";
 import useMyChatRoomsQuery from "@/hooks/queries/social/useMyChatRoomsQuery";
+import useStompClient from "@/hooks/useStompClient";
+import { CHAT_SOCKET_URL } from "@/constants/url";
 
 export interface ChatContextState {
-  connect: () => void;
+  connect: (relationIds?: number[]) => void;
   subscribe: (relationId: Friend["relationId"]) => void;
   publish: (messageRequest: MessageRequest) => void;
   chatRooms: ChatRoom[];
@@ -17,73 +18,93 @@ export const ChatContext = createContext<ChatContextState>(
   {} as ChatContextState
 );
 
-type ChatProvider = Props;
-
-let isSubscribe = false;
-
-const ChatProvider = ({ children }: ChatProvider) => {
-  const client = useRef<Client | undefined>(undefined);
+const ChatProvider = ({ children }: Props) => {
+  const { stompClient, connect: defaultConnect } = useStompClient();
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
   const { data: myChatRooms } = useMyChatRoomsQuery();
 
-  const connect = useCallback(() => {
-    if (client.current) return;
-    client.current = Stomp.connect();
-  }, []);
+  const subscibeCallback = useCallback(
+    (data: any) => {
+      console.log(data);
+
+      // 새로운 chatroom
+      const newChatRoom: ChatRoom = JSON.parse(data.body);
+
+      // 기존 chatroom 있는지 찾기
+      let prevChatRoomId = chatRooms.findIndex(
+        ({ chatRoomId }) => chatRoomId === newChatRoom.chatRoomId
+      );
+
+      // 기존 chatroom 없으면 배열 마지막에 삽입
+      if (prevChatRoomId === -1) prevChatRoomId = chatRooms.length;
+
+      const newChatRooms = [...chatRooms];
+      newChatRooms[prevChatRoomId] = newChatRoom;
+      setChatRooms(newChatRooms);
+    },
+    [chatRooms]
+  );
 
   const subscribe = useCallback(
     (relationId: Friend["relationId"]) => {
-      if (!client.current) {
-        connect();
-      }
-
-      if (client.current) {
-        const callback = (data: any) => {
-          const newChatRoom = JSON.parse(data.body);
-          const newChatRooms = chatRooms.filter(
-            ({ chatRoomId }) => newChatRoom.chatRoomId !== chatRoomId
-          );
-          newChatRooms.push(newChatRoom);
-          setChatRooms(newChatRooms);
-        };
-        // if (myChatRooms) {
-        //   myChatRooms.forEach((relationId) =>
-        //     Stomp.subscribe(client.current, relationId, callback)
-        //   );
-        // }
-        Stomp.subscribe(client.current, relationId, callback);
+      if (stompClient.current) {
+        Stomp.subscribe(
+          stompClient.current,
+          CHAT_SOCKET_URL.subscribeURL(relationId),
+          subscibeCallback
+        );
       }
     },
-    [connect, setChatRooms, chatRooms]
+    [stompClient, subscibeCallback]
   );
 
   const publish = useCallback(
     (messageRequest: MessageRequest) => {
-      console.log("publish", client.current);
-      if (!client.current) {
-        connect();
-      }
-
-      if (client.current) {
-        Stomp.publish(client.current, messageRequest);
+      if (stompClient.current) {
+        Stomp.publish(
+          stompClient.current,
+          CHAT_SOCKET_URL.publishURL(),
+          messageRequest
+        );
       }
     },
-    [connect]
+    [stompClient]
   );
 
-  // useEffect(() => {
-  //   connect();
-  // }, [connect]);
+  const connect = useCallback(
+    (relationIds?: Friend["relationId"][]) => {
+      const onConnect = () => {
+        if (relationIds) {
+          relationIds.forEach((relationId) => {
+            subscribe(relationId);
+            console.log(`${relationId}번 채팅 방 연결 성공`);
+          });
+        }
+      };
+      defaultConnect(onConnect);
+    },
+    [defaultConnect, subscribe]
+  );
 
-  // useEffect(() => {
-  //   if (client.current && myChatRooms && !isSubscribe) {
-  //     isSubscribe = true;
-  //     myChatRooms.forEach((chatRoomId) => subscribe(chatRoomId));
-  //   }
-  // }, [myChatRooms, subscribe, client]);
+  useEffect(() => {
+    if (connect && myChatRooms) {
+      const prevChatRooms = chatRooms.map(({ chatRoomId }) => chatRoomId);
+      const newChatRooms = myChatRooms.filter(
+        (chatRoomId) => !prevChatRooms.includes(chatRoomId)
+      );
+      connect(newChatRooms);
+    }
+  }, [chatRooms, connect, myChatRooms]);
 
   return (
-    <ChatContext.Provider value={{ connect, subscribe, publish, chatRooms }}>
+    <ChatContext.Provider
+      value={{
+        connect,
+        subscribe,
+        publish,
+        chatRooms,
+      }}
+    >
       {children}
     </ChatContext.Provider>
   );

@@ -3,7 +3,7 @@ import { UserInfo } from "./user";
 interface Friend extends FriendRequest {
   type: "friend";
   relationId: number;
-  freindId: UserInfo["userId"];
+  friendId: UserInfo["userId"];
   commonPlayListId: string;
 }
 
@@ -27,4 +27,17 @@ interface SendFriendRequest {
   musicalTasteSimilarity: string;
 }
 
-export type { Friend, FriendRequest, RecommendationFriend, SendFriendRequest };
+interface FriendRequestMessage {
+  accept: boolean;
+  receiveUserId: Friend["friendId"];
+  requestUserId: UserInfo["userId"];
+  relationId?: Friend["relationId"];
+}
+
+export type {
+  Friend,
+  FriendRequest,
+  RecommendationFriend,
+  SendFriendRequest,
+  FriendRequestMessage,
+};

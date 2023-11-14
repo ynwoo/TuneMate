@@ -1,0 +1,22 @@
+.menu-overlay {
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(3, 3, 3, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.menu-box {
+  display: block;
+  background: white;
+  max-width: 80vw;
+  /* height: 15vh; */
+  padding: 5vw;
+  border-radius: 1rem;
+}

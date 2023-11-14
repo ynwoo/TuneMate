@@ -1,45 +1,54 @@
-import { SOCKET_URL } from "@/constants/url";
-import { Friend } from "@/types/social";
 import { MessageRequest } from "@/types/chat";
 import { Client } from "@stomp/stompjs";
 import { Storage } from "./storage";
+import { FriendRequestMessage } from "@/types/social";
 
 export const Stomp = Object.freeze({
-  connect() {
+  connect(client: any, url: string, onConnect: () => void) {
+    console.log(client.current);
+
+    if (client.current) {
+      setTimeout(onConnect, 1000);
+      return;
+    }
+
     const accessToken = Storage.getAccessToken();
-    const client = new Client({
-      brokerURL: `${SOCKET_URL.brokerURL()}?Authorization=${accessToken}`,
-      reconnectDelay: 2000, // 자동 재연결
+    client.current = new Client({
+      brokerURL: `${url}?Authorization=${accessToken}`,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
-      onConnect() {
-        console.log("client", client);
+      onConnect,
+      onStompError: (data) => {
+        console.error(data);
       },
     });
 
-    client.activate();
-
-    return client;
+    client.current.activate();
+    console.log("connect 실행", client.current);
   },
 
   disconnect(client: Client) {
     client.deactivate();
+
+    console.log("disconnect 실행", client);
   },
 
-  subscribe(
+  subscribe(client: Client, url: string, callback: (data: any) => void) {
+    client.subscribe(url, callback);
+
+    console.log("subscribe 실행", client);
+  },
+
+  publish(
     client: Client,
-    relationId: Friend["relationId"],
-    callback: (data: any) => void
+    url: string,
+    message: MessageRequest | FriendRequestMessage
   ) {
-    const subscribeUrl = SOCKET_URL.subscribeURL(relationId);
-    client.subscribe(subscribeUrl, callback);
-  },
-
-  publish(client: Client, messageRequest: MessageRequest) {
-    const publishURL = SOCKET_URL.publishURL();
     client.publish({
-      destination: publishURL,
-      body: JSON.stringify(messageRequest),
+      destination: url,
+      body: JSON.stringify(message),
     });
+
+    console.log("publish 실행", client);
   },
 });

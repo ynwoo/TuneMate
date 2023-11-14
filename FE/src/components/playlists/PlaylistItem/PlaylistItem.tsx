@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Props from "@/types";
 import styles from "./PlaylistItem.module.css";
 import Cover from "../Cover/Cover";
@@ -10,21 +10,23 @@ type SongInfo = {
   title: string;
   artist: string;
   cover: string;
+  index: number
   id: string;
+  uri: string;
 };
 
 interface PlaylistItemProps extends Props {
   value: SongInfo;
   index: number;
-  onRequestDelete: (id: string) => void;
+  onRequestDelete: (idx: number) => void;
   isDeleteMode: boolean;
 }
 
 const PlaylistItem = ({ value, index, onRequestDelete, isDeleteMode }: PlaylistItemProps) => {
-  const { title, artist, cover, id } = value;
+  const { title, artist, cover, id, uri } = value;
 
   return (
-    <Draggable draggableId={value.id} index={index}>
+    <Draggable draggableId={id} index={index}>
       {(provided) => (
         <div
           {...provided.draggableProps}
@@ -41,7 +43,7 @@ const PlaylistItem = ({ value, index, onRequestDelete, isDeleteMode }: PlaylistI
               </div>
               <div className={styles["item-right"]}>
                 {isDeleteMode
-                ? <div onClick={() => onRequestDelete(id)}>
+                ? <div onClick={() => onRequestDelete(index)}>
                   <Icon.Delete />
                 </div>
                 : <div {...provided.dragHandleProps} >

@@ -1,6 +1,8 @@
 import BottomNavbar from "@/components/navbar/BottomNavbar/BottomNavbar";
 import TopNavbar from "@/components/navbar/TopNavbar/TopNavbar";
 import ChatProvider from "@/contexts/ChatContext";
+import FriendRequestProvider from "@/contexts/FriendRequestContext";
+import StompClientProvider from "@/contexts/StompClientContext";
 import "@/styles/globals.css";
 import "@/styles/reset.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
@@ -19,12 +21,28 @@ const queryClient = new QueryClient({
 
 export default function App({ Component, pageProps }: AppProps) {
   const pathname = usePathname();
-  const isLoginPage = useMemo(() => pathname === "/", [pathname]);
+  const hasNavbar = useMemo(() => {
+    if (!pathname) return false;
+
+    // login-page
+    if (pathname === "/") {
+      return true;
+    }
+
+    const pathList = pathname.split("/");
+
+    // chat-page
+    if (pathList[1] === "friends" && !isNaN(Number(pathList[2]))) {
+      return true;
+    }
+
+    return false;
+  }, [pathname]);
 
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        <ChatProvider>
+        {/* <ChatProvider>
           <>
             {!isLoginPage && <TopNavbar />}
             <div className={isLoginPage ? "login" : "main"}>
@@ -33,7 +51,20 @@ export default function App({ Component, pageProps }: AppProps) {
             </div>
             {!isLoginPage && <BottomNavbar />}
           </>
-        </ChatProvider>
+        </ChatProvider> */}
+        <StompClientProvider>
+          <ChatProvider>
+            <FriendRequestProvider>
+              <>
+                {!hasNavbar && <TopNavbar />}
+                <div className={hasNavbar ? "login" : "main"}>
+                  <Component {...pageProps} />
+                </div>
+                {!hasNavbar && <BottomNavbar />}
+              </>
+            </FriendRequestProvider>
+          </ChatProvider>
+        </StompClientProvider>
       </QueryClientProvider>
     </RecoilRoot>
   );

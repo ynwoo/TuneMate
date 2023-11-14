@@ -8,9 +8,7 @@ import { useSetRecoilState } from "recoil";
 
 // 개인 대표 플레이리스트 조회
 const useIndividualPlayListRepresentativeQuery = () => {
-  const setPlaylist = useSetRecoilState(playlistState);
-
-  const query = useQuery<PlayList, Error>({
+  const query = useQuery<PlayList | null, Error>({
     queryKey: QueryKey.useIndividualPlayListRepresentativeQuery(),
     queryFn: getIndividualPlayListRepresentative,
   });

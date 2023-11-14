@@ -97,6 +97,8 @@ export const getMyChatRooms = async (): Promise<number[]> => {
   const chatRoomIds: number[] = response.data.map(
     (elm: ChatRoomResponse) => elm.chatRoomId
   );
+  console.log("chatRoomIds", chatRoomIds);
+
   return chatRoomIds;
 };
 

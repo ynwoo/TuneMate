@@ -4,7 +4,7 @@ import Icon from "@/components/icons";
 
 const BottomNavbar = () => {
   return (
-    <div className={styles["bottom-navbar"]}>
+    <nav className={styles["bottom-navbar"]}>
       <Link href="/main" className={styles["bottom-navbar__item"]}>
         <Icon.Home />
       </Link>
@@ -20,7 +20,7 @@ const BottomNavbar = () => {
       <Link href="/player" className={styles["bottom-navbar__item"]}>
         <Icon.Recommendation />
       </Link>
-    </div>
+    </nav>
   );
 };
 

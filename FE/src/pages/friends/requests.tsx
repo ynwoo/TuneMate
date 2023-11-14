@@ -1,26 +1,48 @@
-import { FriendRequest } from "@/types/social";
 import styles from "@/styles/FriendsRequestsPage.module.css";
 import useSocialFriendRequestsQuery from "@/hooks/queries/social/useSocialFriendRequestsQuery";
 import RecommendationList from "@/components/recommendation/RecommendationList/RecommendationList";
-
-const data = [
-  { userId: "aaaaaaaaaaaaaaaa1", name: "aa1", type: "friendRequest" },
-  { userId: "bbbbbbbbbb", name: "aa2", type: "friendRequest" },
-  { userId: "cccccccccccccc", name: "aa3", type: "friendRequest" },
-  { userId: "aa4", name: "aa4", type: "friendRequest" },
-  { userId: "aa5", name: "aa5", type: "friendRequest" },
-  { userId: "bbbbbbbbbb", name: "aa2", type: "friendRequest" },
-  { userId: "cccccccccccccc", name: "aa3", type: "friendRequest" },
-  { userId: "aa4", name: "aa4", type: "friendRequest" },
-  { userId: "aa5", name: "aa5", type: "friendRequest" },
-] as FriendRequest[];
+import useFriendRequest from "@/hooks/useFriendRequest";
+import { useMemo } from "react";
+import { Storage } from "@/utils/storage";
+import useSocialFriendIdsQuery from "@/hooks/queries/social/useSocialFriendIdsQuery";
+import Nothing from "@/components/nothing/Nothing/Nothing";
 
 const FriendsRequests = () => {
+  const { data: friendIds } = useSocialFriendIdsQuery();
   const { data: friendsRequests } = useSocialFriendRequestsQuery();
-  // const { data: friendsRequests } = { data };
+  const { friendRequestMessages } = useFriendRequest();
+
+  const sendFriendsRequests = useMemo(() => {
+    return friendRequestMessages.filter(
+      ({ requestUserId }) => requestUserId === Storage.getUserId()
+    );
+  }, [friendRequestMessages]);
+
+  const receiveFriendsRequests = useMemo(() => {
+    if (!friendsRequests) {
+      return undefined;
+    }
+
+    if (!friendRequestMessages.length && friendIds) {
+      return friendRequestMessages.filter(
+        ({ requestUserId, receiveUserId }) =>
+          receiveUserId === Storage.getUserId() &&
+          !friendIds?.includes(requestUserId)
+      );
+    }
+
+    return friendRequestMessages;
+  }, [friendIds, friendRequestMessages, friendsRequests]);
+
+  if (!friendsRequests?.length) {
+    return <Nothing>받은 친구 요청이 없습니다.</Nothing>;
+  }
+
   return (
     <div className={styles["friends-requests-page"]}>
-      {friendsRequests && <RecommendationList recommendations={data} />}
+      {friendsRequests && (
+        <RecommendationList recommendations={friendsRequests} />
+      )}
     </div>
   );
 };
