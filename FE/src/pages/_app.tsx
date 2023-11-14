@@ -8,9 +8,9 @@ import "@/styles/reset.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import type { AppProps } from "next/app";
 import { usePathname } from "next/navigation";
-import { useMemo } from "react";
-import { RecoilRoot } from "recoil";
-
+import { useMemo, useEffect, useState } from "react";
+import { RecoilRoot, useRecoilValue } from "recoil";
+import SinglePlayer from "@/components/player/SinglePlayer";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -42,6 +42,16 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
+        {/* <ChatProvider>
+          <>
+            {!isLoginPage && <TopNavbar />}
+            <div className={isLoginPage ? "login" : "main"}>
+              <SinglePlayer />
+              <Component {...pageProps} style={{ zIndex: 21 }} />
+            </div>
+            {!isLoginPage && <BottomNavbar />}
+          </>
+        </ChatProvider> */}
         <StompClientProvider>
           <ChatProvider>
             <FriendRequestProvider>
