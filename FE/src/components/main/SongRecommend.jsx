@@ -23,9 +23,14 @@ export default function SongRecommend() {
         {recommendedSongs?.map((song) => (
           <li key={song.title} onClick={() => handleSongClick(song)}>
             <div>
-              <Image src={song.img} alt={song.title} width={100} height={100} />
+              <Image
+                src={song.album.images[0]}
+                alt={song.title}
+                width={100}
+                height={100}
+              />
               <p>{song.title}</p>
-              <p>{song.artist}</p>
+              <p>{song.album.images[0]}</p>
               <p>{song.uri}</p>
             </div>
           </li>
