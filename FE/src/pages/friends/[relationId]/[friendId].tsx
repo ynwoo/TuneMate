@@ -2,7 +2,7 @@ import styles from "@/styles/ChatPage.module.css";
 import ChatList from "@/components/chat/ChatList/ChatList";
 import Search from "@/components/input/Search/Search";
 import useChatsQuery from "@/hooks/queries/social/useChatsQuery";
-import useChat from "@/hooks/useChat";
+import useChat from "@/hooks/chat/useChat";
 import Props from "@/types";
 import { MessageRequest } from "@/types/chat";
 import { ChatFilter } from "@/utils/filter";
@@ -34,6 +34,7 @@ const ChatPage = ({}: ChatPageProps) => {
   const { mutate: deleteSocialFriend } = useDeleteSocialFriendMutation();
   const { mutate: disconnectChatRoom } = useDisconnectChatRoomMutation();
 
+  // 현재 채팅방 정보 (채팅기록)
   const chatRoom = useMemo(() => {
     const newChatRoom = chatRooms.find(
       ({ chatRoomId }) => chatRoomId === relationId
@@ -53,6 +54,7 @@ const ChatPage = ({}: ChatPageProps) => {
     setContent("");
   }, [publish, messageRequest, content]);
 
+  // 스크롤 가장 하단으로 내리기
   const moveScrollDown = () => {
     window.scrollTo(0, document.body.scrollHeight);
   };
