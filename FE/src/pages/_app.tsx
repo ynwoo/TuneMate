@@ -8,7 +8,7 @@ import "@/styles/reset.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import type { AppProps } from "next/app";
 import { usePathname } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { RecoilRoot } from "recoil";
 import SinglePlayer from "@/components/player/SinglePlayer";
 import Dashboard from "@/components/player/Dashboards";
