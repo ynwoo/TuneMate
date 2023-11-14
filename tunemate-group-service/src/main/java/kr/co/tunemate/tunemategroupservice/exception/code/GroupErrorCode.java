@@ -14,11 +14,11 @@ public enum GroupErrorCode implements ErrorCode {
 
     @Override
     public HttpStatus getHttpStatus() {
-        return null;
+        return httpStatus;
     }
 
     @Override
     public String getMessage() {
-        return null;
+        return message;
     }
 }

@@ -25,7 +25,7 @@ public class GroupController {
     private final GroupService groupService;
     private final ModelMapper modelMapper;
 
-    @Operation(description = "공고를 생성합니다.")
+    @Operation(summary = "공고를 생성", description = "공고를 생성합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "성공"),
             @ApiResponse(responseCode = "400", description = "필수 입력 값이 없는 경우"),
@@ -39,7 +39,7 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(description = "공고 UUID로 공고를 조회합니다.")
+    @Operation(summary = "공고 UUID로 공고를 조회", description = "공고 UUID로 공고를 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "404", description = "존재하지 않는 groupId로 조회하는 경우")
@@ -52,7 +52,7 @@ public class GroupController {
         return ResponseEntity.ok(responseGroup);
     }
 
-    @Operation(description = "공고를 수정합니다.")
+    @Operation(summary = "공고를 수정", description = "공고를 수정합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "필수 입력 값이 없는 경우"),
@@ -72,7 +72,7 @@ public class GroupController {
         return ResponseEntity.ok(responseGroup);
     }
 
-    @Operation(description = "공고 작성자가 공고를 마감합니다.")
+    @Operation(summary = "공고 작성자가 공고를 마감", description = "공고 작성자가 공고를 마감합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "403", description = "공고 작성자가 아닌 사람이 마감 요청할 경우"),
@@ -84,7 +84,7 @@ public class GroupController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(description = "공고 목록을 조회합니다.")
+    @Operation(summary = "공고 목록을 조회", description = "공고 목록을 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공")
     })
@@ -106,7 +106,7 @@ public class GroupController {
         return ResponseEntity.ok(responseGroups);
     }
 
-    @Operation(description = "공고를 삭제합니다.")
+    @Operation(summary = "공고를 삭제", description = "공고를 삭제합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "성공")
     })
