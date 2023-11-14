@@ -6,7 +6,7 @@ export default function Document() {
       <Head>
         <meta name="theme-color" content="#e4ddff" />
         <link rel="manifest" href="/manifest.json" />
-        <link
+        {/* <link
           href="image/icon-48x48.png"
           rel="icon"
           type="image/png"
@@ -17,7 +17,7 @@ export default function Document() {
           rel="icon"
           type="image/png"
           sizes="96x96"
-        />
+        /> */}
       </Head>
       <body>
         <Main />
