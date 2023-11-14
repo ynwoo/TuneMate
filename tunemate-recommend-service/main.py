@@ -75,8 +75,17 @@ class ResponseDto(BaseModel):
     similarity: float
 
 
+class Images(BaseModel):
+    images: Optional[List[dict]]
+
+class Music(BaseModel):
+    album: Images
+    artists: str
+    name: str
+    uri: str
+
 # 노래 추천
-@app.get("/recommendation/songs", response_model=List[SongDto])
+@app.get("/recommendation/songs", response_model=List[Music])
 def song(UserId: str | None = Header(default=None)):
     def cosine_similarity(song1, song2):
         dot_product = 0.0
@@ -170,8 +179,10 @@ def song(UserId: str | None = Header(default=None)):
         sql = "select * from tracks where spotify_uri = %s"
         cursor.execute(sql, trackUri)
         songData = cursor.fetchone()
-        responseData.append(SongDto(title=songData["title"], img=songData["image"], artist=songData["artist"],
-                                    uri=songData["spotify_uri"]))
+        # responseData.append(SongDto(title=songData["title"], img=songData["image"], artist=songData["artist"],
+        #                             uri=songData["spotify_uri"]))
+        img = Images(images=[{"uri" : songData["image"]}])
+        responseData.append(Music(name=songData["title"],artists=songData["artist"],uri=songData["spotify_uri"],album=img))
 
     return responseData
 
