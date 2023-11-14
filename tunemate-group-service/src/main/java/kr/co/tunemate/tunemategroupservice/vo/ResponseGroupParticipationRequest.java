@@ -14,8 +14,8 @@ public class ResponseGroupParticipationRequest {
     private String groupParticipationRequestId;
     @Schema
     private ResponseGroup responseGroup;
-    @Schema(example = "789ad91d3-78ac-45b0-995a-38f8bd348d12")
-    private String userId;
+    @Schema
+    private UserInfo userInfo;
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
 }

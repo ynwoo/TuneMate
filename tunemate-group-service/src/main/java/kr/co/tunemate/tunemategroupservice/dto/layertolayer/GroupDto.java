@@ -16,7 +16,7 @@ public class GroupDto {
     private String hostName;
     private String title;
     private Integer capacity;
-    private Integer participantsCnt = 1;
+    private Long participantsCnt;
     private String concertId;
     private LocalDateTime startDateTime;
     private LocalDateTime deadline;

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import kr.co.tunemate.tunemategroupservice.service.GroupParticipationRequestService;
+import kr.co.tunemate.tunemategroupservice.vo.ResponseGroup;
 import kr.co.tunemate.tunemategroupservice.vo.ResponseGroupParticipationRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -42,8 +43,14 @@ public class GroupParticipationRequestController {
     })
     @GetMapping("/me/sent-participation-requests")
     public ResponseEntity<List<ResponseGroupParticipationRequest>> getSentGroupParticipationRequests(@RequestHeader("UserId") String userId) {
-        List<ResponseGroupParticipationRequest> responseGroupParticipationRequests = groupParticipationRequestService.findAllByUserId(userId).stream().map(groupParticipationRequestDto ->
-                modelMapper.map(groupParticipationRequestDto, ResponseGroupParticipationRequest.class)
+        List<ResponseGroupParticipationRequest> responseGroupParticipationRequests = groupParticipationRequestService.findAllByUserId(userId).stream().map(groupParticipationRequestDto -> {
+                    ResponseGroupParticipationRequest responseGroupParticipationRequest = modelMapper.map(groupParticipationRequestDto, ResponseGroupParticipationRequest.class);
+                    ResponseGroup responseGroup = modelMapper.map(groupParticipationRequestDto.getGroupDto(), ResponseGroup.class);
+
+                    responseGroupParticipationRequest.setResponseGroup(responseGroup);
+
+                    return responseGroupParticipationRequest;
+                }
         ).toList();
 
         return ResponseEntity.ok(responseGroupParticipationRequests);
@@ -55,8 +62,14 @@ public class GroupParticipationRequestController {
     })
     @GetMapping("/me/received-participation-requests")
     public ResponseEntity<List<ResponseGroupParticipationRequest>> getReceivedGroupParticipationRequests(@RequestHeader("UserId") String userId) {
-        List<ResponseGroupParticipationRequest> responseGroupParticipationRequests = groupParticipationRequestService.findAllRequestedParticipationByUserId(userId).stream().map(groupParticipationRequestDto ->
-                modelMapper.map(groupParticipationRequestDto, ResponseGroupParticipationRequest.class)
+        List<ResponseGroupParticipationRequest> responseGroupParticipationRequests = groupParticipationRequestService.findAllRequestedParticipationByUserId(userId).stream().map(groupParticipationRequestDto -> {
+                    ResponseGroupParticipationRequest responseGroupParticipationRequest = modelMapper.map(groupParticipationRequestDto, ResponseGroupParticipationRequest.class);
+                    ResponseGroup responseGroup = modelMapper.map(groupParticipationRequestDto.getGroupDto(), ResponseGroup.class);
+
+                    responseGroupParticipationRequest.setResponseGroup(responseGroup);
+
+                    return responseGroupParticipationRequest;
+                }
         ).toList();
 
         return ResponseEntity.ok(responseGroupParticipationRequests);

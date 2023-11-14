@@ -21,7 +21,7 @@ public class ResponseGroup {
     @Schema(example = "4", description = "공고 최대 인원수")
     private Integer capacity;
     @Schema(example = "2", description = "현재 공고에 참여중인 인원수")
-    private Integer participantsCnt;
+    private Long participantsCnt;
     @Schema(example = "52", description = "콘서트 ID")
     private String concertId;
     @Schema(description = "공고 작성일시")
