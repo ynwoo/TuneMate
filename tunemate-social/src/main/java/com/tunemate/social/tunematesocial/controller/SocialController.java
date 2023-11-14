@@ -2,15 +2,6 @@ package com.tunemate.social.tunematesocial.controller;
 
 import java.util.List;
 
-
-import com.tunemate.social.tunematesocial.dto.ChattingListDto;
-import com.tunemate.social.tunematesocial.dto.response.MyChatRoomListDto;
-import com.tunemate.social.tunematesocial.dto.response.RelationResponseDto;
-import com.tunemate.social.tunematesocial.entity.ChattingRoom;
-import com.tunemate.social.tunematesocial.service.ChatService;
-
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +14,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tunemate.social.tunematesocial.dto.ChattingListDto;
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
 import com.tunemate.social.tunematesocial.dto.response.MyChatRoomListDto;
 import com.tunemate.social.tunematesocial.dto.response.MyFriendResponseDto;
 import com.tunemate.social.tunematesocial.dto.response.ReceivedFriendRequestResponseDto;
+import com.tunemate.social.tunematesocial.dto.response.RelationIdResponseDto;
 import com.tunemate.social.tunematesocial.dto.response.RelationResponseDto;
-import com.tunemate.social.tunematesocial.entity.ChattingRoom;
 import com.tunemate.social.tunematesocial.service.ChatService;
 import com.tunemate.social.tunematesocial.service.SocialService;
 
@@ -99,9 +91,12 @@ public class SocialController {
 		@RequestHeader("UserId") String userId) {
 		log.debug(userId + "님이 " + newFriendId + "님의 친구 요청을 수락");
 
-		socialService.acceptFriendRequest(userId, newFriendId);
+		Long relationId = socialService.acceptFriendRequest(userId, newFriendId);
 
-		return ResponseEntity.ok().build();
+		RelationIdResponseDto result = RelationIdResponseDto.builder()
+			.relationId(relationId)
+			.build();
+		return ResponseEntity.ok(result);
 	}
 
 	@PostMapping("/decline/{userId}")
@@ -184,13 +179,13 @@ public class SocialController {
 	@Operation(summary = "채팅 기록 조회", description = """
 		채팅 기록을 조회합니다.""")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "채팅 기록 조회 성공."),
-			@ApiResponse(responseCode = "403", description = "relationId 에 포함되지 않은 사람이 채팅 기록을 조회 하는 경우"),
-			@ApiResponse(responseCode = "404", description = "relationId 가 없는 경우")
+		@ApiResponse(responseCode = "200", description = "채팅 기록 조회 성공."),
+		@ApiResponse(responseCode = "403", description = "relationId 에 포함되지 않은 사람이 채팅 기록을 조회 하는 경우"),
+		@ApiResponse(responseCode = "404", description = "relationId 가 없는 경우")
 	})
 	public ResponseEntity<ChattingListDto> getChatRecord(@RequestHeader("UserId") String userId,
-														 @PathVariable("relationId") Long relationId) {
-		socialService.checkUser(relationId,userId);
+		@PathVariable("relationId") Long relationId) {
+		socialService.checkUser(relationId, userId);
 		socialService.setChats(relationId, userId);
 		socialService.setChatPerson(relationId, userId);
 		return ResponseEntity.ok(socialService.getChats(relationId));
@@ -203,12 +198,12 @@ public class SocialController {
 	@Operation(summary = "채팅방 퇴장(채팅 방 화면에서 다른 화면으로 전환)", description = """
 		채팅 방을 나갈 때 요청하는 API.""")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "퇴장 성공."),
-			@ApiResponse(responseCode = "403", description = "relationId 에 포함되지 않은 사람이 퇴장 하는 경우"),
-			@ApiResponse(responseCode = "404", description = "relationId 가 없는 경우")
+		@ApiResponse(responseCode = "200", description = "퇴장 성공."),
+		@ApiResponse(responseCode = "403", description = "relationId 에 포함되지 않은 사람이 퇴장 하는 경우"),
+		@ApiResponse(responseCode = "404", description = "relationId 가 없는 경우")
 	})
 	public void chatOut(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId) {
-		socialService.checkUser(relationId,userId);
+		socialService.checkUser(relationId, userId);
 		socialService.outChat(relationId, userId);
 	}
 
@@ -219,7 +214,7 @@ public class SocialController {
 	@Operation(summary = "내가 속한 채팅방 목록 조회", description = """
 		로그인 시 웹소켓 연결 및 토픽 구독을 위한 채팅방 목록.""")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "조회 성공."),
+		@ApiResponse(responseCode = "200", description = "조회 성공."),
 	})
 	public ResponseEntity<List<MyChatRoomListDto>> myChats(@RequestHeader("UserId") String userId) {
 		return ResponseEntity.ok(chatService.getChatRoomList(userId));
@@ -232,7 +227,7 @@ public class SocialController {
 	@Operation(summary = "내가 친구요청 보낸 사람들의 아이디 조회", description = """
 		내가 친구요청 보낸 사람들의 아이디 조회.""")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "조회 성공."),
+		@ApiResponse(responseCode = "200", description = "조회 성공."),
 	})
 
 	public ResponseEntity<?> getRequestUserId(@RequestHeader("UserId") String userId) {
