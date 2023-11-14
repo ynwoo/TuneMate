@@ -4,6 +4,7 @@ import IndividualProfile from "@/components/profile/IndividualProfile/Individual
 import Playlist from "@/components/playlists";
 import {
   createIndividualPlayList,
+  createIndividualPlayListTrack,
   deleteIndividualPlayListTrack,
   getIndividualPlayListRepresentative,
   getIndividualPlayLists,
@@ -15,7 +16,20 @@ import { Cookie } from "@/utils/cookie";
 import NonCloseableMenu from "@/components/menus/NonCloseable";
 import useMenu from "@/hooks/useMenu";
 import PlaylistData from "@/components/playlists/PlaylistData/PlaylistData";
-import { DeleteTrack } from "@/types/spotify";
+import { AddTrack, DeleteTrack } from "@/types/spotify";
+import Modal from "@/components/modal/Modal";
+import useModal from "@/hooks/useModal";
+import SearchTrack from "@/components/playlists/SearchTrack/SearchTrack";
+import Toast from "@/components/toast/Toast";
+import useToast from "@/hooks/useToast";
+
+type TrackInfo = {
+  title: string;
+  artist: string;
+  cover: string;
+  uri: string;
+  id: string;
+};
 
 const ProfilePage = () => {
   const [name, setName] = useState("Name");
@@ -23,21 +37,22 @@ const ProfilePage = () => {
     "https://3.bp.blogspot.com/-XKyHG9ipUuk/WxvKRN9CeYI/AAAAAAABMn8/usJ7TuHvS4s8Qff7wFV6iY6vtRwM3bQwgCLcBGAs/s400/music_headphone_man.png"
   );
   const [menuContent, setMenuContent] = useState<any[]>([]);
-  const { userId } = Cookie.getTokenResponse();
-  const spotifyUserId = Storage.getSpotifyUserId();
-  const { isOpen, openToggle, closeToggle } = useMenu();
+  const { isMenuOpen, openMenu, closeMenu } = useMenu();
   const [playlistName, setPlaylistName] = useState("");
   const [myPlaylist, setMyPlaylist] = useState<any[]>([]);
   const [playlistId, setPlaylistId] = useState("");
+  const { closeToggle, isOpen, openToggle } = useModal();
+  const {popToast, toastStatus, toastMsg} = useToast();
 
   const getSpotifyPlaylists = async () => {
+    const spotifyUserId = Storage.getSpotifyUserId();
     const playlistList = await getIndividualPlayLists(spotifyUserId);
     console.log(playlistList);
     const dataset = [...playlistList];
     dataset.forEach((data, index) => {
       const newContent = [
         {
-          imgSrc: data.images[0],
+          imgSrc: data.images[2],
           name: data.name,
           id: data.id,
           trackCnt: data.tracks.total,
@@ -46,13 +61,13 @@ const ProfilePage = () => {
       ];
       setMenuContent([...menuContent, ...newContent]);
     });
-    openToggle();
+    openMenu();
   };
 
   const setRepPlaylist = async (id: string) => {
     console.log(id);
     updateIndividualPlayList(id);
-    closeToggle();
+    closeMenu();
     getUserPlaylist();
   };
 
@@ -79,8 +94,9 @@ const ProfilePage = () => {
         const newData = {
           title: baseData.name,
           artist: trackArtist,
-          cover: baseData.album.images[0].url,
+          cover: baseData.album.images[2].url,
           id: baseData.id,
+          uri: baseData.uri,
           index: index,
         };
         tmpData.push(newData);
@@ -100,6 +116,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const getUserProfile = async () => {
+      const { userId } = Cookie.getTokenResponse();
       const userData = await getUserInfo(userId);
       console.log(userData);
       setName(userData.name);
@@ -111,11 +128,12 @@ const ProfilePage = () => {
   const deleteTrack = async (index: number) => {
     const data: DeleteTrack= {
       playlistId: playlistId,
-      uri: `spotify:track:${myPlaylist[index].id}`,
+      uri: myPlaylist[index].uri,
       positions: [index],
     };
     console.log(data.uri);
-    const response = await deleteIndividualPlayListTrack(data)
+    const response = await deleteIndividualPlayListTrack(data);
+    popToast('삭제되었습니다')
   };
 
   const handleDelete = (index: number) => {
@@ -126,6 +144,22 @@ const ProfilePage = () => {
     console.log(myPlaylist);
   };
 
+  const addTrack = async (uri: string) => {
+    const data: AddTrack = {
+      playlistId: playlistId,
+      uris: [uri],
+      position: myPlaylist.length
+    }
+    const response = await createIndividualPlayListTrack(data);
+    popToast('노래가 추가되었습니다');
+  }
+
+  const handleAdd = (data: TrackInfo) => {
+    setMyPlaylist([...myPlaylist, ...[data]])
+    addTrack(data.uri)
+    console.log(myPlaylist);
+  }
+
   return (
     <div>
       <IndividualProfile name={name} src={imgSrc} />
@@ -134,8 +168,9 @@ const ProfilePage = () => {
         data={myPlaylist}
         playlistId={playlistId}
         onRequestDelete={handleDelete}
+        setModalOpen={openToggle}
       />
-      <NonCloseableMenu isOpen={isOpen}>
+      <NonCloseableMenu isMenuOpen={isMenuOpen}>
         <div>
           {menuContent.map((data, idx) => (
             <PlaylistData
@@ -150,6 +185,10 @@ const ProfilePage = () => {
           ))}
         </div>
       </NonCloseableMenu>
+      <Modal isOpen={isOpen} toggle={closeToggle}>
+        <SearchTrack handleAdd={handleAdd} />
+      </Modal>
+      {toastStatus && <Toast toastStatus={toastStatus} msg={toastMsg} />}
     </div>
   );
 };
