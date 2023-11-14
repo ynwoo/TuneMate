@@ -90,13 +90,17 @@ const MainPage = () => {
             >
               <div>
                 <Image
+<<<<<<< HEAD
                   src={song.album.images[0].uri}
+=======
+                  src={song.album.images[0].url}
+>>>>>>> 7c23170ff0917314cf04b5a7e5b33269fd87a4e9
                   alt={song.name}
                   width={100}
                   height={100}
                 />
                 <p>{song.name}</p>
-                <p>{song.artists}</p>
+                <p>{song.artists?.[0].name}</p>
                 {/* <p>{song.uri}</p> */}
               </div>
             </li>

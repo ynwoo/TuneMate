@@ -17,12 +17,13 @@ import "animate.css/animate.min.css";
 import Dashboard from "@/components/player/Dashboards";
 import styles from "@/styles/MainPage.module.css";
 import useRecommendationSongsQuery from "@/hooks/queries/recommendation/useRecommendationSongsQuery";
+import { Track } from "@/types/spotify";
 
 export default function SinglePlayer() {
   const PickTrack = useRecoilValue(PickTrackState);
   const ListInfo = useRecoilValue(ListInfoState);
   const [AlubumArt, setAlbumArt] = useRecoilState(AlubumArtState);
-  const [play, setPlay] = useState({});
+  const [play, setPlay] = useState<Track | undefined>(undefined);
   const [accessToken, setAccessToken] = useState<string>("");
   const [playuri, setPlayuri] = useState<string>("");
   console.log("single", playuri);
