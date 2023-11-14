@@ -45,6 +45,14 @@ export const Storage = Object.freeze({
     Storage.setItem("userName", userName);
   },
 
+  getImageUrl(): string {
+    return Storage.getItem("imageUrl");
+  },
+
+  setImageUrl(imageUrl: string) {
+    Storage.setItem("imageUrl", imageUrl);
+  },
+
   getSpotifyAccessToken(): string {
     return Storage.getItem("spotifyAccessToken");
   },

@@ -1,6 +1,7 @@
 .main-content {
   display: flex;
   flex-direction: column;
+  max-width: var(--max-width);
 }
 
 .main-content__header {
