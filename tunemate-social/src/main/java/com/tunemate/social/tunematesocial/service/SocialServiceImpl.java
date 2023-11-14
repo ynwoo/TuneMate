@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.tunemate.social.tunematesocial.dto.ChattingListDto;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -158,6 +159,13 @@ public class SocialServiceImpl implements SocialService {
 
 		// 친구 신청 목록에서 제거
 		friendRequestRepository.delete(friendRequest);
+
+		friendRequestOptional = friendRequestRepository.findByRequestedUserIdAndRequestingUserId(
+			newFriendId, myId);
+		if (friendRequestOptional.isPresent()) {
+			friendRequest = friendRequestOptional.get();
+			friendRequestRepository.delete(friendRequest);
+		}
 
 		// 채팅 방 생성
 		long relationId = friendRepository.findByUser1IdAndAndUser2Id(myId, newFriendId).get().getId();
@@ -350,7 +358,9 @@ public class SocialServiceImpl implements SocialService {
 	@Override
 	public void checkUser(Long relationId, String userId) {
 		Optional<Friend> friend = friendRepository.findById(relationId);
-		if(friend.isEmpty()) throw new BaseException(SocialErrorCode.RELATION_ID_NOT_FOUND);
-		if(!friend.get().getUser1Id().equals(userId) &&  !friend.get().getUser2Id().equals(userId)) throw new BaseException(SocialErrorCode.NOT_AUTHORITY);
+		if (friend.isEmpty())
+			throw new BaseException(SocialErrorCode.RELATION_ID_NOT_FOUND);
+		if (!friend.get().getUser1Id().equals(userId) && !friend.get().getUser2Id().equals(userId))
+			throw new BaseException(SocialErrorCode.NOT_AUTHORITY);
 	}
 }
