@@ -2,20 +2,48 @@ import Icon from "@/components/icons";
 import { classNameWrapper } from "@/utils/className";
 import styles from "./Search.module.css";
 import Props from "@/types";
-import { ChangeEvent, KeyboardEvent } from "react";
+import { ChangeEvent, KeyboardEvent, useMemo } from "react";
+
+type SearchType = "chat" | "default" | "none";
 
 interface SearchProps extends Props {
   value: string;
   onInput: (e: ChangeEvent<HTMLInputElement>) => void;
   onSubmit: () => void;
+  type?: SearchType;
 }
 
-const Search = ({ className, onInput, onSubmit, value }: SearchProps) => {
+const Search = ({
+  className,
+  onInput,
+  onSubmit,
+  value,
+  type = "default",
+}: SearchProps) => {
   const onEnter = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       onSubmit();
     }
   };
+
+  const sendIcon = useMemo(() => {
+    switch (type) {
+      case "chat":
+        return (
+          <div className={styles["search__icon-container"]} onClick={onSubmit}>
+            <Icon.Send className={styles["search__icon"]} />
+          </div>
+        );
+      case "none":
+        return <></>;
+      case "default":
+        return (
+          <div className={styles["search__icon-container"]} onClick={onSubmit}>
+            <Icon.Search className={styles["search__icon"]} />
+          </div>
+        );
+    }
+  }, []);
 
   return (
     <div className={classNameWrapper(styles.search, className)}>
@@ -27,9 +55,7 @@ const Search = ({ className, onInput, onSubmit, value }: SearchProps) => {
         onKeyDown={onEnter}
         value={value}
       />
-      <div className={styles["search__icon-container"]} onClick={onSubmit}>
-        <Icon.Send className={styles["search__icon"]} />
-      </div>
+      {sendIcon}
     </div>
   );
 };
