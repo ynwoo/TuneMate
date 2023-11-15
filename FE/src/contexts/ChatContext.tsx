@@ -15,14 +15,20 @@ export interface ChatContextState {
   chatRooms: ChatRoom[];
 }
 
-export const ChatContext = createContext<ChatContextState>(
-  {} as ChatContextState
-);
+export const ChatContext = createContext<ChatContextState>({} as ChatContextState);
 
 const ChatProvider = ({ children }: Props) => {
   const { stompClient, connect: defaultConnect } = useStompClient();
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
+  const [subscribes, setSubscribes] = useState<number[]>([]);
   const { data: myChatRooms } = useMyChatRoomsQuery();
+
+  useEffect(() => {
+    console.log("subscribes", subscribes);
+  }, [subscribes]);
+  useEffect(() => {
+    console.log("chatRooms", chatRooms);
+  }, [chatRooms]);
 
   const refreshChatRooms = (newChatRoom: ChatRoom) => {
     // 기존 chatroom 있는지 찾기
@@ -50,6 +56,10 @@ const ChatProvider = ({ children }: Props) => {
   const subscribe = useCallback(
     (relationId: Friend["relationId"]) => {
       if (stompClient.current) {
+        if (subscribes.includes(relationId)) {
+          return;
+        }
+        setSubscribes((subscribes) => [...subscribes, relationId]);
         Stomp.subscribe(
           stompClient.current,
           CHAT_SOCKET_URL.subscribeURL(relationId),
@@ -57,17 +67,13 @@ const ChatProvider = ({ children }: Props) => {
         );
       }
     },
-    [stompClient, subscibeCallback]
+    [stompClient, subscibeCallback, subscribes, setSubscribes]
   );
 
   const publish = useCallback(
     (messageRequest: MessageRequest) => {
       if (stompClient.current) {
-        Stomp.publish(
-          stompClient.current,
-          CHAT_SOCKET_URL.publishURL(),
-          messageRequest
-        );
+        Stomp.publish(stompClient.current, CHAT_SOCKET_URL.publishURL(), messageRequest);
       }
     },
     [stompClient]
@@ -79,7 +85,6 @@ const ChatProvider = ({ children }: Props) => {
         if (relationIds) {
           relationIds.forEach((relationId) => {
             subscribe(relationId);
-            console.log(`${relationId}번 채팅 방 연결 성공`);
           });
         }
       };
@@ -89,14 +94,16 @@ const ChatProvider = ({ children }: Props) => {
   );
 
   useEffect(() => {
-    if (connect && myChatRooms) {
-      const prevChatRooms = chatRooms.map(({ chatRoomId }) => chatRoomId);
-      const newChatRooms = myChatRooms.filter(
-        (chatRoomId) => !prevChatRooms.includes(chatRoomId)
-      );
-      connect(newChatRooms);
+    if (stompClient && subscribe && myChatRooms) {
+      const timer = setTimeout(() => {
+        const relationIds = myChatRooms.map((id) => id);
+        relationIds.forEach((relationId) => {
+          subscribe(relationId);
+        });
+      }, 2000);
+      return () => clearTimeout(timer);
     }
-  }, [chatRooms, connect, myChatRooms]);
+  }, [subscribe, myChatRooms, stompClient]);
 
   return (
     <ChatContext.Provider

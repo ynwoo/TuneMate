@@ -1,4 +1,4 @@
-import { createContext, MutableRefObject, useCallback, useRef } from "react";
+import { createContext, MutableRefObject, useCallback, useRef, useEffect } from "react";
 import { Client } from "@stomp/stompjs";
 import Props from "@/types";
 import { Stomp } from "@/utils/stomp";
@@ -10,9 +10,7 @@ export interface StompContextState {
   disconnect: () => void;
 }
 
-export const StompClientContext = createContext<StompContextState>(
-  {} as StompContextState
-);
+export const StompClientContext = createContext<StompContextState>({} as StompContextState);
 
 type StompClientProviderProps = Props;
 
@@ -32,6 +30,13 @@ const StompClientProvider = ({ children }: StompClientProviderProps) => {
       stompClient.current = undefined;
     }
   }, [stompClient]);
+
+  useEffect(() => {
+    connect(() => {
+      console.log("client 생성!!");
+    });
+    return disconnect;
+  }, []);
 
   return (
     <StompClientContext.Provider value={{ stompClient, connect, disconnect }}>

@@ -9,10 +9,7 @@ import { createContext, useCallback, useState, useEffect } from "react";
 export interface FriendRequestContextState {
   connect: (userIds?: string[]) => void;
   subscribe: (userId: Friend["friendId"]) => void;
-  publish: (
-    userId: Friend["userId"],
-    friendRequestMessage: FriendRequestMessage
-  ) => void;
+  publish: (userId: Friend["userId"], friendRequestMessage: FriendRequestMessage) => void;
   friendRequestMessages: FriendRequestMessage[];
 }
 
@@ -22,9 +19,8 @@ export const FriendRequestContext = createContext<FriendRequestContextState>(
 
 const FriendRequestProvider = ({ children }: Props) => {
   const { stompClient, connect: defaultConnect } = useStompClient();
-  const [friendRequestMessages, setFriendRequestMessages] = useState<
-    FriendRequestMessage[]
-  >([]);
+  const [subscribes, setSubscribes] = useState<string[]>([]);
+  const [friendRequestMessages, setFriendRequestMessages] = useState<FriendRequestMessage[]>([]);
 
   const { data: sendSocialFriendRequests } = useSendSocialFriendRequestsQuery();
 
@@ -33,14 +29,9 @@ const FriendRequestProvider = ({ children }: Props) => {
       console.log(data);
 
       // 새로운 chatroom
-      const newFriendRequestMessage: FriendRequestMessage = JSON.parse(
-        data.body
-      );
+      const newFriendRequestMessage: FriendRequestMessage = JSON.parse(data.body);
 
-      setFriendRequestMessages([
-        ...friendRequestMessages,
-        newFriendRequestMessage,
-      ]);
+      setFriendRequestMessages([...friendRequestMessages, newFriendRequestMessage]);
     },
     [friendRequestMessages]
   );
@@ -48,6 +39,10 @@ const FriendRequestProvider = ({ children }: Props) => {
   const subscribe = useCallback(
     (userId: Friend["friendId"]) => {
       if (stompClient.current) {
+        if (subscribes.includes(userId)) {
+          return;
+        }
+        setSubscribes((subscribes) => [...subscribes, userId]);
         Stomp.subscribe(
           stompClient.current,
           FRIEND_SOCKET_URL.subscribeURL(userId),
@@ -77,7 +72,6 @@ const FriendRequestProvider = ({ children }: Props) => {
         if (userIds) {
           userIds.forEach((userId) => {
             subscribe(userId);
-            console.log(`${userId}번 친구 요청 방 연결 성공`);
           });
         }
       };
@@ -87,23 +81,20 @@ const FriendRequestProvider = ({ children }: Props) => {
   );
 
   useEffect(() => {
-    if (connect && sendSocialFriendRequests) {
-      const prevFriendIds = friendRequestMessages.map(
-        ({ receiveUserId }) => receiveUserId
-      );
-      const newFriendIds = sendSocialFriendRequests.filter(
-        (friendId) => !prevFriendIds.includes(friendId)
-      );
-      console.log("newFriendIds", newFriendIds);
+    if (stompClient && subscribe && sendSocialFriendRequests) {
+      const timer = setTimeout(() => {
+        const friendIds = sendSocialFriendRequests.map((id) => id);
+        friendIds.forEach((userId) => {
+          subscribe(userId);
+        });
+      }, 2000);
 
-      connect(newFriendIds);
+      return () => clearTimeout(timer);
     }
-  }, [connect, friendRequestMessages, sendSocialFriendRequests]);
+  }, [subscribe, sendSocialFriendRequests, stompClient]);
 
   return (
-    <FriendRequestContext.Provider
-      value={{ connect, subscribe, publish, friendRequestMessages }}
-    >
+    <FriendRequestContext.Provider value={{ connect, subscribe, publish, friendRequestMessages }}>
       {children}
     </FriendRequestContext.Provider>
   );
