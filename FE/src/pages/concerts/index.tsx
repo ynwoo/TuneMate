@@ -7,12 +7,12 @@ import { useState, useCallback, ChangeEvent, useEffect } from "react";
 import styles from "@/styles/ConcertPage.module.css";
 import Select from "@/components/input/Select/Select";
 
-const initConcertSearchOption: ConcertSearchOption = {
+export const initConcertSearchOption: ConcertSearchOption = {
   type: "genre",
   option: "Bal",
 };
 
-const selectOptions: { name: string; value: GenreOptions }[] = [
+export const concertSelectOptions: { name: string; value: GenreOptions }[] = [
   { name: "발라드", value: "Bal" },
   { name: "락/메탈", value: "Roc" },
   { name: "랩/힙합", value: "Rap" },
@@ -75,7 +75,7 @@ const ConcertsPage = () => {
         />
         <Select
           className={styles["concerts-page__select"]}
-          items={selectOptions}
+          items={concertSelectOptions}
           onChange={onChange}
         />
       </div>

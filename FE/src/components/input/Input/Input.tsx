@@ -9,6 +9,7 @@ interface InputProps extends Props {
   inputRef?: RefObject<HTMLInputElement>;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   type?: string;
+  readOnly?: boolean;
   name: string;
   label: string;
 }
@@ -21,6 +22,7 @@ const Input = ({
   name,
   className,
   label,
+  readOnly,
   type = "text",
 }: InputProps) => {
   return (
@@ -37,6 +39,7 @@ const Input = ({
         type={type}
         onChange={onChange}
         value={value}
+        readOnly={readOnly}
       />
     </div>
   );
