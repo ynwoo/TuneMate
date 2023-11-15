@@ -1,26 +1,26 @@
 package kr.co.tunemate.tunemategroupservice.service;
 
+import java.util.List;
+import java.util.UUID;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import kr.co.tunemate.tunemategroupservice.client.UserServiceClient;
 import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupDto;
 import kr.co.tunemate.tunemategroupservice.dto.layertolayer.GroupSearchDto;
 import kr.co.tunemate.tunemategroupservice.entity.Group;
 import kr.co.tunemate.tunemategroupservice.entity.GroupParticipation;
-import kr.co.tunemate.tunemategroupservice.entity.GroupParticipationRequest;
 import kr.co.tunemate.tunemategroupservice.exception.BaseException;
 import kr.co.tunemate.tunemategroupservice.exception.code.GroupErrorCode;
 import kr.co.tunemate.tunemategroupservice.repository.ConcertRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRepository;
-import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRequestRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupRepository;
+import kr.co.tunemate.tunemategroupservice.repository.GroupRepositoryCustomImpl;
 import kr.co.tunemate.tunemategroupservice.vo.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -31,6 +31,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupParticipationRepository groupParticipationRepository;
     private final UserServiceClient userServiceClient;
     private final ModelMapper modelMapper;
+    private final GroupRepositoryCustomImpl groupRepositoryCustom;
 
     @Transactional
     @Override
@@ -149,7 +150,7 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupDto> searchAll(GroupSearchDto groupSearchDto) {
         log.info("검색 조건{}으로 공고 목록을 조회합니다.", groupSearchDto);
 
-        return groupRepository.searchAll(groupSearchDto).stream().map(group -> {
+        return groupRepositoryCustom.searchAll(groupSearchDto).stream().map(group -> {
             Long participantsCnt = groupParticipationRepository.countByGroup(group);
 
             GroupDto groupDto = modelMapper.map(group, GroupDto.class);
