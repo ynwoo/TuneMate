@@ -78,7 +78,6 @@ export default function SinglePlayer() {
         display: "flex",
         flexDirection: "column",
         padding: "20px",
-        // paddingBottom: "40px",
         top: 570,
         height: "100%",
         overflowY: "auto",
@@ -86,6 +85,7 @@ export default function SinglePlayer() {
         backgroundColor: "white",
         transition: "transform 0.3s ease-in-out",
         transform: isClicked ? "translateY(-400px)" : "translateY(0)",
+        marginLeft: 25,
         zIndex: 9,
       }}
     >

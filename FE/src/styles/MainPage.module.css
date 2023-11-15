@@ -1,3 +1,8 @@
+.body {
+  background: linear-gradient(140deg, #d5bdfa, #ffffff, #fff7cf);
+  height: 100vh;
+}
+
 .main-page {
   display: flex;
   flex-direction: column;

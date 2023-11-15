@@ -34,7 +34,7 @@ export default function CustomPlayer({ accessToken, playTrack }) {
   // 앨범아트 바꾸기
   useEffect(() => {
     setAlubumArt(Album[currentTrackIndex]);
-  }, [AlubumArt, currentTrackIndex]);
+  }, [AlubumArt]);
 
   const playNextTrack = () => {
     console.log("playNextTrack 실행");
@@ -44,6 +44,13 @@ export default function CustomPlayer({ accessToken, playTrack }) {
       setCurrentTrackIndex(0);
     }
     setPlay(true);
+  };
+
+  const handlePlaybackChange = (state) => {
+    if (!state.isPlaying) {
+      playNextTrack();
+      console.log("currentTrackIndex1", currentTrackIndex);
+    }
   };
 
   console.log("currentTrackIndex", currentTrackIndex);
@@ -76,12 +83,7 @@ export default function CustomPlayer({ accessToken, playTrack }) {
       <SpotifyPlayer
         token={accessToken}
         showSaveIcon
-        callback={(state) => {
-          // playNextTrack();
-          if (!state.isPlaying && state.duration - state.position < 1000) {
-            playNextTrack();
-          }
-        }}
+        callback={handlePlaybackChange}
         play={play}
         uris={newArr}
       />

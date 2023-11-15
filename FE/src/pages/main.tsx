@@ -64,7 +64,7 @@ const MainPage = () => {
   }, []);
 
   return (
-    <div>
+    <div className={styles.body}>
       <div className={styles["main-page"]}>
         <MainContent
           className={styles["main-page__content"]}
