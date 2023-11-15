@@ -24,9 +24,9 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         return jpaQueryFactory
                 .selectFrom(group)
                 .where(
-                        eqHostName(groupSearchDto.getHostName()),
-                        likeTitle(groupSearchDto.getTitle()),
-                        likeContent(groupSearchDto.getContent()),
+                        containHostName(groupSearchDto.getHostName()),
+                        containTitle(groupSearchDto.getTitle()),
+                        containContent(groupSearchDto.getContent()),
                         isJoinable(groupSearchDto.getJoinableOnly())
                 )
                 .orderBy(group.createdAt.desc())
@@ -47,27 +47,27 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         );
     }
 
-    private BooleanExpression likeContent(String content) {
+    private BooleanExpression containContent(String content) {
         if (StringUtils.isNullOrEmpty(content)) {
             return null;
         }
 
-        return group.content.like(content);
+        return group.content.contains(content);
     }
 
-    private BooleanExpression likeTitle(String title) {
+    private BooleanExpression containTitle(String title) {
         if (StringUtils.isNullOrEmpty(title)) {
             return null;
         }
 
-        return group.title.like(title);
+        return group.title.contains(title);
     }
 
-    private BooleanExpression eqHostName(String hostName) {
+    private BooleanExpression containHostName(String hostName) {
         if (StringUtils.isNullOrEmpty(hostName)) {
             return null;
         }
 
-        return group.hostName.eq(hostName);
+        return group.hostName.contains(hostName);
     }
 }
