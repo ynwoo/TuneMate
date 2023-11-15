@@ -17,7 +17,6 @@ import kr.co.tunemate.tunemategroupservice.exception.code.GroupErrorCode;
 import kr.co.tunemate.tunemategroupservice.repository.ConcertRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupParticipationRepository;
 import kr.co.tunemate.tunemategroupservice.repository.GroupRepository;
-import kr.co.tunemate.tunemategroupservice.repository.GroupRepositoryCustomImpl;
 import kr.co.tunemate.tunemategroupservice.vo.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,6 @@ public class GroupServiceImpl implements GroupService {
     private final GroupParticipationRepository groupParticipationRepository;
     private final UserServiceClient userServiceClient;
     private final ModelMapper modelMapper;
-    private final GroupRepositoryCustomImpl groupRepositoryCustom;
 
     @Transactional
     @Override
@@ -150,7 +148,8 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupDto> searchAll(GroupSearchDto groupSearchDto) {
         log.info("검색 조건{}으로 공고 목록을 조회합니다.", groupSearchDto);
 
-        return groupRepositoryCustom.searchAll(groupSearchDto).stream().map(group -> {
+        return groupRepository.searchAll(groupSearchDto).stream().map(group -> {
+            log.debug(group.toString());
             Long participantsCnt = groupParticipationRepository.countByGroup(group);
 
             GroupDto groupDto = modelMapper.map(group, GroupDto.class);
