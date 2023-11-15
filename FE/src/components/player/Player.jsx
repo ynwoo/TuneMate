@@ -17,7 +17,8 @@ import styles from "@/components/player/Album.module.css";
 export default function CustomPlayer({ accessToken, playTrack }) {
   const [play, setPlay] = useState(false);
   const ListInfo = useRecoilValue(ListInfoState);
-  const AlubumArt = useRecoilValue(AlubumArtState);
+  // const AlubumArt = useRecoilValue(AlubumArtState);
+  const [AlubumArt, setAlubumArt] = useRecoilState(AlubumArtState);
   const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(
     currentTrackIndexState
   );
@@ -30,7 +31,7 @@ export default function CustomPlayer({ accessToken, playTrack }) {
 
   console.log("playTrack", playTrack);
   console.log("ListInfo", ListInfo);
-
+  console.log("앨범아트오셨는지..", ListInfo.album.images[0].url);
   const playAllTracks = () => {
     if (Mainplaylist && Mainplaylist.length > 0) {
       setPlay(true);
@@ -38,11 +39,12 @@ export default function CustomPlayer({ accessToken, playTrack }) {
       console.error("playTrack is undefined or empty.");
     }
   };
-  console.log("Mainplaylist", Mainplaylist);
+
   useEffect(() => {
     setPlayList(Mainplaylist);
-  }, [Mainplaylist]);
-  console.log("currentTrackIndex", currentTrackIndex);
+    setAlubumArt(PickTrack.album.images[0].url);
+  }, [Mainplaylist, AlubumArt]);
+
   const playNextTrack = () => {
     if (currentTrackIndex < Mainplaylist.length - 1) {
       setCurrentTrackIndex((prevIndex) => prevIndex + 1);

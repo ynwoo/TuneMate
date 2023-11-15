@@ -3,7 +3,7 @@ import { ConcertSearchOption } from "@/types/concert";
 import useConcertsQuery from "@/hooks/queries/concert/useConcertsQuery";
 import ConcertCard from "@/components/concert/ConcertCard/ConcertCard";
 import MainContent from "@/components/container/MainContent/MainContent";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import React from "react";
 import useRecommendationSongsQuery from "@/hooks/queries/recommendation/useRecommendationSongsQuery";
@@ -52,6 +52,15 @@ const MainPage = () => {
     console.log("ListInfo", ListInfo.album.images[0].url);
     console.log("AlubumArt", AlubumArt);
   };
+
+  useEffect(() => {
+    // console.log("recom", recommendedSongs[0]);
+    if (recommendedSongs !== undefined && recommendedSongs) {
+      setListInfo(recommendedSongs[0]);
+      setPickTrack(recommendedSongs[0]);
+      setAlubumArt(recommendedSongs[0].album.images[0].uri);
+    }
+  }, []);
 
   return (
     <div>

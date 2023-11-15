@@ -26,6 +26,7 @@ export default function SinglePlayer() {
   const [play, setPlay] = useState<Track | undefined>(undefined);
   const [accessToken, setAccessToken] = useState<string>("");
   const [playuri, setPlayuri] = useState<string>("");
+
   console.log("single", playuri);
   console.log("PickTrack", PickTrack);
 
@@ -34,13 +35,16 @@ export default function SinglePlayer() {
       // console.log(PickTrack, "2");
       setPlay(PickTrack);
       setPlayuri(PickTrack.uri);
-      setAlbumArt(PickTrack.album.images[0].url);
+      setAlbumArt(PickTrack.album.images[0].uri);
+      console.log("앨범아트", AlubumArt);
+
       console.log("왔어");
     } else if (ListInfo) {
       setPlay(ListInfo);
       setPlayuri(ListInfo.uri);
-      setAlbumArt(ListInfo.album.images[0].url);
+      setAlbumArt(ListInfo.album.images[0].uri);
       console.log("안왔어");
+      console.log("앨범아트", AlubumArt);
     }
   }, [ListInfo, PickTrack]);
 
@@ -54,10 +58,6 @@ export default function SinglePlayer() {
   const toggleTransform = () => {
     setIsClicked(!isClicked);
   };
-
-  const { data: recommendedSongs } = useRecommendationSongsQuery();
-
-  const uriArray = recommendedSongs?.map((song) => song.uri);
 
   if (!ListInfo) {
     return <></>;
