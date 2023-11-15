@@ -10,6 +10,7 @@ import { CHAT_SOCKET_URL } from "@/constants/url";
 export interface ChatContextState {
   connect: (relationIds?: number[]) => void;
   subscribe: (relationId: Friend["relationId"]) => void;
+  unsubscribe: (relationId: Friend["relationId"]) => void;
   publish: (messageRequest: MessageRequest) => void;
   refreshChatRooms: (newChatRoom: ChatRoom) => void;
   chatRooms: ChatRoom[];
@@ -23,25 +24,12 @@ const ChatProvider = ({ children }: Props) => {
   const [subscribes, setSubscribes] = useState<number[]>([]);
   const { data: myChatRooms } = useMyChatRoomsQuery();
 
-  useEffect(() => {
-    console.log("subscribes", subscribes);
-  }, [subscribes]);
-  useEffect(() => {
-    console.log("chatRooms", chatRooms);
-  }, [chatRooms]);
-
   const refreshChatRooms = (newChatRoom: ChatRoom) => {
-    // 기존 chatroom 있는지 찾기
-    let prevChatRoomId = chatRooms.findIndex(
-      ({ chatRoomId }) => chatRoomId === newChatRoom.chatRoomId
-    );
-
-    // 기존 chatroom 없으면 배열 마지막에 삽입
-    if (prevChatRoomId === -1) prevChatRoomId = chatRooms.length;
-
-    const newChatRooms = [...chatRooms];
-    newChatRooms[prevChatRoomId] = newChatRoom;
-    setChatRooms(newChatRooms);
+    // 기존에 있던 chatRoom을 newChatRomm값으로 변경
+    setChatRooms((chatRooms) => [
+      ...chatRooms.filter(({ chatRoomId }) => chatRoomId !== newChatRoom.chatRoomId),
+      newChatRoom,
+    ]);
   };
 
   const subscibeCallback = useCallback(
@@ -55,10 +43,7 @@ const ChatProvider = ({ children }: Props) => {
 
   const subscribe = useCallback(
     (relationId: Friend["relationId"]) => {
-      if (stompClient.current) {
-        if (subscribes.includes(relationId)) {
-          return;
-        }
+      if (stompClient.current && !subscribes.includes(relationId)) {
         setSubscribes((subscribes) => [...subscribes, relationId]);
         Stomp.subscribe(
           stompClient.current,
@@ -68,6 +53,16 @@ const ChatProvider = ({ children }: Props) => {
       }
     },
     [stompClient, subscibeCallback, subscribes, setSubscribes]
+  );
+
+  const unsubscribe = useCallback(
+    (relationId: Friend["relationId"]) => {
+      if (stompClient.current && subscribes.includes(relationId)) {
+        setSubscribes((subscribes) => subscribes.filter((id) => id !== relationId));
+        Stomp.unsubscribe(stompClient.current, CHAT_SOCKET_URL.subscribeURL(relationId));
+      }
+    },
+    [stompClient, subscribes, setSubscribes]
   );
 
   const publish = useCallback(
@@ -105,11 +100,16 @@ const ChatProvider = ({ children }: Props) => {
     }
   }, [subscribe, myChatRooms, stompClient]);
 
+  useEffect(() => {
+    return () => subscribes.forEach((subscribe) => unsubscribe(subscribe));
+  }, []);
+
   return (
     <ChatContext.Provider
       value={{
         connect,
         subscribe,
+        unsubscribe,
         publish,
         chatRooms,
         refreshChatRooms,

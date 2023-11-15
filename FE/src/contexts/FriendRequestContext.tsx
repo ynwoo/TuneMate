@@ -9,6 +9,7 @@ import { createContext, useCallback, useState, useEffect } from "react";
 export interface FriendRequestContextState {
   connect: (userIds?: string[]) => void;
   subscribe: (userId: Friend["friendId"]) => void;
+  unsubscribe: (userId: Friend["friendId"]) => void;
   publish: (userId: Friend["userId"], friendRequestMessage: FriendRequestMessage) => void;
   friendRequestMessages: FriendRequestMessage[];
 }
@@ -38,10 +39,7 @@ const FriendRequestProvider = ({ children }: Props) => {
 
   const subscribe = useCallback(
     (userId: Friend["friendId"]) => {
-      if (stompClient.current) {
-        if (subscribes.includes(userId)) {
-          return;
-        }
+      if (stompClient.current && !subscribes.includes(userId)) {
         setSubscribes((subscribes) => [...subscribes, userId]);
         Stomp.subscribe(
           stompClient.current,
@@ -50,7 +48,17 @@ const FriendRequestProvider = ({ children }: Props) => {
         );
       }
     },
-    [stompClient, subscibeCallback]
+    [stompClient, subscibeCallback, subscribes, setSubscribes]
+  );
+
+  const unsubscribe = useCallback(
+    (userId: Friend["friendId"]) => {
+      if (stompClient.current && subscribes.includes(userId)) {
+        setSubscribes((subscribes) => [...subscribes, userId]);
+        Stomp.unsubscribe(stompClient.current, FRIEND_SOCKET_URL.subscribeURL(userId));
+      }
+    },
+    [stompClient, subscribes, setSubscribes]
   );
 
   const publish = useCallback(
@@ -93,8 +101,14 @@ const FriendRequestProvider = ({ children }: Props) => {
     }
   }, [subscribe, sendSocialFriendRequests, stompClient]);
 
+  useEffect(() => {
+    return () => subscribes.forEach((subscribe) => unsubscribe(subscribe));
+  }, []);
+
   return (
-    <FriendRequestContext.Provider value={{ connect, subscribe, publish, friendRequestMessages }}>
+    <FriendRequestContext.Provider
+      value={{ connect, subscribe, unsubscribe, publish, friendRequestMessages }}
+    >
       {children}
     </FriendRequestContext.Provider>
   );

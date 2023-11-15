@@ -33,9 +33,15 @@ export const Stomp = Object.freeze({
   },
 
   subscribe(client: Client, url: string, callback: (data: any) => void) {
-    client.subscribe(url, callback);
+    client.subscribe(url, callback, { id: url });
 
     console.log("subscribe 실행", url);
+  },
+
+  unsubscribe(client: Client, url: string) {
+    client.unsubscribe(url);
+
+    console.log("unsubscribe 실행", url);
   },
 
   publish(client: Client, url: string, message: MessageRequest | FriendRequestMessage) {
