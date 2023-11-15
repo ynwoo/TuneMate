@@ -30,6 +30,7 @@
   align-items: stretch;
   flex-shrink: 0;
   flex-grow: 0;
+  margin-left: auto;
 }
 
 .friend-item__icon {
@@ -61,8 +62,8 @@
 
 .friend-item__user--content-container {
   display: flex;
-  max-width: 10em;
-  width: 10em;
+  max-width: 8em;
+  width: 8em;
   flex-direction: column;
   justify-content: space-between;
 
