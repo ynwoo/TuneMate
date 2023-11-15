@@ -5,7 +5,7 @@ interface GroupAnnouncement {
   title: string;
   capacity: number;
   concertId: Concert["id"];
-  deadline: string;
+  deadline: string | Date;
   content: string;
 }
 

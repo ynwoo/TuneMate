@@ -102,7 +102,7 @@ const GroupCreate = ({ className, onChange, group }: GroupCreateProps) => {
         className={classNameWrapper(styles["group-create__item"])}
         label="끝나는 날짜"
         name="deadline"
-        value={group.deadline}
+        value={group.deadline as string}
         onChange={onChange}
         type="date"
       />

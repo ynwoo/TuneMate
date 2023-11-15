@@ -57,7 +57,7 @@ const GroupCreatePage = () => {
   console.log(group);
 
   const onClick = useCallback(() => {
-    createGroup(group);
+    createGroup({ ...group, deadline: new Date(group.deadline) });
   }, [group, createGroup]);
 
   return (

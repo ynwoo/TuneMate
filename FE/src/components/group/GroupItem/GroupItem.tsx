@@ -5,7 +5,6 @@ import { classNameWrapper } from "@/utils/className";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { Time } from "@/utils/time";
-import useUserInfoQuery from "@/hooks/queries/user/useUserInfoQuery";
 
 interface GroupItemProps extends Props {
   item: Group;
@@ -29,7 +28,7 @@ const GroupItem = ({ className, item }: GroupItemProps) => {
       <div className={styles["group-item__info"]}>
         <h1 className={styles["group-item__info--title"]}>{item.title}</h1>
         <p className={styles["group-item__info--time"]}>
-          {Time.period(item.startDateTime, item.deadline)}
+          {Time.period(item.startDateTime, item.deadline as string)}
         </p>
       </div>
     </li>
