@@ -173,7 +173,7 @@ public class SocialController {
 	}
 
 	/**
-	 * 채팅 기록을 보여줍니다 (채팅 방 접속).
+	 * 채팅 기록을 보여줍니다.
 	 */
 	@GetMapping("/chats/{relationId}")
 	@Operation(summary = "채팅 기록 조회", description = """
@@ -187,8 +187,23 @@ public class SocialController {
 		@PathVariable("relationId") Long relationId) {
 		socialService.checkUser(relationId, userId);
 		socialService.setChats(relationId, userId);
-		socialService.setChatPerson(relationId, userId);
 		return ResponseEntity.ok(socialService.getChats(relationId));
+	}
+
+	/**
+	 * 채팅방 입장
+	 */
+	@PostMapping("/chat-in/{relationId}")
+	@Operation(summary = "채팅방 입장", description = """
+		채팅 방을 입장 할 때 요청하는 API.""")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "입장 성공."),
+			@ApiResponse(responseCode = "403", description = "relationId 에 포함되지 않은 사람이 입장 하는 경우"),
+			@ApiResponse(responseCode = "404", description = "relationId 가 없는 경우")
+	})
+	public void chatIn(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId ){
+		socialService.checkUser(relationId, userId);
+		socialService.setChatPerson(relationId,userId);
 	}
 
 	/**
