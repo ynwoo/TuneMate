@@ -12,6 +12,7 @@ import {
   AlubumArtState,
   reAlbumArtState,
   reSongUrlState,
+  AlbumState,
 } from "@/store/atom";
 import "animate.css/animate.min.css";
 import Dashboard from "@/components/player/Dashboards";
@@ -26,9 +27,13 @@ export default function SinglePlayer() {
   const [play, setPlay] = useState<Track | undefined>(undefined);
   const [accessToken, setAccessToken] = useState<string>("");
   const [playuri, setPlayuri] = useState<string>("");
+  const [album, setAlbum] = useRecoilState(AlbumState);
+  const Mainplaylist = useRecoilValue(MainplaylistState);
 
   console.log("single", playuri);
   console.log("PickTrack", PickTrack);
+
+  console.log("와주라", Mainplaylist);
 
   useEffect(() => {
     if (PickTrack) {
@@ -36,13 +41,15 @@ export default function SinglePlayer() {
       setPlay(PickTrack);
       setPlayuri(PickTrack.uri);
       setAlbumArt(PickTrack.album.images[0].uri);
+      setAlbum(PickTrack.album.images[0].uri);
       console.log("앨범아트", AlubumArt);
 
       console.log("왔어");
     } else if (ListInfo) {
       setPlay(ListInfo);
-      setPlayuri(ListInfo.uri);
+      setPlayuri(Mainplaylist[0]);
       setAlbumArt(ListInfo.album.images[0].uri);
+      setAlbum(ListInfo.album.images[0].uri);
       console.log("안왔어");
       console.log("앨범아트", AlubumArt);
     }

@@ -22,6 +22,9 @@ import useModal from "@/hooks/useModal";
 import SearchTrack from "@/components/playlists/SearchTrack/SearchTrack";
 import Toast from "@/components/toast/Toast";
 import useToast from "@/hooks/useToast";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { MainplaylistState, AlubumArtState, AlbumState } from "@/store/atom";
+import AlbumArt from "@/components/player/AlbumArt";
 
 type TrackInfo = {
   title: string;
@@ -43,12 +46,28 @@ const ProfilePage = () => {
   const [playlistId, setPlaylistId] = useState("");
   const { closeToggle, isOpen, openToggle } = useModal();
   const { popToast, toastStatus, toastMsg } = useToast();
+  const [mainplaylist, setMainplaylist] = useRecoilState(MainplaylistState);
+  // const AlubumArt = useRecoilValue(AlubumArtState);
+  const [AlubumArt, setAlubumArt] = useRecoilState(AlubumArtState);
+  const [Album, setAlbum] = useRecoilState(AlbumState);
+  // console.log("이거바", AlubumArt);
+
+  // 내 리스트에서 uri만 싹 모아서 mainPlaylist에 추가
+  useEffect(() => {
+    const uriArray = myPlaylist.map((item) => item.uri);
+    const albumArt = myPlaylist.map((item) => item.cover);
+    setAlbum(albumArt);
+    console.log("여기바", Album);
+
+    setMainplaylist(uriArray);
+  }, [myPlaylist]);
 
   const getSpotifyPlaylists = async () => {
     const spotifyUserId = Storage.getSpotifyUserId();
     const playlistList = await getIndividualPlayLists(spotifyUserId);
     console.log(playlistList);
     const dataset = [...playlistList];
+
     dataset.forEach((data, index) => {
       const newContent = [
         {
@@ -141,7 +160,6 @@ const ProfilePage = () => {
       prevData.filter((music) => music.index !== index)
     );
     deleteTrack(index);
-    console.log(myPlaylist);
   };
 
   const addTrack = async (uri: string) => {

@@ -52,3 +52,8 @@ export const reAlbumArtState = atom<string>({
   key: "reAlbumArtState",
   default: undefined,
 });
+
+export const AlbumState = atom<string[]>({
+  key: "AlbumState",
+  default: [] as string[],
+});

@@ -31,10 +31,15 @@ const Playlist = ({
   const { closeToggle, isOpen, openToggle } = useModal();
   const [playlistData, setPlaylistData] = useState(data);
   const [deleteMode, setDeleteMode] = useState(false);
+  const [Mainlist, setMainPlaylist] = useRecoilState(MainplaylistState);
 
   useEffect(() => {
     setPlaylistData([...data]);
-  }, [data]);
+    console.log("data", data);
+    const array = data.map((play) => play.uri);
+    console.log("a", Mainlist);
+    // setMainPlaylist(array);
+  }, []);
 
   const changePlaylistOrder = async (changeTrackIndex: ChangeTrackIndex) => {
     const change = await updateIndividualPlayListTrack({
@@ -66,17 +71,6 @@ const Playlist = ({
     changePlaylistOrder(changeTrackIndex);
     console.log("순서 바꾸기 끝");
   };
-
-  const [Mainplaylist, setMainplaylist] = useRecoilState(MainplaylistState);
-
-  console.log("playlistData", playlistData);
-
-  useEffect(() => {
-    const uriArray = playlistData.map((item) => item.uri);
-    setMainplaylist(uriArray);
-    console.log("uriArray", uriArray);
-    console.log("Mainplaylist", Mainplaylist);
-  }, []);
 
   const onModal = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {

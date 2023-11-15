@@ -15,6 +15,7 @@ import {
   reAlbumArtState,
   AlubumArtState,
   PickTrackUriState,
+  MainplaylistState,
 } from "@/store/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { Track } from "@/types/spotify";
@@ -38,6 +39,7 @@ const MainPage = () => {
   const [PickTrack, setPickTrack] = useRecoilState(PickTrackState);
   const [ListInfo, setListInfo] = useRecoilState(ListInfoState);
   const [PickTrackUri, setPickTrackUri] = useRecoilState(PickTrackUriState);
+  const [Mainplaylist, setMainplaylist] = useRecoilState(MainplaylistState);
   console.log("recommendedSongs", recommendedSongs);
 
   const handleSongClick = (song: Track) => {
@@ -47,18 +49,17 @@ const MainPage = () => {
     setListInfo(song);
     setPickTrack(song);
     setPickTrackUri(song.uri);
+    setMainplaylist([song.uri]);
     setAlubumArt(song.album.images[0].uri);
-
-    console.log("ListInfo", ListInfo.album.images[0].url);
-    console.log("AlubumArt", AlubumArt);
   };
 
   useEffect(() => {
-    // console.log("recom", recommendedSongs[0]);
+    console.log("recom");
     if (recommendedSongs !== undefined && recommendedSongs) {
       setListInfo(recommendedSongs[0]);
       setPickTrack(recommendedSongs[0]);
       setAlubumArt(recommendedSongs[0].album.images[0].uri);
+      setMainplaylist([recommendedSongs[0].uri]);
     }
   }, []);
 
