@@ -20,21 +20,10 @@ const ChatList = ({ chatRoom, className }: ChatListProps) => {
             {prev !== cur && (
               <p className={styles["chat-list__date"]}>{Time.yyyyMMddD(message.time)}</p>
             )}
-            <ChatItem
-              key={`${message.senderNo}_${message.time}`}
-              className={styles["chat-list__item"]}
-              item={message}
-            />
+            <ChatItem key={message.time} className={styles["chat-list__item"]} item={message} />
           </>
         );
       })}
-      {/* {chatRoom.messages.map((message) => (
-        <ChatItem
-          key={`${message.senderNo}_${message.time}`}
-          className={styles["chat-list__item"]}
-          item={message}
-        />
-      ))} */}
     </ul>
   );
 };

@@ -12,7 +12,7 @@ const GroupList = ({ className, groups }: GroupListProps) => {
   return (
     <ul className={classNameWrapper(styles["group-list"], className)}>
       {groups.map((group) => (
-        <GroupItem className={styles["group-list__item"]} item={group} />
+        <GroupItem key={group.groupId} className={styles["group-list__item"]} item={group} />
       ))}
     </ul>
   );
