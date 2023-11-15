@@ -25,6 +25,7 @@ import useToast from "@/hooks/useToast";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { MainplaylistState, AlubumArtState, AlbumState } from "@/store/atom";
 import AlbumArt from "@/components/player/AlbumArt";
+import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
 
 type TrackInfo = {
   title: string;
@@ -37,7 +38,8 @@ type TrackInfo = {
 const ProfilePage = () => {
   const [name, setName] = useState("Name");
   const [imgSrc, setImgSrc] = useState(
-    "https://3.bp.blogspot.com/-XKyHG9ipUuk/WxvKRN9CeYI/AAAAAAABMn8/usJ7TuHvS4s8Qff7wFV6iY6vtRwM3bQwgCLcBGAs/s400/music_headphone_man.png"
+    "/favicon.ico"
+    // "https://3.bp.blogspot.com/-XKyHG9ipUuk/WxvKRN9CeYI/AAAAAAABMn8/usJ7TuHvS4s8Qff7wFV6iY6vtRwM3bQwgCLcBGAs/s400/music_headphone_man.png"
   );
   const [menuContent, setMenuContent] = useState<any[]>([]);
   const { isMenuOpen, openMenu, closeMenu } = useMenu();
@@ -51,6 +53,21 @@ const ProfilePage = () => {
   const [AlubumArt, setAlubumArt] = useRecoilState(AlubumArtState);
   const [Album, setAlbum] = useRecoilState(AlbumState);
   // console.log("이거바", AlubumArt);
+  const { data: individualPlayListRepresentative } =
+    useIndividualPlayListRepresentativeQuery();
+  console.log(
+    "individualPlayListRepresentative",
+    individualPlayListRepresentative
+  );
+
+  useEffect(() => {
+    if (individualPlayListRepresentative) {
+      const allUris = individualPlayListRepresentative.tracks.items.map(
+        (track) => track.track.uri
+      );
+      setMainplaylist(allUris);
+    }
+  }, [individualPlayListRepresentative]);
 
   // 내 리스트에서 uri만 싹 모아서 mainPlaylist에 추가
   useEffect(() => {
@@ -145,6 +162,10 @@ const ProfilePage = () => {
     };
     getUserProfile();
   }, []);
+
+  useEffect(() => {
+    if (Storage.getImageUrl()) setImgSrc(Storage.getImageUrl());
+  }, [setImgSrc]);
 
   const deleteTrack = async (index: number) => {
     const data: DeleteTrack = {

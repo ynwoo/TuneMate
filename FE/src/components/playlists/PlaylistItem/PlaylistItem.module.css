@@ -6,7 +6,7 @@
   position: relative;
   user-select: none;
   padding: 0.5vh 3vw;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 .item-left {
@@ -24,7 +24,6 @@
   gap: 1.5vw;
   overflow: hidden;
   text-overflow: ellipsis;
-
 }
 
 .playlist-item-inner {
