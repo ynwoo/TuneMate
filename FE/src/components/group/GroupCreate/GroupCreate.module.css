@@ -1,2 +1,11 @@
 .group-create {
 }
+
+.group-create__item {
+  margin-bottom: 1em;
+}
+
+.group-create__content {
+  height: 12em;
+  margin-bottom: 2em;
+}

@@ -7,6 +7,7 @@ import Select from "@/components/input/Select/Select";
 import Search from "@/components/input/Search/Search";
 import useDebounce from "@/hooks/useDebounce";
 import Button from "@/components/button/Button";
+import { useRouter } from "next/router";
 
 const initGroupSearchOptions: GroupSearchOptions = {
   joinableOnly: true,
@@ -22,6 +23,7 @@ const selectOptions: { name: string; value: OptionTypes }[] = [
 ];
 
 const GroupsPage = () => {
+  const router = useRouter();
   const searchRef = useRef<HTMLInputElement>(null);
   const [type, setType] = useState<OptionTypes>("hostName");
   const [text, setText] = useState<string>("");
@@ -55,7 +57,9 @@ const GroupsPage = () => {
     }));
   }, [setGroupSearchOptions, type, debounceText]);
 
-  const onCreateGroup = () => {};
+  const onCreate = () => {
+    router.push(`/groups/create`);
+  };
 
   // debounceText가 바뀌면 재 검색
   useEffect(() => {
@@ -76,7 +80,7 @@ const GroupsPage = () => {
       <Button
         className={styles["groups-page__group--create"]}
         color="blue"
-        onClick={onCreateGroup}
+        onClick={onCreate}
       >
         공고 생성
       </Button>
