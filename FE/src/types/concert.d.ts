@@ -8,9 +8,19 @@ interface Concert {
   link: string;
 }
 
+type GenreOptions =
+  | "Bal"
+  | "Roc"
+  | "Rap"
+  | "Jaz"
+  | "Por"
+  | "Fes"
+  | "Ind"
+  | "For";
+
 interface Genre {
   type: "genre";
-  option: "Bal" | "Roc" | "Rap" | "Jaz" | "Por" | "Fes" | "Ind";
+  option: GenreOptions;
 }
 
 interface PlaylistId {
@@ -20,4 +30,4 @@ interface PlaylistId {
 
 type ConcertSearchOption = Genre | PlaylistId;
 
-export type { Concert, ConcertSearchOption, Genre, PlaylistId };
+export type { Concert, ConcertSearchOption, Genre, PlaylistId, GenreOptions };
