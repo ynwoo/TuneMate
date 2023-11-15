@@ -24,13 +24,6 @@ const ChatList = ({ chatRoom, className }: ChatListProps) => {
           </>
         );
       })}
-      {/* {chatRoom.messages.map((message) => (
-        <ChatItem
-          key={`${message.senderNo}_${message.time}`}
-          className={styles["chat-list__item"]}
-          item={message}
-        />
-      ))} */}
     </ul>
   );
 };
