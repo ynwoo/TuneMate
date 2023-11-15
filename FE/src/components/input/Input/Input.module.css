@@ -1,0 +1,16 @@
+.input-container {
+  display: flex;
+  align-items: stretch;
+}
+
+.input-label {
+  flex-shrink: 0;
+  width: 6em;
+  margin-top: 0.5em;
+}
+
+.input {
+  flex: 1;
+  height: inherit;
+  padding: 0.5em;
+}

@@ -1,22 +1,32 @@
 import {
   Group,
   GroupAnnouncement,
+  GroupParticipation,
+  GroupSearchOptions,
   Participation,
   ParticipationRequest,
   ParticipationResponse,
 } from "@/types/group";
 import { api } from ".";
 
-const GROUP_URL = "group/groups";
+const GROUP_SERVICE_URL = "group-service";
+const GROUPS_URL = `${GROUP_SERVICE_URL}/groups`;
 
 // 모집 공고 생성
 export const createGroup = async (groupAnnouncement: GroupAnnouncement) => {
-  await api.post<void>(GROUP_URL, groupAnnouncement);
+  await api.post<void>(GROUPS_URL, groupAnnouncement);
 };
 
 // 모집 공고 목록 조회
-export const getGroups = async (): Promise<Group[]> => {
-  const response = await api.get<Group[]>(GROUP_URL);
+export const getGroups = async (
+  groupSearchOptions: GroupSearchOptions
+): Promise<Group[]> => {
+  const keys = Object.keys(groupSearchOptions) as (keyof GroupSearchOptions)[];
+  const queryParams = keys
+    .map((key) => `${key}=${groupSearchOptions[key]}`)
+    .join("&");
+
+  const response = await api.get<Group[]>(`${GROUPS_URL}?${queryParams}`);
   return response.data;
 };
 
@@ -28,71 +38,81 @@ export const updateGroup = async ({
   groupId: Group["groupId"];
   groupAnnouncement: GroupAnnouncement;
 }) => {
-  await api.put<void>(`${GROUP_URL}/${groupId}`, groupAnnouncement);
+  await api.put<void>(`${GROUPS_URL}`, { ...groupAnnouncement, groupId });
 };
 
 // 모집 공고 삭제
 export const deleteGroup = async (groupId: Group["groupId"]) => {
-  await api.delete<void>(`${GROUP_URL}/${groupId}`);
+  await api.delete<void>(`${GROUPS_URL}/${groupId}`);
 };
 
 // 모집 공고 마감
 export const deadlineGroup = async (groupId: Group["groupId"]) => {
-  await api.patch<void>(`${GROUP_URL}/${groupId}`);
+  await api.patch<void>(`${GROUPS_URL}/${groupId}`);
 };
 
 // 모집 공고 조회
 export const getGroup = async (groupId: Group["groupId"]): Promise<Group> => {
-  const response = await api.get<Group>(`${GROUP_URL}/${groupId}`);
+  const response = await api.get<Group>(`${GROUPS_URL}/${groupId}`);
   return response.data;
 };
 
 // 참여 요청
 export const participateGroup = async (groupId: Group["groupId"]) => {
-  await api.post<void>(`group/participation/${groupId}`);
+  await api.post<void>(`${GROUPS_URL}/${groupId}/participation-requests`);
 };
 
 // 받은 참여 요청 조회
 export const getGroupReceivedParticipations = async (): Promise<
-  ParticipationRequest[]
+  GroupParticipation[]
 > => {
-  const response = await api.get<ParticipationRequest[]>(
-    `group/received-participations`
+  const response = await api.get<GroupParticipation[]>(
+    `${GROUP_SERVICE_URL}/me/received-participation-requests`
   );
   return response.data;
 };
 
 // 보낸 참여 요쳥 목록 조회
 export const getGroupSentParticipations = async (): Promise<
-  ParticipationResponse[]
+  GroupParticipation[]
 > => {
-  const response = await api.get<ParticipationResponse[]>(
-    `group/sent-participations`
+  const response = await api.get<GroupParticipation[]>(
+    `${GROUP_SERVICE_URL}/me/sent-participation-requests`
   );
   return response.data;
 };
 
 // 참여 요청 수락
 export const acceptGroupParticipation = async (
-  participationId: Participation["participationId"]
+  groupParticipationId: GroupParticipation["groupParticipationId"]
 ) => {
-  await api.post(`group/participations/${participationId}/acceptance`);
+  await api.post(
+    `${GROUP_SERVICE_URL}/group-participation-requests/${groupParticipationId}`
+  );
 };
 
 // 참여 요청 거절
 export const rejectGroupParticipation = async (
-  participationId: Participation["participationId"]
+  groupParticipationId: GroupParticipation["groupParticipationId"]
 ) => {
-  await api.post(`group/partidipations/${participationId}/rejection`);
+  await api.delete(
+    `${GROUP_SERVICE_URL}/group-participation-requests/${groupParticipationId}`
+  );
 };
 
 // 참여중인 공고 조회
-export const getMyGroups = async (): Promise<Group[]> => {
-  const response = await api.get<Group[]>(`${GROUP_URL}/my-groups`);
+export const getMyGroups = async (): Promise<GroupParticipation[]> => {
+  const response = await api.get<GroupParticipation[]>(
+    `${GROUP_SERVICE_URL}/me/group-participations`
+  );
   return response.data;
 };
 
 // 참여중인 공고 탈퇴
-export const leaveMyGroup = async (groupId: Group["groupId"]) => {
-  await api.post<void>(`group/my-groups/${groupId}`);
+export const leaveMyGroup = async (
+  groupParticipationId: GroupParticipation["groupParticipationId"]
+) => {
+  await api.post<void>(
+    `${GROUP_SERVICE_URL}/me/group-participations/${groupParticipationId}`
+  );
 };
