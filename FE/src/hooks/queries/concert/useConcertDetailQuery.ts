@@ -6,6 +6,7 @@ const useConcertDetailQuery = (concertId: Concert["id"]) => {
   const query = useQuery({
     queryKey: ["useConcertDetailQuery", concertId],
     queryFn: () => getConcertDetail(concertId),
+    enabled: concertId ? true : false,
   });
 
   return query;

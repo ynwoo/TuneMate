@@ -1,0 +1,34 @@
+.group-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5em 1em;
+}
+
+.group-item:hover {
+  background-color: var(--light-gray-color);
+}
+
+.group-item__user {
+  flex-shrink: 0;
+  max-width: 5em;
+  width: 5em;
+  margin-right: 1em;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.group-item__info {
+  flex: 1;
+}
+
+.group-item__info--title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.group-item__info--time {
+  flex: 1;
+}

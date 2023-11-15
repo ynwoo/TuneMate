@@ -1,38 +1,58 @@
-import { UserInfo } from './user';
+import { Concert } from "./concert";
+import { UserInfo } from "./user";
 
 interface GroupAnnouncement {
   title: string;
   capacity: number;
-  concertId: number;
-  deadline: string;
+  concertId: Concert["id"];
+  deadline: string | Date;
   content: string;
 }
 
 interface Group extends GroupAnnouncement {
-  groupId: number;
+  groupId: string;
   participantsCnt: number;
+  hostId: UserInfo["userId"];
+  hostName: UserInfo["name"];
+  closedByHost: false;
   startDateTime: string;
-  hostId: UserInfo['userId'];
-  hostName: UserInfo['name'];
+  createdAt: string;
+  lastModifiedAt: string;
+}
+
+interface GroupParticipation {
+  groupParticipationId: Group["groupId"];
+  responseGroup: Group;
+  userInfo?: UserInfo;
+  userId?: UserInfo["userId"];
+  createdAt: string;
+  lastModifiedAt: string;
+}
+
+interface GroupSearchOptions {
+  hostName?: Group["hostName"];
+  title?: Group["title"];
+  content?: Group["content"];
+  joinableOnly: boolean;
 }
 
 interface Participation {
   participationId: number;
-  groupId: number;
+  groupId: Group["groupId"];
   dateTime: string;
   imageUrl: string;
 }
 
 interface ParticipationRequest extends Participation {
-  requesterId: UserInfo['userId'];
-  requesterName: UserInfo['name'];
+  requesterId: UserInfo["userId"];
+  requesterName: UserInfo["name"];
 }
 
 interface ParticipationResponse extends Participation {
   title: string;
-  hostId: UserInfo['userId'];
-  hostName: UserInfo['name'];
-  concertId: number;
+  hostId: UserInfo["userId"];
+  hostName: UserInfo["name"];
+  concertId: Group["concertId"];
 }
 
 export type {
@@ -41,4 +61,6 @@ export type {
   Participation,
   ParticipationRequest,
   ParticipationResponse,
+  GroupSearchOptions,
+  GroupParticipation,
 };
