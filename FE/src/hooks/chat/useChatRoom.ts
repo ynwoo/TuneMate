@@ -16,10 +16,7 @@ const useChatRoom = (relationId: Friend["relationId"]) => {
   );
 
   // 마지막 메시지 구하기
-  const lastMessage = useMemo(
-    () => chatRoom?.messages[chatRoom?.messages.length - 1],
-    [chatRoom]
-  );
+  const lastMessage = useMemo(() => chatRoom?.messages[chatRoom?.messages.length - 1], [chatRoom]);
 
   // 상대방이 보낸 메시지 중에서 안 읽은 메시지 개수
   const unReadCount = useMemo(() => {

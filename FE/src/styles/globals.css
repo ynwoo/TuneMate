@@ -56,8 +56,10 @@ a {
 .main {
   min-height: var(--main-height);
   background-color: var(--white-color);
-  display: flex;
-  flex-direction: column;
+
+  & > div {
+    flex: 1;
+  }
 }
 
 .login {
