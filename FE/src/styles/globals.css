@@ -69,3 +69,7 @@ a {
 .flex-container {
   display: flex;
 }
+
+.blue {
+  color: var(--blue-color);
+}

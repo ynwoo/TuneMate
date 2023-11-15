@@ -7,7 +7,7 @@ import {
 } from "@/types/group";
 import { api } from ".";
 
-const GROUP_URL = "group/groups";
+const GROUP_URL = "group-service/groups";
 
 // 모집 공고 생성
 export const createGroup = async (groupAnnouncement: GroupAnnouncement) => {

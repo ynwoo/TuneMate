@@ -1,4 +1,4 @@
-import { UserInfo } from './user';
+import { UserInfo } from "./user";
 
 interface GroupAnnouncement {
   title: string;
@@ -9,30 +9,30 @@ interface GroupAnnouncement {
 }
 
 interface Group extends GroupAnnouncement {
-  groupId: number;
+  groupId: string;
   participantsCnt: number;
   startDateTime: string;
-  hostId: UserInfo['userId'];
-  hostName: UserInfo['name'];
+  hostId: UserInfo["userId"];
+  hostName: UserInfo["name"];
 }
 
 interface Participation {
   participationId: number;
-  groupId: number;
+  groupId: Group["groupId"];
   dateTime: string;
   imageUrl: string;
 }
 
 interface ParticipationRequest extends Participation {
-  requesterId: UserInfo['userId'];
-  requesterName: UserInfo['name'];
+  requesterId: UserInfo["userId"];
+  requesterName: UserInfo["name"];
 }
 
 interface ParticipationResponse extends Participation {
   title: string;
-  hostId: UserInfo['userId'];
-  hostName: UserInfo['name'];
-  concertId: number;
+  hostId: UserInfo["userId"];
+  hostName: UserInfo["name"];
+  concertId: Group["concertId"];
 }
 
 export type {
