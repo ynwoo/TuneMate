@@ -70,6 +70,11 @@ a {
   display: flex;
 }
 
+.flex-container-col {
+  display: flex;
+  flex-direction: column;
+}
+
 .blue {
   color: var(--blue-color);
 }

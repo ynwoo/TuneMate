@@ -2,7 +2,7 @@ import Icon from "@/components/icons";
 import { classNameWrapper } from "@/utils/className";
 import styles from "./Search.module.css";
 import Props from "@/types";
-import { ChangeEvent, KeyboardEvent, useMemo } from "react";
+import { ChangeEvent, KeyboardEvent, useMemo, RefObject } from "react";
 
 type SearchType = "chat" | "default" | "none";
 
@@ -10,6 +10,7 @@ interface SearchProps extends Props {
   value: string;
   onInput: (e: ChangeEvent<HTMLInputElement>) => void;
   onSubmit: () => void;
+  searchRef?: RefObject<HTMLInputElement>;
   type?: SearchType;
 }
 
@@ -19,6 +20,7 @@ const Search = ({
   onSubmit,
   value,
   type = "default",
+  searchRef,
 }: SearchProps) => {
   const onEnter = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -49,6 +51,7 @@ const Search = ({
     <div className={classNameWrapper(styles.search, className)}>
       <input
         autoFocus
+        ref={searchRef}
         className={styles["search__input"]}
         type="search"
         onChange={onInput}

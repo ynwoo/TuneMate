@@ -1,9 +1,10 @@
+import { Concert } from "./concert";
 import { UserInfo } from "./user";
 
 interface GroupAnnouncement {
   title: string;
   capacity: number;
-  concertId: number;
+  concertId: Concert["id"];
   deadline: string;
   content: string;
 }
@@ -11,9 +12,19 @@ interface GroupAnnouncement {
 interface Group extends GroupAnnouncement {
   groupId: string;
   participantsCnt: number;
-  startDateTime: string;
   hostId: UserInfo["userId"];
   hostName: UserInfo["name"];
+  closedByHost: false;
+  startDateTime: string;
+  createdAt: string;
+  lastModifiedAt: string;
+}
+
+interface GroupSearchOptions {
+  hostName?: Group["hostName"];
+  title?: Group["title"];
+  content?: Group["content"];
+  joinableOnly: boolean;
 }
 
 interface Participation {
@@ -41,4 +52,5 @@ export type {
   Participation,
   ParticipationRequest,
   ParticipationResponse,
+  GroupSearchOptions,
 };

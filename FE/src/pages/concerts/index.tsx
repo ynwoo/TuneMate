@@ -64,7 +64,7 @@ const ConcertsPage = () => {
   }, [debounceText, originalConcerts]);
 
   return (
-    <div>
+    <div className={styles["groups-page"]}>
       <div className={styles["concerts-page__search-container"]}>
         <Search
           className={styles["concerts-page__search"]}

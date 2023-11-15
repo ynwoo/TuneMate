@@ -1,6 +1,7 @@
 import {
   Group,
   GroupAnnouncement,
+  GroupSearchOptions,
   Participation,
   ParticipationRequest,
   ParticipationResponse,
@@ -15,8 +16,15 @@ export const createGroup = async (groupAnnouncement: GroupAnnouncement) => {
 };
 
 // 모집 공고 목록 조회
-export const getGroups = async (): Promise<Group[]> => {
-  const response = await api.get<Group[]>(GROUP_URL);
+export const getGroups = async (
+  groupSearchOptions: GroupSearchOptions
+): Promise<Group[]> => {
+  const keys = Object.keys(groupSearchOptions) as (keyof GroupSearchOptions)[];
+  const queryParams = keys
+    .map((key) => `${key}=${groupSearchOptions[key]}`)
+    .join("&");
+
+  const response = await api.get<Group[]>(`${GROUP_URL}?${queryParams}`);
   return response.data;
 };
 

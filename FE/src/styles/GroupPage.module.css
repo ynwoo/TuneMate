@@ -1,0 +1,35 @@
+.groups-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.groups-page__group-list {
+}
+
+.groups-page__group--create {
+  align-self: flex-end;
+  margin-right: 2em;
+  margin-bottom: 1em;
+}
+
+.groups-page__search-container {
+  display: flex;
+  height: 2.5em;
+  align-items: stretch;
+  margin-bottom: 2em;
+  margin-left: 1em;
+  margin-right: 1em;
+
+  border: 1px var(--main-color) solid;
+}
+
+.groups-page__search {
+  flex-grow: 1;
+  height: inherit;
+}
+
+.groups-page__select {
+  flex-shrink: 0;
+  text-align: center;
+  cursor: pointer;
+}
