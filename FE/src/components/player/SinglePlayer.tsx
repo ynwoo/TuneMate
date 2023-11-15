@@ -37,7 +37,6 @@ export default function SinglePlayer() {
 
   useEffect(() => {
     if (PickTrack) {
-      // console.log(PickTrack, "2");
       setPlay(PickTrack);
       setPlayuri(PickTrack.uri);
       setAlbumArt(PickTrack.album.images[0].uri);
@@ -89,8 +88,8 @@ export default function SinglePlayer() {
         transform: isClicked ? "translateY(-400px)" : "translateY(0)",
         zIndex: 9,
       }}
-      onClick={toggleTransform}
     >
+      <button onClick={toggleTransform}>버어어어튼</button>
       {/* 내용 */}
 
       {<Player accessToken={accessToken} playTrack={playuri} />}

@@ -57,10 +57,10 @@ const ProfilePage = () => {
     const uriArray = myPlaylist.map((item) => item.uri);
     const albumArt = myPlaylist.map((item) => item.cover);
     setAlbum(albumArt);
-    console.log("여기바", Album);
-
     setMainplaylist(uriArray);
   }, [myPlaylist]);
+  console.log("aaaa", Album);
+  console.log("bbbb", mainplaylist);
 
   const getSpotifyPlaylists = async () => {
     const spotifyUserId = Storage.getSpotifyUserId();
@@ -91,6 +91,8 @@ const ProfilePage = () => {
   };
 
   const getUserPlaylist = async () => {
+    console.log("getUserPlaylist g호출");
+
     const repPlaylistData = await getIndividualPlayListRepresentative();
     console.log("repPlaylistData", repPlaylistData);
     if (repPlaylistData.id !== null) {

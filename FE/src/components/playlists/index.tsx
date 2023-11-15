@@ -10,9 +10,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { updateIndividualPlayListTrack } from "@/api/music/individual";
 import { ChangeTrackIndex } from "@/types/spotify";
 import { PlayList } from "@/types/playList";
-import { MainplaylistState } from "@/store/atom";
-import { useRecoilState } from "recoil";
-
+import useIndividualPlayListsQuery from "@/hooks/queries/music/individual/useIndividualPlayListsQuery";
 interface PlaylistProps extends Props {
   data: any[];
   playlistName: string;
@@ -31,15 +29,14 @@ const Playlist = ({
   const { closeToggle, isOpen, openToggle } = useModal();
   const [playlistData, setPlaylistData] = useState(data);
   const [deleteMode, setDeleteMode] = useState(false);
-  const [Mainlist, setMainPlaylist] = useRecoilState(MainplaylistState);
+  console.log("data", data);
+  console.log("playlistData", playlistData);
 
   useEffect(() => {
-    setPlaylistData([...data]);
-    console.log("data", data);
-    const array = data.map((play) => play.uri);
-    console.log("a", Mainlist);
-    // setMainPlaylist(array);
-  }, []);
+    if (data) {
+      setPlaylistData(data);
+    }
+  }, [data]);
 
   const changePlaylistOrder = async (changeTrackIndex: ChangeTrackIndex) => {
     const change = await updateIndividualPlayListTrack({
@@ -97,6 +94,8 @@ const Playlist = ({
     },
     [closeToggle]
   );
+
+  console.log("playlistData", playlistData);
 
   return (
     <>

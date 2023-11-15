@@ -6,7 +6,6 @@ import Text from "../Text/Text";
 import Icon from "@/components/icons";
 import { Draggable } from "react-beautiful-dnd";
 import {
-  MainplaylistState,
   PickTrackState,
   PickTrackUriState,
   AlubumArtState,
@@ -60,9 +59,12 @@ const PlaylistItem = ({
     <Draggable draggableId={id} index={index}>
       {(provided) => (
         <div {...provided.draggableProps} ref={provided.innerRef}>
-          <div className={styles["container"]} onClick={handleContainerClick}>
+          <div className={styles["container"]}>
             <div className={styles["playlist-item-inner"]}>
-              <div className={styles["item-left"]}>
+              <div
+                className={styles["item-left"]}
+                onClick={handleContainerClick}
+              >
                 <Cover src={cover} alt="album-cover" />
                 <div className={styles["text-box"]}>
                   <Text content={title} type="title" />

@@ -1,13 +1,9 @@
 import SpotifyPlayer from "react-spotify-web-playback";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import {
-  playlistState,
-  ListInfoState,
-  PickTrackState,
   MainplaylistState,
   PickTrackUriState,
   currentTrackIndexState,
-  reSongUrlState,
   AlubumArtState,
   AlbumState,
 } from "@/store/atom";
@@ -17,16 +13,13 @@ import styles from "@/components/player/Album.module.css";
 
 export default function CustomPlayer({ accessToken, playTrack }) {
   const [play, setPlay] = useState(false);
-  const ListInfo = useRecoilValue(ListInfoState);
   // const AlubumArt = useRecoilValue(AlubumArtState);
   const [AlubumArt, setAlubumArt] = useRecoilState(AlubumArtState);
   const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(
     currentTrackIndexState
   );
-  const [PickTrack, setPickTrack] = useRecoilState(PickTrackState); // Ensure setPickTrack is defined
   const PickTrackUri = useRecoilValue(PickTrackUriState);
   const Mainplaylist = useRecoilValue(MainplaylistState);
-  const [playList, setPlayList] = useRecoilState(playlistState);
   const [playTracks, setPlayTracks] = useState(playTrack);
   const Album = useRecoilValue(AlbumState);
   console.log("Mainplaylist", Mainplaylist);
@@ -41,9 +34,6 @@ export default function CustomPlayer({ accessToken, playTrack }) {
   // 앨범아트 바꾸기
   useEffect(() => {
     setAlubumArt(Album[currentTrackIndex]);
-    // setAlubumArt(PickTrack.album.images[0].uri);
-    // console.log("경우2", PickTrack.album.images[0].uri);
-    // setPlayList(Mainplaylist);
   }, [AlubumArt, currentTrackIndex]);
 
   const playNextTrack = () => {
@@ -77,12 +67,6 @@ export default function CustomPlayer({ accessToken, playTrack }) {
   );
 
   if (!accessToken) return null;
-  // uri만 모여있는 리스트에서 uri 뽑아넣기
-  // const newArr = useMemo(() => {
-  //   return Mainplaylist.slice(currentTrackIndex).concat(
-  //     Mainplaylist.slice(0, currentTrackIndex)
-  //   );
-  // }, [Mainplaylist, currentTrackIndex]);
 
   console.log("AAlbum", Album);
   return (
