@@ -73,3 +73,9 @@
 .group-detail-page__concert-title {
   margin-bottom: 0.5em;
 }
+
+.group-detail-page__delete {
+  position: absolute;
+  top: 5.5em;
+  right: 1em;
+}

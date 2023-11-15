@@ -20,6 +20,15 @@ interface Group extends GroupAnnouncement {
   lastModifiedAt: string;
 }
 
+interface GroupParticipation {
+  groupParticipationId: Group["groupId"];
+  responseGroup: Group;
+  userInfo?: UserInfo;
+  userId?: UserInfo["userId"];
+  createdAt: string;
+  lastModifiedAt: string;
+}
+
 interface GroupSearchOptions {
   hostName?: Group["hostName"];
   title?: Group["title"];
@@ -53,4 +62,5 @@ export type {
   ParticipationRequest,
   ParticipationResponse,
   GroupSearchOptions,
+  GroupParticipation,
 };

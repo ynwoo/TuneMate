@@ -9,7 +9,7 @@ import useDebounce from "@/hooks/useDebounce";
 import Button from "@/components/button/Button";
 import { useRouter } from "next/router";
 
-const initGroupSearchOptions: GroupSearchOptions = {
+export const initGroupSearchOptions: GroupSearchOptions = {
   joinableOnly: true,
 };
 
