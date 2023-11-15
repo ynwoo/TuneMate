@@ -1,7 +1,7 @@
 .search {
   display: flex;
   align-items: stretch;
-  height: 3rem;
+  height: inherit;
   background-color: var(--white-color);
   max-width: var(--max-width);
 }
@@ -10,6 +10,7 @@
   flex-grow: 1;
   width: 100%;
   border: 0;
+  padding: 0.5em;
 }
 
 .search__input:hover {

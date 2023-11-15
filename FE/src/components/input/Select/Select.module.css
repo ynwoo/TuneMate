@@ -1,0 +1,10 @@
+.select {
+  display: flex;
+  border: 0;
+  border: 1px var(--main-color) solid;
+}
+
+.select:hover {
+  border: 1px var(--main-color) solid;
+  opacity: 0.5;
+}

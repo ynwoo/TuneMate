@@ -4,7 +4,7 @@ import { classNameWrapper } from "@/utils/className";
 
 interface ConcertInfoItemProps extends Props {
   title: string;
-  description: string;
+  description: string | number;
 }
 
 const ConcertInfoItem = ({

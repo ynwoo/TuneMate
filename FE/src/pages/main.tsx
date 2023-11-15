@@ -3,9 +3,8 @@ import { ConcertSearchOption } from "@/types/concert";
 import useConcertsQuery from "@/hooks/queries/concert/useConcertsQuery";
 import ConcertCard from "@/components/concert/ConcertCard/ConcertCard";
 import MainContent from "@/components/container/MainContent/MainContent";
-import { useCallback } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import React from "react";
 import useRecommendationSongsQuery from "@/hooks/queries/recommendation/useRecommendationSongsQuery";
 import Image from "next/image";
 import {
@@ -17,6 +16,7 @@ import {
 } from "@/store/atom";
 import { useRecoilState } from "recoil";
 import { Track } from "@/types/spotify";
+import { Storage } from "@/utils/storage";
 
 const initConcertSearchOption: ConcertSearchOption = {
   type: "genre",
@@ -24,6 +24,7 @@ const initConcertSearchOption: ConcertSearchOption = {
 };
 
 const MainPage = () => {
+  const [username, setUsername] = useState<string>("");
   const { data: concerts } = useConcertsQuery(initConcertSearchOption);
   const router = useRouter();
 
@@ -52,16 +53,41 @@ const MainPage = () => {
     setAlubumArt(song.album.images[0].uri);
   };
 
+  useEffect(() => {
+    setUsername(Storage.getUserName());
+  }, []);
+
   return (
     <div className={styles["main-page"]}>
-      <MainContent className={styles["main-page__content"]} title="공연" onClick={onConcert}>
+      <MainContent
+        className={styles["main-page__content"]}
+        title={
+          <p>
+            {username && `${username}님을 위한 `}
+            <span className="blue">공연</span>
+          </p>
+        }
+        onClick={onConcert}
+      >
         <ul className={styles["main-page__content--item-container"]}>
           {concerts?.map((concert) => (
-            <ConcertCard className={styles["main-page__content--item"]} item={concert} />
+            <ConcertCard
+              className={styles["main-page__content--item"]}
+              item={concert}
+            />
           ))}
         </ul>
       </MainContent>
-      <MainContent className={styles["main-page__content"]} title="추천곡" onClick={onPlayer}>
+      <MainContent
+        className={styles["main-page__content"]}
+        title={
+          <p>
+            {username && `${username}님을 위한 `}
+            <span className="blue">추천곡</span>
+          </p>
+        }
+        onClick={onPlayer}
+      >
         <ul className={styles["main-page__content--item-container"]}>
           {recommendedSongs?.map((song) => (
             <li
@@ -70,10 +96,12 @@ const MainPage = () => {
               className={styles["main-page__content--item"]}
             >
               <div>
-                <Image src={song.album.images[0].uri} alt={song.name} width={100} height={100} />
-                {/* <p>{song.name}</p> */}
-                {/* <p>{song.artists?.[0].name}</p> */}
-                {/* <p>{song.uri}</p> */}
+                <Image
+                  src={song.album.images[0].uri}
+                  alt={song.name}
+                  width={100}
+                  height={100}
+                />
               </div>
             </li>
           ))}

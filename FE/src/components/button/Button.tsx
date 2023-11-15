@@ -14,7 +14,7 @@ const Button = ({ className, children, onClick, color }: ButtonProps) => {
   return (
     <>
       <button
-        className={classNameWrapper(className, styles.button, styles[color])}
+        className={classNameWrapper(styles.button, styles[color], className)}
         onClick={onClick}
       >
         {children}
