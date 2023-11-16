@@ -1,14 +1,11 @@
 import SpotifyPlayer from "react-spotify-web-playback";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import {
-  playlistState,
-  ListInfoState,
-  PickTrackState,
   MainplaylistState,
   PickTrackUriState,
   currentTrackIndexState,
-  reSongUrlState,
   AlubumArtState,
+  AlbumState,
 } from "@/store/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Image from "next/image";
@@ -16,21 +13,16 @@ import styles from "@/components/player/Album.module.css";
 
 export default function CustomPlayer({ accessToken, playTrack }) {
   const [play, setPlay] = useState(false);
-  const ListInfo = useRecoilValue(ListInfoState);
-  const AlubumArt = useRecoilValue(AlubumArtState);
+  // const AlubumArt = useRecoilValue(AlubumArtState);
+  const [AlubumArt, setAlubumArt] = useRecoilState(AlubumArtState);
   const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(
     currentTrackIndexState
   );
-  const [PickTrack, setPickTrack] = useRecoilState(PickTrackState); // Ensure setPickTrack is defined
   const PickTrackUri = useRecoilValue(PickTrackUriState);
   const Mainplaylist = useRecoilValue(MainplaylistState);
-  const reSongUrl = useRecoilValue(reSongUrlState);
-  const [playList, setPlayList] = useRecoilState(playlistState);
   const [playTracks, setPlayTracks] = useState(playTrack);
-
-  // console.log("playTrack", playTrack);
-  console.log("ListInfo", ListInfo);
-
+  const Album = useRecoilValue(AlbumState);
+  console.log("Mainplaylist", Mainplaylist);
   const playAllTracks = () => {
     if (Mainplaylist && Mainplaylist.length > 0) {
       setPlay(true);
@@ -39,11 +31,13 @@ export default function CustomPlayer({ accessToken, playTrack }) {
     }
   };
 
-  useEffect(() => {
-    setPlayList(Mainplaylist);
-  }, [Mainplaylist]);
-  console.log("currentTrackIndex", currentTrackIndex);
+  // 앨범아트 바꾸기
+  // useEffect(() => {
+  //   setAlubumArt(Album[currentTrackIndex]);
+  // }, [AlubumArt]);
+
   const playNextTrack = () => {
+    console.log("playNextTrack 실행");
     if (currentTrackIndex < Mainplaylist.length - 1) {
       setCurrentTrackIndex((prevIndex) => prevIndex + 1);
     } else {
@@ -52,43 +46,44 @@ export default function CustomPlayer({ accessToken, playTrack }) {
     setPlay(true);
   };
 
+  const handlePlaybackChange = (state) => {
+    if (!state.isPlaying) {
+      playNextTrack();
+      console.log("currentTrackIndex1", currentTrackIndex);
+    }
+  };
+
+  console.log("currentTrackIndex", currentTrackIndex);
+
   useEffect(() => {
     if (!Mainplaylist || Mainplaylist.length === 0) {
       setPlay(false);
     }
   }, [Mainplaylist]);
+
   useEffect(() => {
     // PickTrackUri 값이 변경될 때마다 해당 URI로 트랙을 변경
     if (PickTrackUri) {
       setPlayTracks([PickTrackUri]);
       setPlay(true);
-    } else if (reSongUrl) {
-      // reSongUrl이 있다면 해당 URI로 트랙을 변경
-      setPlayTracks([reSongUrl]);
-      setPlay(true);
     }
-  }, [PickTrackUri, reSongUrl, setPlayTracks, setPlay]); // Ensure to include setPlay in the dependency array
+  }, [PickTrackUri, setPlayTracks, setPlay]); // Ensure to include setPlay in the dependency array
+
+  const newArr = Mainplaylist.slice(currentTrackIndex).concat(
+    Mainplaylist.slice(0, currentTrackIndex)
+  );
 
   if (!accessToken) return null;
 
-  const newArr = useMemo(() => {
-    return Mainplaylist.slice(currentTrackIndex).concat(
-      Mainplaylist.slice(0, currentTrackIndex)
-    );
-  }, [Mainplaylist, currentTrackIndex]);
-
+  console.log("AAlbum", Album);
   return (
     <div className="custom-player" style={{ width: 300, height: 200 }}>
       <div className="custom-controls"></div>
-      <button onClick={playAllTracks}>전체 재생</button>
+      {/* <button onClick={playAllTracks}>전체 재생</button> */}
       <SpotifyPlayer
         token={accessToken}
         showSaveIcon
-        callback={(state) => {
-          if (!state.isPlaying && state.duration - state.position < 1000) {
-            playNextTrack();
-          }
-        }}
+        callback={handlePlaybackChange}
         play={play}
         uris={newArr}
       />
@@ -96,7 +91,7 @@ export default function CustomPlayer({ accessToken, playTrack }) {
         style={{ display: "flex", justifyContent: "center", marginTop: 50 }}
         className={styles.rotatingImageContainer}
       >
-        <Image src={AlubumArt} alt={AlubumArt} width={200} height={200} />
+        <Image src={AlubumArt} alt={Album} width={200} height={200} />
       </div>
     </div>
   );

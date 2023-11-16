@@ -30,8 +30,8 @@ const ConcertImage = ({
       <Image
         src={src}
         alt={alt}
-        width={100}
-        height={100}
+        width={200}
+        height={200}
         priority
         style={{ objectFit: "cover" }}
       />

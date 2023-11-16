@@ -16,23 +16,20 @@ import { Storage } from "@/utils/storage";
 import NonCloseableMenu from "@/components/menus/NonCloseable";
 import useMenu from "@/hooks/useMenu";
 import PlaylistData from "@/components/playlists/PlaylistData/PlaylistData";
-import { AddTrack, DeleteTrack } from "@/types/spotify";
+import { AddTrack, DeleteTrack, TrackInfo } from "@/types/spotify";
 import Modal from "@/components/modal/Modal";
 import useModal from "@/hooks/useModal";
 import SearchTrack from "@/components/playlists/SearchTrack/SearchTrack";
 import Toast from "@/components/toast/Toast";
 import useToast from "@/hooks/useToast";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { MainplaylistState, AlubumArtState, AlbumState } from "@/store/atom";
+import AlbumArt from "@/components/player/AlbumArt";
+import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
 import { useParams } from "next/navigation";
 import { Cookie } from "@/utils/cookie";
 import { useRouter } from "next/router";
-
-type TrackInfo = {
-  title: string;
-  artist: string;
-  cover: string;
-  uri: string;
-  id: string;
-};
+import { Convert } from "@/utils/convert";
 
 const ProfilePage = () => {
   const params = useParams();
@@ -43,17 +40,41 @@ const ProfilePage = () => {
   const [menuContent, setMenuContent] = useState<any[]>([]);
   const { isMenuOpen, openMenu, closeMenu } = useMenu();
   const [playlistName, setPlaylistName] = useState("");
-  const [myPlaylist, setMyPlaylist] = useState<any[]>([]);
+  const [myPlaylist, setMyPlaylist] = useState<TrackInfo[]>([]);
   const [playlistId, setPlaylistId] = useState("");
   const { closeToggle, isOpen, openToggle } = useModal();
   const { popToast, toastStatus, toastMsg } = useToast();
-  const [ isSameUser, setIsSameUser] = useState<boolean>(true);
+  const [mainplaylist, setMainplaylist] = useRecoilState(MainplaylistState);
+  // const AlubumArt = useRecoilValue(AlubumArtState);
+  const [AlubumArt, setAlubumArt] = useRecoilState(AlubumArtState);
+  const [Album, setAlbum] = useRecoilState(AlbumState);
+  // console.log("이거바", AlubumArt);
+  const { data: individualPlayListRepresentative } = useIndividualPlayListRepresentativeQuery();
+
+  useEffect(() => {
+    if (individualPlayListRepresentative) {
+      const allUris = individualPlayListRepresentative.tracks.items.map((track) => track.track.uri);
+      setMainplaylist(allUris);
+    }
+  }, [individualPlayListRepresentative]);
+
+  // 내 리스트에서 uri만 싹 모아서 mainPlaylist에 추가
+  useEffect(() => {
+    const uriArray = myPlaylist.map((item) => item.uri);
+    const albumArt = myPlaylist.map((item) => item.cover);
+    setAlbum(albumArt);
+    setMainplaylist(uriArray);
+  }, [myPlaylist]);
+  console.log("aaaa", Album);
+  console.log("bbbb", mainplaylist);
+  const [isSameUser, setIsSameUser] = useState<boolean>(true);
 
   const getSpotifyPlaylists = async () => {
     const spotifyUserId = Storage.getSpotifyUserId();
     const playlistList = await getIndividualPlayLists(spotifyUserId);
     console.log(playlistList);
     const dataset = [...playlistList];
+
     dataset.forEach((data, index) => {
       const newContent = [
         {
@@ -77,67 +98,22 @@ const ProfilePage = () => {
   };
 
   const getOtherUserPlaylist = async (playlistId: string) => {
-    const playlistData = await getOthersPlayList(playlistId);
-    setPlaylistName(playlistData.name);
-    console.log(playlistData.tracks.items);
-    const repTracks = [...playlistData.tracks.items];
-    const tmpData: any[] = [];
-    repTracks.forEach((trackData, index) => {
-      const baseData = trackData.track;
-      const trackArtists = baseData.artists;
-      let trackArtist = "";
-      for (let i = 0; i < trackArtists.length; i++) {
-        if (i === trackArtists.length - 1) {
-          trackArtist = trackArtist + trackArtists[i].name;
-        } else {
-          trackArtist = trackArtist + trackArtists[i].name + ", ";
-        }
-      }
-      const newData = {
-        title: baseData.name,
-        artist: trackArtist,
-        cover: baseData.album.images[2].url,
-        id: baseData.id,
-        uri: baseData.uri,
-        index: index,
-      };
-      tmpData.push(newData);
-    });
-    console.log(tmpData);
+    const playList = await getOthersPlayList(playlistId);
+    setPlaylistName(playList.name);
+    console.log(playList.tracks.items);
+    const tmpData = Convert.playListToTrackInfos(playList);
     setMyPlaylist(tmpData);
   };
 
   const getUserPlaylist = async () => {
-    const repPlaylistData = await getIndividualPlayListRepresentative();
-    console.log(repPlaylistData);
-    if (repPlaylistData.id !== null) {
-      setPlaylistName(repPlaylistData.name);
-      setPlaylistId(repPlaylistData.id);
-      console.log(repPlaylistData.tracks.items);
-      const repTracks = [...repPlaylistData.tracks.items];
-      const tmpData: any[] = [];
-      repTracks.forEach((trackData, index) => {
-        const baseData = trackData.track;
-        const trackArtists = baseData.artists;
-        let trackArtist = "";
-        for (let i = 0; i < trackArtists.length; i++) {
-          if (i === trackArtists.length - 1) {
-            trackArtist = trackArtist + trackArtists[i].name;
-          } else {
-            trackArtist = trackArtist + trackArtists[i].name + ", ";
-          }
-        }
-        const newData = {
-          title: baseData.name,
-          artist: trackArtist,
-          cover: baseData.album.images[2].url,
-          id: baseData.id,
-          uri: baseData.uri,
-          index: index,
-        };
-        tmpData.push(newData);
-      });
-      console.log(tmpData);
+    console.log("getUserPlaylist g호출");
+
+    const playList = await getIndividualPlayListRepresentative();
+    console.log("repPlaylistData", playList);
+    if (playList.id !== null) {
+      setPlaylistName(playList.name);
+      setPlaylistId(playList.id);
+      const tmpData = Convert.playListToTrackInfos(playList);
       setMyPlaylist(tmpData);
     } else {
       const tempPlaylist = {
@@ -151,8 +127,10 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
+    const userId = params?.userId as string;
     const getUserProfile = async () => {
-      const userId = params?.userId as string;
+      if (!userId) return;
+
       if (userId === Cookie.getUserId()) {
         setIsSameUser(true);
         const userData = await getUserInfo(userId);
@@ -168,18 +146,23 @@ const ProfilePage = () => {
         setIsSameUser(false);
         const userData = await getOthersProfile(userId);
         console.log(userData);
-        setPlaylistId(userData.playlistId)
+        setPlaylistId(userData.playlistId);
         if (userData.imageUrl === undefined) {
           setImgSrc("/favicon.ico");
         } else {
           setImgSrc(userData.imageUrl);
         }
         setName(userData.name);
-        getOtherUserPlaylist(userData.playlistId)
+        getOtherUserPlaylist(userData.playlistId);
       }
     };
+
     getUserProfile();
   }, [router.query.userId]);
+
+  useEffect(() => {
+    if (Storage.getImageUrl()) setImgSrc(Storage.getImageUrl());
+  }, [setImgSrc]);
 
   const deleteTrack = async (index: number) => {
     const data: DeleteTrack = {
@@ -193,13 +176,13 @@ const ProfilePage = () => {
   };
 
   const handleDelete = (index: number) => {
-    const data = [... myPlaylist].filter((music) => music.index !== index);
-    let changedData: any[]= []
+    const data = [...myPlaylist].filter((music) => music.index !== index);
+    let changedData: any[] = [];
     data.forEach((music, idx) => {
-      music.index = idx
-      changedData.push(music)
-    })
-    console.log(changedData)
+      music.index = idx;
+      changedData.push(music);
+    });
+    console.log(changedData);
     setMyPlaylist(changedData);
     deleteTrack(index);
   };

@@ -8,12 +8,13 @@ import Modal from "@/components/modal/Modal";
 import useModal from "@/hooks/useModal";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { updateCommonPlayListTrack } from "@/api/music/common";
-import { ChangeTrackIndex } from "@/types/spotify";
+import { ChangeTrackIndex, TrackInfo } from "@/types/spotify";
 import { PlayList } from "@/types/playList";
 import { updateIndividualPlayListTrack } from "@/api/music/individual";
+import usePlayList from "@/hooks/usePlayList";
 
 interface CommonPlaylistProps extends Props {
-  data: any[];
+  data: TrackInfo[];
   playlistName: string;
   playlistId: PlayList["id"];
   onRequestDelete: (index: number) => void;
@@ -30,6 +31,7 @@ const CommonPlaylist = ({
   const { closeToggle, isOpen, openToggle } = useModal();
   const [playlistData, setPlaylistData] = useState(data);
   const [deleteMode, setDeleteMode] = useState(false);
+  const { changePlayList } = usePlayList();
 
   useEffect(() => {
     setPlaylistData([...data]);
@@ -121,6 +123,7 @@ const CommonPlaylist = ({
                         index={idx}
                         onRequestDelete={onRequestDelete}
                         isDeleteMode={deleteMode}
+                        onClick={() => changePlayList(playlistData, idx)}
                       />
                     ))}
                     {provided.placeholder}
@@ -136,11 +139,11 @@ const CommonPlaylist = ({
           <div className={styles["modal-content"]} onClick={openSearch}>
             <Text type="title" content="노래 추가하기" />
           </div>
-          <div className={styles["division-line"]}/>
+          <div className={styles["division-line"]} />
           <div className={styles["modal-content"]}>
             <Text type="title" content="플레이리스트 이름 바꾸기" />
           </div>
-          <div className={styles["division-line"]}/>
+          <div className={styles["division-line"]} />
           <div className={styles["modal-content"]} onClick={handleDeleteMode}>
             <Text type="title" content="노래 삭제하기" />
           </div>

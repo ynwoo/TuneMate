@@ -1,0 +1,8 @@
+.player {
+  position: fixed;
+  bottom: 4rem;
+  right: 0;
+  width: 100vw;
+  max-width: var(--max-width);
+  z-index: 1;
+}
