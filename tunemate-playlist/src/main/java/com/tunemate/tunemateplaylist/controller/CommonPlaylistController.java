@@ -57,6 +57,7 @@ public class CommonPlaylistController {
 	public ResponseEntity<SseEmitter> getCommonPlaylist(@PathVariable("relationId") Long relationId,
 		@RequestHeader("UserId") String userId) throws IOException {
 		log.info("SSE 연결 요청");
+		log.info("{} 공동 플레이리스트를 조회 요청합니다.", relationId);
 		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(relationId);
 		grantCheck(relationInfoDto,userId);
 		if(relationInfoDto.getPlaylistId() == null){ // 공통 플레이리스트를 생성하지 않은 경우
@@ -90,6 +91,7 @@ public class CommonPlaylistController {
 	})
 	public void createCommonPlaylist(@RequestHeader("UserId") String userId,
 		@RequestBody PlaylistCreateDto playlistCreateDto) throws ParseException {
+		log.info("{} 공동 플레이리스트를 생성 요청합니다.", playlistCreateDto);
 		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(playlistCreateDto.getRelationId());
 		grantCheck(relationInfoDto,userId);
 		if(relationInfoDto.getPlaylistId() != null){ // 공통 플레이리스트를 생성하지 않은 경우
@@ -100,7 +102,6 @@ public class CommonPlaylistController {
 
 	private void updatePlaylistAndSendResponse(String userId, String playlistId) {
 		PlaylistResponseDto playlistResponseDto = commonPlaylistService.getIndividualPlaylist(userId, playlistId);
-		System.out.println(SseEmitters);
 		int size = SseEmitters.get(playlistId).size();
 		for (int i = 0; i < size; i++) {
 			try {
@@ -128,6 +129,7 @@ public class CommonPlaylistController {
 	})
 	public void createTrack(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId,
 		@RequestBody TrackCreateDto trackCreateDto) throws IOException, ParseException {
+		log.info("{} 사용자가 {} 관계의 공동 플레이리스트에 트랙 추가 요청합니다. Dto : {}", userId,relationId,trackCreateDto);
 		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(relationId);
 		// 추가 하는 사람 userId 와 relationInfoDto 의 user1Id 와 user2Id 를 비교해서 일치하지 않으면 에러발생
 		grantCheck(relationInfoDto,userId);
@@ -147,6 +149,7 @@ public class CommonPlaylistController {
 	})
 	public void deleteTrack(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId,
 		@RequestBody TrackDeleteRequestDto trackDeleteRequestDto) throws IOException {
+		log.info("{} 사용자가 {} 관계의 공동 플레이리스트에 트랙 삭제 요청합니다. Dto : {}", userId,relationId,trackDeleteRequestDto);
 		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(relationId);
 		grantCheck(relationInfoDto,userId);
 		commonPlaylistService.deleteTrack(userId, relationInfoDto.getPlaylistId(), trackDeleteRequestDto);
@@ -172,6 +175,7 @@ public class CommonPlaylistController {
 	})
 	public void changeTrack(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId,
 		@RequestBody TrackChangeRequestDto trackChangeRequestDto) {
+		log.info("{} 사용자가 {} 관계의 공동 플레이리스트에 트랙 위치 변경 요청합니다. Dto : {}", userId,relationId,trackChangeRequestDto);
 		RelationInfoDto relationInfoDto = commonPlaylistService.getRelationInfo(relationId);
 		grantCheck(relationInfoDto,userId);
 		commonPlaylistService.changeTrack(userId, relationInfoDto.getPlaylistId(), trackChangeRequestDto);

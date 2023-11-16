@@ -2,9 +2,11 @@ package com.tunemate.tunemateplaylist.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
+import lombok.ToString;
 
 
 @Getter
+@ToString
 public class PlaylistCreateDto {
 
     @Schema(description = "친구 관계의 기본키(개인 플레이리스트 생성 시에는 필요없음)",example = "5")

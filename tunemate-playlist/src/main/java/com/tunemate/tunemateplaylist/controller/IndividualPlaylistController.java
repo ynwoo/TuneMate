@@ -41,7 +41,7 @@ public class IndividualPlaylistController {
 	})
 	public void createPlaylist(@RequestHeader("UserId") String userId,
 		@RequestBody PlaylistCreateDto playlistCreateDto) throws ParseException {
-		log.info(userId+" 사용자 개인 플레이리스트 생성 요청합니다.");
+		log.info("{} 사용자 개인 플레이리스트를 생성 요청합니다. Dto 내용 : {}", userId,playlistCreateDto);
 		individualPlaylistService.createPlaylist(userId, playlistCreateDto);
 	}
 

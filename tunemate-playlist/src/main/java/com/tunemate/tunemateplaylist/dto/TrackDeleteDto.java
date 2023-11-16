@@ -2,10 +2,12 @@ package com.tunemate.tunemateplaylist.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 
 @Getter
+@ToString
 public class TrackDeleteDto {
 
     @Schema(description = "노래의 스포티파이 uri",example = "spotify:track:vicnvisdfj315s")
