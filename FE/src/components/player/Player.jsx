@@ -32,9 +32,9 @@ export default function CustomPlayer({ accessToken, playTrack }) {
   };
 
   // 앨범아트 바꾸기
-  useEffect(() => {
-    setAlubumArt(Album[currentTrackIndex]);
-  }, [AlubumArt]);
+  // useEffect(() => {
+  //   setAlubumArt(Album[currentTrackIndex]);
+  // }, [AlubumArt]);
 
   const playNextTrack = () => {
     console.log("playNextTrack 실행");
