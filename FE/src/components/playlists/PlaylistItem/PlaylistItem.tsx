@@ -44,7 +44,7 @@ const PlaylistItem = ({
   const handleContainerClick = () => {
     console.log("노래가 선택되었습니다.", value);
     const track: Track = {
-      album: { images: [{ uri: value.cover, height: 0, width: 0 }] },
+      album: { images: [{ url: value.cover, height: 0, width: 0 }] },
       artists: [{ name: value.artist }],
       name: value.title,
       uri: value.uri,
@@ -52,7 +52,7 @@ const PlaylistItem = ({
     };
     setPickTrack(track);
     setPickTrackUri(track.uri);
-    setAlubumArt(track.album.images[0].uri);
+    setAlubumArt(track.album.images[0].url);
     console.log("p", PickTrack);
   };
 
