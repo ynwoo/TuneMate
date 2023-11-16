@@ -29,7 +29,7 @@ const ChatPage = ({}: ChatPageProps) => {
   );
 
   const { publish, chatRooms } = useChat();
-  const { data: prevChatRoom } = useChatsQuery(relationId);
+  const { data: prevChatRoom, refetch } = useChatsQuery(relationId);
 
   const { closeToggle, isOpen, openToggle } = useModal();
   const { mutate: deleteSocialFriend } = useDeleteSocialFriendMutation();
@@ -74,6 +74,7 @@ const ChatPage = ({}: ChatPageProps) => {
       time: "",
     });
 
+    refetch();
     connectChatRoom(relationId);
     return () => {
       disconnectChatRoom(relationId);
