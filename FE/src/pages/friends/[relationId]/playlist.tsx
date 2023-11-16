@@ -7,7 +7,7 @@ import {
   deleteCommonPlayListTrack,
 } from "@/api/music/common";
 import { getUserInfo } from "@/api/user";
-import { AddTrack, DeleteTrack } from "@/types/spotify";
+import { AddCommonTrack, DeleteCommonTrack } from "@/types/spotify";
 import Modal from "@/components/modal/Modal";
 import useModal from "@/hooks/useModal";
 import SearchTrack from "@/components/playlists/SearchTrack/SearchTrack";
@@ -79,7 +79,7 @@ const CommonPlaylistPage = () => {
     userId: string,
     username: string,
     userSrc: string,
-    playlistId: string,
+    playlistId: string
   ) => {
     const friendProfile = await getOthersProfile(userId);
     console.log(friendProfile);
@@ -148,8 +148,8 @@ const CommonPlaylistPage = () => {
   }, []);
 
   const deleteTrack = async (index: number) => {
-    const data: DeleteTrack = {
-      playlistId: playlistId,
+    const data: DeleteCommonTrack = {
+      relationId,
       uri: commonPlaylist[index].uri,
       positions: [index],
     };
@@ -167,8 +167,8 @@ const CommonPlaylistPage = () => {
   };
 
   const addTrack = async (uri: string) => {
-    const data: AddTrack = {
-      playlistId: playlistId,
+    const data: AddCommonTrack = {
+      relationId,
       uris: [uri],
       position: commonPlaylist.length,
     };

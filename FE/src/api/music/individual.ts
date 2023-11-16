@@ -71,17 +71,15 @@ const addIndividualMusicCount = async () => {
 };
 
 // 타인 프로필 조회
-const getOthersProfile = async (
-  userId: string
-): Promise<any> => {
-  const response = await api.get<any>(`music-service/individual/info/${userId}`);
+const getOthersProfile = async (userId: string): Promise<any> => {
+  const response = await api.get<any>(
+    `music-service/individual/info/${userId}`
+  );
   return response.data;
 };
 
 // 타인 대표 플레이리스트 조회
-const getOthersPlayList = async (
-  playlistId: string
-): Promise<any> => {
+const getOthersPlayList = async (playlistId: string): Promise<any> => {
   const response = await spotifyApi.get<any>(`playlists/${playlistId}`);
   return response.data;
 };
