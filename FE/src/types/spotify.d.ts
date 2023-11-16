@@ -54,8 +54,7 @@ interface Artist {
 }
 
 interface Image {
-  url?: string;
-  uri: string;
+  url: string;
   height: number;
   width: number;
 }
