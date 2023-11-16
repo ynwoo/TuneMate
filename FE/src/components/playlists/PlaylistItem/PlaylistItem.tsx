@@ -10,28 +10,32 @@ type SongInfo = {
   title: string;
   artist: string;
   cover: string;
-  index: number
+  index: number;
   id: string;
   uri: string;
 };
 
 interface PlaylistItemProps extends Props {
+  isSameUser: boolean;
   value: SongInfo;
   index: number;
   onRequestDelete: (idx: number) => void;
   isDeleteMode: boolean;
 }
 
-const PlaylistItem = ({ value, index, onRequestDelete, isDeleteMode }: PlaylistItemProps) => {
+const PlaylistItem = ({
+  value,
+  index,
+  isSameUser,
+  onRequestDelete,
+  isDeleteMode,
+}: PlaylistItemProps) => {
   const { title, artist, cover, id, uri } = value;
 
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
-        <div
-          {...provided.draggableProps}
-          ref={provided.innerRef}
-        >
+        <div {...provided.draggableProps} ref={provided.innerRef}>
           <div className={styles["container"]}>
             <div className={styles["playlist-item-inner"]}>
               <div className={styles["item-left"]}>
@@ -42,14 +46,19 @@ const PlaylistItem = ({ value, index, onRequestDelete, isDeleteMode }: PlaylistI
                 </div>
               </div>
               <div className={styles["item-right"]}>
-                {isDeleteMode
-                ? <div onClick={() => onRequestDelete(index)}>
-                  <Icon.Delete />
-                </div>
-                : <div {...provided.dragHandleProps} >
-                  <Icon.Handle {...provided.dragHandleProps} />
-                </div>
-                }
+                {isSameUser ? (
+                  <div>
+                    {isDeleteMode ? (
+                      <div onClick={() => onRequestDelete(index)}>
+                        <Icon.Delete />
+                      </div>
+                    ) : (
+                      <div {...provided.dragHandleProps}>
+                        <Icon.Handle {...provided.dragHandleProps} />
+                      </div>
+                    )}
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>

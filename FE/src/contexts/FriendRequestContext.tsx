@@ -10,7 +10,10 @@ export interface FriendRequestContextState {
   connect: (userIds?: string[]) => void;
   subscribe: (userId: Friend["friendId"]) => void;
   unsubscribe: (userId: Friend["friendId"]) => void;
-  publish: (userId: Friend["userId"], friendRequestMessage: FriendRequestMessage) => void;
+  publish: (
+    userId: Friend["userId"],
+    friendRequestMessage: FriendRequestMessage
+  ) => void;
   friendRequestMessages: FriendRequestMessage[];
 }
 
@@ -21,7 +24,9 @@ export const FriendRequestContext = createContext<FriendRequestContextState>(
 const FriendRequestProvider = ({ children }: Props) => {
   const { stompClient, connect: defaultConnect } = useStompClient();
   const [subscribes, setSubscribes] = useState<string[]>([]);
-  const [friendRequestMessages, setFriendRequestMessages] = useState<FriendRequestMessage[]>([]);
+  const [friendRequestMessages, setFriendRequestMessages] = useState<
+    FriendRequestMessage[]
+  >([]);
 
   const { data: sendSocialFriendRequests } = useSendSocialFriendRequestsQuery();
 
@@ -30,9 +35,14 @@ const FriendRequestProvider = ({ children }: Props) => {
       console.log(data);
 
       // 새로운 chatroom
-      const newFriendRequestMessage: FriendRequestMessage = JSON.parse(data.body);
+      const newFriendRequestMessage: FriendRequestMessage = JSON.parse(
+        data.body
+      );
 
-      setFriendRequestMessages([...friendRequestMessages, newFriendRequestMessage]);
+      setFriendRequestMessages([
+        ...friendRequestMessages,
+        newFriendRequestMessage,
+      ]);
     },
     [friendRequestMessages]
   );
@@ -55,7 +65,10 @@ const FriendRequestProvider = ({ children }: Props) => {
     (userId: Friend["friendId"]) => {
       if (stompClient.current && subscribes.includes(userId)) {
         setSubscribes((subscribes) => [...subscribes, userId]);
-        Stomp.unsubscribe(stompClient.current, FRIEND_SOCKET_URL.subscribeURL(userId));
+        Stomp.unsubscribe(
+          stompClient.current,
+          FRIEND_SOCKET_URL.subscribeURL(userId)
+        );
       }
     },
     [stompClient, subscribes, setSubscribes]
@@ -90,14 +103,10 @@ const FriendRequestProvider = ({ children }: Props) => {
 
   useEffect(() => {
     if (stompClient && subscribe && sendSocialFriendRequests) {
-      const timer = setTimeout(() => {
-        const friendIds = sendSocialFriendRequests.map((id) => id);
-        friendIds.forEach((userId) => {
-          subscribe(userId);
-        });
-      }, 2000);
-
-      return () => clearTimeout(timer);
+      const friendIds = sendSocialFriendRequests.map((id) => id);
+      friendIds.forEach((userId) => {
+        subscribe(userId);
+      });
     }
   }, [subscribe, sendSocialFriendRequests, stompClient]);
 
@@ -107,7 +116,13 @@ const FriendRequestProvider = ({ children }: Props) => {
 
   return (
     <FriendRequestContext.Provider
-      value={{ connect, subscribe, unsubscribe, publish, friendRequestMessages }}
+      value={{
+        connect,
+        subscribe,
+        unsubscribe,
+        publish,
+        friendRequestMessages,
+      }}
     >
       {children}
     </FriendRequestContext.Provider>
