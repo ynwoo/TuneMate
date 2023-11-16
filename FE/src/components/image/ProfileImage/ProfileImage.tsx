@@ -8,7 +8,7 @@ interface ProfileImageProps extends Props {
   src: string;
   alt: string;
   type: "recommendation" | "friend" | "profile" | "common-profile";
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLElement>) => void;
 }
 
 const ProfileImage = ({
