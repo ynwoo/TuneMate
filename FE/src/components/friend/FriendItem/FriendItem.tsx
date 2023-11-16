@@ -80,7 +80,7 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
         </Link>
         <Link
           className={styles["friend-item__icon"]}
-          href={`/profile/${item.relationId}`}
+          href={`/friends/${item.relationId}/playlist`}
         >
           <Icon.Music size="xl" />
         </Link>
