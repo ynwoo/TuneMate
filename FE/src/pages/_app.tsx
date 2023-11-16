@@ -32,7 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
     const pathList = pathname.split("/");
 
     // chat-page
-    if (pathList[1] === "friends" && !isNaN(Number(pathList[2]))) {
+    if (pathList[1] === "friends" && !isNaN(Number(pathList[2])) && pathList[3] !== "playlist") {
       return true;
     }
 
