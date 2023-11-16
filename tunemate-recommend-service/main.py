@@ -265,7 +265,7 @@ def root(UserId: str | None = Header(default=None)):
         playlistId = cursor.fetchall()[0][0]
         userOb = request(recommend[i])
         if userOb is None or userOb.get("userId") is None or userOb.get("name") is None:
-            responseList.append(ReturnDto(userId=recommend[i], img="https://www.google.com/url?sa=i&url=https%3A%2F%2Fbbs.ruliweb.com%2Fcommunity%2Fboard%2F300143%2Fread%2F55440247&psig=AOvVaw1Ma_u_BfdaCOYfSYHBdfp2&ust=1700186308386000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCNiYzdu1x4IDFQAAAAAdAAAAABAE", name=random.choice(randomName),
+            responseList.append(ReturnDto(userId=recommend[i], img="https://i1.ruliweb.com/img/22/01/09/17e3e74fd63505a96.jpg", name=random.choice(randomName),
                                       playlist=playlistId, similarity=similaritys[i]))
         else:
             responseList.append(ReturnDto(userId=userOb.get("userId"), img=userOb.get("imageUrl"), name=userOb.get("name"),
