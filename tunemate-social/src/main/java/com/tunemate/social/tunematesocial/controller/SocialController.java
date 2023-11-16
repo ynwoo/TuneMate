@@ -185,6 +185,7 @@ public class SocialController {
 	})
 	public ResponseEntity<ChattingListDto> getChatRecord(@RequestHeader("UserId") String userId,
 		@PathVariable("relationId") Long relationId) {
+		log.info("{} 사람이 {} 번 채팅 방의 채팅 기록을 요청",userId,relationId);
 		socialService.checkUser(relationId, userId);
 		socialService.setChats(relationId, userId);
 		return ResponseEntity.ok(socialService.getChats(relationId));
@@ -202,6 +203,7 @@ public class SocialController {
 			@ApiResponse(responseCode = "404", description = "relationId 가 없는 경우")
 	})
 	public void chatIn(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId ){
+		log.info("{} 사람이 {} 번 채팅 방을 입장하는 요청",userId,relationId);
 		socialService.checkUser(relationId, userId);
 		socialService.setChatPerson(relationId,userId);
 	}
@@ -218,6 +220,7 @@ public class SocialController {
 		@ApiResponse(responseCode = "404", description = "relationId 가 없는 경우")
 	})
 	public void chatOut(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId) {
+		log.info("{} 사람이 {} 번 채팅 방을 퇴장하는 요청",userId,relationId);
 		socialService.checkUser(relationId, userId);
 		socialService.outChat(relationId, userId);
 	}
@@ -232,6 +235,7 @@ public class SocialController {
 		@ApiResponse(responseCode = "200", description = "조회 성공."),
 	})
 	public ResponseEntity<List<MyChatRoomListDto>> myChats(@RequestHeader("UserId") String userId) {
+		log.info("{} 사람이 속한 채팅방 목록을 조회하는 요청",userId);
 		return ResponseEntity.ok(chatService.getChatRoomList(userId));
 	}
 
@@ -246,6 +250,7 @@ public class SocialController {
 	})
 
 	public ResponseEntity<?> getRequestUserId(@RequestHeader("UserId") String userId) {
+		log.info("{} 사람이 친구 요청을 보낸 사람들의 이이디를 조회하는 요청",userId);
 		return ResponseEntity.ok(socialService.getRequestUserId(userId));
 	}
 
