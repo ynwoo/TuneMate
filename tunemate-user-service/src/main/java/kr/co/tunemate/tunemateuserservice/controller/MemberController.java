@@ -30,6 +30,7 @@ public class MemberController {
     @Operation(summary = "사용자 정보 조회", description = "사용자 정보를 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "403", description = "다른 사용자의 정보를 조회하는 경우"),
             @ApiResponse(responseCode = "404", description = "userId인 사용자가 존재하지 않는 경우")
     })
     @GetMapping("/{userId}")
