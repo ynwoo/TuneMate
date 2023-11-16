@@ -18,12 +18,9 @@ interface RecommendItemProps extends Props {
 
 const RecommendationItem = ({ item, className }: RecommendItemProps) => {
   const router = useRouter();
-  const { mutate: acceptFriendRequest } =
-    useAcceptSocialFriendRequestMutation();
-  const { mutate: declineFriendRequest } =
-    useDeclineSocialFriendRequestMutation();
-  const { mutate: sendSocialFriendRequest } =
-    useSendSocialFriendRequestMutation();
+  const { mutate: acceptFriendRequest } = useAcceptSocialFriendRequestMutation();
+  const { mutate: declineFriendRequest } = useDeclineSocialFriendRequestMutation();
+  const { mutate: sendSocialFriendRequest } = useSendSocialFriendRequestMutation();
   console.log(item);
 
   const { isFriendRequest, onAccept, onDecline } = useMemo(() => {
@@ -54,12 +51,7 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
       onAccept,
       onDecline,
     };
-  }, [
-    item,
-    acceptFriendRequest,
-    declineFriendRequest,
-    sendSocialFriendRequest,
-  ]);
+  }, [item, acceptFriendRequest, declineFriendRequest, sendSocialFriendRequest]);
 
   console.log(isFriendRequest);
 
@@ -80,21 +72,17 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
             alt="내 프로필"
             type="recommendation"
           />
-          <p className={styles["recommendation-item__user--name"]}>
-            {item.name}
-          </p>
+          <p className={styles["recommendation-item__user--name"]}>{item.name}</p>
         </div>
         <div className={styles["recommendation-item__ratio"]}>
           {/* TODO: distance 구현 예정 */}
           {/* <p>{item.distance ?? 0}km</p> */}
-          <p>
+          <div>
             {(
-              Number(
-                isFriendRequest ? item.musicalTasteSimilarity : item.similarity
-              ) * 100
+              Number(isFriendRequest ? item.musicalTasteSimilarity : item.similarity) * 100
             ).toFixed(0)}
             <Icon.Music size="lg" />
-          </p>
+          </div>
           {!isFriendRequest && (
             <ButtonWithModal
               className={styles["recommendation-item__button-item"]}
