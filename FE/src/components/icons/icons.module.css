@@ -5,3 +5,7 @@
 .gray {
   color: var(--light-gray-color);
 }
+
+.main {
+  color: var(--main-color);
+}
