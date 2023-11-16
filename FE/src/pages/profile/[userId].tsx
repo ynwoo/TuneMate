@@ -193,11 +193,15 @@ const ProfilePage = () => {
   };
 
   const handleDelete = (index: number) => {
-    setMyPlaylist((prevData) =>
-      prevData.filter((music) => music.index !== index)
-    );
+    const data = [... myPlaylist].filter((music) => music.index !== index);
+    let changedData: any[]= []
+    data.forEach((music, idx) => {
+      music.index = idx
+      changedData.push(music)
+    })
+    console.log(changedData)
+    setMyPlaylist(changedData);
     deleteTrack(index);
-    console.log(myPlaylist);
   };
 
   const addTrack = async (uri: string) => {
