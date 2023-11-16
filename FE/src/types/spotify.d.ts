@@ -27,7 +27,7 @@ interface Track {
   uri: string;
   artists: Artist[];
   name: string;
-  id: string;
+  id?: string;
 }
 
 interface Album {

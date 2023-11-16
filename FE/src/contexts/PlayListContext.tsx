@@ -1,6 +1,7 @@
 import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
 import Props from "@/types";
 import { PlayList } from "@/types/playList";
+import { Track } from "@/types/spotify";
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
 export interface PlayListContextState {
@@ -9,7 +10,7 @@ export interface PlayListContextState {
   uris: string[];
   images: string[];
   currentTrackIndex: number;
-  changePlayList: (playList: PlayList, idx?: number) => void;
+  changePlayList: (playList: PlayList | Track, idx?: number) => void;
   playNextTrack: () => void;
 }
 
@@ -48,9 +49,25 @@ const PlayListProvider = ({ children }: Props) => {
     setPlay(true);
   }, [currentTrackIndex]);
 
-  const changePlayList = useCallback((playList: PlayList, idx: number = 0) => {
-    setPlayList(playList);
-    setCurrentTrackIndex(0);
+  const trackToPlayList = useCallback((track: Track) => {
+    const playList: PlayList = {
+      description: "",
+      id: "",
+      images: track.album.images,
+      name: track.name,
+      tracks: { items: [{ track }] },
+    };
+
+    return playList;
+  }, []);
+
+  const changePlayList = useCallback((playList: PlayList | Track, idx: number = 0) => {
+    if ("description" in playList) {
+      setPlayList(playList);
+    } else {
+      setPlayList(trackToPlayList(playList));
+    }
+    setCurrentTrackIndex(idx);
   }, []);
 
   useEffect(() => {

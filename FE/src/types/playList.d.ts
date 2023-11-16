@@ -6,7 +6,6 @@ interface PlayList {
   id: string;
   images: Image[];
   name: string;
-  snapshot_id: string;
   tracks: {
     items: { track: Track }[];
   };
