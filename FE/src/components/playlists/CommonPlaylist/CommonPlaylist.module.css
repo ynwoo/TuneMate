@@ -1,0 +1,38 @@
+.container {
+  background-color: var(--light-gray-color);
+  padding: 1vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3vh;
+}
+
+.playlist-upper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 70vw;
+  padding: 1vh 0vh;
+}
+
+.playlist-box {
+  height: 100%;
+}
+
+.modal-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  padding: 1vh 1vw;
+}
+
+.division-line {
+  border-top: 1px solid var(--gray-color);
+  width: 100%;
+  margin: 2vh auto;
+}
