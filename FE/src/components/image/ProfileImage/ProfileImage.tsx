@@ -7,7 +7,7 @@ import { classNameWrapper } from "@/utils/className";
 interface ProfileImageProps extends Props {
   src: string;
   alt: string;
-  type: "recommendation" | "friend" | "profile";
+  type: "recommendation" | "friend" | "profile" | "common-profile";
   onClick?: () => void;
 }
 

@@ -26,3 +26,11 @@
   border: 0.5rem solid var(--main-color);
   border-radius: 50%;
 }
+
+.common-profile {
+  height: 7rem;
+  width: 7rem;
+  background-color: var(--white-color);
+  border: 0.5rem solid var(--main-color);
+  border-radius: 50%;
+}
