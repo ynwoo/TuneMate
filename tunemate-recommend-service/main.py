@@ -83,7 +83,7 @@ class Music(BaseModel):
     album: Images
     artists: List[str]
     name: str
-    url: str
+    uri: str
 
 # 노래 추천
 @app.get("/recommendation/songs", response_model=List[Music])
@@ -184,8 +184,8 @@ def song(UserId: str | None = Header(default=None)):
         # responseData.append(SongDto(title=songData["title"], img=songData["image"], artist=songData["artist"],
         #                             uri=songData["spotify_uri"]))
         artist = []
-        img = Images(images=[{"uri" : songData["image"]}])
-        responseData.append(Music(name=songData["title"],artists=songData["artist"].split(","),url=songData["spotify_uri"],album=img))
+        img = Images(images=[{"url" : songData["image"]}])
+        responseData.append(Music(name=songData["title"],artists=songData["artist"].split(","),uri=songData["spotify_uri"],album=img))
 
     return responseData
 
