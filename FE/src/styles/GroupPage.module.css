@@ -74,8 +74,10 @@
   margin-bottom: 0.5em;
 }
 
-.group-detail-page__delete {
+.group-detail-page__button-container {
   position: absolute;
   top: 5.5em;
   right: 1em;
+}
+.group-detail-page__button {
 }

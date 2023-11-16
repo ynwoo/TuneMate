@@ -76,6 +76,7 @@
   font-weight: bold;
 }
 .friend-item__user--message {
+  color: var(--gray-color);
   font-size: 0.8rem;
   text-overflow: ellipsis;
   overflow: hidden;

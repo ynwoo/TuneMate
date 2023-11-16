@@ -55,14 +55,23 @@ const GroupDetail = () => {
         <>
           <h1 className={styles["group-detail-page__title"]}>{group.title}</h1>
           {userId === group.hostId && (
-            <ButtonWithModal
-              className={styles["group-detail-page__delete"]}
-              color="red"
-              modalMessage="공고를 삭제하시겠습니까?"
-              onClick={onDelete}
-            >
-              공고 삭제
-            </ButtonWithModal>
+            <div className={styles["group-detail-page__button-container"]}>
+              <Button
+                className={styles["group-detail-page__button"]}
+                color="blue"
+                onClick={onDelete}
+              >
+                수정
+              </Button>
+              <ButtonWithModal
+                className={styles["group-detail-page__button"]}
+                color="red"
+                modalMessage="공고를 삭제하시겠습니까?"
+                onClick={onDelete}
+              >
+                삭제
+              </ButtonWithModal>
+            </div>
           )}
           {concert && <ConcertItem item={concert} />}
           <div className={styles["group-detail-page__description"]}>
