@@ -12,12 +12,14 @@
   --text-color: #666666;
   --gradation-color: linear-gradient(var(--main-color), var(--white-color));
 
-  --top-navbar-height: 4rem;
+  --top-navbar-height: 3rem;
   --bottom-navbar-height: 4rem;
-  --main-height: 85vh;
+  --main-height: 90vh;
   --max-height: 800px;
   --max-width: 400px;
 }
+
+@import url("https://fonts.googleapis.com/css2?family=Leckerli+One&family=Nanum+Gothic&family=Nanum+Gothic+Coding&family=Noto+Serif+KR:wght@200&family=Orbit&display=swap");
 
 body {
   margin: 0;
@@ -25,6 +27,7 @@ body {
   margin: auto !important;
   height: 100%;
   max-height: var(--max-height);
+  font-family: "Orbit", sans-serif;
 }
 
 #__next {

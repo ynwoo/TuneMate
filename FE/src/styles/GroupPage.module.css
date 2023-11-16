@@ -1,3 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Grandiflora+One&family=Leckerli+One&family=Nanum+Gothic&family=Nanum+Gothic+Coding&family=Nanum+Myeongjo:wght@700&family=Noto+Serif+KR:wght@200&family=Orbit&display=swap");
+
+.body {
+  font-family: "Nanum Gothic", sans-serif;
+  /* font-family: "Nanum Myeongjo", serif; */
+  /* font-family: "Grandiflora One", cursive; */
+  /* font-weight: bold; */
+}
+
 .groups-page {
   display: flex;
   flex-direction: column;
@@ -8,8 +17,9 @@
 
 .groups-page__group--create {
   align-self: flex-end;
-  margin-right: 2em;
+  margin-right: 3em;
   margin-bottom: 1em;
+  margin: 15px;
 }
 
 .groups-page__search-container {
@@ -52,7 +62,8 @@
 .group-detail-page {
   display: flex;
   flex-direction: column;
-  padding: 1em;
+  padding: 1.5em;
+  border: 1px solid #ccc;
 }
 
 .group-detail-page__title {
@@ -60,10 +71,13 @@
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 2em;
+  background-color: rgb(233, 227, 248);
+  padding: 15px;
 }
 
 .group-detail-page__description {
   margin-top: 2em;
+  margin-bottom: 2em;
 }
 
 .group-detail-page__description-item {
