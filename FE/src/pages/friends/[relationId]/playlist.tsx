@@ -42,6 +42,7 @@ const CommonPlaylistPage = () => {
   const { popToast, toastStatus, toastMsg } = useToast();
 
   const getCommonPlaylistData = async (playlistId: string) => {
+    setPlaylistId(playlistId);
     const commonPlaylistData = await getOthersPlayList(playlistId);
     console.log(commonPlaylistData);
     setPlaylistName(commonPlaylistData.name);
@@ -88,7 +89,6 @@ const CommonPlaylistPage = () => {
     } else {
       setSrcList([userSrc, friendProfile.imageUrl]);
     }
-    setPlaylistId(playlistId);
     getCommonPlaylistData(playlistId);
   };
 
