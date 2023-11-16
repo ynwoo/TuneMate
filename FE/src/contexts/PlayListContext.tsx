@@ -35,7 +35,7 @@ const PlayListProvider = ({ children }: Props) => {
         track: {
           album: { images },
         },
-      }) => images[0].uri
+      }) => images[0].url
     );
 
     return { uris, images };

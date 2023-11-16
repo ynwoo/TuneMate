@@ -35,7 +35,7 @@ export const Convert = Object.freeze({
 
   trackInfoToTrack: (trackInfo: TrackInfo) => {
     const track: Track = {
-      album: { images: [{ url: trackInfo.cover, height: 0, width: 0, uri: "" }] },
+      album: { images: [{ url: trackInfo.cover, height: 0, width: 0 }] },
       artists: trackInfo.artist.split(", ").map((name) => ({ name })),
       name: trackInfo.title,
       uri: trackInfo.uri,

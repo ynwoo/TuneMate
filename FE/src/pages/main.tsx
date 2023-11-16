@@ -66,7 +66,7 @@ const MainPage = () => {
           {tracks?.map((track) => (
             <li key={track.uri} className={styles["main-page__content--item"]}>
               <ConcertImage
-                src={track.album.images[0].uri}
+                src={track.album.images[0].url}
                 alt={track.name}
                 type="list"
                 onClick={() => changePlayList(track)}
