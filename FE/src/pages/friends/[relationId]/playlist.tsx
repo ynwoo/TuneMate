@@ -186,9 +186,14 @@ const CommonPlaylistPage = () => {
   };
 
   const handleDelete = (index: number) => {
-    setCommonPlaylist((prevData) =>
-      prevData.filter((music) => music.index !== index)
-    );
+    const data = [... commonPlaylist].filter((music) => music.index !== index);
+    let changedData: any[]= []
+    data.forEach((music, idx) => {
+      music.index = idx
+      changedData.push(music)
+    })
+    console.log(changedData)
+    setCommonPlaylist(changedData);
     deleteTrack(index);
     console.log(commonPlaylist);
   };
