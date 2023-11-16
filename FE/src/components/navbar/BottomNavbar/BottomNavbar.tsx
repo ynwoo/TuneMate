@@ -9,7 +9,7 @@ const BottomNavbar = () => {
 
   React.useEffect(() => {
     if (Cookie.getUserId() !== null) {
-      setUserId(Cookie.getUserId());
+      setUserId(Cookie.getUserId() as string);
     }
   }, []);
 
