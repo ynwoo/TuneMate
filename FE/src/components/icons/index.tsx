@@ -11,6 +11,7 @@ import {
   faRightFromBracket,
   faArrowDown,
   faSquarePlus,
+  faHeadphones,
   faMagnifyingGlass,
   faHandshake,
 } from "@fortawesome/free-solid-svg-icons";
@@ -128,6 +129,14 @@ const Icon = {
     <FontAwesomeIcon
       className={classNameWrapper(styles.icon, className)}
       icon={faArrowDown}
+      size={size}
+    />
+  ),
+
+  HeadPhone: ({ size = "2xl", className }: IconProps) => (
+    <FontAwesomeIcon
+      className={classNameWrapper(styles.main, className)}
+      icon={faHeadphones}
       size={size}
     />
   ),
