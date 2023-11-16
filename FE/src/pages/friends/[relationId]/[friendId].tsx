@@ -70,16 +70,18 @@ const ChatPage = ({}: ChatPageProps) => {
   useEffect(() => {
     if (relationId < 0) return;
 
-    setMessageRequest({
+    const messageRequest = {
       content: "",
       relationId,
       senderName: Storage.getUserName(),
       senderNo: Storage.getUserId(),
       time: "",
-    });
+    };
 
+    setMessageRequest(messageRequest);
     refetch();
     connectChatRoom(relationId);
+    publish(messageRequest);
     return () => {
       disconnectChatRoom(relationId);
     };
