@@ -2,12 +2,9 @@ import React, { useState, useEffect } from "react";
 import CommonProfile from "@/components/profile/CommonProfile/CommonProfile";
 import CommonPlaylist from "@/components/playlists/CommonPlaylist/CommonPlaylist";
 import { getOthersPlayList, getOthersProfile } from "@/api/music/individual";
-import {
-  createCommonPlayListTrack,
-  deleteCommonPlayListTrack,
-} from "@/api/music/common";
+import { createCommonPlayListTrack, deleteCommonPlayListTrack } from "@/api/music/common";
 import { getUserInfo } from "@/api/user";
-import { AddCommonTrack, DeleteCommonTrack } from "@/types/spotify";
+import { AddCommonTrack, DeleteCommonTrack, TrackInfo } from "@/types/spotify";
 import Modal from "@/components/modal/Modal";
 import useModal from "@/hooks/useModal";
 import SearchTrack from "@/components/playlists/SearchTrack/SearchTrack";
@@ -18,14 +15,7 @@ import { Cookie } from "@/utils/cookie";
 import { getSocialFriends } from "@/api/social";
 import { TUNEMATE_API_BASE_URL } from "@/constants/url";
 import { EventSourcePolyfill } from "event-source-polyfill";
-
-type TrackInfo = {
-  title: string;
-  artist: string;
-  cover: string;
-  uri: string;
-  id: string;
-};
+import { Convert } from "@/utils/convert";
 
 const CommonPlaylistPage = () => {
   const params = useParams();
@@ -34,41 +24,16 @@ const CommonPlaylistPage = () => {
   const [commonName, setCommonName] = useState("Name");
   const [srcList, setSrcList] = useState<string[]>([]);
   const [playlistName, setPlaylistName] = useState("");
-  const [commonPlaylist, setCommonPlaylist] = useState<any[]>([]);
+  const [commonPlaylist, setCommonPlaylist] = useState<TrackInfo[]>([]);
   const [playlistId, setPlaylistId] = useState("");
   const { closeToggle, isOpen, openToggle } = useModal();
   const { popToast, toastStatus, toastMsg } = useToast();
 
   const getCommonPlaylistData = async (playlistId: string) => {
     setPlaylistId(playlistId);
-    const commonPlaylistData = await getOthersPlayList(playlistId);
-    console.log(commonPlaylistData);
-    setPlaylistName(commonPlaylistData.name);
-    console.log(commonPlaylistData.tracks.items);
-    const repTracks = [...commonPlaylistData.tracks.items];
-    const tmpData: any[] = [];
-    repTracks.forEach((trackData, index) => {
-      const baseData = trackData.track;
-      const trackArtists = baseData.artists;
-      let trackArtist = "";
-      for (let i = 0; i < trackArtists.length; i++) {
-        if (i === trackArtists.length - 1) {
-          trackArtist = trackArtist + trackArtists[i].name;
-        } else {
-          trackArtist = trackArtist + trackArtists[i].name + ", ";
-        }
-      }
-      const newData = {
-        title: baseData.name,
-        artist: trackArtist,
-        cover: baseData.album.images[2].url,
-        id: baseData.id,
-        uri: baseData.uri,
-        index: index,
-      };
-      tmpData.push(newData);
-    });
-    console.log(tmpData);
+    const playList = await getOthersPlayList(playlistId);
+    setPlaylistName(playList.name);
+    const tmpData = Convert.playListToTrackInfos(playList);
     setCommonPlaylist(tmpData);
   };
 
@@ -186,13 +151,13 @@ const CommonPlaylistPage = () => {
   };
 
   const handleDelete = (index: number) => {
-    const data = [... commonPlaylist].filter((music) => music.index !== index);
-    let changedData: any[]= []
+    const data = [...commonPlaylist].filter((music) => music.index !== index);
+    let changedData: any[] = [];
     data.forEach((music, idx) => {
-      music.index = idx
-      changedData.push(music)
-    })
-    console.log(changedData)
+      music.index = idx;
+      changedData.push(music);
+    });
+    console.log(changedData);
     setCommonPlaylist(changedData);
     deleteTrack(index);
     console.log(commonPlaylist);

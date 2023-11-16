@@ -6,7 +6,7 @@
   height: var(--top-navbar-height);
   width: inherit;
   display: grid;
-  background-color: var(--white-color);
+  background-color: var(--main-color);
   display: flex;
   align-items: center;
   justify-content: space-between;

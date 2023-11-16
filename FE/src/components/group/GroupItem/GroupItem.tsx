@@ -28,6 +28,7 @@ const GroupItem = ({ className, item }: GroupItemProps) => {
       <div className={styles["group-item__info"]}>
         <h1 className={styles["group-item__info--title"]}>{item.title}</h1>
         <p className={styles["group-item__info--time"]}>
+          <hr />
           {Time.period(item.startDateTime, item.deadline as string)}
         </p>
       </div>

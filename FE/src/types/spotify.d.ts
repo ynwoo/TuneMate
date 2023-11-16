@@ -25,9 +25,18 @@ interface Item {
 interface Track {
   album: Album;
   uri: string;
-  id: string;
-  name: string;
   artists: Artist[];
+  name: string;
+  id?: string;
+}
+
+interface TrackInfo {
+  title: string;
+  cover: string;
+  artist: string;
+  uri: string;
+  id?: string;
+  index?: number;
 }
 
 interface Album {
@@ -45,9 +54,10 @@ interface Artist {
 }
 
 interface Image {
+  url?: string;
   uri: string;
-  height?: number;
-  width?: number;
+  height: number;
+  width: number;
 }
 
 interface Owner {
@@ -111,4 +121,5 @@ export type {
   Song,
   AddCommonTrack,
   DeleteCommonTrack,
+  TrackInfo,
 };
