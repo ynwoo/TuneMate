@@ -25,8 +25,9 @@ interface Item {
 interface Track {
   album: Album;
   uri: string;
-  artists: string[];
+  artists: Artist[];
   name: string;
+  id: string;
 }
 
 interface Album {
@@ -45,8 +46,8 @@ interface Artist {
 
 interface Image {
   uri: string;
-  height?: number;
-  width?: number;
+  height: number;
+  width: number;
 }
 
 interface Owner {

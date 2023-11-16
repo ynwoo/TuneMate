@@ -56,18 +56,12 @@ const ProfilePage = () => {
   const [AlubumArt, setAlubumArt] = useRecoilState(AlubumArtState);
   const [Album, setAlbum] = useRecoilState(AlbumState);
   // console.log("이거바", AlubumArt);
-  const { data: individualPlayListRepresentative } =
-    useIndividualPlayListRepresentativeQuery();
-  console.log(
-    "individualPlayListRepresentative",
-    individualPlayListRepresentative
-  );
+  const { data: individualPlayListRepresentative } = useIndividualPlayListRepresentativeQuery();
+  console.log("individualPlayListRepresentative", individualPlayListRepresentative);
 
   useEffect(() => {
     if (individualPlayListRepresentative) {
-      const allUris = individualPlayListRepresentative.tracks.items.map(
-        (track) => track.track.uri
-      );
+      const allUris = individualPlayListRepresentative.tracks.items.map((track) => track.track.uri);
       setMainplaylist(allUris);
     }
   }, [individualPlayListRepresentative]);
@@ -167,7 +161,7 @@ const ProfilePage = () => {
         const newData = {
           title: baseData.name,
           artist: trackArtist,
-          cover: baseData.album.images[0].url,
+          cover: baseData.album.images[0].uri,
           id: baseData.id,
           uri: baseData.uri,
           index: index,
@@ -234,13 +228,13 @@ const ProfilePage = () => {
   };
 
   const handleDelete = (index: number) => {
-    const data = [... myPlaylist].filter((music) => music.index !== index);
-    let changedData: any[]= []
+    const data = [...myPlaylist].filter((music) => music.index !== index);
+    let changedData: any[] = [];
     data.forEach((music, idx) => {
-      music.index = idx
-      changedData.push(music)
-    })
-    console.log(changedData)
+      music.index = idx;
+      changedData.push(music);
+    });
+    console.log(changedData);
     setMyPlaylist(changedData);
     deleteTrack(index);
   };

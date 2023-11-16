@@ -1,5 +1,5 @@
 import { Friend } from "./social";
-import { Image, Item, Owner } from "./spotify";
+import { Image, Item, Owner, Track } from "./spotify";
 
 interface PlayList {
   description: string;
@@ -8,7 +8,7 @@ interface PlayList {
   name: string;
   snapshot_id: string;
   tracks: {
-    items: any[];
+    items: { track: Track }[];
   };
 }
 
@@ -49,10 +49,4 @@ interface NewCommonPlayList extends NewPlayList {
 //   total: number;
 // }
 
-export type {
-  PlayList,
-  NewPlayList,
-  PlayListDetail,
-  TotalPlayList,
-  NewCommonPlayList,
-};
+export type { PlayList, NewPlayList, PlayListDetail, TotalPlayList, NewCommonPlayList };
