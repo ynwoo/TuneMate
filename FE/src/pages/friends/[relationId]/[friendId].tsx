@@ -22,7 +22,9 @@ interface ChatPageProps extends Props {}
 const ChatPage = ({}: ChatPageProps) => {
   const [content, setContent] = useState<string>("");
   const params = useParams();
-  const relationId = Number(params?.relationId as string);
+  const relationId = Number(params?.relationId ?? -1);
+  console.log(relationId);
+
   const friendId = params?.friendId as string;
   const [messageRequest, setMessageRequest] = useState<MessageRequest>(
     {} as MessageRequest
@@ -66,6 +68,8 @@ const ChatPage = ({}: ChatPageProps) => {
   });
 
   useEffect(() => {
+    if (relationId < 0) return;
+
     setMessageRequest({
       content: "",
       relationId,
@@ -79,7 +83,7 @@ const ChatPage = ({}: ChatPageProps) => {
     return () => {
       disconnectChatRoom(relationId);
     };
-  }, []);
+  }, [relationId]);
 
   return (
     <>

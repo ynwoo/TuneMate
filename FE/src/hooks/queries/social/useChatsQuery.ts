@@ -12,6 +12,7 @@ const useChatsQuery = (relationId: Friend["relationId"]) => {
   const query = useQuery({
     queryKey: QueryKey.useChatsQuery(relationId),
     queryFn: () => getChats(relationId),
+    enabled: relationId >= 0 ? true : false,
   });
 
   useEffect(() => {

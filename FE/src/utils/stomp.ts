@@ -44,7 +44,11 @@ export const Stomp = Object.freeze({
     console.log("unsubscribe 실행", url);
   },
 
-  publish(client: Client, url: string, message: MessageRequest | FriendRequestMessage) {
+  publish(
+    client: Client,
+    url: string,
+    message: MessageRequest | FriendRequestMessage
+  ) {
     client.publish({
       destination: url,
       body: JSON.stringify(message),
