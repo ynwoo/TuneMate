@@ -2,10 +2,12 @@ package com.tunemate.tunemateplaylist.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 
 @Getter
+@ToString
 public class TrackCreateDto {
 
     @Schema(description = "추가할 노래의 uri",example = "spotify:track:sdifvi12490avnz")

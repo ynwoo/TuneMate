@@ -16,8 +16,4 @@ public class TunematePlaylistApplication {
         SpringApplication.run(TunematePlaylistApplication.class, args);
     }
 
-    @Bean
-    public Logger.Level feignLoggerLevel() {
-        return Logger.Level.FULL;
-    }
 }

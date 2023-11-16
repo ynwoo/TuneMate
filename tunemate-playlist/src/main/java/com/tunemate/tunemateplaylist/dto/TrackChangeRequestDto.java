@@ -2,8 +2,10 @@ package com.tunemate.tunemateplaylist.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class TrackChangeRequestDto {
 
     @Schema(description = "선택한 노래의 인덱스",example = "0")

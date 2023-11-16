@@ -3,6 +3,7 @@ package com.tunemate.tunemateplaylist.controller;
 import com.tunemate.tunemateplaylist.dto.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,7 +28,7 @@ import java.util.List;
 @CrossOrigin(value = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @RequestMapping("/individual")
-
+@Slf4j
 public class IndividualPlaylistController {
 
 	private final IndividualPlaylistService individualPlaylistService;
@@ -40,6 +41,7 @@ public class IndividualPlaylistController {
 	})
 	public void createPlaylist(@RequestHeader("UserId") String userId,
 		@RequestBody PlaylistCreateDto playlistCreateDto) throws ParseException {
+		log.info(userId+" 사용자 개인 플레이리스트 생성 요청합니다.");
 		individualPlaylistService.createPlaylist(userId, playlistCreateDto);
 	}
 
@@ -55,6 +57,7 @@ public class IndividualPlaylistController {
 	})
 	public void createTrack(@RequestHeader("UserId") String userId, @RequestBody TrackCreateDto trackCreateDto,
 		@PathVariable("playlistId") String playlistId) throws ParseException {
+		log.info("{} 사용자 개인 플레이리스트 트랙 추가 요청합니다. Dto 내용 : {}", userId,trackCreateDto);
 		individualPlaylistService.checkValid(playlistId,userId);
 		individualPlaylistService.createTrack(userId, trackCreateDto, playlistId);
 	}
@@ -67,6 +70,7 @@ public class IndividualPlaylistController {
 
 	})
 	public PlaylistResponseDto getIndividualPlaylist(@RequestHeader("UserId") String userId) throws ParseException {
+		log.info("{} 사용자 개인 플레이리스트 조회 요청합니다.", userId);
 		PlaylistResponseDto playlistResponseDto = individualPlaylistService.getIndividualPlaylist(userId);
 		return playlistResponseDto;
 
@@ -81,6 +85,7 @@ public class IndividualPlaylistController {
 	})
 	public void setIndividualPlaylistId(@RequestHeader("UserId") String userId,
 		@RequestBody PlaylistIdDto playlistIdDto) {
+		log.info("{} 사용자 개인 플레이리스트를 변경 요청합니다. Dto 내용 : {}", userId,playlistIdDto);
 		individualPlaylistService.setIndividualPlaylistId(userId, playlistIdDto);
 	}
 
@@ -92,6 +97,7 @@ public class IndividualPlaylistController {
 
 	})
 	public void counting(@RequestHeader("UserId") String userId) throws ParseException {
+		log.info("{} 사용자가 듣는 노래 카운트 요청합니다.", userId);
 		individualPlaylistService.counting(userId);
 	}
 
@@ -106,6 +112,7 @@ public class IndividualPlaylistController {
 	})
 	public void deleteTrack(@RequestHeader("UserId") String userId,
 		@RequestBody TrackDeleteRequestDto trackDeleteRequestDto, @PathVariable("playlistId") String playlistId) {
+		log.info("{} 사용자 개인 플레이리스트에 담긴 노래를 삭제 요청합니다. Dto 내용 : {}", userId,trackDeleteRequestDto);
 		individualPlaylistService.checkValid(playlistId,userId);
 		individualPlaylistService.deleteTrack(userId, playlistId, trackDeleteRequestDto);
 
@@ -129,6 +136,7 @@ public class IndividualPlaylistController {
 	})
 	public void changeTrack(@RequestHeader("UserId") String userId,
 		@RequestBody TrackChangeRequestDto trackChangeRequestDto, @PathVariable("playlistId") String playlistId) {
+		log.info("{} 사용자 개인 플레이리스트({}) 에 담긴 노래 위치를 변경 요청합니다. Dto 내용 : {}", userId,playlistId,trackChangeRequestDto);
 		individualPlaylistService.checkValid(playlistId,userId);
 		individualPlaylistService.changeTrack(userId, playlistId, trackChangeRequestDto);
 	}
@@ -143,6 +151,7 @@ public class IndividualPlaylistController {
 
 	})
 	public IndividualDto getIndividualInfo(@RequestHeader("UserId") String userId, @PathVariable("userId") String selectUserId){
+		log.info("{} 사용자가 {} 사용자의 정보를 조회합니다.", userId,selectUserId);
 		return individualPlaylistService.getIndividualInfo(userId,selectUserId);
 	}
 
