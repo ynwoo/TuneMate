@@ -88,6 +88,7 @@ const CommonPlaylistPage = () => {
     } else {
       setSrcList([userSrc, friendProfile.imageUrl]);
     }
+    setPlaylistId(playlistId);
     getCommonPlaylistData(playlistId);
   };
 
