@@ -45,10 +45,10 @@ const PlayListProvider = ({ children }: Props) => {
   }, [playList]);
 
   const playerCallback = useCallback((state: CallbackState) => {
-    console.log(state);
-    setCurrentTrack(state.track);
+    if (state.track.uri) {
+      setCurrentTrack(state.track);
+    }
     setPlay(true);
-    setTimeout(addIndividualMusicCount, 3000);
   }, []);
 
   const changePlayList = useCallback(
@@ -74,6 +74,13 @@ const PlayListProvider = ({ children }: Props) => {
       setPlayList(individualPlayList);
     }
   }, [individualPlayList]);
+
+  // music count 증가
+  useEffect(() => {
+    if (!currentTrack?.uri) return;
+    const timer = setTimeout(addIndividualMusicCount, 3000);
+    return () => clearTimeout(timer);
+  }, [currentTrack]);
 
   const playListContextState: PlayListContextState = useMemo(
     () => ({

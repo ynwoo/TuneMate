@@ -15,24 +15,26 @@ const BottomNavbar = () => {
   }, []);
 
   return (
-    <nav className={styles["bottom-navbar"]}>
+    <div className={styles["bottom-navbar"]}>
       <Player />
-      <Link href="/main" className={styles["bottom-navbar__item"]}>
-        <Icon.Home />
-      </Link>
-      <Link href={`/profile/${userId}`} className={styles["bottom-navbar__item"]}>
-        <Icon.Profile />
-      </Link>
-      <Link href="/friends" className={styles["bottom-navbar__item"]}>
-        <Icon.Friends />
-      </Link>
-      <Link href="/recommendation" className={styles["bottom-navbar__item"]}>
-        <Icon.Recommendation />
-      </Link>
-      <Link href="/groups" className={styles["bottom-navbar__item"]}>
-        <Icon.Group />
-      </Link>
-    </nav>
+      <nav className={styles["bottom-navbar__nav-item-container"]}>
+        <Link href="/main" className={styles["bottom-navbar__nav-item"]}>
+          <Icon.Home />
+        </Link>
+        <Link href={`/profile/${userId}`} className={styles["bottom-navbar__nav-item"]}>
+          <Icon.Profile />
+        </Link>
+        <Link href="/friends" className={styles["bottom-navbar__nav-item"]}>
+          <Icon.Friends />
+        </Link>
+        <Link href="/recommendation" className={styles["bottom-navbar__nav-item"]}>
+          <Icon.Recommendation />
+        </Link>
+        <Link href="/groups" className={styles["bottom-navbar__nav-item"]}>
+          <Icon.Group />
+        </Link>
+      </nav>
+    </div>
   );
 };
 
