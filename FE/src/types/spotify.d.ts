@@ -30,6 +30,15 @@ interface Track {
   id?: string;
 }
 
+interface TrackInfo {
+  title: string;
+  cover: string;
+  artist: string;
+  uri: string;
+  id?: string;
+  index?: number;
+}
+
 interface Album {
   images: Image[];
 }
@@ -45,6 +54,7 @@ interface Artist {
 }
 
 interface Image {
+  url?: string;
   uri: string;
   height: number;
   width: number;
@@ -111,4 +121,5 @@ export type {
   Song,
   AddCommonTrack,
   DeleteCommonTrack,
+  TrackInfo,
 };

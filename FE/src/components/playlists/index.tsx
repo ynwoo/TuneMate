@@ -8,11 +8,12 @@ import Modal from "../modal/Modal";
 import useModal from "@/hooks/useModal";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { updateIndividualPlayListTrack } from "@/api/music/individual";
-import { ChangeTrackIndex } from "@/types/spotify";
+import { ChangeTrackIndex, TrackInfo } from "@/types/spotify";
 import { PlayList } from "@/types/playList";
 import useIndividualPlayListsQuery from "@/hooks/queries/music/individual/useIndividualPlayListsQuery";
+import usePlayList from "@/hooks/usePlayList";
 interface PlaylistProps extends Props {
-  data: any[];
+  data: TrackInfo[];
   playlistName: string;
   playlistId: PlayList["id"];
   isSameUser: boolean;
@@ -31,6 +32,7 @@ const Playlist = ({
   const { closeToggle, isOpen, openToggle } = useModal();
   const [playlistData, setPlaylistData] = useState(data);
   const [deleteMode, setDeleteMode] = useState(false);
+  const { changePlayList } = usePlayList();
   console.log("data", data);
   console.log("playlistData", playlistData);
 
@@ -135,6 +137,7 @@ const Playlist = ({
                         index={idx}
                         onRequestDelete={onRequestDelete}
                         isDeleteMode={deleteMode}
+                        onClick={() => changePlayList(playlistData, idx)}
                       />
                     ))}
                     {provided.placeholder}

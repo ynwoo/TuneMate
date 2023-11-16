@@ -7,7 +7,7 @@ import Icon from "@/components/icons";
 import { Draggable } from "react-beautiful-dnd";
 import { PickTrackState, PickTrackUriState, AlubumArtState } from "@/store/atom";
 import { useRecoilState } from "recoil";
-import { Track } from "@/types/spotify";
+import { Track, TrackInfo } from "@/types/spotify";
 
 type SongInfo = {
   title: string;
@@ -20,10 +20,11 @@ type SongInfo = {
 
 interface PlaylistItemProps extends Props {
   isSameUser: boolean;
-  value: SongInfo;
+  value: TrackInfo;
   index: number;
   onRequestDelete: (idx: number) => void;
   isDeleteMode: boolean;
+  onClick?: () => void;
 }
 
 const PlaylistItem = ({
@@ -32,6 +33,7 @@ const PlaylistItem = ({
   isSameUser,
   onRequestDelete,
   isDeleteMode,
+  onClick,
 }: PlaylistItemProps) => {
   const { title, artist, cover, id, uri } = value;
   const [PickTrack, setPickTrack] = useRecoilState(PickTrackState);
@@ -55,12 +57,12 @@ const PlaylistItem = ({
   };
 
   return (
-    <Draggable draggableId={id} index={index}>
+    <Draggable draggableId={id as string} index={index}>
       {(provided) => (
         <div {...provided.draggableProps} ref={provided.innerRef}>
           <div className={styles["container"]}>
             <div className={styles["playlist-item-inner"]}>
-              <div className={styles["item-left"]} onClick={handleContainerClick}>
+              <div className={styles["item-left"]} onClick={onClick}>
                 <Cover src={cover} alt="album-cover" />
                 <div className={styles["text-box"]}>
                   <Text content={title} type="title" />

@@ -1,7 +1,8 @@
 import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
 import Props from "@/types";
 import { PlayList } from "@/types/playList";
-import { Track } from "@/types/spotify";
+import { Track, TrackInfo } from "@/types/spotify";
+import { Convert } from "@/utils/convert";
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
 export interface PlayListContextState {
@@ -10,7 +11,7 @@ export interface PlayListContextState {
   uris: string[];
   images: string[];
   currentTrackIndex: number;
-  changePlayList: (playList: PlayList | Track, idx?: number) => void;
+  changePlayList: (playList: PlayList | Track | TrackInfo[], idx?: number) => void;
   playNextTrack: () => void;
 }
 
@@ -49,26 +50,23 @@ const PlayListProvider = ({ children }: Props) => {
     setPlay(true);
   }, [currentTrackIndex]);
 
-  const trackToPlayList = useCallback((track: Track) => {
-    const playList: PlayList = {
-      description: "",
-      id: "",
-      images: track.album.images,
-      name: track.name,
-      tracks: { items: [{ track }] },
-    };
+  const changePlayList = useCallback(
+    (playList: PlayList | Track | TrackInfo[], idx: number = 0) => {
+      let newPlayList = undefined;
+      if ("description" in playList) {
+        newPlayList = playList;
+      } else if ("album" in playList) {
+        newPlayList = Convert.trackToPlayList(playList);
+      } else {
+        newPlayList = Convert.trackInfosToPlayList(playList);
+      }
+      console.log(playList, newPlayList);
 
-    return playList;
-  }, []);
-
-  const changePlayList = useCallback((playList: PlayList | Track, idx: number = 0) => {
-    if ("description" in playList) {
-      setPlayList(playList);
-    } else {
-      setPlayList(trackToPlayList(playList));
-    }
-    setCurrentTrackIndex(idx);
-  }, []);
+      setPlayList(Convert.changeTrackOrder(newPlayList, idx));
+      setCurrentTrackIndex(idx);
+    },
+    []
+  );
 
   useEffect(() => {
     if (individualPlayList) {
