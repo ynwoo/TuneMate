@@ -15,6 +15,7 @@ import Modal from "@/components/modal/Modal";
 import ChatMenu from "@/components/chat/ChatMenu/ChatMenu";
 import useDeleteSocialFriendMutation from "@/hooks/mutations/social/useDeleteSocialFriendMutation";
 import useDisconnectChatRoomMutation from "@/hooks/mutations/social/useDisconnectChatRoomMutation";
+import useConnectChatRoomMutation from "@/hooks/mutations/social/useConnectChatRoomMutation";
 
 interface ChatPageProps extends Props {}
 
@@ -32,6 +33,7 @@ const ChatPage = ({}: ChatPageProps) => {
 
   const { closeToggle, isOpen, openToggle } = useModal();
   const { mutate: deleteSocialFriend } = useDeleteSocialFriendMutation();
+  const { mutate: connectChatRoom } = useConnectChatRoomMutation();
   const { mutate: disconnectChatRoom } = useDisconnectChatRoomMutation();
 
   // 현재 채팅방 정보 (채팅기록)
@@ -72,10 +74,11 @@ const ChatPage = ({}: ChatPageProps) => {
       time: "",
     });
 
+    connectChatRoom(relationId);
     return () => {
       disconnectChatRoom(relationId);
     };
-  }, [relationId]);
+  }, []);
 
   return (
     <>
