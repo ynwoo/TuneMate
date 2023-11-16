@@ -46,7 +46,6 @@ export default function App({ Component, pageProps }: AppProps) {
           <>
             {!hasNavbar && <TopNavbar />}
             <div className={hasNavbar ? "login" : "main"}>
-              <Player />
               <Component {...pageProps} />
             </div>
             {!hasNavbar && <BottomNavbar />}

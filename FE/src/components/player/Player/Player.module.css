@@ -1,6 +1,5 @@
 .player {
-  position: fixed;
-  bottom: 4rem;
+  position: relative;
   width: 100vw;
   max-width: var(--max-width);
   z-index: 1;
@@ -13,18 +12,14 @@
 
 /* 재생바 윗 부분 */
 .player > div > div > div:first-child {
-  position: fixed;
-  bottom: 4rem;
+  position: absolute;
   z-index: 1;
   border: 0;
 }
 
 /* 재생바 윗 부분 content */
 .player > div > div > div:first-child > div > div:first-child {
-  /* text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap; */
-  width: 55%;
+  width: 8rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -40,9 +35,9 @@
 
 /* 재생바 윗 부분 좋아요 버튼 */
 .player > div > div > div:first-child > div > div:first-child > button {
-  /* position: fixed;
-  bottom: 6rem;
-  right: 10rem;
+  /* position: absolute;
+  bottom: 2rem;
+  right: 8rem;
   z-index: 1; */
 }
 
@@ -56,19 +51,17 @@
 
 /* 버튼 container */
 .player > div > div > div:last-child > div:first-child {
-  position: fixed;
-  bottom: 5.8rem;
+  position: absolute;
+  bottom: 1.8rem;
   right: 0.5rem;
   z-index: 1;
 }
 
 /* 재생 slider */
 .player > div > div > div:last-child > div:last-child {
+  position: absolute;
   width: 50%;
-
-  position: fixed;
-  bottom: 4.8rem;
-  z-index: 1;
+  bottom: 0.8rem;
 }
 
 /* 디바이스 버튼 */
@@ -88,10 +81,10 @@
 .player > div > div > div:last-child > div:first-child > div:nth-child(5) {
 }
 .player > div > div > div:last-child > div:first-child > div:nth-child(6) {
-  display: none;
+  /* display: none; */
 }
 .player > div > div > div:last-child > div:first-child > div:last-child svg {
-  display: none;
-  height: 1px;
-  width: 1px;
+  /* display: none; */
+  /* height: 1px;
+  width: 1px; */
 }
