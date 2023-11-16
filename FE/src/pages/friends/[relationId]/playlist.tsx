@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CommonProfile from "@/components/profile/CommonProfile/CommonProfile";
 import CommonPlaylist from "@/components/playlists/CommonPlaylist/CommonPlaylist";
-import { getOthersProfile } from "@/api/music/individual";
+import { getOthersPlayList, getOthersProfile } from "@/api/music/individual";
 import {
   createCommonPlayListTrack,
   deleteCommonPlayListTrack,
@@ -19,6 +19,7 @@ import { getSocialFriends } from "@/api/social";
 import { PlayList } from "@/types/playList";
 import { TUNEMATE_API_BASE_URL } from "@/constants/url";
 import { EventSourcePolyfill } from "event-source-polyfill";
+import { spotifyApi } from "@/api";
 
 type TrackInfo = {
   title: string;
@@ -30,8 +31,7 @@ type TrackInfo = {
 
 const CommonPlaylistPage = () => {
   const params = useParams();
-  // const relationId = Number(params?.relationId);
-  // const accessToken = Cookie.getAccessToken() as string;
+  const relationId = Number(params?.relationId);
 
   const [commonName, setCommonName] = useState("Name");
   const [srcList, setSrcList] = useState<string[]>([]);
@@ -41,44 +41,44 @@ const CommonPlaylistPage = () => {
   const { closeToggle, isOpen, openToggle } = useModal();
   const { popToast, toastStatus, toastMsg } = useToast();
 
-  // const getCommonPlaylistData = async (commonPlaylistData: PlayList) => {
-  //   // const relationId = Number(params?.relationId);
-  //   // const commonPlaylistData = await getCommonPlayList(relationId);
-  //   console.log(commonPlaylistData);
-  //   setPlaylistName(commonPlaylistData.name);
-  //   setPlaylistId(commonPlaylistData.id);
-  //   console.log(commonPlaylistData.tracks.items);
-  //   const repTracks = [...commonPlaylistData.tracks.items];
-  //   const tmpData: any[] = [];
-  //   repTracks.forEach((trackData, index) => {
-  //     const baseData = trackData.track;
-  //     const trackArtists = baseData.artists;
-  //     let trackArtist = "";
-  //     for (let i = 0; i < trackArtists.length; i++) {
-  //       if (i === trackArtists.length - 1) {
-  //         trackArtist = trackArtist + trackArtists[i].name;
-  //       } else {
-  //         trackArtist = trackArtist + trackArtists[i].name + ", ";
-  //       }
-  //     }
-  //     const newData = {
-  //       title: baseData.name,
-  //       artist: trackArtist,
-  //       cover: baseData.album.images[2].url,
-  //       id: baseData.id,
-  //       uri: baseData.uri,
-  //       index: index,
-  //     };
-  //     tmpData.push(newData);
-  //   });
-  //   console.log(tmpData);
-  //   setCommonPlaylist(tmpData);
-  // };
+  const getCommonPlaylistData = async (playlistId: string) => {
+    const commonPlaylistData = await getOthersPlayList(playlistId);
+    console.log(commonPlaylistData);
+    setPlaylistName(commonPlaylistData.name);
+    // setPlaylistId(commonPlaylistData.id);
+    console.log(commonPlaylistData.tracks.items);
+    const repTracks = [...commonPlaylistData.tracks.items];
+    const tmpData: any[] = [];
+    repTracks.forEach((trackData, index) => {
+      const baseData = trackData.track;
+      const trackArtists = baseData.artists;
+      let trackArtist = "";
+      for (let i = 0; i < trackArtists.length; i++) {
+        if (i === trackArtists.length - 1) {
+          trackArtist = trackArtist + trackArtists[i].name;
+        } else {
+          trackArtist = trackArtist + trackArtists[i].name + ", ";
+        }
+      }
+      const newData = {
+        title: baseData.name,
+        artist: trackArtist,
+        cover: baseData.album.images[2].url,
+        id: baseData.id,
+        uri: baseData.uri,
+        index: index,
+      };
+      tmpData.push(newData);
+    });
+    console.log(tmpData);
+    setCommonPlaylist(tmpData);
+  };
 
   const getFriendProfile = async (
     userId: string,
     username: string,
-    userSrc: string
+    userSrc: string,
+    playlistId: string,
   ) => {
     const friendProfile = await getOthersProfile(userId);
     console.log(friendProfile);
@@ -88,7 +88,7 @@ const CommonPlaylistPage = () => {
     } else {
       setSrcList([userSrc, friendProfile.imageUrl]);
     }
-    // getCommonPlaylistData();
+    getCommonPlaylistData(playlistId);
   };
 
   const getFriendInfo = async (username: string, userSrc: string) => {
@@ -99,8 +99,8 @@ const CommonPlaylistPage = () => {
       console.log("checkpoint 1");
       if (friendList[i].relationId === Number(relationId)) {
         console.log("checkpoint 2");
-        setPlaylistId(friendList[i].commonPlayListId);
-        getFriendProfile(friendList[i].friendId, username, userSrc);
+        const playlistId = friendList[i].commonPlayListId;
+        getFriendProfile(friendList[i].friendId, username, userSrc, playlistId);
         break;
       }
     }
@@ -123,27 +123,28 @@ const CommonPlaylistPage = () => {
     getUserProfile();
   }, []);
 
-  // useEffect(() => {
-  //   const eventSource = new EventSourcePolyfill(
-  //     `${TUNEMATE_API_BASE_URL}/music-service/common/sse/playlists/${relationId}`,
-  //     {
-  //       headers: {
-  //         Authorization: accessToken,
-  //       },
-  //       withCredentials: true,
-  //     }
-  //   );
+  useEffect(() => {
+    const accessToken = Cookie.getAccessToken() as string;
+    const eventSource = new EventSourcePolyfill(
+      `${TUNEMATE_API_BASE_URL}/music-service/common/sse/playlists/${relationId}`,
+      {
+        headers: {
+          Authorization: accessToken,
+        },
+        // withCredentials: true,
+      }
+    );
 
-  //   console.log(eventSource.onmessage);
+    console.log(eventSource);
 
-  //   // eventSource.onmessage = (event) => {
-  //   //   const newMessage = event.data;
-  //   // };
+    // eventSource.onmessage = (event) => {
+    //   const newMessage = event.data;
+    // };
 
-  //   return () => {
-  //     eventSource.close();
-  //   };
-  // }, []);
+    return () => {
+      eventSource.close();
+    };
+  }, []);
 
   const deleteTrack = async (index: number) => {
     const data: DeleteTrack = {
