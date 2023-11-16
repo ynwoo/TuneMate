@@ -28,7 +28,7 @@ const Player = ({ className }: PlayerProps) => {
     }, 200);
   }, []);
 
-  const { playNextTrack, play, uris } = usePlayList();
+  const { playerCallback: playNextTrack, play, uris } = usePlayList();
   return (
     <div className={classNameWrapper(styles.player, className)} onClick={onClick}>
       {token && (

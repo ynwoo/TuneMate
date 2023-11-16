@@ -1,18 +1,20 @@
+import useAddIndividualMusicCountMutation from "@/hooks/mutations/music/individual/useAddIndividualMusicCountMutation";
 import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
 import Props from "@/types";
 import { PlayList } from "@/types/playList";
 import { Track, TrackInfo } from "@/types/spotify";
 import { Convert } from "@/utils/convert";
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
+import { CallbackState, SpotifyTrack } from "react-spotify-web-playback";
 
 export interface PlayListContextState {
   playList?: PlayList;
   play: boolean;
   uris: string[];
   images: string[];
-  currentTrackIndex: number;
   changePlayList: (playList: PlayList | Track | TrackInfo[], idx?: number) => void;
-  playNextTrack: () => void;
+  playerCallback: (state: CallbackState) => void;
+  currentTrack?: SpotifyTrack;
 }
 
 export const PlayListContext = createContext<PlayListContextState>({} as PlayListContextState);
@@ -20,8 +22,9 @@ export const PlayListContext = createContext<PlayListContextState>({} as PlayLis
 const PlayListProvider = ({ children }: Props) => {
   const [playList, setPlayList] = useState<PlayList>();
   const [play, setPlay] = useState<boolean>(false);
-  const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
+  const [currentTrack, setCurrentTrack] = useState<SpotifyTrack>();
   const { data: individualPlayList } = useIndividualPlayListRepresentativeQuery();
+  const { mutate: addIndividualMusicCount } = useAddIndividualMusicCountMutation();
 
   const { uris, images }: { uris: string[]; images: string[] } = useMemo(() => {
     if (!playList) return { uris: [], images: [] };
@@ -41,14 +44,12 @@ const PlayListProvider = ({ children }: Props) => {
     return { uris, images };
   }, [playList]);
 
-  const playNextTrack = useCallback(() => {
-    if (currentTrackIndex < uris.length - 1) {
-      setCurrentTrackIndex((prevIndex) => prevIndex + 1);
-    } else {
-      setCurrentTrackIndex(0);
-    }
+  const playerCallback = useCallback((state: CallbackState) => {
+    console.log(state);
+    setCurrentTrack(state.track);
     setPlay(true);
-  }, [currentTrackIndex]);
+    setTimeout(addIndividualMusicCount, 3000);
+  }, []);
 
   const changePlayList = useCallback(
     (playList: PlayList | Track | TrackInfo[], idx: number = 0) => {
@@ -63,13 +64,13 @@ const PlayListProvider = ({ children }: Props) => {
       console.log(playList, newPlayList);
 
       setPlayList(Convert.changeTrackOrder(newPlayList, idx));
-      setCurrentTrackIndex(idx);
     },
     []
   );
 
+  // playList 초기값 채우기
   useEffect(() => {
-    if (individualPlayList) {
+    if (!playList && individualPlayList) {
       setPlayList(individualPlayList);
     }
   }, [individualPlayList]);
@@ -80,11 +81,11 @@ const PlayListProvider = ({ children }: Props) => {
       play,
       uris,
       images,
-      currentTrackIndex,
       changePlayList,
-      playNextTrack,
+      playerCallback,
+      currentTrack,
     }),
-    [playList, play]
+    [playList, play, uris, images, changePlayList, playerCallback, currentTrack]
   );
 
   return (
