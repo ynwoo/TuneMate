@@ -3,13 +3,14 @@ import { AddTrack, ChangeTrack, DeleteTrack } from "@/types/spotify";
 import { api } from "..";
 
 const COMMON_PLAYLISTS_URL = "music-service/common/playlists";
+const COMMON_SSE_PLAYLISTS_URL = "music-service/common/sse/playlists";
 
 // 공동 플레이리스트 조회
 const getCommonPlayList = async (
-  playlistId: PlayList["id"]
+  relationId: number
 ): Promise<PlayList> => {
   const response = await api.get<PlayList>(
-    `${COMMON_PLAYLISTS_URL}/${playlistId}`
+    `${COMMON_SSE_PLAYLISTS_URL}/${relationId}`
   );
   return response.data;
 };
