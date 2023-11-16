@@ -39,12 +39,12 @@ export default function SinglePlayer() {
     if (PickTrack) {
       setPlay(PickTrack);
       setPlayuri(PickTrack.uri);
-      setAlbumArt(PickTrack.album.images[0].uri);
+      setAlbumArt(PickTrack.album.images[0].url);
       console.log("왔어");
     } else if (ListInfo) {
       setPlay(ListInfo);
       setPlayuri(ListInfo.uri);
-      setAlbumArt(ListInfo.album.images[0].uri);
+      setAlbumArt(ListInfo.album.images[0].url);
       console.log("안왔어");
       console.log("앨범아트", AlubumArt);
     }
