@@ -27,7 +27,7 @@ const nextConfig = {
         protocol: "https",
         hostname: "i1.ruliweb.com",
         port: "",
-        pathname: "img/**",
+        pathname: "/img/**",
       },
     ],
   },
