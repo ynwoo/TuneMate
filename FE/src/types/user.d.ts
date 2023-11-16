@@ -4,7 +4,7 @@ interface UserInfo {
   spotifyAccessToken: string;
   name: string;
   email: string;
-  // imageUrl: string;
+  imageUrl: string;
 }
 
 interface TokenResponse {
