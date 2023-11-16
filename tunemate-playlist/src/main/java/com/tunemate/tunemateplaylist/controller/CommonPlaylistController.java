@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CommonPlaylistController {
 
 	private final CommonPlaylistServiceImpl commonPlaylistService;
-	private final Map<String, List<SseEmitter>> SseEmitters = new ConcurrentHashMap<>();
+	private final Map<String, Map<String,SseEmitter>> SseEmitters = new ConcurrentHashMap<>();
 
 	// 공동 플레이리스트 조회
 	@GetMapping(value = "sse/playlists/{relationId}",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -62,7 +62,10 @@ public class CommonPlaylistController {
 		}
 		String playlistId = relationInfoDto.getPlaylistId();
 		SseEmitter sseEmitter = new SseEmitter(-1l);
-		SseEmitters.computeIfAbsent(playlistId, k -> new ArrayList<>()).add(sseEmitter);
+		SseEmitters.computeIfAbsent(playlistId, k -> new HashMap<>());
+		SseEmitters.get(playlistId).put(userId,sseEmitter);
+
+
 		// sse 연결 끝나면 객체 삭제
 		sseEmitter.onCompletion(() -> {
 			log.info("SSE 연결이 끝났다!!");
@@ -103,25 +106,40 @@ public class CommonPlaylistController {
 		PlaylistResponseDto playlistResponseDto = commonPlaylistService.getIndividualPlaylist(userId, playlistId);
 		int size = SseEmitters.get(playlistId).size();
 		log.info("{}",size);
-		List<SseEmitter> list = new ArrayList<>();
-		for (int i = 0; i < size; i++) {
+//		List<SseEmitter> list = new ArrayList<>();
+		for(String uId: SseEmitters.get(playlistId).keySet()){
 			try {
-				log.info("{}",SseEmitters.get(playlistId).stream().toList().toString());
-				log.info("{}", Arrays.toString(SseEmitters.get(playlistId).toArray()));
-				SseEmitters.get(playlistId).get(i).send(playlistResponseDto, MediaType.APPLICATION_JSON);
+				SseEmitters.get(playlistId).get(uId).send(playlistResponseDto, MediaType.APPLICATION_JSON);
 				log.info("연결된 사람에게 전송");
 
 			} catch (IOException | IllegalStateException e) {
-				//SseEmitters.get(playlistId).remove(SseEmitters.get(playlistId).get(i));
-				list.add(SseEmitters.get(playlistId).get(i));
+//				SseEmitters.get(playlistId).remove(SseEmitters.get(playlistId).get(i));
+//				list.add(SseEmitters.get(playlistId).get(i));
 				log.info("연결된 사람에게 전송 실패");
 			} catch (NullPointerException e) {
 				log.info("Null");
 			}
 		}
-		for(SseEmitter sseEmitter: list){
-			SseEmitters.get(playlistId).remove(sseEmitter);
-		}
+
+
+//		for (int i = 0; i < size; i++) {
+//			try {
+//				log.info("{}",SseEmitters.get(playlistId).stream().toList().toString());
+//				log.info("{}", Arrays.toString(SseEmitters.get(playlistId).toArray()));
+//				SseEmitters.get(playlistId).get(i).send(playlistResponseDto, MediaType.APPLICATION_JSON);
+//				log.info("연결된 사람에게 전송");
+//
+//			} catch (IOException | IllegalStateException e) {
+//				//SseEmitters.get(playlistId).remove(SseEmitters.get(playlistId).get(i));
+//				list.add(SseEmitters.get(playlistId).get(i));
+//				log.info("연결된 사람에게 전송 실패");
+//			} catch (NullPointerException e) {
+//				log.info("Null");
+//			}
+//		}
+//		for(SseEmitter sseEmitter: list){
+//			SseEmitters.get(playlistId).remove(sseEmitter);
+//		}
 
 	}
 
@@ -165,7 +183,7 @@ public class CommonPlaylistController {
 	}
 
 	// 공동 플레이리스트 트랙 순서 변경
-	@PutMapping("/playlists/{playlistId}/tracks")
+	@PutMapping("/playlists/{relationId}/tracks")
 	@Operation(summary = "공동 플레이리스트 트랙 순서 변경", description = """
 		공동 플레이리스트에 트랙(곡) 순서를 변경합니다.
 		  
