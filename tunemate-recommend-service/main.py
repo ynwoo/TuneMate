@@ -1,3 +1,4 @@
+import random
 from typing import List, Optional
 
 import math
@@ -192,6 +193,7 @@ def song(UserId: str | None = Header(default=None)):
 # 사람 추천
 @app.get("/recommendation/friends", response_model=List)
 def root(UserId: str | None = Header(default=None)):
+    randomName = ["고범희","고범우","남완수","남완우","김윤수","김윤희","고윤우","김범수","남윤우","남범수","강한나","강한수","권현우","권현수","박성우","박성수","박성희","박현우","권성준","양윤우","양우철","권기윤","박은수","박은우","김민아","김민수","김민우","김민희","신민철","곽민철","한동민","권나라","이승기","강호동","유재석","송민호","장원영","하동훈","탁재훈","이상민","김준호","김정은","김정일","공효진","장나라","이정재","장우성","정지훈","김재헌","박지성","손흥민","황희찬","이강인","박주영","이청용","기성용","지동원","설기현","서장훈","민경훈","옥택연","김병만","박정희","김근우","이창원","송주형","류근필","이태준","고은영","김도운","이재용","서수정","우찬희","박은정","양승현","백건우","김진현","박주원","박준원","서주원"]
     conn = pymysql.connect(user=os.environ["DATABASE_USERNAME"],
                            password=os.environ["DATABASE_PASSWORD"], host=os.environ["DATABASE_URL"],
                            db="MUSIC", port=int(os.environ["DATABASE_PORT"]), charset="utf8")
@@ -262,9 +264,8 @@ def root(UserId: str | None = Header(default=None)):
         cursor.execute(sql, recommend[i])
         playlistId = cursor.fetchall()[0][0]
         userOb = request(recommend[i])
-        print(userOb)
         if userOb is None or userOb.get("userId") is None or userOb.get("name") is None:
-            responseList.append(ReturnDto(userId="dummy", img="dummy", name="dummy",
+            responseList.append(ReturnDto(userId=recommend[i], img="dummy", name=random.choice(randomName),
                                       playlist=playlistId, similarity=similaritys[i]))
         else:
             responseList.append(ReturnDto(userId=userOb.get("userId"), img=userOb.get("imageUrl"), name=userOb.get("name"),
