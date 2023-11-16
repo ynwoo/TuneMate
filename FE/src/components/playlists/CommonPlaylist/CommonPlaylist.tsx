@@ -49,7 +49,7 @@ const CommonPlaylist = ({
     newData.splice(result.destination.index, 0, reorderedItem);
     const rangeStart = result.source.index;
     const insertBefore = () => {
-      if (rangeStart === 1) {
+      if (rangeStart < result.destination.index) {
         return result.destination.index + 1;
       } else {
         return result.destination.index;
@@ -115,7 +115,7 @@ const CommonPlaylist = ({
                     {playlistData.map((songData, idx) => (
                       <PlaylistItem
                         isSameUser={true}
-                        key={songData.id}
+                        key={songData.id + `${idx}`}
                         value={songData}
                         index={idx}
                         onRequestDelete={onRequestDelete}

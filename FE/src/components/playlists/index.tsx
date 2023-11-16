@@ -124,7 +124,7 @@ const Playlist = ({
                     {playlistData.map((songData, idx) => (
                       <PlaylistItem
                         isSameUser={isSameUser}
-                        key={songData.id}
+                        key={songData.id + `${idx}`}
                         value={songData}
                         index={idx}
                         onRequestDelete={onRequestDelete}
