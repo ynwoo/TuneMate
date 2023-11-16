@@ -1,10 +1,7 @@
 package com.tunemate.tunemateplaylist.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.tunemate.tunemateplaylist.dto.*;
@@ -64,14 +61,16 @@ public class CommonPlaylistController {
 			throw new NotFoundException("공동 플레이리스트가 없습니다.",HttpStatus.NOT_FOUND);
 		}
 		String playlistId = relationInfoDto.getPlaylistId();
-		SseEmitter sseEmitter = new SseEmitter(10000l);
+		SseEmitter sseEmitter = new SseEmitter(3000l);
 		SseEmitters.computeIfAbsent(playlistId, k -> new ArrayList<>()).add(sseEmitter);
 		// sse 연결 끝나면 객체 삭제
 		sseEmitter.onCompletion(() -> {
+			log.info("SSE 연결이 끝났다!!");
 			SseEmitters.get(playlistId).remove(sseEmitter);
 		});
 		// sse 연결 시간 초과 시 객체 삭제
 		sseEmitter.onTimeout(() -> {
+			log.info("SSE 연결 시간 초과 !!");
 			SseEmitters.get(playlistId).remove(sseEmitter);
 		});
 		PlaylistResponseDto playlistResponseDto = commonPlaylistService.getIndividualPlaylist(userId, playlistId);
@@ -106,6 +105,8 @@ public class CommonPlaylistController {
 		log.info("{}",size);
 		for (int i = 0; i < size; i++) {
 			try {
+				log.info("{}",SseEmitters.get(playlistId).stream().toList().toString());
+				log.info("{}", Arrays.toString(SseEmitters.get(playlistId).toArray()));
 				SseEmitters.get(playlistId).get(i).send(playlistResponseDto, MediaType.APPLICATION_JSON);
 				log.info("연결된 사람에게 전송");
 
