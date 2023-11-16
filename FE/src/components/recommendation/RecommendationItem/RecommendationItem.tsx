@@ -88,7 +88,11 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
           {/* TODO: distance 구현 예정 */}
           {/* <p>{item.distance ?? 0}km</p> */}
           <p>
-            {(Number(item.musicalTasteSimilarity) * 100).toFixed(0)}
+            {(
+              Number(
+                isFriendRequest ? item.musicalTasteSimilarity : item.similarity
+              ) * 100
+            ).toFixed(0)}
             <Icon.Music size="lg" />
           </p>
           {!isFriendRequest && (
