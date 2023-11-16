@@ -11,18 +11,22 @@ export const Stomp = Object.freeze({
     }
 
     const accessToken = Storage.getAccessToken();
-    client.current = new Client({
+    const newClient = new Client({
       brokerURL: `${url}?Authorization=${accessToken}`,
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
-      onConnect,
+      onConnect: () => {
+        onConnect();
+        client.current = newClient;
+        console.log("client 생성 완료", client.current);
+      },
       onStompError: (data) => {
         console.error(data);
       },
     });
 
-    client.current.activate();
+    newClient.activate();
     console.log("connect 실행", client.current);
   },
 
