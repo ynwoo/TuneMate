@@ -4,7 +4,6 @@ const withPWA = require("next-pwa");
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: ["3.bp.blogspot.com", "www.musickorea.asia"],
     remotePatterns: [
       {
         protocol: "https",
@@ -23,6 +22,12 @@ const nextConfig = {
         hostname: "ticketimage.interpark.com",
         port: "",
         pathname: "/rz/image/**",
+      },
+      {
+        protocol: "https",
+        hostname: "i1.ruliweb.com",
+        port: "",
+        pathname: "img/**",
       },
     ],
   },
