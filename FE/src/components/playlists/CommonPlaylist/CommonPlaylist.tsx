@@ -10,6 +10,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { updateCommonPlayListTrack } from "@/api/music/common";
 import { ChangeTrackIndex } from "@/types/spotify";
 import { PlayList } from "@/types/playList";
+import { updateIndividualPlayListTrack } from "@/api/music/individual";
 
 interface CommonPlaylistProps extends Props {
   data: any[];

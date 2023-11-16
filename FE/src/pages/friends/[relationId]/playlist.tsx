@@ -44,7 +44,6 @@ const CommonPlaylistPage = () => {
     const commonPlaylistData = await getOthersPlayList(playlistId);
     console.log(commonPlaylistData);
     setPlaylistName(commonPlaylistData.name);
-    // setPlaylistId(commonPlaylistData.id);
     console.log(commonPlaylistData.tracks.items);
     const repTracks = [...commonPlaylistData.tracks.items];
     const tmpData: any[] = [];
@@ -139,7 +138,31 @@ const CommonPlaylistPage = () => {
     eventSource.addEventListener("message", async (e) => {
       const res = await e.data;
       const data = JSON.parse(res);
-      console.log(data);
+      console.log(data.tracks.items);
+      const tmpData: any[] = [];
+      data.tracks.items.forEach((trackData: any, index: number) => {
+        const baseData = trackData.track;
+        const trackArtists = baseData.artists;
+        let trackArtist = "";
+        for (let i = 0; i < trackArtists.length; i++) {
+          if (i === trackArtists.length - 1) {
+            trackArtist = trackArtist + trackArtists[i].name;
+          } else {
+            trackArtist = trackArtist + trackArtists[i].name + ", ";
+          }
+        }
+        const newData = {
+          title: baseData.name,
+          artist: trackArtist,
+          cover: baseData.album.images[2].url,
+          id: baseData.id,
+          uri: baseData.uri,
+          index: index,
+        };
+        tmpData.push(newData);
+      });
+      console.log(tmpData);
+      setCommonPlaylist(tmpData);
     });
 
     eventSource.addEventListener("error", async (e) => {
@@ -192,7 +215,7 @@ const CommonPlaylistPage = () => {
       <CommonPlaylist
         playlistName={playlistName}
         data={commonPlaylist}
-        playlistId={playlistId}
+        playlistId={`${relationId}`}
         onRequestDelete={handleDelete}
         setModalOpen={openToggle}
       />
