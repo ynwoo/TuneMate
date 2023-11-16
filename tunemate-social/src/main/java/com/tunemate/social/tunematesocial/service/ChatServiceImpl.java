@@ -25,6 +25,7 @@ public class ChatServiceImpl implements ChatService{
     @Override
     public ChattingRoom getChat(long relationId, ChatDto chatDto){
         ChattingRoom msg = chattingRoomRepository.findByChatRoomId(relationId);
+        log.info("메시지 길이 {}",chatDto.getContent().length());
         if(chatDto.getContent().length()==0){
             log.info("빈 메시지 ==> 채팅 방 최초 접속 시 요청");
             return msg;
