@@ -1,13 +1,19 @@
 .friend-item-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--white-color);
+  cursor: pointer;
+  padding: 0.5em 1em;
+}
+
+.friend-item-container:hover {
+  background-color: var(--light-gray-color);
 }
 
 .friend-item {
-  padding: 0.5rem 1rem;
+  /* padding: 0.5rem 1rem; */
 }
 
 .friend-item__user {
@@ -16,37 +22,48 @@
 }
 
 .friend-item__user--image {
-  margin-right: 1rem;
+  margin-right: 1em;
 }
 
 .friend-item__icon-container {
   display: flex;
   align-items: stretch;
   flex-shrink: 0;
+  flex-grow: 0;
+  margin-left: auto;
 }
 
 .friend-item__icon {
   flex: 1;
-  padding-left: 0.5rem;
+  margin-left: 0.5rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
+}
+
+.friend-item__icon--chat-time {
+  font-size: 0.8rem;
+  width: max-content;
+  color: var(--gray-color);
+  margin-bottom: 0.2em;
 }
 
 .friend-item__icon--chat-count {
   background-color: var(--red-color);
-  border-radius: 50%;
-  width: 1em;
-  height: 1em;
+  border-radius: 4em;
+  width: max-content;
   text-align: center;
-  font-size: 0.8rem;
-  padding: 0.2em;
+  font-size: 0.6rem;
+  padding: 0.3em 0.5em;
   color: var(--white-color);
 }
 
 .friend-item__user--content-container {
   display: flex;
-  max-width: 10em;
+  max-width: 8em;
+  width: 8em;
   flex-direction: column;
   justify-content: space-between;
 
@@ -59,8 +76,10 @@
   font-weight: bold;
 }
 .friend-item__user--message {
+  color: var(--gray-color);
   font-size: 0.8rem;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  height: 1.2em;
 }

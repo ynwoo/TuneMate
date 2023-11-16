@@ -1,3 +1,5 @@
+import { Friend } from "./social";
+
 interface UserProfile {
   country: string;
   display_name: string;
@@ -42,9 +44,9 @@ interface Artist {
 }
 
 interface Image {
-  url: string;
-  height: number;
-  width: number;
+  uri: string;
+  height?: number;
+  width?: number;
 }
 
 interface Owner {
@@ -65,6 +67,18 @@ interface AddTrack {
 }
 interface DeleteTrack {
   playlistId: PlayList["id"];
+  uri: string;
+  positions: number[];
+}
+
+interface AddCommonTrack {
+  relationId: Friend["relationId"];
+  uris: string[];
+  position: number;
+}
+
+interface DeleteCommonTrack {
+  relationId: Friend["relationId"];
   uri: string;
   positions: number[];
 }
@@ -94,4 +108,6 @@ export type {
   DeleteTrack,
   ChangeTrack,
   Song,
+  AddCommonTrack,
+  DeleteCommonTrack,
 };

@@ -15,6 +15,7 @@ interface PlaylistProps extends Props {
   data: any[];
   playlistName: string;
   playlistId: PlayList["id"];
+  isSameUser: boolean;
   onRequestDelete: (index: number) => void;
   setModalOpen: () => void;
 }
@@ -23,6 +24,7 @@ const Playlist = ({
   data,
   playlistName,
   playlistId,
+  isSameUser,
   onRequestDelete,
   setModalOpen,
 }: PlaylistProps) => {
@@ -52,8 +54,9 @@ const Playlist = ({
     const [reorderedItem] = newData.splice(result.source.index, 1);
     newData.splice(result.destination.index, 0, reorderedItem);
     const rangeStart = result.source.index;
+    const rangeEnd = result.destination.index;
     const insertBefore = () => {
-      if (rangeStart === 1) {
+      if (rangeStart < result.destination.index) {
         return result.destination.index + 1;
       } else {
         return result.destination.index;
@@ -102,14 +105,20 @@ const Playlist = ({
       <div className={styles["container"]}>
         <div className={styles["playlist-upper"]}>
           <Text type="playlist" content={playlistName} />
-          {deleteMode ? (
-            <div onClick={() => setDeleteMode(false)}>
-              <Icon.CircleCheck />
+          {isSameUser ? (
+            <div>
+              {deleteMode ? (
+                <div onClick={() => setDeleteMode(false)}>
+                  <Icon.CircleCheck />
+                </div>
+              ) : (
+                <div onClick={onModal}>
+                  <Icon.Menu />
+                </div>
+              )}
             </div>
           ) : (
-            <div onClick={onModal}>
-              <Icon.Menu />
-            </div>
+            <div />
           )}
         </div>
         <div className={styles["playlist-box"]}>
@@ -120,7 +129,8 @@ const Playlist = ({
                   <>
                     {playlistData.map((songData, idx) => (
                       <PlaylistItem
-                        key={songData.id}
+                        isSameUser={isSameUser}
+                        key={songData.id + `${idx}`}
                         value={songData}
                         index={idx}
                         onRequestDelete={onRequestDelete}

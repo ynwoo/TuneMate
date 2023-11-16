@@ -3,7 +3,7 @@ import styles from "./MainContent.module.css";
 import { classNameWrapper } from "@/utils/className";
 
 interface MainContentProps extends Props {
-  title: string;
+  title: string | JSX.Element;
   onClick: () => void;
 }
 

@@ -5,7 +5,6 @@ import { Concert } from "@/types/concert";
 import { classNameWrapper } from "@/utils/className";
 import ConcertInfoItem from "../ConcertInfoItem/ConcertInfoItem";
 import { Time } from "@/utils/time";
-import ConcertImage from "@/components/image/ConcertImage/ConcertImage";
 
 interface ConcertInfoListProps extends Props {
   item: Concert;

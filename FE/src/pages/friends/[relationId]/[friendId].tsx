@@ -15,23 +15,27 @@ import Modal from "@/components/modal/Modal";
 import ChatMenu from "@/components/chat/ChatMenu/ChatMenu";
 import useDeleteSocialFriendMutation from "@/hooks/mutations/social/useDeleteSocialFriendMutation";
 import useDisconnectChatRoomMutation from "@/hooks/mutations/social/useDisconnectChatRoomMutation";
+import useConnectChatRoomMutation from "@/hooks/mutations/social/useConnectChatRoomMutation";
 
 interface ChatPageProps extends Props {}
 
 const ChatPage = ({}: ChatPageProps) => {
   const [content, setContent] = useState<string>("");
   const params = useParams();
-  const relationId = Number(params?.relationId as string);
+  const relationId = Number(params?.relationId ?? -1);
+  console.log(relationId);
+
   const friendId = params?.friendId as string;
   const [messageRequest, setMessageRequest] = useState<MessageRequest>(
     {} as MessageRequest
   );
 
   const { publish, chatRooms } = useChat();
-  const { data: prevChatRoom } = useChatsQuery(relationId);
+  const { data: prevChatRoom, refetch } = useChatsQuery(relationId);
 
   const { closeToggle, isOpen, openToggle } = useModal();
   const { mutate: deleteSocialFriend } = useDeleteSocialFriendMutation();
+  const { mutate: connectChatRoom } = useConnectChatRoomMutation();
   const { mutate: disconnectChatRoom } = useDisconnectChatRoomMutation();
 
   // 현재 채팅방 정보 (채팅기록)
@@ -64,6 +68,8 @@ const ChatPage = ({}: ChatPageProps) => {
   });
 
   useEffect(() => {
+    if (relationId < 0) return;
+
     setMessageRequest({
       content: "",
       relationId,
@@ -72,6 +78,8 @@ const ChatPage = ({}: ChatPageProps) => {
       time: "",
     });
 
+    refetch();
+    connectChatRoom(relationId);
     return () => {
       disconnectChatRoom(relationId);
     };

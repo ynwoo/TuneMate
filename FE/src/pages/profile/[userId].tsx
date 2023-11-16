@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Props from "@/types";
 import IndividualProfile from "@/components/profile/IndividualProfile/IndividualProfile";
 import Playlist from "@/components/playlists";
 import {
@@ -9,10 +8,11 @@ import {
   getIndividualPlayListRepresentative,
   getIndividualPlayLists,
   updateIndividualPlayList,
+  getOthersProfile,
+  getOthersPlayList,
 } from "@/api/music/individual";
 import { getUserInfo } from "@/api/user";
 import { Storage } from "@/utils/storage";
-import { Cookie } from "@/utils/cookie";
 import NonCloseableMenu from "@/components/menus/NonCloseable";
 import useMenu from "@/hooks/useMenu";
 import PlaylistData from "@/components/playlists/PlaylistData/PlaylistData";
@@ -26,6 +26,9 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { MainplaylistState, AlubumArtState, AlbumState } from "@/store/atom";
 import AlbumArt from "@/components/player/AlbumArt";
 import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
+import { useParams } from "next/navigation";
+import { Cookie } from "@/utils/cookie";
+import { useRouter } from "next/router";
 
 type TrackInfo = {
   title: string;
@@ -36,11 +39,11 @@ type TrackInfo = {
 };
 
 const ProfilePage = () => {
+  const params = useParams();
+  const router = useRouter();
+
   const [name, setName] = useState("Name");
-  const [imgSrc, setImgSrc] = useState(
-    "/favicon.ico"
-    // "https://3.bp.blogspot.com/-XKyHG9ipUuk/WxvKRN9CeYI/AAAAAAABMn8/usJ7TuHvS4s8Qff7wFV6iY6vtRwM3bQwgCLcBGAs/s400/music_headphone_man.png"
-  );
+  const [imgSrc, setImgSrc] = useState("/favicon.ico");
   const [menuContent, setMenuContent] = useState<any[]>([]);
   const { isMenuOpen, openMenu, closeMenu } = useMenu();
   const [playlistName, setPlaylistName] = useState("");
@@ -78,6 +81,7 @@ const ProfilePage = () => {
   }, [myPlaylist]);
   console.log("aaaa", Album);
   console.log("bbbb", mainplaylist);
+  const [isSameUser, setIsSameUser] = useState<boolean>(true);
 
   const getSpotifyPlaylists = async () => {
     const spotifyUserId = Storage.getSpotifyUserId();
@@ -105,6 +109,37 @@ const ProfilePage = () => {
     updateIndividualPlayList(id);
     closeMenu();
     getUserPlaylist();
+  };
+
+  const getOtherUserPlaylist = async (playlistId: string) => {
+    const playlistData = await getOthersPlayList(playlistId);
+    setPlaylistName(playlistData.name);
+    console.log(playlistData.tracks.items);
+    const repTracks = [...playlistData.tracks.items];
+    const tmpData: any[] = [];
+    repTracks.forEach((trackData, index) => {
+      const baseData = trackData.track;
+      const trackArtists = baseData.artists;
+      let trackArtist = "";
+      for (let i = 0; i < trackArtists.length; i++) {
+        if (i === trackArtists.length - 1) {
+          trackArtist = trackArtist + trackArtists[i].name;
+        } else {
+          trackArtist = trackArtist + trackArtists[i].name + ", ";
+        }
+      }
+      const newData = {
+        title: baseData.name,
+        artist: trackArtist,
+        cover: baseData.album.images[2].url,
+        id: baseData.id,
+        uri: baseData.uri,
+        index: index,
+      };
+      tmpData.push(newData);
+    });
+    console.log(tmpData);
+    setMyPlaylist(tmpData);
   };
 
   const getUserPlaylist = async () => {
@@ -143,7 +178,7 @@ const ProfilePage = () => {
       setMyPlaylist(tmpData);
     } else {
       const tempPlaylist = {
-        name: "tempName",
+        name: "개인 플레이리스트",
         description: "",
         open: false,
       };
@@ -154,14 +189,34 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const getUserProfile = async () => {
-      const { userId } = Cookie.getTokenResponse();
-      const userData = await getUserInfo(userId);
-      console.log(userData);
-      setName(userData.name);
-      getUserPlaylist();
+      const userId = params?.userId as string;
+      if (userId === Cookie.getUserId()) {
+        setIsSameUser(true);
+        const userData = await getUserInfo(userId);
+        console.log(userData);
+        if (userData.imageUrl === undefined) {
+          setImgSrc("/favicon.ico");
+        } else {
+          setImgSrc(userData.imageUrl);
+        }
+        setName(userData.name);
+        getUserPlaylist();
+      } else {
+        setIsSameUser(false);
+        const userData = await getOthersProfile(userId);
+        console.log(userData);
+        setPlaylistId(userData.playlistId);
+        if (userData.imageUrl === undefined) {
+          setImgSrc("/favicon.ico");
+        } else {
+          setImgSrc(userData.imageUrl);
+        }
+        setName(userData.name);
+        getOtherUserPlaylist(userData.playlistId);
+      }
     };
     getUserProfile();
-  }, []);
+  }, [router.query.userId]);
 
   useEffect(() => {
     if (Storage.getImageUrl()) setImgSrc(Storage.getImageUrl());
@@ -205,6 +260,7 @@ const ProfilePage = () => {
     <div>
       <IndividualProfile name={name} src={imgSrc} />
       <Playlist
+        isSameUser={isSameUser}
         playlistName={playlistName}
         data={myPlaylist}
         playlistId={playlistId}

@@ -1,0 +1,38 @@
+.group-create {
+}
+
+.group-create__item {
+  margin-bottom: 1em;
+}
+
+.group-create__content {
+  height: 12em;
+  margin-bottom: 2em;
+}
+
+.group-create__search-container {
+  display: flex;
+  height: 2.5em;
+  align-items: stretch;
+  margin-bottom: 2em;
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-top: 2em;
+
+  border: 1px var(--main-color) solid;
+}
+
+.group-create__search {
+  flex-grow: 1;
+  height: inherit;
+}
+
+.group-create__select {
+  flex-shrink: 0;
+  text-align: center;
+  cursor: pointer;
+}
+
+.group-create__concert-item--title {
+  margin-bottom: 1em;
+}

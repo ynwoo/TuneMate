@@ -3,9 +3,8 @@ import { ConcertSearchOption } from "@/types/concert";
 import useConcertsQuery from "@/hooks/queries/concert/useConcertsQuery";
 import ConcertCard from "@/components/concert/ConcertCard/ConcertCard";
 import MainContent from "@/components/container/MainContent/MainContent";
-import { useCallback, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import React from "react";
 import useRecommendationSongsQuery from "@/hooks/queries/recommendation/useRecommendationSongsQuery";
 import Image from "next/image";
 import {
@@ -17,8 +16,9 @@ import {
   PickTrackUriState,
   MainplaylistState,
 } from "@/store/atom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { Track } from "@/types/spotify";
+import { Storage } from "@/utils/storage";
 
 const initConcertSearchOption: ConcertSearchOption = {
   type: "genre",
@@ -26,11 +26,16 @@ const initConcertSearchOption: ConcertSearchOption = {
 };
 
 const MainPage = () => {
+  const [username, setUsername] = useState<string>("");
   const { data: concerts } = useConcertsQuery(initConcertSearchOption);
   const router = useRouter();
 
   const onConcert = useCallback(() => {
     router.push("/concerts");
+  }, []);
+
+  const onPlayer = useCallback(() => {
+    router.push("/player");
   }, []);
 
   const { data: recommendedSongs } = useRecommendationSongsQuery();
@@ -47,56 +52,51 @@ const MainPage = () => {
     console.log("song", song);
     // setPickTrack(song);
     setListInfo(song);
-    setPickTrack(song);
-    setPickTrackUri(song.uri);
-    setMainplaylist([song.uri]);
+    setResongUrl(song.uri);
     setAlubumArt(song.album.images[0].uri);
   };
 
   useEffect(() => {
-    console.log("recom");
-    if (recommendedSongs !== undefined && recommendedSongs) {
-      setListInfo(recommendedSongs[0]);
-      setPickTrack(recommendedSongs[0]);
-      setAlubumArt(recommendedSongs[0].album.images[0].uri);
-      setMainplaylist([recommendedSongs[0].uri]);
-    }
+    setUsername(Storage.getUserName());
   }, []);
 
   return (
-    <div className={styles.body}>
-      <div className={styles["main-page"]}>
-        <MainContent
-          className={styles["main-page__content"]}
-          title="공연"
-          onClick={onConcert}
-        >
-          <ul className={styles["main-page__content--item-container"]}>
-            {concerts?.map((concert) => (
-              <ConcertCard
-                className={styles["main-page__content--item"]}
-                item={concert}
-              />
-            ))}
-          </ul>
-        </MainContent>
-      </div>
-      <div>
-        <h1>Recommended Songs</h1>
-        {/* <SinglePlayer /> */}
-        <ul
-          style={{
-            display: "flex",
-            overflowX: "auto",
-            padding: 0,
-            listStyle: "none",
-          }}
-        >
+    <div className={styles["main-page"]}>
+      <MainContent
+        className={styles["main-page__content"]}
+        title={
+          <p>
+            {username && `${username}님을 위한 `}
+            <span className="blue">공연</span>
+          </p>
+        }
+        onClick={onConcert}
+      >
+        <ul className={styles["main-page__content--item-container"]}>
+          {concerts?.map((concert) => (
+            <ConcertCard
+              className={styles["main-page__content--item"]}
+              item={concert}
+            />
+          ))}
+        </ul>
+      </MainContent>
+      <MainContent
+        className={styles["main-page__content"]}
+        title={
+          <p>
+            {username && `${username}님을 위한 `}
+            <span className="blue">추천곡</span>
+          </p>
+        }
+        onClick={onPlayer}
+      >
+        <ul className={styles["main-page__content--item-container"]}>
           {recommendedSongs?.map((song) => (
             <li
               key={song.name}
               onClick={() => handleSongClick(song)}
-              style={{ marginRight: "10px" }}
+              className={styles["main-page__content--item"]}
             >
               <div>
                 <Image
@@ -105,14 +105,11 @@ const MainPage = () => {
                   width={100}
                   height={100}
                 />
-                <p>{song.name}</p>
-                <p>{song.artists}</p>
-                {/* <p>{song.uri}</p> */}
               </div>
             </li>
           ))}
         </ul>
-      </div>
+      </MainContent>
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { createContext, useCallback, useState, useEffect } from "react";
 export interface FriendRequestContextState {
   connect: (userIds?: string[]) => void;
   subscribe: (userId: Friend["friendId"]) => void;
+  unsubscribe: (userId: Friend["friendId"]) => void;
   publish: (
     userId: Friend["userId"],
     friendRequestMessage: FriendRequestMessage
@@ -22,6 +23,7 @@ export const FriendRequestContext = createContext<FriendRequestContextState>(
 
 const FriendRequestProvider = ({ children }: Props) => {
   const { stompClient, connect: defaultConnect } = useStompClient();
+  const [subscribes, setSubscribes] = useState<string[]>([]);
   const [friendRequestMessages, setFriendRequestMessages] = useState<
     FriendRequestMessage[]
   >([]);
@@ -47,7 +49,8 @@ const FriendRequestProvider = ({ children }: Props) => {
 
   const subscribe = useCallback(
     (userId: Friend["friendId"]) => {
-      if (stompClient.current) {
+      if (stompClient.current && !subscribes.includes(userId)) {
+        setSubscribes((subscribes) => [...subscribes, userId]);
         Stomp.subscribe(
           stompClient.current,
           FRIEND_SOCKET_URL.subscribeURL(userId),
@@ -55,7 +58,20 @@ const FriendRequestProvider = ({ children }: Props) => {
         );
       }
     },
-    [stompClient, subscibeCallback]
+    [stompClient, subscibeCallback, subscribes, setSubscribes]
+  );
+
+  const unsubscribe = useCallback(
+    (userId: Friend["friendId"]) => {
+      if (stompClient.current && subscribes.includes(userId)) {
+        setSubscribes((subscribes) => [...subscribes, userId]);
+        Stomp.unsubscribe(
+          stompClient.current,
+          FRIEND_SOCKET_URL.subscribeURL(userId)
+        );
+      }
+    },
+    [stompClient, subscribes, setSubscribes]
   );
 
   const publish = useCallback(
@@ -77,7 +93,6 @@ const FriendRequestProvider = ({ children }: Props) => {
         if (userIds) {
           userIds.forEach((userId) => {
             subscribe(userId);
-            console.log(`${userId}번 친구 요청 방 연결 성공`);
           });
         }
       };
@@ -87,22 +102,27 @@ const FriendRequestProvider = ({ children }: Props) => {
   );
 
   useEffect(() => {
-    if (connect && sendSocialFriendRequests) {
-      const prevFriendIds = friendRequestMessages.map(
-        ({ receiveUserId }) => receiveUserId
-      );
-      const newFriendIds = sendSocialFriendRequests.filter(
-        (friendId) => !prevFriendIds.includes(friendId)
-      );
-      console.log("newFriendIds", newFriendIds);
-
-      connect(newFriendIds);
+    if (stompClient && subscribe && sendSocialFriendRequests) {
+      const friendIds = sendSocialFriendRequests.map((id) => id);
+      friendIds.forEach((userId) => {
+        subscribe(userId);
+      });
     }
-  }, [connect, friendRequestMessages, sendSocialFriendRequests]);
+  }, [subscribe, sendSocialFriendRequests, stompClient]);
+
+  useEffect(() => {
+    return () => subscribes.forEach((subscribe) => unsubscribe(subscribe));
+  }, []);
 
   return (
     <FriendRequestContext.Provider
-      value={{ connect, subscribe, publish, friendRequestMessages }}
+      value={{
+        connect,
+        subscribe,
+        unsubscribe,
+        publish,
+        friendRequestMessages,
+      }}
     >
       {children}
     </FriendRequestContext.Provider>

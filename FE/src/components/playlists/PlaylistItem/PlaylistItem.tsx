@@ -23,6 +23,7 @@ type SongInfo = {
 };
 
 interface PlaylistItemProps extends Props {
+  isSameUser: boolean;
   value: SongInfo;
   index: number;
   onRequestDelete: (idx: number) => void;
@@ -32,6 +33,7 @@ interface PlaylistItemProps extends Props {
 const PlaylistItem = ({
   value,
   index,
+  isSameUser,
   onRequestDelete,
   isDeleteMode,
 }: PlaylistItemProps) => {
@@ -72,15 +74,19 @@ const PlaylistItem = ({
                 </div>
               </div>
               <div className={styles["item-right"]}>
-                {isDeleteMode ? (
-                  <div onClick={() => onRequestDelete(index)}>
-                    <Icon.Delete />
+                {isSameUser ? (
+                  <div>
+                    {isDeleteMode ? (
+                      <div onClick={() => onRequestDelete(index)}>
+                        <Icon.Delete />
+                      </div>
+                    ) : (
+                      <div {...provided.dragHandleProps}>
+                        <Icon.Handle {...provided.dragHandleProps} />
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <div {...provided.dragHandleProps}>
-                    <Icon.Handle {...provided.dragHandleProps} />
-                  </div>
-                )}
+                ) : null}
               </div>
             </div>
           </div>
