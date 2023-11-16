@@ -1,5 +1,5 @@
 .container {
-  background-color: var(--light-gray-color);
+  background-color: rgb(240, 238, 255);
   padding: 1vh;
   display: flex;
   flex-direction: column;
@@ -33,7 +33,7 @@
 }
 
 .division-line {
-  border-top: 1px solid var(--gray-color);
+  border-top: 1px solid rgb(149, 138, 255);
   width: 100%;
   margin: 2vh auto;
 }

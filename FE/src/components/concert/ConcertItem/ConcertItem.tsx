@@ -31,7 +31,11 @@ const ConcertItem = ({ className, item, onClick }: ConcertItemProps) => {
       </div>
       <div className={styles["concert-item__content"]}>
         <p className={styles["concert-item__content--title"]}>{item.title}</p>
+        <br />
+        {/* <hr /> */}
         <p className={styles["concert-item__content--place"]}>{item.place}</p>
+        <br />
+        {/* <hr /> */}
         <p className={styles["concert-item__content--date"]}>
           {Time.period(item.startDate, item.endDate)}
         </p>

@@ -19,7 +19,7 @@
 }
 
 .playlist {
-  font-size: 3.5vh;
+  font-size: 3vh;
   color: var(--black-color);
   margin: 0;
   text-overflow: ellipsis;

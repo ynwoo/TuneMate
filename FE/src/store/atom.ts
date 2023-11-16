@@ -20,7 +20,7 @@ export const PickTrackState = atom<Track>({
 });
 
 // 리스트에서 선택한 곡의 uri
-export const PickTrackUriState = atom<Track>({
+export const PickTrackUriState = atom<string>({
   key: "PickTrackUriState",
 
   default: undefined,
@@ -51,4 +51,9 @@ export const reSongUrlState = atom<string>({
 export const reAlbumArtState = atom<string>({
   key: "reAlbumArtState",
   default: undefined,
+});
+
+export const AlbumState = atom<string[]>({
+  key: "AlbumState",
+  default: [] as string[],
 });

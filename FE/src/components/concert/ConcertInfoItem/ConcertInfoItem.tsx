@@ -15,6 +15,7 @@ const ConcertInfoItem = ({
   return (
     <li className={classNameWrapper(styles["concert-info-item"], className)}>
       <p className={styles["concert-info-item__title"]}>{title}</p>
+
       <p className={styles["concert-info-item__description"]}>{description}</p>
     </li>
   );
