@@ -50,7 +50,6 @@ const ProfilePage = () => {
   const [Album, setAlbum] = useRecoilState(AlbumState);
   // console.log("이거바", AlubumArt);
   const { data: individualPlayListRepresentative } = useIndividualPlayListRepresentativeQuery();
-  console.log("individualPlayListRepresentative", individualPlayListRepresentative);
 
   useEffect(() => {
     if (individualPlayListRepresentative) {

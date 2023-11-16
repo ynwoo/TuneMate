@@ -64,7 +64,7 @@ const MainPage = () => {
       >
         <ul className={styles["main-page__content--item-container"]}>
           {tracks?.map((track) => (
-            <li className={styles["main-page__content--item"]}>
+            <li key={track.uri} className={styles["main-page__content--item"]}>
               <ConcertImage
                 src={track.album.images[0].uri}
                 alt={track.name}
