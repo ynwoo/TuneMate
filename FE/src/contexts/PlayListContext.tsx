@@ -70,7 +70,7 @@ const PlayListProvider = ({ children }: Props) => {
 
   useEffect(() => {
     if (individualPlayList) {
-      changePlayList(individualPlayList);
+      setPlayList(individualPlayList);
     }
   }, [individualPlayList]);
 

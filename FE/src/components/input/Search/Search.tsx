@@ -50,7 +50,6 @@ const Search = ({
   return (
     <div className={classNameWrapper(styles.search, className)}>
       <input
-        autoFocus
         ref={searchRef}
         className={styles["search__input"]}
         type="search"
