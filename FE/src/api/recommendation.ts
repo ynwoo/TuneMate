@@ -1,12 +1,11 @@
 import { RecommendationFriend } from "@/types/social";
-import { Song } from "@/types/spotify";
+import { Track } from "@/types/spotify";
 import { api } from ".";
 
 const RECOMMENDATION_URL = "recommendation-service/recommendation";
-
 // 노래 추천 목록 조회
-export const getRecommendationSongs = async (): Promise<Song[]> => {
-  const response = await api.get<Song[]>(`${RECOMMENDATION_URL}/songs`);
+export const getRecommendationSongs = async (): Promise<Track[]> => {
+  const response = await api.get<Track[]>(`${RECOMMENDATION_URL}/songs`);
   return response.data;
 };
 
@@ -18,6 +17,7 @@ export const getRecommendationFriends = async (): Promise<
     const response = await api.get<RecommendationFriend[]>(
       `${RECOMMENDATION_URL}/friends`
     );
+
     return response.data;
   } catch (error) {
     console.error(error);

@@ -30,6 +30,9 @@ const BottomNavbar = () => {
       <Link href="/recommendation" className={styles["bottom-navbar__item"]}>
         <Icon.Recommendation />
       </Link>
+      <Link href="/groups" className={styles["bottom-navbar__item"]}>
+        <Icon.Group />
+      </Link>
     </nav>
   );
 };

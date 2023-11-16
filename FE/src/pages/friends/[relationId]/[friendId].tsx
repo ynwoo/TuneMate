@@ -2,7 +2,7 @@ import styles from "@/styles/ChatPage.module.css";
 import ChatList from "@/components/chat/ChatList/ChatList";
 import Search from "@/components/input/Search/Search";
 import useChatsQuery from "@/hooks/queries/social/useChatsQuery";
-import useChat from "@/hooks/useChat";
+import useChat from "@/hooks/chat/useChat";
 import Props from "@/types";
 import { MessageRequest } from "@/types/chat";
 import { ChatFilter } from "@/utils/filter";
@@ -14,7 +14,8 @@ import useModal from "@/hooks/useModal";
 import Modal from "@/components/modal/Modal";
 import ChatMenu from "@/components/chat/ChatMenu/ChatMenu";
 import useDeleteSocialFriendMutation from "@/hooks/mutations/social/useDeleteSocialFriendMutation";
-import Icon from "@/components/icons";
+import useDisconnectChatRoomMutation from "@/hooks/mutations/social/useDisconnectChatRoomMutation";
+import useConnectChatRoomMutation from "@/hooks/mutations/social/useConnectChatRoomMutation";
 
 interface ChatPageProps extends Props {}
 
@@ -23,16 +24,23 @@ const ChatPage = ({}: ChatPageProps) => {
   const params = useParams();
   const relationId = Number(params?.relationId as string);
   const friendId = params?.friendId as string;
-  const [messageRequest, setMessageRequest] = useState<MessageRequest>({} as MessageRequest);
+  const [messageRequest, setMessageRequest] = useState<MessageRequest>(
+    {} as MessageRequest
+  );
 
   const { publish, chatRooms } = useChat();
   const { data: prevChatRoom } = useChatsQuery(relationId);
 
   const { closeToggle, isOpen, openToggle } = useModal();
   const { mutate: deleteSocialFriend } = useDeleteSocialFriendMutation();
+  const { mutate: connectChatRoom } = useConnectChatRoomMutation();
+  const { mutate: disconnectChatRoom } = useDisconnectChatRoomMutation();
 
+  // 현재 채팅방 정보 (채팅기록)
   const chatRoom = useMemo(() => {
-    const newChatRoom = chatRooms.find(({ chatRoomId }) => chatRoomId === relationId);
+    const newChatRoom = chatRooms.find(
+      ({ chatRoomId }) => chatRoomId === relationId
+    );
     if (!newChatRoom) return prevChatRoom;
     return ChatFilter.chatRoom(newChatRoom);
   }, [prevChatRoom, chatRooms, relationId]);
@@ -48,6 +56,7 @@ const ChatPage = ({}: ChatPageProps) => {
     setContent("");
   }, [publish, messageRequest, content]);
 
+  // 스크롤 가장 하단으로 내리기
   const moveScrollDown = () => {
     window.scrollTo(0, document.body.scrollHeight);
   };
@@ -64,12 +73,20 @@ const ChatPage = ({}: ChatPageProps) => {
       senderNo: Storage.getUserId(),
       time: "",
     });
-  }, [relationId]);
+
+    connectChatRoom(relationId);
+    return () => {
+      disconnectChatRoom(relationId);
+    };
+  }, []);
 
   return (
     <>
       <div className={styles["chat-page"]}>
-        <ChatNavbar className={styles["chat-page__chat-navbar"]} onModal={openToggle} />
+        <ChatNavbar
+          className={styles["chat-page__chat-navbar"]}
+          onModal={openToggle}
+        />
         {/* <div className={styles["chat-page__button--scroll-down"]} onClick={moveScrollDown}>
         <Icon.Down />
       </div> */}
@@ -96,6 +113,7 @@ const ChatPage = ({}: ChatPageProps) => {
         value={content}
         onInput={onInput}
         onSubmit={onSubmit}
+        type="chat"
       />
     </>
   );

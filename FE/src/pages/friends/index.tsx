@@ -7,14 +7,12 @@ const FriendsPage = () => {
   const { data: friends } = useSocialFriendsQuery();
 
   if (!friends?.length) {
-    return (
-      <Nothing className={styles["nothing"]}>친구가 존재하지 않습니다.</Nothing>
-    );
+    return <Nothing className={styles["nothing"]}>친구가 존재하지 않습니다.</Nothing>;
   }
 
   return (
     <div className={styles["friends-page"]}>
-      {friends && <FriendList friends={friends} />}
+      {friends && <FriendList className={styles["friends-page__friend-list"]} friends={friends} />}
     </div>
   );
 };

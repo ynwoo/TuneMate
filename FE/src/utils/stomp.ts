@@ -5,16 +5,15 @@ import { FriendRequestMessage } from "@/types/social";
 
 export const Stomp = Object.freeze({
   connect(client: any, url: string, onConnect: () => void) {
-    console.log(client.current);
-
     if (client.current) {
-      setTimeout(onConnect, 1000);
+      console.log("client가 이미 존재합니다.");
       return;
     }
 
     const accessToken = Storage.getAccessToken();
     client.current = new Client({
       brokerURL: `${url}?Authorization=${accessToken}`,
+      reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
       onConnect,
@@ -34,21 +33,23 @@ export const Stomp = Object.freeze({
   },
 
   subscribe(client: Client, url: string, callback: (data: any) => void) {
-    client.subscribe(url, callback);
+    client.subscribe(url, callback, { id: url });
 
-    console.log("subscribe 실행", client);
+    console.log("subscribe 실행", url);
   },
 
-  publish(
-    client: Client,
-    url: string,
-    message: MessageRequest | FriendRequestMessage
-  ) {
+  unsubscribe(client: Client, url: string) {
+    client.unsubscribe(url);
+
+    console.log("unsubscribe 실행", url);
+  },
+
+  publish(client: Client, url: string, message: MessageRequest | FriendRequestMessage) {
     client.publish({
       destination: url,
       body: JSON.stringify(message),
     });
 
-    console.log("publish 실행", client);
+    console.log("publish 실행", url);
   },
 });

@@ -3,8 +3,20 @@ import { ConcertSearchOption } from "@/types/concert";
 import useConcertsQuery from "@/hooks/queries/concert/useConcertsQuery";
 import ConcertCard from "@/components/concert/ConcertCard/ConcertCard";
 import MainContent from "@/components/container/MainContent/MainContent";
-import { useCallback } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import useRecommendationSongsQuery from "@/hooks/queries/recommendation/useRecommendationSongsQuery";
+import Image from "next/image";
+import {
+  PickTrackState,
+  ListInfoState,
+  reSongUrlState,
+  reAlbumArtState,
+  AlubumArtState,
+} from "@/store/atom";
+import { useRecoilState } from "recoil";
+import { Track } from "@/types/spotify";
+import { Storage } from "@/utils/storage";
 
 const initConcertSearchOption: ConcertSearchOption = {
   type: "genre",
@@ -12,6 +24,7 @@ const initConcertSearchOption: ConcertSearchOption = {
 };
 
 const MainPage = () => {
+  const [username, setUsername] = useState<string>("");
   const { data: concerts } = useConcertsQuery(initConcertSearchOption);
   const router = useRouter();
 
@@ -19,11 +32,41 @@ const MainPage = () => {
     router.push("/concerts");
   }, []);
 
+  const onPlayer = useCallback(() => {
+    router.push("/player");
+  }, []);
+
+  const { data: recommendedSongs } = useRecommendationSongsQuery();
+  const [resongUrl, setResongUrl] = useRecoilState(reSongUrlState);
+  const [reAlbumArt, setReAlbumArt] = useRecoilState(reAlbumArtState);
+  const [AlubumArt, setAlubumArt] = useRecoilState(AlubumArtState);
+  // const ListInfo = useRecoilValue(ListInfoState);
+  const [ListInfo, setListInfo] = useRecoilState(ListInfoState);
+  console.log("recommendedSongs", recommendedSongs);
+
+  const handleSongClick = (song: Track) => {
+    // 클릭된 곡의 URI를 PickTrackState에 저장
+    console.log("song", song);
+    // setPickTrack(song);
+    setListInfo(song);
+    setResongUrl(song.uri);
+    setAlubumArt(song.album.images[0].uri);
+  };
+
+  useEffect(() => {
+    setUsername(Storage.getUserName());
+  }, []);
+
   return (
     <div className={styles["main-page"]}>
       <MainContent
         className={styles["main-page__content"]}
-        title="공연"
+        title={
+          <p>
+            {username && `${username}님을 위한 `}
+            <span className="blue">공연</span>
+          </p>
+        }
         onClick={onConcert}
       >
         <ul className={styles["main-page__content--item-container"]}>
@@ -32,6 +75,35 @@ const MainPage = () => {
               className={styles["main-page__content--item"]}
               item={concert}
             />
+          ))}
+        </ul>
+      </MainContent>
+      <MainContent
+        className={styles["main-page__content"]}
+        title={
+          <p>
+            {username && `${username}님을 위한 `}
+            <span className="blue">추천곡</span>
+          </p>
+        }
+        onClick={onPlayer}
+      >
+        <ul className={styles["main-page__content--item-container"]}>
+          {recommendedSongs?.map((song) => (
+            <li
+              key={song.name}
+              onClick={() => handleSongClick(song)}
+              className={styles["main-page__content--item"]}
+            >
+              <div>
+                <Image
+                  src={song.album.images[0].uri}
+                  alt={song.name}
+                  width={100}
+                  height={100}
+                />
+              </div>
+            </li>
           ))}
         </ul>
       </MainContent>

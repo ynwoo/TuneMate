@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { MouseEvent, useCallback } from "react";
 import Props from "@/types";
 import { Friend } from "@/types/social";
 import styles from "./FriendItem.module.css";
@@ -6,84 +6,64 @@ import Icon from "@/components/icons";
 import Link from "next/link";
 import ProfileImage from "@/components/image/ProfileImage/ProfileImage";
 import { classNameWrapper } from "@/utils/className";
-import useChat from "@/hooks/useChat";
-import { Storage } from "@/utils/storage";
-import { CHAT } from "@/constants/chat";
-import { ChatFilter } from "@/utils/filter";
+import useChatRoom from "@/hooks/chat/useChatRoom";
+import { useRouter } from "next/router";
+import { Time } from "@/utils/time";
 
 interface FriendItemProps extends Props {
   item: Friend;
 }
 
 const FriendItem = ({ item, className }: FriendItemProps) => {
-  const { chatRooms } = useChat();
+  const { unReadCount, lastMessage } = useChatRoom(item.relationId);
+  const router = useRouter();
 
-  // 해당하는 채팅방
-  const chatRoom = useMemo(
-    () => chatRooms.find(({ chatRoomId }) => chatRoomId === item.relationId),
-    [chatRooms, item.relationId]
-  );
+  const onChat = useCallback((e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    router.push(`/friends/${item.relationId}/${item.friendId}`);
+  }, []);
 
-  // 상대방이 보낸 메시지 중에서 안 읽은 메시지 개수
-  const unReadCount = useMemo(() => {
-    if (!chatRoom) return 0;
+  const onProfile = useCallback((e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    router.push(`/profile/${item.friendId}`);
+  }, []);
 
-    let count = 0;
-    for (let index = chatRoom.messages.length - 1; index >= 0; index--) {
-      const { senderNo, readCount } = chatRoom.messages[index];
-      if (senderNo === Storage.getUserId() || readCount === CHAT.read) {
-        return count;
-      }
-
-      count++;
-    }
-
-    return count;
-
-    // return ChatFilter.messages(chatRoom.messages).filter(
-    //   ({ readCount, senderNo }) =>
-    //     senderNo !== Storage.getUserId() && readCount === CHAT.unRead
-    // ).length;
-  }, [chatRoom]);
+  const onSharedProfile = useCallback((e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    router.push(`/profile/${item.friendId}`);
+  }, []);
 
   return (
-    <li className={[styles["friend-item-container"], className].join(" ")}>
-      <Link
-        href={`/profile/${item.friendId}`}
-        className={classNameWrapper(
-          styles["friend-item"],
-          styles["friend-item__user"]
-        )}
-      >
+    <li className={[styles["friend-item-container"], className].join(" ")} onClick={onChat}>
+      <div className={classNameWrapper(styles["friend-item"], styles["friend-item__user"])}>
         <ProfileImage
+          onClick={onProfile}
           className={styles["friend-item__user--image"]}
           src={item.img ?? "/favicon.ico"}
           alt="친구 프로필"
           type="friend"
         />
-        <p>{item.name}</p>
-      </Link>
+        <div className={styles["friend-item__user--content-container"]}>
+          <p className={styles["friend-item__user--name"]}>{item.name}</p>
+          <p className={styles["friend-item__user--message"]}>{lastMessage?.content}</p>
+        </div>
+      </div>
       <div
-        className={classNameWrapper(
-          styles["friend-item"],
-          styles["friend-item__icon-container"]
-        )}
+        className={classNameWrapper(styles["friend-item"], styles["friend-item__icon-container"])}
       >
-        <Link
-          className={styles["friend-item__icon"]}
-          href={`/friends/${item.relationId}/${item.friendId}`}
-        >
-          <Icon.Message size="xl" />
-          <p className={styles["friend-item__icon--chat-count"]}>
-            {unReadCount}
-          </p>
-        </Link>
-        <Link
-          className={styles["friend-item__icon"]}
-          href={`/friends/${item.relationId}/playlist`}
-        >
+        <div className={classNameWrapper(styles["friend-item__icon"])}>
+          {lastMessage && (
+            <p className={styles["friend-item__icon--chat-time"]}>
+              {Time.createAt(lastMessage.time)}
+            </p>
+          )}
+          {unReadCount > 0 && (
+            <p className={styles["friend-item__icon--chat-count"]}>{unReadCount}</p>
+          )}
+        </div>
+        <div className={styles["friend-item__icon"]} onClick={onSharedProfile}>
           <Icon.Music size="xl" />
-        </Link>
+        </div>
       </div>
     </li>
   );

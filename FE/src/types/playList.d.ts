@@ -1,4 +1,5 @@
-import { Image, Item, Owner } from './spotify';
+import { Friend } from "./social";
+import { Image, Item, Owner } from "./spotify";
 
 interface PlayList {
   description: string;
@@ -35,7 +36,7 @@ interface NewPlayList {
 }
 
 interface NewCommonPlayList extends NewPlayList {
-  relationId: number;
+  relationId: Friend["relationId"];
 }
 
 // interface TotalPlayList {

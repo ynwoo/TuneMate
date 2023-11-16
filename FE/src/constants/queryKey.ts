@@ -1,5 +1,5 @@
 import { ConcertSearchOption } from "@/types/concert";
-import { Group } from "@/types/group";
+import { Group, GroupSearchOptions } from "@/types/group";
 import { Meeting } from "@/types/meeting";
 import { Friend } from "@/types/social";
 import { UserInfo } from "@/types/user";
@@ -52,7 +52,10 @@ export const QueryKey = Object.freeze({
     "useGroupReceivedParticipationsQuery",
   ],
   useGroupSentParticipationsQuery: () => ["useGroupSentParticipationsQuery"],
-  useGroupsQuery: () => ["useGroupsQuery"],
+  useGroupsQuery: (groupSearchOptions: GroupSearchOptions) => [
+    "useGroupsQuery",
+    groupSearchOptions,
+  ],
   useMyGroupsQuery: () => ["useMyGroupsQuery"],
 
   //   concert

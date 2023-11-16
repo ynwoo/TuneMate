@@ -23,6 +23,12 @@ const nextConfig = {
         port: "",
         pathname: "/rz/image/**",
       },
+      {
+        protocol: "https",
+        hostname: "i1.ruliweb.com",
+        port: "",
+        pathname: "/img/**",
+      },
     ],
   },
 };

@@ -8,12 +8,17 @@ import { useRouter } from "next/router";
 
 interface ConcertItemProps extends Props {
   item: Concert;
+  onClick?: (id: number) => void;
 }
 
-const ConcertItem = ({ className, item }: ConcertItemProps) => {
+const ConcertItem = ({ className, item, onClick }: ConcertItemProps) => {
   const router = useRouter();
   const onConcertDetail = () => {
-    router.push(`/concerts/${item.id}`);
+    if (onClick) {
+      onClick(item.id);
+    } else {
+      router.push(`/concerts/${item.id}`);
+    }
   };
 
   return (

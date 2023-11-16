@@ -1,3 +1,7 @@
 .friends-page {
   width: 100%;
 }
+
+.friends-page__friend-list {
+  padding: 0 1em;
+}

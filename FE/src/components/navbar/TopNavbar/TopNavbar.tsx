@@ -3,6 +3,7 @@ import React from "react";
 import styles from "./TopNavbar.module.css";
 import Icon from "@/components/icons";
 import Link from "next/link";
+import useFriendRequest from "@/hooks/useFriendRequest";
 // import { usePathname } from "next/navigation";
 
 // const pageTitleByPathname = (pathname: string) => {
@@ -26,6 +27,7 @@ import Link from "next/link";
 
 const TopNavbar = () => {
   const router = useRouter();
+  const { unreadFriendRequestCount } = useFriendRequest();
   // const pathname = usePathname();
 
   return (
@@ -36,6 +38,11 @@ const TopNavbar = () => {
       </div>
 
       <Link href={"/friends/requests"} className={styles["top-navbar__item"]}>
+        {unreadFriendRequestCount > 0 && (
+          <p className={styles["top-navbar__unread-count"]}>
+            {unreadFriendRequestCount}
+          </p>
+        )}
         <Icon.Alarm />
       </Link>
     </nav>

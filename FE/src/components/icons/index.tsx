@@ -12,6 +12,8 @@ import {
   faArrowDown,
   faSquarePlus,
   faHeadphones,
+  faMagnifyingGlass,
+  faHandshake,
 } from "@fortawesome/free-solid-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { faHouse } from "@fortawesome/free-solid-svg-icons/faHouse";
@@ -135,6 +137,22 @@ const Icon = {
     <FontAwesomeIcon
       className={classNameWrapper(styles.main, className)}
       icon={faHeadphones}
+      size={size}
+    />
+  ),
+
+  Search: ({ size = "2xl", className }: IconProps) => (
+    <FontAwesomeIcon
+      className={classNameWrapper(styles.icon, className)}
+      icon={faMagnifyingGlass}
+      size={size}
+    />
+  ),
+
+  Group: ({ size = "2xl", className }: IconProps) => (
+    <FontAwesomeIcon
+      className={classNameWrapper(styles.icon, className)}
+      icon={faHandshake}
       size={size}
     />
   ),

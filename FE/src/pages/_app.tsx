@@ -10,11 +10,11 @@ import type { AppProps } from "next/app";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import { RecoilRoot } from "recoil";
-
+import SinglePlayer from "@/components/player/SinglePlayer";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 20000,
+      staleTime: 20_000,
     },
   },
 });
@@ -48,6 +48,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <>
                 {!hasNavbar && <TopNavbar />}
                 <div className={hasNavbar ? "login" : "main"}>
+                  <SinglePlayer />
                   <Component {...pageProps} />
                 </div>
                 {!hasNavbar && <BottomNavbar />}
