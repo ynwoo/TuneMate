@@ -103,6 +103,7 @@ public class CommonPlaylistController {
 		PlaylistResponseDto playlistResponseDto = commonPlaylistService.getIndividualPlaylist(userId, playlistId);
 		int size = SseEmitters.get(playlistId).size();
 		log.info("{}",size);
+		List<SseEmitter> list = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
 			try {
 				log.info("{}",SseEmitters.get(playlistId).stream().toList().toString());
@@ -111,11 +112,15 @@ public class CommonPlaylistController {
 				log.info("연결된 사람에게 전송");
 
 			} catch (IOException | IllegalStateException e) {
-				SseEmitters.get(playlistId).remove(SseEmitters.get(playlistId).get(i));
+				//SseEmitters.get(playlistId).remove(SseEmitters.get(playlistId).get(i));
+				list.add(SseEmitters.get(playlistId).get(i));
 				log.info("연결된 사람에게 전송 실패");
 			} catch (NullPointerException e) {
 				log.info("Null");
 			}
+		}
+		for(SseEmitter sseEmitter: list){
+			SseEmitters.get(playlistId).remove(sseEmitter);
 		}
 
 	}
