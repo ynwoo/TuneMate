@@ -1,3 +1,5 @@
+import { Friend } from "./social";
+
 interface UserProfile {
   country: string;
   display_name: string;
@@ -70,6 +72,18 @@ interface DeleteTrack {
   positions: number[];
 }
 
+interface AddCommonTrack {
+  relationId: Friend["relationId"];
+  uris: string[];
+  position: number;
+}
+
+interface DeleteCommonTrack {
+  relationId: Friend["relationId"];
+  uri: string;
+  positions: number[];
+}
+
 interface ChangeTrack {
   playlistId: PlayList["id"];
   changeTrackIndex: ChangeTrackIndex;
@@ -95,4 +109,6 @@ export type {
   DeleteTrack,
   ChangeTrack,
   Song,
+  AddCommonTrack,
+  DeleteCommonTrack,
 };
