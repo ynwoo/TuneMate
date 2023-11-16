@@ -64,7 +64,7 @@ public class CommonPlaylistController {
 			throw new NotFoundException("공동 플레이리스트가 없습니다.",HttpStatus.NOT_FOUND);
 		}
 		String playlistId = relationInfoDto.getPlaylistId();
-		SseEmitter sseEmitter = new SseEmitter(-1l);
+		SseEmitter sseEmitter = new SseEmitter(10000l);
 		SseEmitters.computeIfAbsent(playlistId, k -> new ArrayList<>()).add(sseEmitter);
 		// sse 연결 끝나면 객체 삭제
 		sseEmitter.onCompletion(() -> {
@@ -103,6 +103,7 @@ public class CommonPlaylistController {
 	private void updatePlaylistAndSendResponse(String userId, String playlistId) {
 		PlaylistResponseDto playlistResponseDto = commonPlaylistService.getIndividualPlaylist(userId, playlistId);
 		int size = SseEmitters.get(playlistId).size();
+		log.info("{}",size);
 		for (int i = 0; i < size; i++) {
 			try {
 				SseEmitters.get(playlistId).get(i).send(playlistResponseDto, MediaType.APPLICATION_JSON);
