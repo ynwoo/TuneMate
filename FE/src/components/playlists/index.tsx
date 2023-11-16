@@ -50,8 +50,9 @@ const Playlist = ({
     const [reorderedItem] = newData.splice(result.source.index, 1);
     newData.splice(result.destination.index, 0, reorderedItem);
     const rangeStart = result.source.index;
+    const rangeEnd = result.destination.index;
     const insertBefore = () => {
-      if (rangeStart === 1) {
+      if (rangeStart < result.destination.index) {
         return result.destination.index + 1;
       } else {
         return result.destination.index;
