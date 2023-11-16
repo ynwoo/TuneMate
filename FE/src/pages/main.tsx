@@ -61,6 +61,7 @@ const MainPage = () => {
   }, []);
 
   return (
+    // <div className={styles.body}>
     <div className={styles["main-page"]}>
       <MainContent
         className={styles["main-page__content"]}
@@ -111,6 +112,7 @@ const MainPage = () => {
         </ul>
       </MainContent>
     </div>
+    // </div>
   );
 };
 

@@ -84,6 +84,7 @@ const GroupsPage = () => {
       >
         공고 생성
       </Button>
+
       <div className={styles["groups-page__search-container"]}>
         <Search
           searchRef={searchRef}
