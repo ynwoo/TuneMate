@@ -16,10 +16,8 @@ import useToast from "@/hooks/useToast";
 import { useParams } from "next/navigation";
 import { Cookie } from "@/utils/cookie";
 import { getSocialFriends } from "@/api/social";
-import { PlayList } from "@/types/playList";
 import { TUNEMATE_API_BASE_URL } from "@/constants/url";
 import { EventSourcePolyfill } from "event-source-polyfill";
-import { spotifyApi } from "@/api";
 
 type TrackInfo = {
   title: string;
@@ -138,9 +136,15 @@ const CommonPlaylistPage = () => {
 
     console.log(eventSource);
 
-    // eventSource.onmessage = (event) => {
-    //   const newMessage = event.data;
-    // };
+    eventSource.addEventListener("message", async (e) => {
+      const res = await e.data;
+      const data = JSON.parse(res);
+      console.log(data);
+    });
+
+    eventSource.addEventListener("error", async (e) => {
+      console.log(e);
+    });
 
     return () => {
       eventSource.close();
