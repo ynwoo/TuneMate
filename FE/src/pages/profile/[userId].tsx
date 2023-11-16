@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Props from "@/types";
 import IndividualProfile from "@/components/profile/IndividualProfile/IndividualProfile";
 import Playlist from "@/components/playlists";
 import {
@@ -158,6 +157,11 @@ const ProfilePage = () => {
         setIsSameUser(true);
         const userData = await getUserInfo(userId);
         console.log(userData);
+        if (userData.imageUrl === undefined) {
+          setImgSrc("/favicon.ico");
+        } else {
+          setImgSrc(userData.imageUrl);
+        }
         setName(userData.name);
         getUserPlaylist();
       } else {
@@ -165,6 +169,11 @@ const ProfilePage = () => {
         const userData = await getOthersProfile(userId);
         console.log(userData);
         setPlaylistId(userData.playlistId)
+        if (userData.imageUrl === undefined) {
+          setImgSrc("/favicon.ico");
+        } else {
+          setImgSrc(userData.imageUrl);
+        }
         setName(userData.name);
         getOtherUserPlaylist(userData.playlistId)
       }
