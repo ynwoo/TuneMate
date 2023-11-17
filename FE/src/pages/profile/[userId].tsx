@@ -61,14 +61,11 @@ const ProfilePage = () => {
     setAlbum(albumArt);
     setMainplaylist(uriArray);
   }, [myPlaylist]);
-  console.log("aaaa", Album);
-  console.log("bbbb", mainplaylist);
   const [isSameUser, setIsSameUser] = useState<boolean>(true);
 
   const getSpotifyPlaylists = async () => {
     const spotifyUserId = Storage.getSpotifyUserId();
     const playlistList = await getIndividualPlayLists(spotifyUserId);
-    console.log(playlistList);
     const dataset = [...playlistList];
 
     dataset.forEach((data, index) => {
@@ -87,7 +84,6 @@ const ProfilePage = () => {
   };
 
   const setRepPlaylist = async (id: string) => {
-    console.log(id);
     updateIndividualPlayList(id);
     closeMenu();
     getUserPlaylist();
@@ -96,7 +92,6 @@ const ProfilePage = () => {
   const getOtherUserPlaylist = async (playlistId: string) => {
     const playList = await getOthersPlayList(playlistId);
     setPlaylistName(playList.name);
-    console.log(playList.tracks.items);
     const tmpData = Convert.playListToTrackInfos(playList);
     setMyPlaylist(tmpData);
   };
@@ -161,8 +156,7 @@ const ProfilePage = () => {
       uri: myPlaylist[index].uri,
       positions: [index],
     };
-    console.log(data.uri);
-    const response = await deleteIndividualPlayListTrack(data);
+    await deleteIndividualPlayListTrack(data);
     popToast("삭제되었습니다");
   };
 
@@ -183,7 +177,7 @@ const ProfilePage = () => {
       uris: [uri],
       position: myPlaylist.length,
     };
-    const response = await createIndividualPlayListTrack(data);
+    await createIndividualPlayListTrack(data);
     popToast("노래가 추가되었습니다");
   };
 

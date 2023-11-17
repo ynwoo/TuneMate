@@ -33,8 +33,6 @@ const Playlist = ({
   const [playlistData, setPlaylistData] = useState(data);
   const [deleteMode, setDeleteMode] = useState(false);
   const { changePlayList } = usePlayList();
-  console.log("data", data);
-  console.log("playlistData", playlistData);
 
   useEffect(() => {
     if (data) {
@@ -43,7 +41,7 @@ const Playlist = ({
   }, [data]);
 
   const changePlaylistOrder = async (changeTrackIndex: ChangeTrackIndex) => {
-    const change = await updateIndividualPlayListTrack({
+    await updateIndividualPlayListTrack({
       playlistId,
       changeTrackIndex,
     });
@@ -99,8 +97,6 @@ const Playlist = ({
     },
     [closeToggle]
   );
-
-  console.log("playlistData", playlistData);
 
   return (
     <>

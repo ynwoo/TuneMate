@@ -18,7 +18,6 @@ const PWAButton = () => {
           return;
         }
         const result = await installPrompt.prompt();
-        console.log(`Install prompt was: ${result.outcome}`);
         installPrompt = null;
         installButton.setAttribute("hidden", "");
       });
@@ -27,11 +26,7 @@ const PWAButton = () => {
 
   return (
     <>
-      <button
-        className={classNameWrapper(styles["button"], styles["red"])}
-        id="install"
-        hidden
-      >
+      <button className={classNameWrapper(styles["button"], styles["red"])} id="install" hidden>
         앱 설치하기
       </button>
     </>

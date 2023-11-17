@@ -64,7 +64,6 @@ const PlayListProvider = ({ children }: Props) => {
     } else {
       newPlayList = Convert.trackInfosToPlayList(playList);
     }
-    console.log(playList, newPlayList);
 
     setPlayList(Convert.changeTrackOrder(newPlayList, idx));
   }, []);
