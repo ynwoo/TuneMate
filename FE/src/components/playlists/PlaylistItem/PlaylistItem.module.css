@@ -6,7 +6,7 @@
   position: relative;
   user-select: none;
   padding: 0.5vh 3vw;
-  cursor: pointer;
+  /* border: 1px solid black; */
 }
 
 .item-left {

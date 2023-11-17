@@ -20,8 +20,8 @@
 }
 
 .profile {
-  height: 12rem;
-  width: 12rem;
+  height: 10rem;
+  width: 10rem;
   background-color: var(--white-color);
   border: 0.5rem solid var(--main-color);
   border-radius: 50%;

@@ -10,21 +10,13 @@ interface PlaylistDataProps extends Props {
   id: string;
   trackCnt: number;
   index: number;
-  setRep:(id: string) => Promise<void>;
+  setRep: (id: string) => Promise<void>;
 }
 
-const PlaylistData = ({
-  imgSrc,
-  trackCnt,
-  name,
-  index,
-  id,
-  setRep,
-}: PlaylistDataProps) => {
-  
+const PlaylistData = ({ imgSrc, trackCnt, name, index, id, setRep }: PlaylistDataProps) => {
   const setRepPl = () => {
     setRep(id);
-  }
+  };
 
   return (
     <div className={styles["container"]}>
