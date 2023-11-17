@@ -2,6 +2,9 @@ import { SPOTIFY_API_BASE_URL, TUNEMATE_API_BASE_URL } from "@/constants/url";
 import { Storage } from "@/utils/storage";
 import axios, { AxiosInstance, HttpStatusCode } from "axios";
 import { getUserInfo, reissueToken } from "./user";
+import { Cookie } from "@/utils/cookie";
+
+let loading = false;
 
 const apiInstance = () => {
   const instance = axios.create({
@@ -46,13 +49,23 @@ const authInterceptor = (instance: AxiosInstance) => {
       return response;
     },
     async (error) => {
-      if (error.status === HttpStatusCode.Unauthorized) {
-        if (Storage.getRefreshToken()) {
-          // token 재발급
-          await reissueToken();
+      console.log(error);
 
-          // TODO: 페이지 새로고침 말고 다른 방법 필요
-          location.reload();
+      console.log("Storage.getRefreshToken()", Storage.getRefreshToken());
+      if (error.response.status === HttpStatusCode.Unauthorized) {
+        if (Storage.getRefreshToken() && !loading) {
+          loading = true;
+          // token 재발급
+          try {
+            await reissueToken();
+            loading = false;
+            location.reload();
+            return Promise.resolve();
+          } catch (error) {
+            Storage.clear();
+            Cookie.clear();
+            return Promise.reject(error);
+          }
         }
       }
       console.error("response error : ", error);
@@ -107,7 +120,7 @@ const spotifyAuthInterceptor = (instance: AxiosInstance) => {
       return response;
     },
     async (error) => {
-      if (error.status === HttpStatusCode.Unauthorized) {
+      if (error.response.status === HttpStatusCode.Unauthorized) {
         const accessToken = Storage.getAccessToken();
         const userId = Storage.getUserId();
         if (accessToken && userId) {

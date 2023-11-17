@@ -5,7 +5,11 @@
 }
 
 .recommendation-list__item {
-  width: 20%;
-  margin-top: 1rem;
+  width: 26%;
+  margin-bottom: 1rem;
   flex: 1;
+}
+
+.recommendation-list__item:last-child {
+  flex: 0;
 }
