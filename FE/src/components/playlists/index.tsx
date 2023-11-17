@@ -12,6 +12,7 @@ import { ChangeTrackIndex, TrackInfo } from "@/types/spotify";
 import { PlayList } from "@/types/playList";
 import useIndividualPlayListsQuery from "@/hooks/queries/music/individual/useIndividualPlayListsQuery";
 import usePlayList from "@/hooks/usePlayList";
+import { classNameWrapper } from "@/utils/className";
 interface PlaylistProps extends Props {
   data: TrackInfo[];
   playlistName: string;
@@ -28,6 +29,7 @@ const Playlist = ({
   isSameUser,
   onRequestDelete,
   setModalOpen,
+  className,
 }: PlaylistProps) => {
   const { closeToggle, isOpen, openToggle } = useModal();
   const [playlistData, setPlaylistData] = useState(data);
@@ -100,7 +102,7 @@ const Playlist = ({
 
   return (
     <>
-      <div className={styles["container"]}>
+      <div className={classNameWrapper(styles["container"], className)}>
         <div className={styles["playlist-upper"]}>
           <Text type="playlist" content={playlistName} />
           {isSameUser ? (

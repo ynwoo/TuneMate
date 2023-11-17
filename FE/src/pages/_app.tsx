@@ -9,6 +9,7 @@ import { useMemo } from "react";
 import { RecoilRoot } from "recoil";
 import CustomContextProvider from "@/contexts/CustomContextProvider";
 import Player from "@/components/player/Player/Player";
+import { classNameWrapper } from "@/utils/className";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,7 +49,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <div className={hasNavbar ? "login" : "main"}>
               <Component {...pageProps} />
             </div>
-            {!hasNavbar && <BottomNavbar />}
+            <BottomNavbar className={classNameWrapper(hasNavbar && "disabled")} />
           </>
         </CustomContextProvider>
       </QueryClientProvider>
