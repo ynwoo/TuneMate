@@ -78,6 +78,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         String token = getToken(memberInfo);
         Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("플레이 리스트가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
         log.info("{}",trackCreateDto.getUris().get(0));
+        log.info("playlist ID : {}",playlist.getId());
         individualPlaylistTrackRepository.findByTrackSpotifyIdAndPlaylist(trackCreateDto.getUris().get(0),playlist).ifPresentOrElse(track -> {
             log.info("중복된 노래가 존재하여 노래추가 X");
             throw new NotFoundException("중복된 노래가 존재합니다.",HttpStatus.BAD_REQUEST);},() -> {

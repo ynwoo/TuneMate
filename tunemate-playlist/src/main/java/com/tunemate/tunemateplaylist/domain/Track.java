@@ -20,7 +20,7 @@ public class Track {
     private Integer count;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Playlist playlist;
 
     @Column(name = "track_spotify_id")
