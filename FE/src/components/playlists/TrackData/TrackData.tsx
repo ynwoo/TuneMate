@@ -1,34 +1,34 @@
-import React from "react";
-import useCreateIndividualPlayListTrackMutation from "@/hooks/mutations/music/individual/useCreateIndividualPlayListTrackMutation";
+import React, { MouseEvent } from "react";
 import Props from "@/types";
 import styles from "./TrackData.module.css";
 import Cover from "../Cover/Cover";
 import Text from "../Text/Text";
 import Icon from "@/components/icons";
-
-type TrackInfo = {
-  title: string;
-  artist: string;
-  cover: string;
-  uri: string;
-  id: string;
-};
+import usePlayList from "@/hooks/usePlayList";
+import { TrackInfo } from "@/types/spotify";
 
 interface TrackDataProps extends Props {
-  value: TrackInfo;
-  handleAdd: (data: TrackInfo) => void;
+  trackInfo: TrackInfo;
+  handleAdd: (trackInfo: TrackInfo) => void;
 }
 
-const TrackData = ({ value, handleAdd }: TrackDataProps) => {
-  const addTrack = () => {
-    handleAdd(value)
-  }
+const TrackData = ({ trackInfo, handleAdd }: TrackDataProps) => {
+  const { changePlayList } = usePlayList();
 
-  const { title, artist, cover, uri, id } = value;
+  const addTrack = () => {
+    handleAdd(trackInfo);
+  };
+
+  const onClick = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    changePlayList(trackInfo);
+  };
+
+  const { title, artist, cover, uri, id } = trackInfo;
   return (
     <div className={styles["container"]}>
       <div className={styles["track-data-inner"]}>
-        <div className={styles["item-left"]}>
+        <div className={styles["item-left"]} onClick={onClick}>
           <Cover src={cover} alt="album-cover" />
           <div className={styles["text-box"]}>
             <Text content={title} type="title-small" />

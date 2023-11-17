@@ -12,6 +12,7 @@ import usePlayList from "@/hooks/usePlayList";
 import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
 import useSocialFriendsQuery from "@/hooks/queries/social/useSocialFriendsQuery";
 import FriendPlayList from "@/components/friend/FriendPlayList/FriendPlayList";
+import { Friend } from "@/types/social";
 
 const initConcertSearchOption: ConcertSearchOption = {
   type: "genre",
@@ -40,6 +41,10 @@ const MainPage = () => {
     if (!userId) return;
     router.push(`profile/${userId}`);
   }, [userId]);
+
+  const onFriendProfile = useCallback((friendId: Friend["userId"]) => {
+    router.push(`profile/${friendId}`);
+  }, []);
 
   useEffect(() => {
     setUsername(Storage.getUserName());
@@ -110,8 +115,22 @@ const MainPage = () => {
           ))}
         </ul>
       </MainContent>
-      {socialFriends?.map(({}) => (
-        <FriendPlayList playListId="" />
+      {socialFriends?.map(({ friendPlaylistId, name, friendId }) => (
+        <MainContent
+          className={styles["main-page__content"]}
+          title={
+            <p>
+              {name && `${name}님의 `}
+              <span className="blue">플레이리스트</span>
+            </p>
+          }
+          onClick={() => onFriendProfile(friendId)}
+        >
+          <FriendPlayList
+            className={styles["main-page__content--item-container"]}
+            playListId={friendPlaylistId}
+          />
+        </MainContent>
       ))}
     </div>
   );

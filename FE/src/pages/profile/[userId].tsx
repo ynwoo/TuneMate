@@ -22,9 +22,8 @@ import useModal from "@/hooks/useModal";
 import SearchTrack from "@/components/playlists/SearchTrack/SearchTrack";
 import Toast from "@/components/toast/Toast";
 import useToast from "@/hooks/useToast";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { MainplaylistState, AlubumArtState, AlbumState } from "@/store/atom";
-import AlbumArt from "@/components/player/AlbumArt";
+import { useRecoilState } from "recoil";
+import { MainplaylistState, AlbumState } from "@/store/atom";
 import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
 import { useParams } from "next/navigation";
 import { Cookie } from "@/utils/cookie";
@@ -45,10 +44,7 @@ const ProfilePage = () => {
   const { closeToggle, isOpen, openToggle } = useModal();
   const { popToast, toastStatus, toastMsg } = useToast();
   const [mainplaylist, setMainplaylist] = useRecoilState(MainplaylistState);
-  // const AlubumArt = useRecoilValue(AlubumArtState);
-  const [AlubumArt, setAlubumArt] = useRecoilState(AlubumArtState);
   const [Album, setAlbum] = useRecoilState(AlbumState);
-  // console.log("이거바", AlubumArt);
   const { data: individualPlayListRepresentative } = useIndividualPlayListRepresentativeQuery();
 
   useEffect(() => {
@@ -106,10 +102,7 @@ const ProfilePage = () => {
   };
 
   const getUserPlaylist = async () => {
-    console.log("getUserPlaylist g호출");
-
     const playList = await getIndividualPlayListRepresentative();
-    console.log("repPlaylistData", playList);
     if (playList.id !== null) {
       setPlaylistName(playList.name);
       setPlaylistId(playList.id);
@@ -134,7 +127,6 @@ const ProfilePage = () => {
       if (userId === Cookie.getUserId()) {
         setIsSameUser(true);
         const userData = await getUserInfo(userId);
-        console.log(userData);
         if (userData.imageUrl === undefined) {
           setImgSrc("/favicon.ico");
         } else {
@@ -145,7 +137,6 @@ const ProfilePage = () => {
       } else {
         setIsSameUser(false);
         const userData = await getOthersProfile(userId);
-        console.log(userData);
         setPlaylistId(userData.playlistId);
         if (userData.imageUrl === undefined) {
           setImgSrc("/favicon.ico");
@@ -182,7 +173,6 @@ const ProfilePage = () => {
       music.index = idx;
       changedData.push(music);
     });
-    console.log(changedData);
     setMyPlaylist(changedData);
     deleteTrack(index);
   };
@@ -200,7 +190,6 @@ const ProfilePage = () => {
   const handleAdd = (data: TrackInfo) => {
     setMyPlaylist([...myPlaylist, ...[data]]);
     addTrack(data.uri);
-    console.log(myPlaylist);
   };
 
   return (
@@ -230,7 +219,7 @@ const ProfilePage = () => {
         </div>
       </NonCloseableMenu>
       <Modal isOpen={isOpen} toggle={closeToggle}>
-        <SearchTrack handleAdd={handleAdd} />
+        <SearchTrack myPlaylist={myPlaylist} handleAdd={handleAdd} />
       </Modal>
       {toastStatus && <Toast toastStatus={toastStatus} msg={toastMsg} />}
     </div>

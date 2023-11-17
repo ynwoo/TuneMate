@@ -7,12 +7,14 @@ import { Convert } from "@/utils/convert";
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 import { CallbackState, SpotifyTrack } from "react-spotify-web-playback";
 
+type ChangePlayList = PlayList | Track | TrackInfo | TrackInfo[];
+
 export interface PlayListContextState {
   playList?: PlayList;
   play: boolean;
   uris: string[];
   images: string[];
-  changePlayList: (playList: PlayList | Track | TrackInfo[], idx?: number) => void;
+  changePlayList: (playList: ChangePlayList, idx?: number) => void;
   playerCallback: (state: CallbackState) => void;
   currentTrack?: SpotifyTrack;
 }
@@ -51,22 +53,21 @@ const PlayListProvider = ({ children }: Props) => {
     setPlay(true);
   }, []);
 
-  const changePlayList = useCallback(
-    (playList: PlayList | Track | TrackInfo[], idx: number = 0) => {
-      let newPlayList = undefined;
-      if ("description" in playList) {
-        newPlayList = playList;
-      } else if ("album" in playList) {
-        newPlayList = Convert.trackToPlayList(playList);
-      } else {
-        newPlayList = Convert.trackInfosToPlayList(playList);
-      }
-      console.log(playList, newPlayList);
+  const changePlayList = useCallback((playList: ChangePlayList, idx: number = 0) => {
+    let newPlayList = undefined;
+    if ("description" in playList) {
+      newPlayList = playList;
+    } else if ("album" in playList) {
+      newPlayList = Convert.trackToPlayList(playList);
+    } else if ("cover" in playList) {
+      newPlayList = Convert.trackInfoToPlayList(playList);
+    } else {
+      newPlayList = Convert.trackInfosToPlayList(playList);
+    }
+    console.log(playList, newPlayList);
 
-      setPlayList(Convert.changeTrackOrder(newPlayList, idx));
-    },
-    []
-  );
+    setPlayList(Convert.changeTrackOrder(newPlayList, idx));
+  }, []);
 
   // playList 초기값 채우기
   useEffect(() => {
