@@ -7,9 +7,14 @@
   width: inherit;
 }
 
-.list {
+.small {
   height: 5rem;
   width: 4rem;
+}
+
+.list {
+  height: 6rem;
+  width: 5rem;
 }
 
 .detail {

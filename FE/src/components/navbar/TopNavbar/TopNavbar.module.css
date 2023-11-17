@@ -5,12 +5,14 @@
   right: 0;
   height: var(--top-navbar-height);
   width: inherit;
+  max-width: var(--max-width);
   display: grid;
   background-color: var(--main-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
   z-index: 3;
+  margin-bottom: 1rem;
 }
 
 .top-navbar__item {

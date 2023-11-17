@@ -28,13 +28,7 @@ const Cookie = Object.freeze({
   setCookie(name: string, value: string, exp: number) {
     var date = new Date();
     date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
-    document.cookie =
-      name +
-      "=" +
-      encodeURI(value) +
-      ";expires=" +
-      date.toUTCString() +
-      ";path=/";
+    document.cookie = name + "=" + encodeURI(value) + ";expires=" + date.toUTCString() + ";path=/";
   },
 
   setInstantCookie(name: string, value: string) {
@@ -45,6 +39,16 @@ const Cookie = Object.freeze({
     Cookie.setInstantCookie("userId", userId);
     Cookie.setInstantCookie("accessToken", accessToken);
     Cookie.setInstantCookie("refreshToken", refreshToken);
+  },
+
+  deleteCookie(name: string) {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+  },
+
+  clear() {
+    Cookie.deleteCookie("userId");
+    Cookie.deleteCookie("accessToken");
+    Cookie.deleteCookie("refreshToken");
   },
 });
 
