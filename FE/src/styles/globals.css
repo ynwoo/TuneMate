@@ -28,14 +28,14 @@ body {
   margin: auto !important;
   height: 100%;
   max-width: var(--max-width);
-  max-height: var(--max-height);
+  /* max-height: var(--max-height); */
   font-family: "Orbit", sans-serif;
 }
 
 #__next {
   position: relative;
   max-width: var(--max-width);
-  max-height: var(--max-height);
+  /* max-height: var(--max-height); */
   background-color: var(--white-color);
 }
 

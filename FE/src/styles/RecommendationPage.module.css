@@ -1,4 +1,5 @@
 .recommendation-page {
+  max-width: var(--max-width);
 }
 
 .nothing {
