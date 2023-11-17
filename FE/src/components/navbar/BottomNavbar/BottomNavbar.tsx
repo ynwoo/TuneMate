@@ -27,7 +27,7 @@ const BottomNavbar = () => {
         <Link href="/friends" className={styles["bottom-navbar__nav-item"]}>
           <Icon.Friends />
         </Link>
-        <Link href="/recommendation" className={styles["bottom-navbar__nav-item"]}>
+        <Link href="/recommendation/friends" className={styles["bottom-navbar__nav-item"]}>
           <Icon.Recommendation />
         </Link>
         <Link href="/groups" className={styles["bottom-navbar__nav-item"]}>

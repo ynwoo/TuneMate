@@ -3,3 +3,43 @@
 
 .nothing {
 }
+
+.recommendation-tracks-page {
+}
+
+.recommendation-tracks-page__track-list {
+}
+
+.recommendation-tracks-page__track-item {
+  display: flex;
+  margin: 1em;
+}
+
+.recommendation-tracks-page__track-item--content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 1em;
+}
+
+.recommendation-tracks-page__track-item--content-title {
+  margin: 0.3rem 0;
+  font-weight: bold;
+}
+
+.recommendation-tracks-page__track-item--content-name {
+  margin: 0.3rem 0;
+  font-size: 0.8rem;
+}
+
+.recommendation-tracks-page__track-item--play-container {
+  padding: 1rem;
+  align-self: center;
+}
+.recommendation-tracks-page__track-item--play {
+  color: var(--gray-color);
+}
+.recommendation-tracks-page__track-item--play:hover {
+  color: var(--red-color);
+}
