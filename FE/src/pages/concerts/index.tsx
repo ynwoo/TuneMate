@@ -38,9 +38,7 @@ const ConcertsPage = () => {
       return;
     }
 
-    const newConcerts = originalConcerts?.filter(({ title }) =>
-      title.includes(text)
-    );
+    const newConcerts = originalConcerts?.filter(({ title }) => title.includes(text));
 
     setConcerts(newConcerts);
   }, [originalConcerts, text]);
@@ -64,7 +62,7 @@ const ConcertsPage = () => {
   }, [debounceText, originalConcerts]);
 
   return (
-    <div className={styles["groups-page"]}>
+    <div className={styles["concerts-page"]}>
       <div className={styles["concerts-page__search-container"]}>
         <Search
           className={styles["concerts-page__search"]}
@@ -79,7 +77,9 @@ const ConcertsPage = () => {
           onChange={onChange}
         />
       </div>
-      {concerts && <ConcertList concerts={concerts} />}
+      {concerts && (
+        <ConcertList className={styles["concerts-page__concert-list"]} concerts={concerts} />
+      )}
     </div>
   );
 };
