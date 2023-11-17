@@ -31,6 +31,56 @@
 
 ## 🖥️ 서비스 화면
 
+<p align="center">  
+
+<img src="/uploads/cd16a0396c4df7dde68729f4870c45b0/image.png"  width="200" height="400"/>
+<img src="/uploads/34121431763481bd3c3d563801273d4a/image.png"  width="200" height="400"/>
+<img src="/uploads/f0bf0b5d928267ed6bf4c60142eff45d/image.png"  width="200" height="400"/>
+<figcaption align="center">1. 메인화면   2. 공연 상세 화면    3. 내 프로필 화면</figcaption>
+</p>
+
+<p align="center">
+<img src="/uploads/8b9a581d4d85943411df1f4886446f53/image.png"  width="200" height="400"/>
+<img src="/uploads/2a9f495cc4176f4fddfd396a94519d3d/image.png"  width="200" height="400"/>
+<img src="/uploads/5217f1968f3740e4cb534a04d97a70d2/image.png"  width="200" height="400"/>
+<figcaption align="center">4. 친구목록 화면   5. 채팅 화면    6. 친구추천 화면</figcaption>
+</p>
+
+<p align="center">
+<img src="/uploads/16e8f40f196184b0dccc869253498f54/image.png"  width="200" height="400"/>
+<img src="/uploads/6cf0754895933682beff99b9e676d173/image.png"  width="200" height="400"/>
+<img src="/uploads/a4c684a48f585a6731c0cb93464a1531/image.png"  width="200" height="400"/>
+<figcaption align="center">7. 공고 화면   8. 공고 상세 화면    9. 공고 생성 화면</figcaption>
+</p>
+
+<!-- ### 메인 화면
+<img src="/uploads/cd16a0396c4df7dde68729f4870c45b0/image.png"  width="200" height="400"/> |
+
+### 공연 상세 화면
+<img src="/uploads/34121431763481bd3c3d563801273d4a/image.png"  width="200" height="400"/>
+
+### 내 프로필 화면
+<img src="/uploads/f0bf0b5d928267ed6bf4c60142eff45d/image.png"  width="200" height="400"/> -->
+
+<!-- ### 친구 목록 화면
+<img src="/uploads/8b9a581d4d85943411df1f4886446f53/image.png"  width="200" height="400"/>
+
+### 채팅 화면
+<img src="/uploads/2a9f495cc4176f4fddfd396a94519d3d/image.png"  width="200" height="400"/>
+
+### 친구 추천 화면
+<img src="/uploads/5217f1968f3740e4cb534a04d97a70d2/image.png"  width="200" height="400"/> -->
+
+<!-- ### 공고 화면
+<img src="/uploads/16e8f40f196184b0dccc869253498f54/image.png"  width="200" height="400"/>
+
+### 공고 상세 화면
+<img src="/uploads/6cf0754895933682beff99b9e676d173/image.png"  width="200" height="400"/>
+
+### 공고 생성 화면
+<img src="/uploads/a4c684a48f585a6731c0cb93464a1531/image.png"  width="200" height="400"/> -->
+
+
 ## 🐳 아키텍처
 
 ![Architecture](/uploads/d75e66e5ae9c438314ddd03f7fe2f006/Architecture.png)
