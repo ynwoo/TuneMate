@@ -67,6 +67,9 @@
 
 - visual Studio Code IDE
 - Next.js
+- React
+- Bootstrap
+- Spotify API
 
 `Infra`
 
