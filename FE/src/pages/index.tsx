@@ -25,10 +25,14 @@ const LoginPage = () => {
     Storage.setTokenResponse(tokenResponse);
     const userId = Storage.getUserId();
     if (userId) {
-      getUserInfo(userId).then((data) => {
-        setUserInfo(data);
-        router.push("/main");
-      });
+      getUserInfo(userId)
+        .then((data) => {
+          setUserInfo(data);
+          router.push("/main");
+        })
+        .catch(() => {
+          Cookie.clear();
+        });
     }
   }, [router, setUserInfo]);
 

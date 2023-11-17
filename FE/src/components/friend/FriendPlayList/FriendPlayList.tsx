@@ -21,7 +21,7 @@ const FriendPlayList = ({ playListId, className }: FriendPlayListProps) => {
           <ConcertImage
             src={track.album.images[0].url}
             alt={track.name}
-            type="list"
+            type="small"
             onClick={() => changePlayList(friendPlayList, index)}
           />
         </li>
