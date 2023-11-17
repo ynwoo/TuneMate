@@ -4,8 +4,10 @@ import styles from "./BottomNavbar.module.css";
 import Icon from "@/components/icons";
 import { Cookie } from "@/utils/cookie";
 import Player from "@/components/player/Player/Player";
+import Props from "@/types";
+import { classNameWrapper } from "@/utils/className";
 
-const BottomNavbar = () => {
+const BottomNavbar = ({ className }: Props) => {
   const [userId, setUserId] = React.useState("");
 
   React.useEffect(() => {
@@ -15,7 +17,7 @@ const BottomNavbar = () => {
   }, []);
 
   return (
-    <div className={styles["bottom-navbar"]}>
+    <div className={classNameWrapper(styles["bottom-navbar"], className)}>
       <Player />
       <nav className={styles["bottom-navbar__nav-item-container"]}>
         <Link href="/main" className={styles["bottom-navbar__nav-item"]}>

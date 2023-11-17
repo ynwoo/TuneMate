@@ -1,14 +1,12 @@
 .chat-page {
-  padding-bottom: 4rem;
+  /* padding-bottom: 4rem; */
   position: relative;
-  min-height: var(--main-height);
+  min-height: var(--max-height);
 }
 
 .chat-page__search {
   position: sticky;
   bottom: 0;
-  left: 0;
-  right: 0;
   width: 100%;
   margin: 0;
 }
