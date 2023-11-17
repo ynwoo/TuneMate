@@ -24,7 +24,6 @@ const selectOptions: { name: string; value: OptionTypes }[] = [
 
 const GroupsPage = () => {
   const router = useRouter();
-  const searchRef = useRef<HTMLInputElement>(null);
   const [type, setType] = useState<OptionTypes>("hostName");
   const [text, setText] = useState<string>("");
   const debounceText = useDebounce(text, 200);
@@ -68,26 +67,14 @@ const GroupsPage = () => {
     }
   }, [onSubmit, debounceText]);
 
-  // type이 바뀌면 input에 focus
-  useEffect(() => {
-    if (searchRef.current) {
-      searchRef.current.focus();
-    }
-  }, [searchRef.current, type]);
-
   return (
     <div className={styles["groups-page"]}>
-      <Button
-        className={styles["groups-page__group--create"]}
-        color="blue"
-        onClick={onCreate}
-      >
+      <Button className={styles["groups-page__group--create"]} color="blue" onClick={onCreate}>
         공고 생성
       </Button>
 
       <div className={styles["groups-page__search-container"]}>
         <Search
-          searchRef={searchRef}
           className={styles["groups-page__search"]}
           onInput={onInput}
           onSubmit={onSubmit}
@@ -100,12 +87,7 @@ const GroupsPage = () => {
           onChange={onChange}
         />
       </div>
-      {groups && (
-        <GroupList
-          className={styles["groups-page__group-list"]}
-          groups={groups}
-        />
-      )}
+      {groups && <GroupList className={styles["groups-page__group-list"]} groups={groups} />}
     </div>
   );
 };
