@@ -13,3 +13,17 @@
 .recommendation-list__item:last-child {
   flex: 0;
 }
+
+@media screen and (max-width: 400px) {
+  .recommendation-list__item {
+    width: 22%;
+    margin-bottom: 1rem;
+    flex: 1;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .recommendation-list__item {
+    margin: auto;
+  }
+}
