@@ -9,6 +9,9 @@ import useRecommendationSongsQuery from "@/hooks/queries/recommendation/useRecom
 import { Storage } from "@/utils/storage";
 import ConcertImage from "@/components/image/ConcertImage/ConcertImage";
 import usePlayList from "@/hooks/usePlayList";
+import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
+import useSocialFriendsQuery from "@/hooks/queries/social/useSocialFriendsQuery";
+import FriendPlayList from "@/components/friend/FriendPlayList/FriendPlayList";
 
 const initConcertSearchOption: ConcertSearchOption = {
   type: "genre",
@@ -17,8 +20,11 @@ const initConcertSearchOption: ConcertSearchOption = {
 
 const MainPage = () => {
   const [username, setUsername] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
   const { data: concerts } = useConcertsQuery(initConcertSearchOption);
   const { data: tracks } = useRecommendationSongsQuery();
+  const { data: individualPlayList } = useIndividualPlayListRepresentativeQuery();
+  const { data: socialFriends } = useSocialFriendsQuery();
   const { changePlayList } = usePlayList();
   const router = useRouter();
 
@@ -30,8 +36,14 @@ const MainPage = () => {
     router.push("/player");
   }, []);
 
+  const onProfile = useCallback(() => {
+    if (!userId) return;
+    router.push(`profile/${userId}`);
+  }, [userId]);
+
   useEffect(() => {
     setUsername(Storage.getUserName());
+    setUserId(Storage.getUserId());
   }, []);
 
   return (
@@ -75,6 +87,32 @@ const MainPage = () => {
           ))}
         </ul>
       </MainContent>
+      <MainContent
+        className={styles["main-page__content"]}
+        title={
+          <p>
+            {username && `${username}님의 `}
+            <span className="blue">플레이리스트</span>
+          </p>
+        }
+        onClick={onProfile}
+      >
+        <ul className={styles["main-page__content--item-container"]}>
+          {individualPlayList?.tracks.items?.map(({ track }) => (
+            <li key={track.uri} className={styles["main-page__content--item"]}>
+              <ConcertImage
+                src={track.album.images[0].url}
+                alt={track.name}
+                type="list"
+                onClick={() => changePlayList(track)}
+              />
+            </li>
+          ))}
+        </ul>
+      </MainContent>
+      {socialFriends?.map(({}) => (
+        <FriendPlayList playListId="" />
+      ))}
     </div>
   );
 };
