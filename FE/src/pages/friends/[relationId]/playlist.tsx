@@ -44,7 +44,6 @@ const CommonPlaylistPage = () => {
     playlistId: string
   ) => {
     const friendProfile = await getOthersProfile(userId);
-    console.log(friendProfile);
     setCommonName(username + " & " + friendProfile.name);
     if (friendProfile.imageUrl === null) {
       setSrcList([userSrc, "/favicon.ico"]);
@@ -57,11 +56,8 @@ const CommonPlaylistPage = () => {
   const getFriendInfo = async (username: string, userSrc: string) => {
     const relationId = params?.relationId as string;
     const friendList = await getSocialFriends();
-    console.log(friendList);
     for (let i = 0; i < friendList.length; i++) {
-      console.log("checkpoint 1");
       if (friendList[i].relationId === Number(relationId)) {
-        console.log("checkpoint 2");
         const playlistId = friendList[i].commonPlayListId;
         getFriendProfile(friendList[i].friendId, username, userSrc, playlistId);
         break;
@@ -73,7 +69,6 @@ const CommonPlaylistPage = () => {
     const getUserProfile = async () => {
       const userId = Cookie.getUserId() as string;
       const userData = await getUserInfo(userId);
-      console.log(userData);
       const username = userData.name;
       let userSrc = "";
       if (userData.imageUrl === undefined) {
@@ -98,12 +93,9 @@ const CommonPlaylistPage = () => {
       }
     );
 
-    console.log(eventSource);
-
     eventSource.addEventListener("message", async (e) => {
       const res = await e.data;
       const data = JSON.parse(res);
-      console.log(data.tracks.items);
       const tmpData: any[] = [];
       data.tracks.items.forEach((trackData: any, index: number) => {
         const baseData = trackData.track;
@@ -126,12 +118,11 @@ const CommonPlaylistPage = () => {
         };
         tmpData.push(newData);
       });
-      console.log(tmpData);
       setCommonPlaylist(tmpData);
     });
 
     eventSource.addEventListener("error", async (e) => {
-      console.log(e);
+      console.error(e);
     });
 
     return () => {
@@ -145,7 +136,6 @@ const CommonPlaylistPage = () => {
       uri: commonPlaylist[index].uri,
       positions: [index],
     };
-    console.log(data.uri);
     const response = await deleteCommonPlayListTrack(data);
     popToast("삭제되었습니다");
   };
@@ -157,10 +147,8 @@ const CommonPlaylistPage = () => {
       music.index = idx;
       changedData.push(music);
     });
-    console.log(changedData);
     setCommonPlaylist(changedData);
     deleteTrack(index);
-    console.log(commonPlaylist);
   };
 
   const addTrack = async (uri: string) => {
@@ -176,7 +164,6 @@ const CommonPlaylistPage = () => {
   const handleAdd = (data: TrackInfo) => {
     setCommonPlaylist([...commonPlaylist, ...[data]]);
     addTrack(data.uri);
-    console.log(commonPlaylist);
   };
 
   return (
@@ -190,7 +177,7 @@ const CommonPlaylistPage = () => {
         setModalOpen={openToggle}
       />
       <Modal isOpen={isOpen} toggle={closeToggle}>
-        <SearchTrack handleAdd={handleAdd} />
+        <SearchTrack myPlaylist={commonPlaylist} handleAdd={handleAdd} />
       </Modal>
       {toastStatus && <Toast toastStatus={toastStatus} msg={toastMsg} />}
     </div>

@@ -22,8 +22,7 @@
     "**/*.ts",
     "**/*.tsx",
     "src/components/player/Dashboards.jsx",
-    "src/pages/main.jsx",
-    "src/components/playlists/SearchTrack/SearchTrack.jsx"
+    "src/pages/main.jsx"
   ],
   "exclude": ["node_modules"]
 }
