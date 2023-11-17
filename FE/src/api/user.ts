@@ -14,12 +14,8 @@ export const login = async (): Promise<TokenResponse> => {
 };
 
 // 유저 정보 조회
-export const getUserInfo = async (
-  userId: UserInfo["userId"]
-): Promise<UserInfo> => {
-  const response = await api.get<UserInfo>(
-    `${USER_SERVICE_URL}/users/${userId}`
-  );
+export const getUserInfo = async (userId: UserInfo["userId"]): Promise<UserInfo> => {
+  const response = await api.get<UserInfo>(`${USER_SERVICE_URL}/users/${userId}`);
   const userInfo = response.data;
   Storage.setSpotifyAccessToken(userInfo.spotifyAccessToken);
   Storage.setSpotifyUserId(userInfo.spotifyUserId);

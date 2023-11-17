@@ -12,7 +12,7 @@
   --text-color: #666666;
   --gradation-color: linear-gradient(var(--main-color), var(--white-color));
 
-  --top-navbar-height: 3rem;
+  --top-navbar-height: 3.5rem;
   --bottom-navbar-height: 4rem;
   --main-height: 90vh;
 
@@ -68,7 +68,7 @@ a {
 }
 
 .login {
-  min-height: var(--main-height);
+  min-height: var(--max-height);
   width: inherit;
   background: var(--gradation-color);
 }
@@ -84,4 +84,9 @@ a {
 
 .blue {
   color: var(--blue-color);
+}
+
+.disabled {
+  /* z-index: -100; */
+  display: none !important;
 }

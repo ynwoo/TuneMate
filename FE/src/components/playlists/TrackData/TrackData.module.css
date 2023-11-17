@@ -1,11 +1,11 @@
 .container {
   background-color: var(--white-color);
-  width: 64vw;
-  height: 7vh;
-  padding: 0.5vh;
+  width: inherit;
+  height: inherit;
+  padding: 0.5rem;
   position: relative;
   user-select: none;
-  padding: 0.5vh 3vw;
+  padding: 0.5rem 1rem;
 }
 
 .item-left {
