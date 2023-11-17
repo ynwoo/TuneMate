@@ -1,9 +1,10 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 70vw;
+  width: 20rem;
+  max-width: var(--max-width);
   height: 50vh;
-  padding: 3vh;
+  padding: 1rem;
 }
 
 .nothing.nothing {
