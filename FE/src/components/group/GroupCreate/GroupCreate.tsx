@@ -7,10 +7,7 @@ import { GroupAnnouncement } from "@/types/group";
 import TextArea from "@/components/input/TextArea/TextArea";
 import Select from "@/components/input/Select/Select";
 import { Concert, ConcertSearchOption, GenreOptions } from "@/types/concert";
-import {
-  concertSelectOptions,
-  initConcertSearchOption,
-} from "@/pages/concerts";
+import { concertSelectOptions, initConcertSearchOption } from "@/pages/concerts";
 import useDebounce from "@/hooks/useDebounce";
 import useConcertsQuery from "@/hooks/queries/concert/useConcertsQuery";
 import Search from "@/components/input/Search/Search";
@@ -19,9 +16,7 @@ import ConcertItem from "@/components/concert/ConcertItem/ConcertItem";
 
 interface GroupCreateProps extends Props {
   onChange: (
-    e:
-      | ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-      | number
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | number
   ) => void;
   group: GroupAnnouncement;
 }
@@ -41,9 +36,7 @@ const GroupCreate = ({ className, onChange, group }: GroupCreateProps) => {
       return;
     }
 
-    const newConcerts = originalConcerts?.filter(({ title }) =>
-      title.includes(text)
-    );
+    const newConcerts = originalConcerts?.filter(({ title }) => title.includes(text));
 
     setConcerts(newConcerts);
   }, [originalConcerts, text]);
@@ -78,13 +71,9 @@ const GroupCreate = ({ className, onChange, group }: GroupCreateProps) => {
         name="title"
         value={group.title}
         onChange={onChange}
-        autoFocus
       />
       <TextArea
-        className={classNameWrapper(
-          styles["group-create__item"],
-          styles["group-create__content"]
-        )}
+        className={classNameWrapper(styles["group-create__item"], styles["group-create__content"])}
         label="내용"
         name="content"
         value={group.content}
@@ -109,9 +98,7 @@ const GroupCreate = ({ className, onChange, group }: GroupCreateProps) => {
 
       {selectedConcert && (
         <>
-          <h1 className={styles["group-create__concert-item--title"]}>
-            선택 공연
-          </h1>
+          <h1 className={styles["group-create__concert-item--title"]}>선택 공연</h1>
           <ConcertItem item={selectedConcert} />
         </>
       )}
