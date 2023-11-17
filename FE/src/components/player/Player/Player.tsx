@@ -7,6 +7,8 @@ import styles from "./Player.module.css";
 import Props from "@/types";
 import Icon from "@/components/icons";
 import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
+import { useRecoilValue } from "recoil";
+import { myPlayListState } from "@/store/playList";
 
 interface PlayerProps extends Props {
   //
@@ -16,6 +18,7 @@ const Player = ({ className }: PlayerProps) => {
   const [token, setToken] = useState<string>();
   const { addTrackToMyPlayList, deleteTrackToMyPlayList, currentTrack } = usePlayList();
   const { data: individualPlayList } = useIndividualPlayListRepresentativeQuery();
+  const myPlayList = useRecoilValue(myPlayListState);
 
   const alreadyExist = useMemo(() => {
     if (!individualPlayList || !currentTrack) return false;
@@ -60,11 +63,17 @@ const Player = ({ className }: PlayerProps) => {
         />
       )}
       {!alreadyExist ? (
-        <div className={styles["player__button--plus"]} onClick={addTrackToMyPlayList}>
+        <div
+          className={styles["player__button--plus"]}
+          onClick={() => addTrackToMyPlayList(myPlayList)}
+        >
           <Icon.Plus size="lg" className={styles["player__button--plus-icon"]} />
         </div>
       ) : (
-        <div className={styles["player__button--plus"]} onClick={deleteTrackToMyPlayList}>
+        <div
+          className={styles["player__button--plus"]}
+          onClick={() => deleteTrackToMyPlayList(myPlayList)}
+        >
           <Icon.Delete size="lg" className={styles["player__button--plus-icon"]} />
         </div>
       )}

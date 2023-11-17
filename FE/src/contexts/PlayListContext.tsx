@@ -19,8 +19,8 @@ export interface PlayListContextState {
   images: string[];
   changePlayList: (playList: ChangePlayList, idx?: number) => void;
   playerCallback: (state: CallbackState) => void;
-  addTrackToMyPlayList: () => void;
-  deleteTrackToMyPlayList: () => void;
+  addTrackToMyPlayList: (myPlayList: PlayList) => void;
+  deleteTrackToMyPlayList: (myPlayList: PlayList) => void;
   currentTrack?: SpotifyTrack;
 }
 
@@ -75,25 +75,36 @@ const PlayListProvider = ({ children }: Props) => {
     setPlayList(Convert.changeTrackOrder(newPlayList, idx));
   }, []);
 
-  const addTrackToMyPlayList = useCallback(() => {
-    if (!myPlayList || !currentTrack) return;
-    const playlistId = myPlayList.id;
-    const uris = [currentTrack.uri];
-    const position = myPlayList.tracks.items.length;
-    const addTrack: AddTrack = { playlistId, uris, position };
-    createIndividualPlayListTrack(addTrack);
-  }, [myPlayList, currentTrack]);
+  const addTrackToMyPlayList = useCallback(
+    (myPlayList: PlayList) => {
+      console.log("addTrackToMyPlayList", myPlayList);
 
-  const deleteTrackToMyPlayList = useCallback(() => {
-    if (!myPlayList || !currentTrack) return;
-    const playlistId = myPlayList.id;
-    const uri = currentTrack.uri;
-    const positions = [
-      myPlayList.tracks.items.map(({ track: { uri } }) => uri).findIndex((myUri) => uri === myUri),
-    ];
-    const deleteTrack: DeleteTrack = { playlistId, uri, positions };
-    deleteIndividualPlayListTrack(deleteTrack);
-  }, [myPlayList, currentTrack]);
+      if (!currentTrack) return;
+      const playlistId = myPlayList.id;
+      const uris = [currentTrack.uri];
+      const position = myPlayList.tracks.items.length;
+      const addTrack: AddTrack = { playlistId, uris, position };
+      createIndividualPlayListTrack(addTrack);
+    },
+    [currentTrack]
+  );
+
+  const deleteTrackToMyPlayList = useCallback(
+    (myPlayList: PlayList) => {
+      console.log("deleteTrackToMyPlayList", myPlayList);
+      if (!currentTrack) return;
+      const playlistId = myPlayList.id;
+      const uri = currentTrack.uri;
+      const positions = [
+        myPlayList.tracks.items
+          .map(({ track: { uri } }) => uri)
+          .findIndex((myUri) => uri === myUri),
+      ];
+      const deleteTrack: DeleteTrack = { playlistId, uri, positions };
+      deleteIndividualPlayListTrack(deleteTrack);
+    },
+    [currentTrack]
+  );
 
   // playList 초기값 채우기
   useEffect(() => {
