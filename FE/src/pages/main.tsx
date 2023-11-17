@@ -33,8 +33,8 @@ const MainPage = () => {
     router.push("/concerts");
   }, []);
 
-  const onPlayer = useCallback(() => {
-    router.push("/player");
+  const onRecommendationTracks = useCallback(() => {
+    router.push("/recommendation/tracks");
   }, []);
 
   const onProfile = useCallback(() => {
@@ -77,7 +77,7 @@ const MainPage = () => {
             <span className="blue">추천곡</span>
           </p>
         }
-        onClick={onPlayer}
+        onClick={onRecommendationTracks}
       >
         <ul className={styles["main-page__content--item-container"]}>
           {tracks?.map((track) => (
@@ -85,7 +85,7 @@ const MainPage = () => {
               <ConcertImage
                 src={track.album.images[0].url}
                 alt={track.name}
-                type="list"
+                type="small"
                 onClick={() => changePlayList(track)}
               />
             </li>
@@ -108,7 +108,7 @@ const MainPage = () => {
               <ConcertImage
                 src={track.album.images[0].url}
                 alt={track.name}
-                type="list"
+                type="small"
                 onClick={() => changePlayList(track)}
               />
             </li>
