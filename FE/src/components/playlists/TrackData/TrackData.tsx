@@ -24,7 +24,7 @@ const TrackData = ({ trackInfo, handleAdd }: TrackDataProps) => {
     changePlayList(trackInfo);
   };
 
-  const { title, artist, cover, uri, id } = trackInfo;
+  const { title, artist, cover } = trackInfo;
   return (
     <div className={styles["container"]}>
       <div className={styles["track-data-inner"]}>
