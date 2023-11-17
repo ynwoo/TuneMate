@@ -6,16 +6,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.tunemate.social.tunematesocial.dto.ChattingListDto;
+import com.tunemate.social.tunematesocial.client.MusicServiceClient;
+import com.tunemate.social.tunematesocial.dto.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tunemate.social.tunematesocial.client.UserServiceClient;
-import com.tunemate.social.tunematesocial.dto.ChatDto;
-import com.tunemate.social.tunematesocial.dto.UserIdDto;
-import com.tunemate.social.tunematesocial.dto.UserInfoDto;
 import com.tunemate.social.tunematesocial.dto.request.FriendRequestDto;
 import com.tunemate.social.tunematesocial.dto.request.PlaylistRequestDto;
 import com.tunemate.social.tunematesocial.dto.response.MyFriendResponseDto;
@@ -43,16 +41,18 @@ public class SocialServiceImpl implements SocialService {
 	private final UserServiceClient userServiceClient;
 	private final ChattingRoomRepository chattingRoomRepository;
 	private final ChatPersonRepository chatPersonRepository;
+	private final MusicServiceClient musicServiceClient;
 
 	@Autowired
 	public SocialServiceImpl(FriendRepository friendRepository, FriendRequestRepository friendRequestRepository,
 		UserServiceClient userServiceClient, ChattingRoomRepository chattingRoomRepository,
-		ChatPersonRepository chatPersonRepository) {
+		ChatPersonRepository chatPersonRepository,MusicServiceClient musicServiceClient) {
 		this.friendRepository = friendRepository;
 		this.friendRequestRepository = friendRequestRepository;
 		this.userServiceClient = userServiceClient;
 		this.chattingRoomRepository = chattingRoomRepository;
 		this.chatPersonRepository = chatPersonRepository;
+		this.musicServiceClient = musicServiceClient;
 	}
 
 	@Override
@@ -259,7 +259,7 @@ public class SocialServiceImpl implements SocialService {
 		// 데이터 결합
 		for (int i = 0; i < size; i++) {
 			UserInfoDto userInfo = userInfoList.get(i);
-
+			FriendInfoDto friendInfoDto = musicServiceClient.getFriendInfo(myId,userInfo.getUserId());
 			MyFriendResponseDto responseDto = MyFriendResponseDto
 				.builder()
 				.relationId(myFriendVos.get(i).getRelationId())
@@ -269,6 +269,7 @@ public class SocialServiceImpl implements SocialService {
 				.img(userInfo.getImageUrl())
 				.distance(myFriendVos.get(i).getDistance())
 				.musicalTasteSimilarity(myFriendVos.get(i).getMusicalTasteSimilarity())
+					.friendPlaylistId(friendInfoDto.getPlaylistId())
 				.build();
 
 			// 결과 리스트에 추가

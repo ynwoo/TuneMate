@@ -12,10 +12,11 @@ public class MyFriendResponseDto {
 	private String img;
 	private String distance;
 	private String musicalTasteSimilarity;
+	private String friendPlaylistId;
 
 	@Builder
 	public MyFriendResponseDto(Long relationId, String friendId, String name, String commonPlayListId, String img,
-		String distance, String musicalTasteSimilarity) {
+		String distance, String musicalTasteSimilarity,String friendPlaylistId) {
 		this.relationId = relationId;
 		this.friendId = friendId;
 		this.name = name;
@@ -23,5 +24,6 @@ public class MyFriendResponseDto {
 		this.img = img;
 		this.distance = distance;
 		this.musicalTasteSimilarity = musicalTasteSimilarity;
+		this.friendPlaylistId = friendPlaylistId;
 	}
 }
