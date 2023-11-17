@@ -19,13 +19,7 @@ const GroupCreatePage = () => {
   const [group, setGroup] = useState<GroupAnnouncement>(initGroupAnnouncement);
 
   const onChange = useCallback(
-    (
-      e:
-        | ChangeEvent<
-            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-          >
-        | number
-    ) => {
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | number) => {
       if (typeof e === "number") {
         setGroup((group) => ({
           ...group,
@@ -53,8 +47,6 @@ const GroupCreatePage = () => {
     },
     [setGroup]
   );
-
-  console.log(group);
 
   const onClick = useCallback(() => {
     createGroup({ ...group, deadline: new Date(group.deadline) });
