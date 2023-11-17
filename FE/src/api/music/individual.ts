@@ -1,6 +1,6 @@
 import { NewPlayList, PlayList, TotalPlayList } from "@/types/playList";
 import { AddTrack, ChangeTrack, DeleteTrack } from "@/types/spotify";
-import { UserInfo } from "@/types/user";
+import { FriendUserInfo, UserInfo } from "@/types/user";
 import { api, spotifyApi } from "..";
 
 const INDIVIDUAL_URL = "music-service/individual";
@@ -54,14 +54,14 @@ const addIndividualMusicCount = async () => {
 };
 
 // 타인 프로필 조회
-const getOthersProfile = async (userId: string): Promise<any> => {
-  const response = await api.get<any>(`${INDIVIDUAL_URL}/info/${userId}`);
+const getOthersProfile = async (userId: UserInfo["userId"]): Promise<FriendUserInfo> => {
+  const response = await api.get<FriendUserInfo>(`${INDIVIDUAL_URL}/info/${userId}`);
   return response.data;
 };
 
 // 타인 대표 플레이리스트 조회
-const getOthersPlayList = async (playlistId: string): Promise<any> => {
-  const response = await spotifyApi.get<any>(`playlists/${playlistId}`);
+const getOthersPlayList = async (playlistId: PlayList["id"]): Promise<PlayList> => {
+  const response = await spotifyApi.get<PlayList>(`playlists/${playlistId}`);
   return response.data;
 };
 

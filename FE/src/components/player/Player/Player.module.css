@@ -43,7 +43,6 @@
 
 /* 재생바 아래 부분 */
 .player > div > div > div:last-child {
-  /* background-color: aliceblue; */
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
