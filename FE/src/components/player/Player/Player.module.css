@@ -5,6 +5,19 @@
   z-index: 1;
 }
 
+/* 곡 추가 버튼 */
+.player__button--plus {
+  position: absolute;
+  /* bottom: 0; */
+  bottom: 2.7rem;
+  left: 11.4rem;
+  z-index: 1;
+}
+
+.player__button--plus-icon {
+  color: var(--white-color);
+}
+
 /* 재생바 전체 */
 .player > div > div {
   /* background-color: var(--black-color); */
@@ -35,10 +48,11 @@
 
 /* 재생바 윗 부분 좋아요 버튼 */
 .player > div > div > div:first-child > div > div:first-child > button {
-  /* position: absolute;
-  bottom: 2rem;
-  right: 8rem;
-  z-index: 1; */
+  display: none;
+}
+
+.player > div > div > div:first-child > div > div:first-child > button > svg {
+  display: none;
 }
 
 /* 재생바 아래 부분 */

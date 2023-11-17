@@ -1,11 +1,14 @@
 import useAddIndividualMusicCountMutation from "@/hooks/mutations/music/individual/useAddIndividualMusicCountMutation";
-import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
+import useCreateIndividualPlayListTrackMutation from "@/hooks/mutations/music/individual/useCreateIndividualPlayListTrackMutation";
+import useDeleteIndividualPlayListTrackMutation from "@/hooks/mutations/music/individual/useDeleteIndividualPlayListTrackMutation";
+import { myPlayListState } from "@/store/playList";
 import Props from "@/types";
 import { PlayList } from "@/types/playList";
-import { Track, TrackInfo } from "@/types/spotify";
+import { AddTrack, DeleteTrack, Track, TrackInfo } from "@/types/spotify";
 import { Convert } from "@/utils/convert";
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 import { CallbackState, SpotifyTrack } from "react-spotify-web-playback";
+import { useRecoilValue } from "recoil";
 
 type ChangePlayList = PlayList | Track | TrackInfo | TrackInfo[];
 
@@ -16,6 +19,8 @@ export interface PlayListContextState {
   images: string[];
   changePlayList: (playList: ChangePlayList, idx?: number) => void;
   playerCallback: (state: CallbackState) => void;
+  addTrackToMyPlayList: () => void;
+  deleteTrackToMyPlayList: () => void;
   currentTrack?: SpotifyTrack;
 }
 
@@ -25,8 +30,10 @@ const PlayListProvider = ({ children }: Props) => {
   const [playList, setPlayList] = useState<PlayList>();
   const [play, setPlay] = useState<boolean>(false);
   const [currentTrack, setCurrentTrack] = useState<SpotifyTrack>();
-  const { data: individualPlayList } = useIndividualPlayListRepresentativeQuery();
+  const myPlayList = useRecoilValue(myPlayListState);
   const { mutate: addIndividualMusicCount } = useAddIndividualMusicCountMutation();
+  const { mutate: createIndividualPlayListTrack } = useCreateIndividualPlayListTrackMutation();
+  const { mutate: deleteIndividualPlayListTrack } = useDeleteIndividualPlayListTrackMutation();
 
   const { uris, images }: { uris: string[]; images: string[] } = useMemo(() => {
     if (!playList) return { uris: [], images: [] };
@@ -68,12 +75,32 @@ const PlayListProvider = ({ children }: Props) => {
     setPlayList(Convert.changeTrackOrder(newPlayList, idx));
   }, []);
 
+  const addTrackToMyPlayList = useCallback(() => {
+    if (!myPlayList || !currentTrack) return;
+    const playlistId = myPlayList.id;
+    const uris = [currentTrack.uri];
+    const position = myPlayList.tracks.items.length;
+    const addTrack: AddTrack = { playlistId, uris, position };
+    createIndividualPlayListTrack(addTrack);
+  }, [myPlayList, currentTrack]);
+
+  const deleteTrackToMyPlayList = useCallback(() => {
+    if (!myPlayList || !currentTrack) return;
+    const playlistId = myPlayList.id;
+    const uri = currentTrack.uri;
+    const positions = [
+      myPlayList.tracks.items.map(({ track: { uri } }) => uri).findIndex((myUri) => uri === myUri),
+    ];
+    const deleteTrack: DeleteTrack = { playlistId, uri, positions };
+    deleteIndividualPlayListTrack(deleteTrack);
+  }, [myPlayList, currentTrack]);
+
   // playList 초기값 채우기
   useEffect(() => {
-    if (!playList && individualPlayList) {
-      setPlayList(individualPlayList);
+    if (!playList && myPlayList) {
+      setPlayList(myPlayList);
     }
-  }, [individualPlayList]);
+  }, [myPlayList]);
 
   // music count 증가
   useEffect(() => {
@@ -91,6 +118,8 @@ const PlayListProvider = ({ children }: Props) => {
       changePlayList,
       playerCallback,
       currentTrack,
+      addTrackToMyPlayList,
+      deleteTrackToMyPlayList,
     }),
     [playList, play, uris, images, changePlayList, playerCallback, currentTrack]
   );

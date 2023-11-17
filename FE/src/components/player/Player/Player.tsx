@@ -1,10 +1,12 @@
 import usePlayList from "@/hooks/usePlayList";
 import { classNameWrapper } from "@/utils/className";
 import { Storage } from "@/utils/storage";
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState, useMemo } from "react";
 import SpotifyWebPlayer from "react-spotify-web-playback";
 import styles from "./Player.module.css";
 import Props from "@/types";
+import Icon from "@/components/icons";
+import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
 
 interface PlayerProps extends Props {
   //
@@ -12,6 +14,14 @@ interface PlayerProps extends Props {
 
 const Player = ({ className }: PlayerProps) => {
   const [token, setToken] = useState<string>();
+  const { addTrackToMyPlayList, deleteTrackToMyPlayList, currentTrack } = usePlayList();
+  const { data: individualPlayList } = useIndividualPlayListRepresentativeQuery();
+
+  const alreadyExist = useMemo(() => {
+    if (!individualPlayList || !currentTrack) return false;
+    const uris = individualPlayList.tracks.items.map(({ track: { uri } }) => uri);
+    return uris.includes(currentTrack.uri);
+  }, [individualPlayList, currentTrack]);
 
   const onClick = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
@@ -48,6 +58,15 @@ const Player = ({ className }: PlayerProps) => {
           play={play}
           uris={uris}
         />
+      )}
+      {!alreadyExist ? (
+        <div className={styles["player__button--plus"]} onClick={addTrackToMyPlayList}>
+          <Icon.Plus size="lg" className={styles["player__button--plus-icon"]} />
+        </div>
+      ) : (
+        <div className={styles["player__button--plus"]} onClick={deleteTrackToMyPlayList}>
+          <Icon.Delete size="lg" className={styles["player__button--plus-icon"]} />
+        </div>
       )}
     </div>
   );
