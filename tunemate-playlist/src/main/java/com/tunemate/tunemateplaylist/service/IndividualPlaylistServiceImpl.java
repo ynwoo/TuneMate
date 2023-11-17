@@ -159,6 +159,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         if(playlist1.isPresent()){
             playlist = playlist1.get();
             playlist.setPlaylistSpotifyId(playlistId);
+            individualPlaylistTrackRepository.deleteAllByPlaylistId(playlist.getId());
             PlaylistResponseDto playlistResponseDto = webClientBuilder.build().get().uri(uriBuilder -> uriBuilder.path("/playlists/"+playlistId).queryParam("fields","description,id,name,images,tracks(items(track(album(images),artists(name),id,name,uri)))").build()).header("Authorization", "Bearer " + token)
                     .retrieve().bodyToMono(PlaylistResponseDto.class).block();
             for(ItemsDto itemsDto: playlistResponseDto.getTracks().getItems()){
