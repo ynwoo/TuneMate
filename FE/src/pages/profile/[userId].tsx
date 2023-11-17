@@ -190,6 +190,7 @@ const ProfilePage = () => {
     <div>
       <IndividualProfile name={name} src={imgSrc} />
       <Playlist
+        className="playlist"
         isSameUser={isSameUser}
         playlistName={playlistName}
         data={myPlaylist}
