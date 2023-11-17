@@ -28,7 +28,7 @@ const LoginPage = () => {
       getUserInfo(userId)
         .then((data) => {
           setUserInfo(data);
-          router.push("/main");
+          router.replace("/main");
         })
         .catch(() => {
           Cookie.clear();

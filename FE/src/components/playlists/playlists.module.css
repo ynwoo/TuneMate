@@ -41,6 +41,10 @@
   padding: 1rem;
 }
 
+.modal-content p {
+  margin: auto;
+}
+
 .division-line {
   border-top: 1px solid rgb(149, 138, 255);
   width: 100%;
