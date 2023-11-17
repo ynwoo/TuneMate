@@ -40,7 +40,6 @@
 
 .chat-page__modal {
   height: 100vh;
-  width: 100%;
-  width: 15rem;
+  width: 22rem;
   border-radius: 0%;
 }
