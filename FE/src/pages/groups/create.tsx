@@ -54,6 +54,7 @@ const GroupCreatePage = () => {
 
   return (
     <div className={styles["group-create-page"]}>
+      <GroupCreate onChange={onChange} group={group} />
       <ButtonWithModal
         className={styles["group-create-page__button"]}
         color="blue"
@@ -62,7 +63,6 @@ const GroupCreatePage = () => {
       >
         생성
       </ButtonWithModal>
-      <GroupCreate onChange={onChange} group={group} />
     </div>
   );
 };

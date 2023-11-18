@@ -7,9 +7,10 @@ import ConcertItem from "../ConcertItem/ConcertItem";
 interface ConcertListProps extends Props {
   concerts: Concert[];
   onClick?: (id: number) => void;
+  type?: "list" | "small";
 }
 
-const ConcertList = ({ concerts, className, onClick }: ConcertListProps) => {
+const ConcertList = ({ concerts, className, onClick, type }: ConcertListProps) => {
   return (
     <ul className={classNameWrapper(styles["concert-list"], className)}>
       {concerts.map((concert) => (
@@ -18,6 +19,7 @@ const ConcertList = ({ concerts, className, onClick }: ConcertListProps) => {
           item={concert}
           onClick={onClick}
           className={styles["concert-list__item"]}
+          type={type}
         />
       ))}
     </ul>

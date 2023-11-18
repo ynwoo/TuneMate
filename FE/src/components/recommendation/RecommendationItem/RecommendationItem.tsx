@@ -18,12 +18,9 @@ interface RecommendItemProps extends Props {
 
 const RecommendationItem = ({ item, className }: RecommendItemProps) => {
   const router = useRouter();
-  const { mutate: acceptFriendRequest } =
-    useAcceptSocialFriendRequestMutation();
-  const { mutate: declineFriendRequest } =
-    useDeclineSocialFriendRequestMutation();
-  const { mutate: sendSocialFriendRequest } =
-    useSendSocialFriendRequestMutation();
+  const { mutate: acceptFriendRequest } = useAcceptSocialFriendRequestMutation();
+  const { mutate: declineFriendRequest } = useDeclineSocialFriendRequestMutation();
+  const { mutate: sendSocialFriendRequest } = useSendSocialFriendRequestMutation();
 
   const { isFriendRequest, onAccept, onDecline } = useMemo(() => {
     const isFriendRequest = item.musicalTasteSimilarity ? true : false;
@@ -53,12 +50,7 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
       onAccept,
       onDecline,
     };
-  }, [
-    item,
-    acceptFriendRequest,
-    declineFriendRequest,
-    sendSocialFriendRequest,
-  ]);
+  }, [item, acceptFriendRequest, declineFriendRequest, sendSocialFriendRequest]);
 
   console.log(isFriendRequest);
 
@@ -89,40 +81,30 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
                   alt="내 프로필"
                   type="recommendation"
                 />
-                <p className={styles["recommendation-item__user--name"]}>
-                  {item.name}
-                </p>
+                <p className={styles["recommendation-item__user--name"]}>{item.name}</p>
               </div>
             </div>
-            <div>
-              <div className={styles["recommendation-item__ratio"]}>
-                <div style={{ display: "flex", alignItems: "center" }}>
+            <div className={styles["recommendation-item__ratio"]}>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ display: "flex", marginLeft: "4px", flex: 1, padding: "1em 0.5em" }}>
+                  <Icon.Music size="lg" />
                   <div style={{ display: "flex", marginLeft: "4px" }}>
-                    <Icon.Music size="lg" />
-                    <div style={{ display: "flex", marginLeft: "4px" }}>
-                      {(
-                        Number(
-                          isFriendRequest
-                            ? item.musicalTasteSimilarity
-                            : item.similarity
-                        ) * 100
-                      ).toFixed(0)}
-                    </div>
+                    {(
+                      Number(isFriendRequest ? item.musicalTasteSimilarity : item.similarity) * 100
+                    ).toFixed(0)}
                   </div>
-
-                  {!isFriendRequest && (
-                    <div style={{ width: "20px" }}>
-                      <ButtonWithModal
-                        className={styles["recommendation-item__button-item"]}
-                        onClick={onAccept}
-                        modalMessage="친구요청을 보내시겠습니까?"
-                        color="white"
-                      >
-                        <Icon.Recommendation size="lg" />
-                      </ButtonWithModal>
-                    </div>
-                  )}
                 </div>
+
+                {!isFriendRequest && (
+                  <ButtonWithModal
+                    className={styles["recommendation-item__button-item"]}
+                    onClick={onAccept}
+                    modalMessage="친구요청을 보내시겠습니까?"
+                    color="white"
+                  >
+                    <Icon.Recommendation size="lg" />
+                  </ButtonWithModal>
+                )}
               </div>
             </div>
           </div>
