@@ -5,7 +5,7 @@ import { GroupAnnouncement } from "@/types/group";
 import { useState, ChangeEvent, useCallback } from "react";
 import styles from "@/styles/GroupPage.module.css";
 
-const initGroupAnnouncement: GroupAnnouncement = {
+export const initGroupAnnouncement: GroupAnnouncement = {
   capacity: 0,
   concertId: 0,
   content: "",
@@ -19,13 +19,7 @@ const GroupCreatePage = () => {
   const [group, setGroup] = useState<GroupAnnouncement>(initGroupAnnouncement);
 
   const onChange = useCallback(
-    (
-      e:
-        | ChangeEvent<
-            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-          >
-        | number
-    ) => {
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | number) => {
       if (typeof e === "number") {
         setGroup((group) => ({
           ...group,
@@ -53,8 +47,6 @@ const GroupCreatePage = () => {
     },
     [setGroup]
   );
-
-  console.log(group);
 
   const onClick = useCallback(() => {
     createGroup({ ...group, deadline: new Date(group.deadline) });

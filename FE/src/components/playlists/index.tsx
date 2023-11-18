@@ -12,6 +12,7 @@ import { ChangeTrackIndex, TrackInfo } from "@/types/spotify";
 import { PlayList } from "@/types/playList";
 import useIndividualPlayListsQuery from "@/hooks/queries/music/individual/useIndividualPlayListsQuery";
 import usePlayList from "@/hooks/usePlayList";
+import { classNameWrapper } from "@/utils/className";
 interface PlaylistProps extends Props {
   data: TrackInfo[];
   playlistName: string;
@@ -28,13 +29,12 @@ const Playlist = ({
   isSameUser,
   onRequestDelete,
   setModalOpen,
+  className,
 }: PlaylistProps) => {
   const { closeToggle, isOpen, openToggle } = useModal();
   const [playlistData, setPlaylistData] = useState(data);
   const [deleteMode, setDeleteMode] = useState(false);
   const { changePlayList } = usePlayList();
-  console.log("data", data);
-  console.log("playlistData", playlistData);
 
   useEffect(() => {
     if (data) {
@@ -43,7 +43,7 @@ const Playlist = ({
   }, [data]);
 
   const changePlaylistOrder = async (changeTrackIndex: ChangeTrackIndex) => {
-    const change = await updateIndividualPlayListTrack({
+    await updateIndividualPlayListTrack({
       playlistId,
       changeTrackIndex,
     });
@@ -100,11 +100,9 @@ const Playlist = ({
     [closeToggle]
   );
 
-  console.log("playlistData", playlistData);
-
   return (
     <>
-      <div className={styles["container"]}>
+      <div className={classNameWrapper(styles["container"], className)}>
         <div className={styles["playlist-upper"]}>
           <Text type="playlist" content={playlistName} />
           {isSameUser ? (

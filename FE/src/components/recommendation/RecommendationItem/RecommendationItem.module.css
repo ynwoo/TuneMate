@@ -14,12 +14,13 @@
   align-items: center;
   border-radius: 10px;
   background-color: white;
-  padding: 1vh 3vw;
+  padding: 1rem 3rem;
   display: flex;
   width: 120px;
   /* border: 10px solid rgb(218, 214, 246); */
   flex-direction: column;
   cursor: pointer;
+  width: 10rem;
 }
 
 .recommendation-item__user {
@@ -43,20 +44,21 @@
 }
 
 .recommendation-item__ratio {
+  width: 5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   text-align: center;
-  margin-left: 1rem;
+  /* margin-left: 1rem; */
 }
 
 .recommendation-item__button-container {
   display: flex;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 1em;
+  margin-top: 1rem;
 }
 
 .recommendation-item__button-item {
-  margin-right: 1vw;
+  margin-right: 1rem;
 }

@@ -24,7 +24,6 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
     useDeclineSocialFriendRequestMutation();
   const { mutate: sendSocialFriendRequest } =
     useSendSocialFriendRequestMutation();
-  console.log(item);
 
   const { isFriendRequest, onAccept, onDecline } = useMemo(() => {
     const isFriendRequest = item.musicalTasteSimilarity ? true : false;

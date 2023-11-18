@@ -22,9 +22,8 @@ import useModal from "@/hooks/useModal";
 import SearchTrack from "@/components/playlists/SearchTrack/SearchTrack";
 import Toast from "@/components/toast/Toast";
 import useToast from "@/hooks/useToast";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { MainplaylistState, AlubumArtState, AlbumState } from "@/store/atom";
-import AlbumArt from "@/components/player/AlbumArt";
+import { useRecoilState } from "recoil";
+import { MainplaylistState, AlbumState } from "@/store/atom";
 import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
 import { useParams } from "next/navigation";
 import { Cookie } from "@/utils/cookie";
@@ -45,10 +44,7 @@ const ProfilePage = () => {
   const { closeToggle, isOpen, openToggle } = useModal();
   const { popToast, toastStatus, toastMsg } = useToast();
   const [mainplaylist, setMainplaylist] = useRecoilState(MainplaylistState);
-  // const AlubumArt = useRecoilValue(AlubumArtState);
-  const [AlubumArt, setAlubumArt] = useRecoilState(AlubumArtState);
   const [Album, setAlbum] = useRecoilState(AlbumState);
-  // console.log("이거바", AlubumArt);
   const { data: individualPlayListRepresentative } = useIndividualPlayListRepresentativeQuery();
 
   useEffect(() => {
@@ -65,14 +61,11 @@ const ProfilePage = () => {
     setAlbum(albumArt);
     setMainplaylist(uriArray);
   }, [myPlaylist]);
-  console.log("aaaa", Album);
-  console.log("bbbb", mainplaylist);
   const [isSameUser, setIsSameUser] = useState<boolean>(true);
 
   const getSpotifyPlaylists = async () => {
     const spotifyUserId = Storage.getSpotifyUserId();
     const playlistList = await getIndividualPlayLists(spotifyUserId);
-    console.log(playlistList);
     const dataset = [...playlistList];
 
     dataset.forEach((data, index) => {
@@ -91,7 +84,6 @@ const ProfilePage = () => {
   };
 
   const setRepPlaylist = async (id: string) => {
-    console.log(id);
     updateIndividualPlayList(id);
     closeMenu();
     getUserPlaylist();
@@ -100,16 +92,12 @@ const ProfilePage = () => {
   const getOtherUserPlaylist = async (playlistId: string) => {
     const playList = await getOthersPlayList(playlistId);
     setPlaylistName(playList.name);
-    console.log(playList.tracks.items);
     const tmpData = Convert.playListToTrackInfos(playList);
     setMyPlaylist(tmpData);
   };
 
   const getUserPlaylist = async () => {
-    console.log("getUserPlaylist g호출");
-
     const playList = await getIndividualPlayListRepresentative();
-    console.log("repPlaylistData", playList);
     if (playList.id !== null) {
       setPlaylistName(playList.name);
       setPlaylistId(playList.id);
@@ -134,7 +122,6 @@ const ProfilePage = () => {
       if (userId === Cookie.getUserId()) {
         setIsSameUser(true);
         const userData = await getUserInfo(userId);
-        console.log(userData);
         if (userData.imageUrl === undefined) {
           setImgSrc("/favicon.ico");
         } else {
@@ -145,7 +132,6 @@ const ProfilePage = () => {
       } else {
         setIsSameUser(false);
         const userData = await getOthersProfile(userId);
-        console.log(userData);
         setPlaylistId(userData.playlistId);
         if (userData.imageUrl === undefined) {
           setImgSrc("/favicon.ico");
@@ -170,8 +156,7 @@ const ProfilePage = () => {
       uri: myPlaylist[index].uri,
       positions: [index],
     };
-    console.log(data.uri);
-    const response = await deleteIndividualPlayListTrack(data);
+    await deleteIndividualPlayListTrack(data);
     popToast("삭제되었습니다");
   };
 
@@ -182,7 +167,6 @@ const ProfilePage = () => {
       music.index = idx;
       changedData.push(music);
     });
-    console.log(changedData);
     setMyPlaylist(changedData);
     deleteTrack(index);
   };
@@ -193,20 +177,20 @@ const ProfilePage = () => {
       uris: [uri],
       position: myPlaylist.length,
     };
-    const response = await createIndividualPlayListTrack(data);
+    await createIndividualPlayListTrack(data);
     popToast("노래가 추가되었습니다");
   };
 
   const handleAdd = (data: TrackInfo) => {
     setMyPlaylist([...myPlaylist, ...[data]]);
     addTrack(data.uri);
-    console.log(myPlaylist);
   };
 
   return (
     <div>
       <IndividualProfile name={name} src={imgSrc} />
       <Playlist
+        className="playlist"
         isSameUser={isSameUser}
         playlistName={playlistName}
         data={myPlaylist}
@@ -230,7 +214,7 @@ const ProfilePage = () => {
         </div>
       </NonCloseableMenu>
       <Modal isOpen={isOpen} toggle={closeToggle}>
-        <SearchTrack handleAdd={handleAdd} />
+        <SearchTrack myPlaylist={myPlaylist} handleAdd={handleAdd} />
       </Modal>
       {toastStatus && <Toast toastStatus={toastStatus} msg={toastMsg} />}
     </div>

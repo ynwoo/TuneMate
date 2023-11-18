@@ -157,9 +157,14 @@ const Icon = {
     />
   ),
 
-  PlayMusic: ({ size = "2xl" }: IconProps) => (
-    <FontAwesomeIcon className={styles.gray} icon={faCirclePlay} size={size} />
+  PlayMusic: ({ size = "2xl", className }: IconProps) => (
+    <FontAwesomeIcon
+      className={classNameWrapper(styles.gray, className)}
+      icon={faCirclePlay}
+      size={size}
+    />
   ),
+
   Delete: ({ size = "2xl" }: IconProps) => (
     <FontAwesomeIcon className={styles.gray} icon={faTrash} size={size} />
   ),

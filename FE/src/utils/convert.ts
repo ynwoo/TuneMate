@@ -45,6 +45,12 @@ export const Convert = Object.freeze({
     return track;
   },
 
+  trackInfoToPlayList: (trackInfo: TrackInfo) => {
+    const track = Convert.trackInfoToTrack(trackInfo);
+    const playList = Convert.trackToPlayList(track);
+    return playList;
+  },
+
   trackInfosToPlayList: (trackInfos: TrackInfo[]) => {
     const items = trackInfos.map((trackInfo) => ({ track: Convert.trackInfoToTrack(trackInfo) }));
     const playList: PlayList = {

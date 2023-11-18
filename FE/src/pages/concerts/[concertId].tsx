@@ -10,7 +10,6 @@ const ConcertDetailPage = () => {
   const params = useParams();
   const concertId = Number(params?.concertId as string);
   const { data: concert } = useConcertDetailQuery(concertId);
-  console.log(concert);
 
   if (!concert) {
     return <Nothing></Nothing>;
@@ -25,10 +24,7 @@ const ConcertDetailPage = () => {
         alt={concert.title}
         type="detail"
       />
-      <ConcertInfoList
-        className={styles["concert-detail-page__info"]}
-        item={concert}
-      />
+      <ConcertInfoList className={styles["concert-detail-page__info"]} item={concert} />
     </div>
   );
 };

@@ -1,11 +1,11 @@
 .container {
   background-color: rgb(240, 238, 255);
-  padding: 1vh;
+  padding: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 3vh;
+  margin-top: 1rem;
 }
 
 .playlist-upper {
@@ -13,7 +13,16 @@
   justify-content: space-between;
   align-items: center;
   width: 70vw;
-  padding: 1vh 0vh;
+  max-width: 20rem;
+  padding: 0.5rem 0;
+  text-align: center;
+}
+
+.playlist-upper p {
+  flex: 1;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .playlist-box {
@@ -25,15 +34,19 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 3vh;
+  padding: 2rem;
 }
 
 .modal-content {
-  padding: 1vh 1vw;
+  padding: 1rem;
+}
+
+.modal-content p {
+  margin: auto;
 }
 
 .division-line {
   border-top: 1px solid rgb(149, 138, 255);
   width: 100%;
-  margin: 2vh auto;
+  margin: 1rem auto;
 }

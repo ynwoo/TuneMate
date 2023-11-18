@@ -5,6 +5,19 @@
   z-index: 1;
 }
 
+/* 곡 추가 버튼 */
+.player__button--plus {
+  position: absolute;
+  /* bottom: 0; */
+  bottom: 2.7rem;
+  left: 11.4rem;
+  z-index: 1;
+}
+
+.player__button--plus-icon {
+  color: var(--white-color);
+}
+
 /* 재생바 전체 */
 .player > div > div {
   /* background-color: var(--black-color); */
@@ -35,15 +48,15 @@
 
 /* 재생바 윗 부분 좋아요 버튼 */
 .player > div > div > div:first-child > div > div:first-child > button {
-  /* position: absolute;
-  bottom: 2rem;
-  right: 8rem;
-  z-index: 1; */
+  display: none;
+}
+
+.player > div > div > div:first-child > div > div:first-child > button > svg {
+  display: none;
 }
 
 /* 재생바 아래 부분 */
 .player > div > div > div:last-child {
-  /* background-color: aliceblue; */
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -87,4 +100,56 @@
   /* display: none; */
   /* height: 1px;
   width: 1px; */
+}
+
+@media (min-width: 768px) {
+  /* 재생바 전체 */
+  .player > div > div {
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+  }
+
+  /* 재생바 윗 부분 */
+  .player > div > div > div:first-child {
+    position: relative !important;
+    z-index: 1;
+    border: 0;
+  }
+
+  /* 버튼 container */
+  .player > div > div > div:nth-child(2) {
+    position: absolute !important;
+    bottom: 0.8rem;
+    right: 4rem;
+    z-index: 1;
+    margin-left: auto;
+  }
+
+  /* 버튼 container */
+  .player > div > div > div:last-child > div:first-child {
+    position: relative !important;
+    bottom: 1.8rem;
+    right: 0.5rem;
+    z-index: 1;
+  }
+
+  /* 재생 */
+  .player > div > div > div:nth-child(2) > div:last-child {
+    position: relative !important;
+    width: 100%;
+    /* bottom: 0.8rem; */
+  }
+  /* 재생 slider */
+  .player > div > div > div:nth-child(2) > div:last-child > div:last-child {
+    position: relative !important;
+    /* width: 100%; */
+    /* bottom: 0.8rem; */
+  }
+
+  /* 음량 slider */
+  .player > div > div > div:last-child > div:last-child {
+    position: relative !important;
+    width: 60%;
+    bottom: 0.8rem;
+  }
 }

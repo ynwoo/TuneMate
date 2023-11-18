@@ -65,8 +65,8 @@ const PlaylistItem = ({
               <div className={styles["item-left"]} onClick={onClick}>
                 <Cover src={cover} alt="album-cover" />
                 <div className={styles["text-box"]}>
-                  <Text content={title} type="title" />
-                  <Text content={artist} type="artist" />
+                  <Text className={styles["text-box__title"]} content={title} type="title" />
+                  <Text className={styles["text-box__name"]} content={artist} type="artist" />
                 </div>
               </div>
               <div className={styles["item-right"]}>

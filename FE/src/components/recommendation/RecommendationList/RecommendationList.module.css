@@ -16,4 +16,31 @@
 
 .recommendation-list__item {
   margin-top: 2vh;
+  max-width: var(--max-width);
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.recommendation-list__item {
+  width: 26%;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.recommendation-list__item:last-child {
+  flex: 0;
+}
+
+@media screen and (max-width: 400px) {
+  .recommendation-list__item {
+    width: 22%;
+    margin-bottom: 1rem;
+    flex: 1;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .recommendation-list__item {
+    margin: auto;
+  }
 }

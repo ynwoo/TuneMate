@@ -1,7 +1,15 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 70vw;
-  height: 70vh;
-  padding: 3vh;
+  width: 20rem;
+  max-width: var(--max-width);
+  height: 50vh;
+  padding: 1rem;
+}
+
+.nothing.nothing {
+  max-width: 30vh;
+  max-height: 40vh;
+  margin: auto;
+  flex: 1;
 }

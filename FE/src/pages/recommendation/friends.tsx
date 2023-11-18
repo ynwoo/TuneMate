@@ -3,7 +3,7 @@ import RecommendationList from "@/components/recommendation/RecommendationList/R
 import useRecommendationFriendsQuery from "@/hooks/queries/recommendation/useRecommendationFriendsQuery";
 import styles from "@/styles/RecommendationPage.module.css";
 
-const RecommendationPage = () => {
+const RecommendationFriendsPage = () => {
   const { data: recommendationFriends } = useRecommendationFriendsQuery();
 
   if (!recommendationFriends?.length) {
@@ -25,4 +25,4 @@ const RecommendationPage = () => {
   );
 };
 
-export default RecommendationPage;
+export default RecommendationFriendsPage;
