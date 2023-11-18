@@ -1,11 +1,12 @@
 .concerts-page {
+  margin-top: 1em;
 }
 
 .concerts-page__search-container {
   display: flex;
   height: 2.5em;
   align-items: stretch;
-  margin-bottom: 2em;
+  margin-bottom: 0.5em;
   margin-left: 1em;
   margin-right: 1em;
 

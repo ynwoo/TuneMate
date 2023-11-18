@@ -12,7 +12,7 @@
   --text-color: #666666;
   --gradation-color: linear-gradient(var(--main-color), var(--white-color));
 
-  --top-navbar-height: 3.5rem;
+  --top-navbar-height: 2.5rem;
   --bottom-navbar-height: 4rem;
   --main-height: 90vh;
 
@@ -38,14 +38,12 @@ body {
   max-height: var(--max-height);
   font-weight: bold;
   font-family: "TAEBAEKmilkyway";
-  background: linear-gradient(140deg, #d5bdfa, #ffffff, #fff7cf);
 }
 
 #__next {
   position: relative;
   max-width: var(--max-width);
   /* max-height: var(--max-height); */
-  background-color: var(--white-color);
 }
 
 @media (min-width: 400px) {
@@ -69,10 +67,9 @@ a {
 
 .main {
   min-height: var(--main-height);
-  background-color: var(--white-color);
   display: flex;
   flex-direction: column;
-
+  background: linear-gradient(140deg, #d5bdfa, #ffffff, #fff7cf);
   & > div {
     flex: 1;
   }
@@ -81,10 +78,10 @@ a {
 .login {
   min-height: var(--max-height);
   width: inherit;
-  background: var(--gradation-color);
+  /* background: var(--gradation-color); */
   display: flex;
   flex-direction: column;
-
+  background: linear-gradient(140deg, #d5bdfa, #ffffff, #fff7cf);
   & > div {
     flex: 1;
   }
@@ -106,4 +103,17 @@ a {
 .disabled {
   /* z-index: -100; */
   display: none !important;
+}
+
+.modal-w80 > div {
+  width: 80%;
+  margin-bottom: 4rem;
+}
+
+.modal > div {
+  margin-bottom: 4rem;
+}
+
+.text-align-center {
+  text-align: center;
 }

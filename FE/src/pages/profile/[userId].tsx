@@ -29,6 +29,7 @@ import { useParams } from "next/navigation";
 import { Cookie } from "@/utils/cookie";
 import { useRouter } from "next/router";
 import { Convert } from "@/utils/convert";
+import useUserInfo from "@/hooks/useUserInfo";
 
 const ProfilePage = () => {
   const params = useParams();
@@ -46,6 +47,7 @@ const ProfilePage = () => {
   const [mainplaylist, setMainplaylist] = useRecoilState(MainplaylistState);
   const [Album, setAlbum] = useRecoilState(AlbumState);
   const { data: individualPlayListRepresentative } = useIndividualPlayListRepresentativeQuery();
+  const userInfo = useUserInfo();
 
   useEffect(() => {
     if (individualPlayListRepresentative) {
@@ -116,10 +118,11 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const userId = params?.userId as string;
+    if (!userId) return;
     const getUserProfile = async () => {
       if (!userId) return;
 
-      if (userId === Cookie.getUserId()) {
+      if (userId === userInfo?.userId) {
         setIsSameUser(true);
         const userData = await getUserInfo(userId);
         if (userData.imageUrl === undefined) {
@@ -213,7 +216,7 @@ const ProfilePage = () => {
           ))}
         </div>
       </NonCloseableMenu>
-      <Modal isOpen={isOpen} toggle={closeToggle}>
+      <Modal className="modal" isOpen={isOpen} toggle={closeToggle}>
         <SearchTrack myPlaylist={myPlaylist} handleAdd={handleAdd} />
       </Modal>
       {toastStatus && <Toast toastStatus={toastStatus} msg={toastMsg} />}
