@@ -77,7 +77,7 @@
 
 .group-detail-page__description {
   margin-top: 2em;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 
 .group-detail-page__description-item {
@@ -89,9 +89,8 @@
 }
 
 .group-detail-page__button-container {
-  position: absolute;
-  top: 5.5em;
-  right: 1em;
+  display: flex;
+  justify-content: center;
 }
 .group-detail-page__button {
 }
