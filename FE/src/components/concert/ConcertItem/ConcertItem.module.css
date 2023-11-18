@@ -4,7 +4,6 @@
 }
 
 .concert-item__image {
-  /* margin-top: 2cm; */
   width: 80px;
   height: 100%;
   flex-shrink: 0;
@@ -21,6 +20,10 @@
   align-items: center;
   padding: 0.2rem 0.7rem;
   text-align: center;
+}
+
+.concert-item__content-item:not(:last-child) {
+  margin-bottom: 0.5em;
 }
 
 .concert-item__content--date {

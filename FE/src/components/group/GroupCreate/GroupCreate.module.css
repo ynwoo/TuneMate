@@ -1,23 +1,58 @@
 .group-create {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5em;
 }
 
-.group-create__item {
+.group-create__empty-concert--title {
   margin-bottom: 1em;
 }
 
-.group-create__content {
-  height: 6em;
+.group-create__selected-concert {
+  height: 5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1em 0;
+}
+
+.group-create__item--title {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
   margin-bottom: 2em;
+  padding: 0.85em;
+  border: 2px solid var(--main-color);
+}
+
+.group-create__item {
+  padding: 1em;
+}
+
+.group-create__item:not(:last-child) {
+  border-bottom: 1px solid var(--black-color);
+}
+
+.group-create__item input {
+  border: 2px solid var(--main-color);
+}
+
+.group-create__item textarea {
+  border: 2px solid var(--main-color);
+}
+
+.group-create__content {
+  /* height: 6em;
+  margin-bottom: 2em; */
 }
 
 .group-create__search-container {
   display: flex;
-  height: 2.5em;
+  height: 2em;
+  width: 100%;
   align-items: stretch;
-  margin-bottom: 2em;
-  margin-left: 1em;
-  margin-right: 1em;
-  margin-top: 2em;
+  margin-bottom: 1em;
 
   border: 1px var(--main-color) solid;
 }
@@ -35,4 +70,20 @@
 
 .group-create__concert-item--title {
   margin-bottom: 1em;
+}
+
+.group-create-modal-container {
+}
+
+.group-create-modal-container > div {
+  width: 80%;
+  height: 60%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 1em;
+  margin-bottom: 6em;
+}
+
+.group-create__concert-list {
+  font-size: 0.8rem;
 }

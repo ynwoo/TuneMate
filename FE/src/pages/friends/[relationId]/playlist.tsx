@@ -16,6 +16,7 @@ import { getSocialFriends } from "@/api/social";
 import { TUNEMATE_API_BASE_URL } from "@/constants/url";
 import { EventSourcePolyfill } from "event-source-polyfill";
 import { Convert } from "@/utils/convert";
+import useUserInfo from "@/hooks/useUserInfo";
 
 const CommonPlaylistPage = () => {
   const params = useParams();
@@ -28,6 +29,7 @@ const CommonPlaylistPage = () => {
   const [playlistId, setPlaylistId] = useState("");
   const { closeToggle, isOpen, openToggle } = useModal();
   const { popToast, toastStatus, toastMsg } = useToast();
+  const userInfo = useUserInfo();
 
   const getCommonPlaylistData = async (playlistId: string) => {
     setPlaylistId(playlistId);
@@ -67,7 +69,7 @@ const CommonPlaylistPage = () => {
 
   useEffect(() => {
     const getUserProfile = async () => {
-      const userId = Cookie.getUserId() as string;
+      const userId = userInfo?.userId;
       const userData = await getUserInfo(userId);
       const username = userData.name;
       let userSrc = "";

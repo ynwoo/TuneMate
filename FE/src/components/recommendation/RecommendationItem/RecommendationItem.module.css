@@ -53,12 +53,12 @@
 }
 
 .recommendation-item__ratio {
-  width: 5rem;
+  flex: 1;
+  /* width: max-content; */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   text-align: center;
-  /* margin-left: 1rem; */
 }
 
 .recommendation-item__button-container {
@@ -69,5 +69,7 @@
 }
 
 .recommendation-item__button-item {
-  margin-right: 1rem;
+  width: max-content;
+  margin-left: 1em;
+  padding: 1em 0.5em;
 }

@@ -25,19 +25,23 @@
   top: 0;
   right: 0;
   left: 0;
-  height: 4rem;
+  height: 3rem;
 }
 
 .chat-page__chat-list {
   height: max-content;
+  margin-bottom: 1em;
 }
 
 .chat-page__modal-container.chat-page__modal-container {
   justify-content: end;
 }
+.chat-page__modal-container.chat-page__modal-container > div {
+  width: 18rem;
+}
 
 .chat-page__modal {
   height: 100vh;
-  width: 22rem;
+  width: 18rem;
   border-radius: 0%;
 }

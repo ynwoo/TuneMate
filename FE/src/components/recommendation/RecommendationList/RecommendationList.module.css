@@ -1,12 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Grandiflora+One&family=Leckerli+One&family=Nanum+Gothic&family=Nanum+Gothic+Coding&family=Nanum+Myeongjo:wght@700&family=Noto+Serif+KR:wght@200&family=Orbit&display=swap");
 
-.body {
-  background: linear-gradient(140deg, #d5bdfa, #ffffff, #fff7cf);
-  height: 100vh;
-  font-weight: bold;
-  font-family: "Nanum Gothic", sans-serif;
-}
-
 .recommendation-list {
   display: flex;
   flex-wrap: wrap;
