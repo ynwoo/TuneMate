@@ -18,7 +18,7 @@ const useUserInfo = () => {
     return () => clearInterval(timer);
   }, []);
 
-  return { userInfo };
+  return userInfo;
 };
 
 export default useUserInfo;
