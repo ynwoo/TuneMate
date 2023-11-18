@@ -3,16 +3,14 @@
   top: 0;
   left: 0;
   right: 0;
-  height: var(--top-navbar-height);
+  height: 40px;
   width: inherit;
-  max-width: var(--max-width);
-  display: grid;
-  background-color: var(--main-color);
+  background-color: white !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
   z-index: 3;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
 }
 
 .top-navbar__item {
@@ -22,10 +20,11 @@
   display: flex;
   align-items: center;
   color: var(--main-color);
+  justify-content: space-between;
 }
 
 .top-navbar__item svg {
-  /* color: var(--main-color); */
+  color: rgb(101, 100, 102);
 }
 
 .top-navbar__item--back {

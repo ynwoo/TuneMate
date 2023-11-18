@@ -22,14 +22,23 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Leckerli+One&family=Nanum+Gothic&family=Nanum+Gothic+Coding&family=Noto+Serif+KR:wght@200&family=Orbit&display=swap");
 
+@font-face {
+  font-family: "TAEBAEKmilkyway";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   margin: 0;
   padding: 0;
   margin: auto !important;
   height: 100%;
-  max-width: var(--max-width);
-  /* max-height: var(--max-height); */
-  font-family: "Orbit", sans-serif;
+  max-height: var(--max-height);
+  font-weight: bold;
+  font-family: "TAEBAEKmilkyway";
+  background: linear-gradient(140deg, #d5bdfa, #ffffff, #fff7cf);
 }
 
 #__next {
