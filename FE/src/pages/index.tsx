@@ -37,9 +37,11 @@ const LoginPage = () => {
   }, [router, setUserInfo]);
 
   const setCookie = () => {
-    const userId = process.env.NEXT_PUBLIC_USER_ID as string;
-    const accessToken = process.env.NEXT_PUBLIC_ACCESS_TOKEN as string;
-    const refreshToken = process.env.NEXT_PUBLIC_REFRESH_TOKEN as string;
+    const userId = "ab1b4b7f-abb2-4bf1-920f-b437233b4f47";
+    const accessToken =
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhYjFiNGI3Zi1hYmIyLTRiZjEtOTIwZi1iNDM3MjMzYjRmNDciLCJleHAiOjE3MDAzMDc0MTEsImlzcyI6IlR1bmVtYXRlIn0.hmLdEjCweWBD6nsh2ICUb3wx-8_KQ-O9IXNVrSxHIGL50PVHO5uYeh5eElahjKjU";
+    const refreshToken =
+      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiYWIxYjRiN2YtYWJiMi00YmYxLTkyMGYtYjQzNzIzM2I0ZjQ3IiwiZXhwIjoxNzAxNTA5ODExLCJpc3MiOiJUdW5lbWF0ZSJ9.3E9Vv8zCPoBc9EEbJg-1a-ampdRnC33E_VN7HLeLA2atz-yM1R3a4hNWtj8ggwIM";
     Cookie.setTokenResponse({ userId, accessToken, refreshToken });
     location.reload();
   };
@@ -47,7 +49,12 @@ const LoginPage = () => {
   return (
     <div className={styles["login-page"]}>
       <div className={styles["login-page__title"]}>
-        <Image src="/TuneMate.png" alt="TuneMate Logo" width={250} height={40} />
+        <Image
+          src="/TuneMate.png"
+          alt="TuneMate Logo"
+          width={250}
+          height={40}
+        />
       </div>
       <div className={styles["login-page__button"]}>
         <a
@@ -62,7 +69,11 @@ const LoginPage = () => {
       </div>
       {process.env.NODE_ENV === "development" && (
         <>
-          <Button className={styles["login-page__button"]} onClick={setCookie} color="white">
+          <Button
+            className={styles["login-page__button"]}
+            onClick={setCookie}
+            color="white"
+          >
             쿠키 넣기!!!!!
           </Button>
           <Link href={"/main"}>메인 페이지 이동</Link>
