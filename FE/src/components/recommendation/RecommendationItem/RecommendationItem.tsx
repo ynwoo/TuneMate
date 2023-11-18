@@ -96,28 +96,31 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
             </div>
             <div>
               <div className={styles["recommendation-item__ratio"]}>
-                {/* TODO: distance 구현 예정 */}
-                {/* <p>{item.distance ?? 0}km</p> */}
-                <div className="flex-container">
-                  <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{ display: "flex", marginLeft: "4px" }}>
                     <Icon.Music size="lg" />
-                    {(
-                      Number(
-                        isFriendRequest
-                          ? item.musicalTasteSimilarity
-                          : item.similarity
-                      ) * 100
-                    ).toFixed(0)}
+                    <div style={{ display: "flex", marginLeft: "4px" }}>
+                      {(
+                        Number(
+                          isFriendRequest
+                            ? item.musicalTasteSimilarity
+                            : item.similarity
+                        ) * 100
+                      ).toFixed(0)}
+                    </div>
                   </div>
+
                   {!isFriendRequest && (
-                    <ButtonWithModal
-                      className={styles["recommendation-item__button-item"]}
-                      onClick={onAccept}
-                      modalMessage="친구요청을 보내시겠습니까?"
-                      color="white"
-                    >
-                      <Icon.Recommendation size="lg" />
-                    </ButtonWithModal>
+                    <div style={{ width: "20px" }}>
+                      <ButtonWithModal
+                        className={styles["recommendation-item__button-item"]}
+                        onClick={onAccept}
+                        modalMessage="친구요청을 보내시겠습니까?"
+                        color="white"
+                      >
+                        <Icon.Recommendation size="lg" />
+                      </ButtonWithModal>
+                    </div>
                   )}
                 </div>
               </div>

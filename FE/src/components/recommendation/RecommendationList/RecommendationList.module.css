@@ -5,30 +5,23 @@
   height: 100vh;
   font-weight: bold;
   font-family: "Nanum Gothic", sans-serif;
-  padding: 10px;
 }
 
 .recommendation-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  margin: 10px;
 }
 
 .recommendation-list__item {
   margin-top: 2vh;
-  max-width: var(--max-width);
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.recommendation-list__item {
-  width: 26%;
-  margin-bottom: 1rem;
-  flex: 1;
+  max-width: 50px;
 }
 
 .recommendation-list__item:last-child {
-  flex: 0;
+  /* flex: 0; */
+  width: 80px;
 }
 
 @media screen and (max-width: 400px) {

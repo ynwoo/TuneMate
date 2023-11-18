@@ -53,89 +53,97 @@ const MainPage = () => {
   }, []);
 
   return (
-    <div className={styles["main-page"]}>
-      <MainContent
-        className={styles["main-page__content"]}
-        title={
-          <p>
-            {username && `${username}님을 위한 `}
-            <span className="blue">공연</span>
-          </p>
-        }
-        onClick={onConcert}
-      >
-        <ul className={styles["main-page__content--item-container"]}>
-          {concerts?.map((concert) => (
-            <ConcertCard
-              className={styles["main-page__content--item"]}
-              item={concert}
-            />
-          ))}
-        </ul>
-      </MainContent>
-      <MainContent
-        className={styles["main-page__content"]}
-        title={
-          <p>
-            {username && `${username}님을 위한 `}
-            <span className="blue">추천곡</span>
-          </p>
-        }
-        onClick={onRecommendationTracks}
-      >
-        <ul className={styles["main-page__content--item-container"]}>
-          {tracks?.map((track) => (
-            <li key={track.uri} className={styles["main-page__content--item"]}>
-              <ConcertImage
-                src={track.album.images[0].url}
-                alt={track.name}
-                type="small"
-                onClick={() => changePlayList(track)}
-              />
-            </li>
-          ))}
-        </ul>
-      </MainContent>
-      <MainContent
-        className={styles["main-page__content"]}
-        title={
-          <p>
-            {username && `${username}님의 `}
-            <span className="blue">플레이리스트</span>
-          </p>
-        }
-        onClick={onProfile}
-      >
-        <ul className={styles["main-page__content--item-container"]}>
-          {individualPlayList?.tracks.items?.map(({ track }) => (
-            <li key={track.uri} className={styles["main-page__content--item"]}>
-              <ConcertImage
-                src={track.album.images[0].url}
-                alt={track.name}
-                type="small"
-                onClick={() => changePlayList(track)}
-              />
-            </li>
-          ))}
-        </ul>
-      </MainContent>
-      {socialFriends?.map(({ friendPlaylistId, name, friendId }) => (
+    <div className={styles["body"]}>
+      <div className={styles["main-page"]}>
         <MainContent
           className={styles["main-page__content"]}
           title={
             <p>
-              {name && `${name}님의 `}
-              <span className="blue">플레이리스트</span>
+              {username && `${username}님을 위한 `}
+              <span>공연</span>
             </p>
           }
-          onClick={() => onFriendProfile(friendId)}
+          onClick={onConcert}
         >
-          <FriendPlayList
-            className={styles["main-page__content--item-container"]}
-            playListId={friendPlaylistId}
-          />
+          <ul className={styles["main-page__content--item-container"]}>
+            {concerts?.map((concert) => (
+              <ConcertCard
+                className={styles["main-page__content--item"]}
+                item={concert}
+              />
+            ))}
+          </ul>
         </MainContent>
-      ))}
+        <MainContent
+          className={styles["main-page__content"]}
+          title={
+            <p>
+              {username && `${username}님을 위한 `}
+              <span>추천곡</span>
+            </p>
+          }
+          onClick={onRecommendationTracks}
+        >
+          <ul className={styles["main-page__content--item-container"]}>
+            {tracks?.map((track) => (
+              <li
+                key={track.uri}
+                className={styles["main-page__content--item"]}
+              >
+                <ConcertImage
+                  src={track.album.images[0].url}
+                  alt={track.name}
+                  type="small"
+                  onClick={() => changePlayList(track)}
+                />
+              </li>
+            ))}
+          </ul>
+        </MainContent>
+        <MainContent
+          className={styles["main-page__content"]}
+          title={
+            <p>
+              {username && `${username}님의 `}
+              <span>플레이리스트</span>
+            </p>
+          }
+          onClick={onProfile}
+        >
+          <ul className={styles["main-page__content--item-container"]}>
+            {individualPlayList?.tracks.items?.map(({ track }) => (
+              <li
+                key={track.uri}
+                className={styles["main-page__content--item"]}
+              >
+                <ConcertImage
+                  src={track.album.images[0].url}
+                  alt={track.name}
+                  type="small"
+                  onClick={() => changePlayList(track)}
+                />
+              </li>
+            ))}
+          </ul>
+        </MainContent>
+        {socialFriends?.map(({ friendPlaylistId, name, friendId }) => (
+          <MainContent
+            className={styles["main-page__content"]}
+            title={
+              <p>
+                {name && `${name}님의 `}
+                <span>플레이리스트</span>
+              </p>
+            }
+            onClick={() => onFriendProfile(friendId)}
+          >
+            <FriendPlayList
+              className={styles["main-page__content--item-container"]}
+              playListId={friendPlaylistId}
+            />
+          </MainContent>
+        ))}
+      </div>
     </div>
   );
 };

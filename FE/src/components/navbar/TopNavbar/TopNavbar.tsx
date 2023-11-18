@@ -36,7 +36,7 @@ const TopNavbar = () => {
       <div className={styles["top-navbar__item"]} onClick={router.back}>
         <Icon.Back />
       </div>
-      <Image src="/TuneMate.png" alt="TuneMate Logo" width={130} height={20} />
+      <Image src="/TuneMate.png" alt="TuneMate Logo" width={130} height={21} />
 
       {/* <p>{pageTitleByPathname(pathname)}</p> */}
 
