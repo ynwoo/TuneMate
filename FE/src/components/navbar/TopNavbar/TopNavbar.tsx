@@ -4,6 +4,7 @@ import styles from "./TopNavbar.module.css";
 import Icon from "@/components/icons";
 import Link from "next/link";
 import useFriendRequest from "@/hooks/useFriendRequest";
+import Image from "next/image";
 // import { usePathname } from "next/navigation";
 
 // const pageTitleByPathname = (pathname: string) => {
@@ -34,8 +35,10 @@ const TopNavbar = () => {
     <nav className={styles["top-navbar"]}>
       <div className={styles["top-navbar__item"]} onClick={router.back}>
         <Icon.Back />
-        {/* <p>{pageTitleByPathname(pathname)}</p> */}
       </div>
+      <Image src="/TuneMate.png" alt="TuneMate Logo" width={130} height={20} />
+
+      {/* <p>{pageTitleByPathname(pathname)}</p> */}
 
       <Link href={"/friends/requests"} className={styles["top-navbar__item"]}>
         {unreadFriendRequestCount > 0 && (

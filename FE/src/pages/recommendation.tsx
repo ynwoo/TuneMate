@@ -15,10 +15,12 @@ const RecommendationPage = () => {
   }
 
   return (
-    <div className={styles["recommendation-page"]}>
-      {recommendationFriends && (
-        <RecommendationList recommendations={recommendationFriends} />
-      )}
+    <div className={styles["body"]}>
+      <div className={styles["recommendation-page"]}>
+        {recommendationFriends && (
+          <RecommendationList recommendations={recommendationFriends} />
+        )}
+      </div>
     </div>
   );
 };

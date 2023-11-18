@@ -1,3 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Grandiflora+One&family=Leckerli+One&family=Nanum+Gothic&family=Nanum+Gothic+Coding&family=Nanum+Myeongjo:wght@700&family=Noto+Serif+KR:wght@200&family=Orbit&display=swap");
+
+.body {
+  font-family: "Nanum Gothic", sans-serif;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
 .recommendation-item {
   /* position: relative; */
   background-color: var(--white-color);
@@ -7,6 +16,8 @@
   background-color: white;
   padding: 1vh 3vw;
   display: flex;
+  width: 120px;
+  /* border: 10px solid rgb(218, 214, 246); */
   flex-direction: column;
   cursor: pointer;
 }
@@ -15,10 +26,14 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border-radius: 10px;
 }
 
 .recommendation-item__user--image {
   flex: 1;
+  border: 1px solid rgb(218, 214, 246);
+  border-radius: 50%;
+  margin: 5px;
 }
 .recommendation-item__user--name {
   text-align: center;

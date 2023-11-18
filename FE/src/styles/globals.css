@@ -27,7 +27,8 @@ body {
   margin: auto !important;
   height: 100%;
   max-height: var(--max-height);
-  font-family: "Orbit", sans-serif;
+  font-family: "Nanum Gothic", sans-serif;
+  background: linear-gradient(140deg, #d5bdfa, #ffffff, #fff7cf);
 }
 
 #__next {

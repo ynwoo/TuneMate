@@ -18,9 +18,12 @@ interface RecommendItemProps extends Props {
 
 const RecommendationItem = ({ item, className }: RecommendItemProps) => {
   const router = useRouter();
-  const { mutate: acceptFriendRequest } = useAcceptSocialFriendRequestMutation();
-  const { mutate: declineFriendRequest } = useDeclineSocialFriendRequestMutation();
-  const { mutate: sendSocialFriendRequest } = useSendSocialFriendRequestMutation();
+  const { mutate: acceptFriendRequest } =
+    useAcceptSocialFriendRequestMutation();
+  const { mutate: declineFriendRequest } =
+    useDeclineSocialFriendRequestMutation();
+  const { mutate: sendSocialFriendRequest } =
+    useSendSocialFriendRequestMutation();
   console.log(item);
 
   const { isFriendRequest, onAccept, onDecline } = useMemo(() => {
@@ -51,7 +54,12 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
       onAccept,
       onDecline,
     };
-  }, [item, acceptFriendRequest, declineFriendRequest, sendSocialFriendRequest]);
+  }, [
+    item,
+    acceptFriendRequest,
+    declineFriendRequest,
+    sendSocialFriendRequest,
+  ]);
 
   console.log(isFriendRequest);
 
@@ -60,61 +68,84 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
   }, [router, item.userId]);
 
   return (
-    <li
-      className={classNameWrapper(className, styles["recommendation-item"])}
-      onClick={onMoveProfilePage}
-    >
-      <div className="flex-container">
-        <div className={styles["recommendation-item__user"]}>
-          <ProfileImage
-            className={styles["recommendation-item__user--image"]}
-            src={item.img ?? "/favicon.ico"}
-            alt="내 프로필"
-            type="recommendation"
-          />
-          <p className={styles["recommendation-item__user--name"]}>{item.name}</p>
-        </div>
-        <div className={styles["recommendation-item__ratio"]}>
-          {/* TODO: distance 구현 예정 */}
-          {/* <p>{item.distance ?? 0}km</p> */}
+    <div className={styles["body"]}>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <li
+          className={classNameWrapper(className, styles["recommendation-item"])}
+          onClick={onMoveProfilePage}
+        >
           <div>
-            {(
-              Number(isFriendRequest ? item.musicalTasteSimilarity : item.similarity) * 100
-            ).toFixed(0)}
-            <Icon.Music size="lg" />
+            <div className={styles["recommendation-item__user"]}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  padding: "8px",
+                }}
+              >
+                <ProfileImage
+                  className={styles["recommendation-item__user--image"]}
+                  src={item.img ?? "/favicon.ico"}
+                  alt="내 프로필"
+                  type="recommendation"
+                />
+                <p className={styles["recommendation-item__user--name"]}>
+                  {item.name}
+                </p>
+              </div>
+            </div>
+            <div>
+              <div className={styles["recommendation-item__ratio"]}>
+                {/* TODO: distance 구현 예정 */}
+                {/* <p>{item.distance ?? 0}km</p> */}
+                <div className="flex-container">
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <Icon.Music size="lg" />
+                    {(
+                      Number(
+                        isFriendRequest
+                          ? item.musicalTasteSimilarity
+                          : item.similarity
+                      ) * 100
+                    ).toFixed(0)}
+                  </div>
+                  {!isFriendRequest && (
+                    <ButtonWithModal
+                      className={styles["recommendation-item__button-item"]}
+                      onClick={onAccept}
+                      modalMessage="친구요청을 보내시겠습니까?"
+                      color="white"
+                    >
+                      <Icon.Recommendation size="lg" />
+                    </ButtonWithModal>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
-          {!isFriendRequest && (
-            <ButtonWithModal
-              className={styles["recommendation-item__button-item"]}
-              onClick={onAccept}
-              modalMessage="친구요청을 보내시겠습니까?"
-              color="white"
-            >
-              <Icon.Recommendation size="lg" />
-            </ButtonWithModal>
+          {isFriendRequest && (
+            <div className={styles["recommendation-item__button-container"]}>
+              <ButtonWithModal
+                className={styles["recommendation-item__button-item"]}
+                onClick={onAccept}
+                modalMessage="수락하시겠습니까?"
+                color="blue"
+              >
+                수락
+              </ButtonWithModal>
+              <Button
+                className={styles["recommendation-item__button-item"]}
+                onClick={onDecline}
+                color="red"
+              >
+                거절
+              </Button>
+            </div>
           )}
-        </div>
+        </li>
       </div>
-      {isFriendRequest && (
-        <div className={styles["recommendation-item__button-container"]}>
-          <ButtonWithModal
-            className={styles["recommendation-item__button-item"]}
-            onClick={onAccept}
-            modalMessage="수락하시겠습니까?"
-            color="blue"
-          >
-            수락
-          </ButtonWithModal>
-          <Button
-            className={styles["recommendation-item__button-item"]}
-            onClick={onDecline}
-            color="red"
-          >
-            거절
-          </Button>
-        </div>
-      )}
-    </li>
+    </div>
   );
 };
 

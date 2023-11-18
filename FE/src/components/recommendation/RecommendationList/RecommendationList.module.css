@@ -1,9 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Grandiflora+One&family=Leckerli+One&family=Nanum+Gothic&family=Nanum+Gothic+Coding&family=Nanum+Myeongjo:wght@700&family=Noto+Serif+KR:wght@200&family=Orbit&display=swap");
+
+.body {
+  background: linear-gradient(140deg, #d5bdfa, #ffffff, #fff7cf);
+  height: 100vh;
+  font-weight: bold;
+  font-family: "Nanum Gothic", sans-serif;
+  padding: 10px;
+}
+
 .recommendation-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }
 
 .recommendation-list__item {
-  margin-top: 1vh;
+  margin-top: 2vh;
 }
