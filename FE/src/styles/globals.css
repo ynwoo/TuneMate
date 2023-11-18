@@ -104,3 +104,16 @@ a {
   /* z-index: -100; */
   display: none !important;
 }
+
+.modal-w80 > div {
+  width: 80%;
+  margin-bottom: 4rem;
+}
+
+.modal > div {
+  margin-bottom: 4rem;
+}
+
+.text-align-center {
+  text-align: center;
+}
