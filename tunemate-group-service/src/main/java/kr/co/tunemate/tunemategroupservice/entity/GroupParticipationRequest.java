@@ -5,7 +5,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.ToString.Exclude;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Entity
@@ -19,6 +22,12 @@ public class GroupParticipationRequest extends BaseTimeEntity {
     @Column(nullable = false, unique = true)
     private String groupParticipationRequestId;
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Exclude
     private Group group;
     private String userId;
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 }
