@@ -5,7 +5,7 @@ import { GroupAnnouncement } from "@/types/group";
 import { useState, ChangeEvent, useCallback } from "react";
 import styles from "@/styles/GroupPage.module.css";
 
-const initGroupAnnouncement: GroupAnnouncement = {
+export const initGroupAnnouncement: GroupAnnouncement = {
   capacity: 0,
   concertId: 0,
   content: "",

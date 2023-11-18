@@ -5,7 +5,7 @@ import { classNameWrapper } from "@/utils/className";
 
 interface InputProps extends Props {
   autoFocus?: boolean;
-  value: string;
+  value: string | number;
   inputRef?: RefObject<HTMLInputElement>;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   type?: string;
