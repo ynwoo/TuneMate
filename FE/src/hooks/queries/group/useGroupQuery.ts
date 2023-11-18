@@ -9,7 +9,7 @@ const useGroupQuery = (groupId: Group["groupId"]) => {
     queryKey: QueryKey.useGroupQuery(groupId),
     queryFn: () => getGroup(groupId),
     // 0일때 제외
-    enabled: groupId !== "0" ? true : false,
+    enabled: groupId ? true : false,
   });
 
   return query;

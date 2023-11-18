@@ -46,25 +46,23 @@ const ButtonWithModal = ({
       >
         {children}
       </Button>
-      <Modal isOpen={isOpen} toggle={closeToggle}>
+      <Modal
+        className={styles["button-with-modal__modal-container"]}
+        isOpen={isOpen}
+        toggle={closeToggle}
+      >
         <div className={styles["button-with-modal__modal"]}>
-          <p className={styles["button-with-modal__modal--text"]}>
-            {modalMessage}
-          </p>
+          <p className={styles["button-with-modal__modal--text"]}>{modalMessage}</p>
           <div className={styles["button-with-modal__modal--button-container"]}>
             <Button
-              className={classNameWrapper(
-                styles["button-with-modal__modal--button"]
-              )}
+              className={classNameWrapper(styles["button-with-modal__modal--button"])}
               onClick={onConfirm}
               color="blue"
             >
               확인
             </Button>
             <Button
-              className={classNameWrapper(
-                styles["button-with-modal__modal--button"]
-              )}
+              className={classNameWrapper(styles["button-with-modal__modal--button"])}
               onClick={closeToggle}
               color="red"
             >
