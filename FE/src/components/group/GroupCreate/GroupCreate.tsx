@@ -89,7 +89,7 @@ const GroupCreate = ({ className, onChange, group }: GroupCreateProps) => {
       />
       <Input
         className={classNameWrapper(styles["group-create__item"])}
-        label="끝나는 날짜"
+        label="마감일"
         name="deadline"
         value={group.deadline as string}
         onChange={onChange}

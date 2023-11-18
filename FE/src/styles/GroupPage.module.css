@@ -13,6 +13,7 @@
 }
 
 .groups-page__group-list {
+  padding: 0 1em;
 }
 
 .groups-page__group--create {
@@ -72,16 +73,41 @@
   font-weight: bold;
   margin-bottom: 2em;
   background-color: rgb(233, 227, 248);
-  padding: 15px;
+  padding: 1em;
+}
+
+.group-detail-page__title--input {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 2em;
+  background-color: rgb(233, 227, 248);
+  padding: 0.88em;
+  border: 1px solid var(--main-color);
 }
 
 .group-detail-page__description {
-  margin-top: 2em;
+  margin-top: 1em;
   margin-bottom: 1em;
 }
 
 .group-detail-page__description-item {
-  margin-bottom: 1em;
+  border-bottom: 1px solid var(--black-color);
+  padding: 1em 0.5em;
+}
+
+.group-detail-page__description-item:last-child {
+  border-bottom: 0;
+  margin-bottom: 0.2em;
+}
+
+.group-detail-page__description-item--input {
+  border-bottom: 1px solid var(--black-color);
+  padding: 0.5em;
+}
+
+.group-detail-page__description-item--input:last-child {
+  border-bottom: 0;
 }
 
 .group-detail-page__concert-title {
@@ -93,4 +119,7 @@
   justify-content: center;
 }
 .group-detail-page__button {
+}
+.group-detail-page__button-modal > div {
+  margin: 1em;
 }

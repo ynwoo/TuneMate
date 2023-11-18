@@ -18,6 +18,12 @@ const useUserInfo = () => {
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    if (!userInfo) {
+      getUserInfo(Storage.getUserId()).then((userInfo) => setUserInfo(userInfo));
+    }
+  }, [userInfo]);
+
   return userInfo;
 };
 
