@@ -266,7 +266,7 @@ def root(UserId: str | None = Header(default=None)):
         playlistId = cursor.fetchall()[0][0]
         userOb = request(recommend[i])
         if userOb is None or userOb.get("userId") is None or userOb.get("name") is None:
-            responseList.append(ReturnDto(userId=recommend[i], img="https://velog.velcdn.com/images/yoonwoo-kim/post/dbd4846e-d838-4d73-bcc6-03dfb4cc89cd/image.png", name=nameSet.get(recommend[i]),
+            responseList.append(ReturnDto(userId=recommend[i], img="https://i1.ruliweb.com/img/22/01/09/17e3e74fd63505a96.jpg", name=nameSet.get(recommend[i]),
                                       playlist=playlistId, similarity=similaritys[i]))
         else:
             responseList.append(ReturnDto(userId=userOb.get("userId"), img=userOb.get("imageUrl"), name=userOb.get("name"),
