@@ -106,6 +106,10 @@
   padding: 0.5em;
 }
 
+.group-detail-page__description-item--input input {
+  border: 2px solid var(--main-color);
+}
+
 .group-detail-page__description-item--input:last-child {
   border-bottom: 0;
 }
