@@ -53,6 +53,8 @@ const ProfilePage = () => {
     if (individualPlayListRepresentative) {
       const allUris = individualPlayListRepresentative.tracks.items.map((track) => track.track.uri);
       setMainplaylist(allUris);
+      setMyPlaylist(Convert.playListToTrackInfos(individualPlayListRepresentative));
+      setPlaylistName(individualPlayListRepresentative.name);
     }
   }, [individualPlayListRepresentative]);
 

@@ -136,6 +136,7 @@ const Playlist = ({
 
   const onChangePlayList = (playlistId: PlayList["id"]) => {
     updateIndividualPlayList(playlistId);
+    changePlayListModal.closeToggle();
   };
 
   return (
