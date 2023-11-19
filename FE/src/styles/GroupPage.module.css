@@ -18,6 +18,8 @@
   margin-right: 3em;
   margin-bottom: 1em;
   margin: 15px;
+  font-weight: bold;
+  font-family: "TAEBAEKmilkyway";
 }
 
 .groups-page__search-container {
@@ -27,6 +29,8 @@
   margin-bottom: 2em;
   margin-left: 1em;
   margin-right: 1em;
+  font-weight: bold;
+  font-family: "TAEBAEKmilkyway";
 
   border: 1px var(--main-color) solid;
 }
@@ -34,12 +38,16 @@
 .groups-page__search {
   flex-grow: 1;
   height: inherit;
+  font-weight: bold;
+  font-family: "TAEBAEKmilkyway";
 }
 
 .groups-page__select {
   flex-shrink: 0;
   text-align: center;
   cursor: pointer;
+  font-weight: bold;
+  font-family: "TAEBAEKmilkyway";
 }
 
 /* GroupCreatePage */
@@ -47,10 +55,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-weight: bold;
+  font-family: "TAEBAEKmilkyway";
 }
 .group-create-page__button.group-create-page__button {
   margin-bottom: 1em;
   width: 10em;
+  font-weight: bold;
+  font-family: "TAEBAEKmilkyway";
 }
 
 /* GroupDetailPage */
