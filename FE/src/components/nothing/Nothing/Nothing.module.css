@@ -8,6 +8,7 @@
   width: 100vw;
   max-height: var(--max-height);
   max-width: var(--max-width);
+  height: 60vh;
 }
 
 .nothing__text {
