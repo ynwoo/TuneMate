@@ -1,4 +1,4 @@
-import styles from "@/styles/FriendsRequestsPage.module.css";
+import styles from "./FriendRequestResults.module.css";
 import useSocialFriendRequestsQuery from "@/hooks/queries/social/useSocialFriendRequestsQuery";
 import RecommendationList from "@/components/recommendation/RecommendationList/RecommendationList";
 import useFriendRequest from "@/hooks/useFriendRequest";
@@ -7,7 +7,7 @@ import { Storage } from "@/utils/storage";
 import useSocialFriendIdsQuery from "@/hooks/queries/social/useSocialFriendIdsQuery";
 import Nothing from "@/components/nothing/Nothing/Nothing";
 
-const FriendsRequests = () => {
+const FriendRequestResults = () => {
   const { data: friendIds } = useSocialFriendIdsQuery();
   const { data: friendsRequests, refetch } = useSocialFriendRequestsQuery();
   const { friendRequestMessages } = useFriendRequest();
@@ -32,8 +32,7 @@ const FriendsRequests = () => {
     if (!friendRequestMessages.length && friendIds) {
       return friendRequestMessages.filter(
         ({ requestUserId, receiveUserId }) =>
-          receiveUserId === Storage.getUserId() &&
-          !friendIds?.includes(requestUserId)
+          receiveUserId === Storage.getUserId() && !friendIds?.includes(requestUserId)
       );
     }
 
@@ -45,12 +44,10 @@ const FriendsRequests = () => {
   }
 
   return (
-    <div className={styles["friends-requests-page"]}>
-      {friendsRequests && (
-        <RecommendationList recommendations={friendsRequests} />
-      )}
+    <div className={styles["friend-requests"]}>
+      {friendsRequests && <RecommendationList recommendations={friendsRequests} />}
     </div>
   );
 };
 
-export default FriendsRequests;
+export default FriendRequestResults;
