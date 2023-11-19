@@ -14,7 +14,7 @@
 .concert-item__content {
   flex-grow: 1;
   display: flex;
-
+  font-weight: 500;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
@@ -30,6 +30,7 @@
   font-size: 0.8rem;
 }
 .concert-item__content--title {
-  font-weight: bold;
+  font-weight: 600;
   line-height: 1em;
+  color: rgb(93, 93, 93);
 }

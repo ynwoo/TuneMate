@@ -41,8 +41,7 @@
 
 .recommendation-item__user--image {
   flex: 1;
-  border: 1px solid rgb(218, 214, 246);
-  border-radius: 50%;
+  /* border: 1px solid rgb(218, 214, 246); */
   margin: 5px;
 }
 .recommendation-item__user--name {

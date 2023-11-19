@@ -163,6 +163,7 @@ const GroupDetail = () => {
                     title="인원수"
                     description={`${group.participantsCnt} / ${group.capacity}`}
                   />
+
                   <ConcertInfoItem
                     className={styles["group-detail-page__description-item"]}
                     title="내용"
@@ -173,6 +174,14 @@ const GroupDetail = () => {
                     title="모집날짜"
                     description={Time.period(group.startDateTime, group.deadline as string)}
                   />
+                  <p className={styles["group-detail-page__description-item--detail"]}>
+                    [{" "}
+                    {group.userInfos
+                      .map(({ name }) => name)
+                      .filter((name) => name !== group.hostName)
+                      .join(", ")}{" "}
+                    ]
+                  </p>
                 </>
               )}
             </div>

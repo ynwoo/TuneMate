@@ -16,7 +16,7 @@ const RequestsNabvar = ({ onSelect, className, items }: RequestsNabvarProps) => 
         <Button
           className={styles["requests-navbar__item"]}
           onClick={() => onSelect(value)}
-          color="blue"
+          color="none"
         >
           {name}
         </Button>

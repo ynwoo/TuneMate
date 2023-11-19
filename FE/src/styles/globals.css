@@ -26,7 +26,7 @@
   --bottom-navbar-height: 4rem;
   --main-height: 90vh;
 
-  --max-height: 800px;
+  --max-height: 100vh;
   --max-width: 400px;
 
   --default-font-family: "TAEBAEKmilkyway";
@@ -38,8 +38,8 @@ body {
   margin: auto !important;
   height: 100%;
   max-height: var(--max-height);
-  font-weight: bold;
-  font-family: "TAEBAEKmilkyway";
+  font-weight: bold !important;
+  font-family: "TAEBAEKmilkyway" !important;
 }
 
 #__next {
@@ -80,7 +80,6 @@ a {
 .login {
   min-height: var(--max-height);
   width: inherit;
-  /* background: var(--gradation-color); */
   display: flex;
   flex-direction: column;
   background: linear-gradient(140deg, #d5bdfa, #ffffff, #fff7cf);

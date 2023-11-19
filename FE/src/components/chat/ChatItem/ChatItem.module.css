@@ -1,5 +1,7 @@
 .chat-item {
   display: flex;
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
 }
 
 .reverse {

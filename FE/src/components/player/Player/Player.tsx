@@ -9,7 +9,7 @@ import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/indi
 import { useRecoilValue } from "recoil";
 import { myPlayListState } from "@/store/playList";
 import useUserInfo from "@/hooks/useUserInfo";
-import ProfileImage from "@/components/image/ProfileImage/ProfileImage";
+import { useRouter } from "next/router";
 
 interface PlayerProps extends Props {
   //
@@ -17,6 +17,7 @@ interface PlayerProps extends Props {
 
 const Player = ({ className }: PlayerProps) => {
   const userInfo = useUserInfo();
+  const router = useRouter();
   const { playerCallback, play, uris } = usePlayList();
   const { addTrackToMyPlayList, deleteTrackToMyPlayList, currentTrack } = usePlayList();
   const { data: individualPlayList } = useIndividualPlayListRepresentativeQuery();
@@ -28,23 +29,27 @@ const Player = ({ className }: PlayerProps) => {
     return uris.includes(currentTrack.uri);
   }, [individualPlayList, currentTrack]);
 
-  const onClick = (e: MouseEvent<HTMLElement>) => {
+  const onPrevent = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
+  const onClick = () => {
+    router.push("/player");
+  };
+
   return (
-    <div className={classNameWrapper(styles.player, className)} onClick={onClick}>
+    <div className={classNameWrapper(styles.player, className)} onClick={onPrevent}>
       {userInfo?.spotifyAccessToken && (
         <SpotifyWebPlayer
           styles={{
             activeColor: "#fff",
-            bgColor: "#333",
-            color: "#fff",
+            bgColor: "#ffffff",
+            color: "#0a0a0a",
             loaderColor: "#fff",
             sliderColor: "#1cb954",
-            trackArtistColor: "#ccc",
-            trackNameColor: "#fff",
+            trackArtistColor: "#414040",
+            trackNameColor: "#000000",
           }}
           token={userInfo.spotifyAccessToken}
           showSaveIcon
@@ -53,6 +58,7 @@ const Player = ({ className }: PlayerProps) => {
           uris={uris}
         />
       )}
+      <div className={styles["player__album"]} onClick={onClick}></div>
       {!alreadyExist ? (
         <div
           className={styles["player__button--plus"]}

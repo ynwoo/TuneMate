@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: "TAEBAEKmilkyway";
 }
 
 .requests-navbar__item {
@@ -10,4 +11,10 @@
   margin: 0;
   height: 3em;
   text-align: center;
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  margin: 10px;
 }
