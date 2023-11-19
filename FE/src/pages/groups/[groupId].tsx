@@ -16,6 +16,7 @@ import useUserInfo from "@/hooks/useUserInfo";
 import Input from "@/components/input/Input/Input";
 import { Group } from "@/types/group";
 import useUpdateGroupMutation from "@/hooks/mutations/group/useUpdateGroupMutation";
+import TextArea from "@/components/input/TextArea/TextArea";
 
 const GroupDetail = () => {
   const params = useParams();
@@ -140,7 +141,7 @@ const GroupDetail = () => {
                     value={newGroup.capacity}
                     type="number"
                   />
-                  <Input
+                  <TextArea
                     className={styles["group-detail-page__description-item--input"]}
                     label="내용"
                     name="content"
