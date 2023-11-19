@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -32,6 +33,8 @@ public class ResponseGroup {
     private String content;
     @Schema(example = "false", description = "공고 작성자에 의해 공고가 마감이 됐는지 여부를 표현")
     private Boolean closedByHost;
+    @Schema(description = "공고 참여자 정보")
+    private List<UserInfo> userInfos;
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
 }

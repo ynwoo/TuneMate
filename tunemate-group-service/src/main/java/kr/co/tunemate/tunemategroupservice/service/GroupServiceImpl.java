@@ -73,10 +73,13 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public GroupDto getGroupByGroupId(String groupId) {
         Group group = groupRepository.findByGroupId(groupId).orElseThrow(() -> new BaseException("존재하지 않는 공고입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus()));
-        Long participantsCnt = groupParticipationRepository.countByGroup(group);
+        List<GroupParticipation> groupParticipations = groupParticipationRepository.findAllByGroup(group);
+
+        List<UserInfo> userInfos = userServiceClient.getUserInfo(groupParticipations.stream().map(GroupParticipation::getUserId).toList());
 
         GroupDto groupDto = modelMapper.map(group, GroupDto.class);
-        groupDto.setParticipantsCnt(participantsCnt);
+        groupDto.setParticipantsCnt((long) groupParticipations.size());
+        groupDto.setUserInfos(userInfos);
 
         log.info("공고{}를 조회했습니다.", groupDto);
 
