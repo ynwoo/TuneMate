@@ -47,15 +47,12 @@ const Player = () => {
   const { popToast, toastStatus, toastMsg } = useToast();
   const [mainplaylist, setMainplaylist] = useRecoilState(MainplaylistState);
   const [Album, setAlbum] = useRecoilState(AlbumState);
-  const { data: individualPlayListRepresentative } =
-    useIndividualPlayListRepresentativeQuery();
+  const { data: individualPlayListRepresentative } = useIndividualPlayListRepresentativeQuery();
   const userInfo = useUserInfo();
 
   useEffect(() => {
     if (individualPlayListRepresentative) {
-      const allUris = individualPlayListRepresentative.tracks.items.map(
-        (track) => track.track.uri
-      );
+      const allUris = individualPlayListRepresentative.tracks.items.map((track) => track.track.uri);
       setMainplaylist(allUris);
     }
   }, [individualPlayListRepresentative]);
