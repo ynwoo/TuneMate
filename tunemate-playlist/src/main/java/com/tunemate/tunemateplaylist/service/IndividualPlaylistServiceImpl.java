@@ -204,7 +204,7 @@ public class IndividualPlaylistServiceImpl implements IndividualPlaylistService 
         JSONObject jsonObject = (JSONObject) parser.parse(str);
         JSONObject jsonObject2 = (JSONObject) jsonObject.get("item");
         String uri = (String) jsonObject2.get("uri");
-
+        log.info("사용자가 듣고 있는 노래 : {}",uri);
         Playlist playlist = individualPlaylistRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("플레이 리스트가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
         Track track = individualPlaylistTrackRepository.findByTrackSpotifyIdAndPlaylist(uri,playlist).orElseThrow(() -> new NotFoundException("플레이 리스트에 노래가 존재하지 않습니다.", HttpStatus.NOT_FOUND));
         track.setCount(track.getCount()+1);
