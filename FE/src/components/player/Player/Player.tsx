@@ -9,7 +9,7 @@ import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/indi
 import { useRecoilValue } from "recoil";
 import { myPlayListState } from "@/store/playList";
 import useUserInfo from "@/hooks/useUserInfo";
-import ProfileImage from "@/components/image/ProfileImage/ProfileImage";
+import { useRouter } from "next/router";
 
 interface PlayerProps extends Props {
   //
@@ -17,31 +17,29 @@ interface PlayerProps extends Props {
 
 const Player = ({ className }: PlayerProps) => {
   const userInfo = useUserInfo();
+  const router = useRouter();
   const { playerCallback, play, uris } = usePlayList();
-  const { addTrackToMyPlayList, deleteTrackToMyPlayList, currentTrack } =
-    usePlayList();
-  const { data: individualPlayList } =
-    useIndividualPlayListRepresentativeQuery();
+  const { addTrackToMyPlayList, deleteTrackToMyPlayList, currentTrack } = usePlayList();
+  const { data: individualPlayList } = useIndividualPlayListRepresentativeQuery();
   const myPlayList = useRecoilValue(myPlayListState);
 
   const alreadyExist = useMemo(() => {
     if (!individualPlayList || !currentTrack) return false;
-    const uris = individualPlayList.tracks.items.map(
-      ({ track: { uri } }) => uri
-    );
+    const uris = individualPlayList.tracks.items.map(({ track: { uri } }) => uri);
     return uris.includes(currentTrack.uri);
   }, [individualPlayList, currentTrack]);
 
-  const onClick = (e: MouseEvent<HTMLElement>) => {
+  const onPrevent = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
+  const onClick = () => {
+    router.push("/player");
+  };
+
   return (
-    <div
-      className={classNameWrapper(styles.player, className)}
-      onClick={onClick}
-    >
+    <div className={classNameWrapper(styles.player, className)} onClick={onPrevent}>
       {userInfo?.spotifyAccessToken && (
         <SpotifyWebPlayer
           styles={{
@@ -60,25 +58,20 @@ const Player = ({ className }: PlayerProps) => {
           uris={uris}
         />
       )}
+      <div className={styles["player__album"]} onClick={onClick}></div>
       {!alreadyExist ? (
         <div
           className={styles["player__button--plus"]}
           onClick={() => addTrackToMyPlayList(myPlayList)}
         >
-          <Icon.Plus
-            size="lg"
-            className={styles["player__button--plus-icon"]}
-          />
+          <Icon.Plus size="lg" className={styles["player__button--plus-icon"]} />
         </div>
       ) : (
         <div
           className={styles["player__button--plus"]}
           onClick={() => deleteTrackToMyPlayList(myPlayList)}
         >
-          <Icon.Delete
-            size="lg"
-            className={styles["player__button--plus-icon"]}
-          />
+          <Icon.Delete size="lg" className={styles["player__button--plus-icon"]} />
         </div>
       )}
     </div>
