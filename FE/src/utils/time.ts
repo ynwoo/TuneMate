@@ -37,14 +37,15 @@ export const Time = Object.freeze({
     const date = new Date(getTime(time));
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    return `${Number(month)}월 ${Number(day)}일`;
+    return `${month}월 ${day}일`;
   },
 
   yyyyMMdd: (time: string) => {
     const date = new Date(getTime(time));
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
-    const day = date.getDate();
+    const _day = date.getDate();
+    const day = _day < 10 ? `0${_day}` : String(_day);
     return `${year}-${month}-${day}`;
   },
 
