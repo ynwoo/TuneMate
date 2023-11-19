@@ -38,6 +38,9 @@ public class ChatServiceImpl implements ChatService{
             chattingRoomRepository.save(msg);
             return msg;
         }
+        else if(chatDto.getContent().equals("exit")){
+            return msg;
+        }
         if(chatPersonRepository.findByFriend(friendRepository.findById(relationId).get()).size() == 2){
             chatDto.setReadCount(0);
         }
