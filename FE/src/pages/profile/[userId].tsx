@@ -46,12 +46,15 @@ const ProfilePage = () => {
   const { popToast, toastStatus, toastMsg } = useToast();
   const [mainplaylist, setMainplaylist] = useRecoilState(MainplaylistState);
   const [Album, setAlbum] = useRecoilState(AlbumState);
-  const { data: individualPlayListRepresentative } = useIndividualPlayListRepresentativeQuery();
+  const { data: individualPlayListRepresentative } =
+    useIndividualPlayListRepresentativeQuery();
   const userInfo = useUserInfo();
 
   useEffect(() => {
     if (individualPlayListRepresentative) {
-      const allUris = individualPlayListRepresentative.tracks.items.map((track) => track.track.uri);
+      const allUris = individualPlayListRepresentative.tracks.items.map(
+        (track) => track.track.uri
+      );
       setMainplaylist(allUris);
     }
   }, [individualPlayListRepresentative]);
@@ -181,13 +184,13 @@ const ProfilePage = () => {
     addTrack(data.uri);
   };
 
-  const changePlaylistName = async(name: string) => {
+  const changePlaylistName = async (name: string) => {
     const data = {
-      name: name
-    }
-    const response = await spotifyApi.put(`/playlists/${playlistId}`, data)
+      name: name,
+    };
+    const response = await spotifyApi.put(`/playlists/${playlistId}`, data);
     setPlaylistName(name);
-  }
+  };
 
   return (
     <div>
