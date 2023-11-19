@@ -9,6 +9,7 @@ import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/indi
 import { useRecoilValue } from "recoil";
 import { myPlayListState } from "@/store/playList";
 import useUserInfo from "@/hooks/useUserInfo";
+import ProfileImage from "@/components/image/ProfileImage/ProfileImage";
 
 interface PlayerProps extends Props {
   //

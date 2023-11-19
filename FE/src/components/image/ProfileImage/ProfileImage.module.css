@@ -19,6 +19,11 @@
   width: 2.5rem;
 }
 
+.small {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
 .profile {
   height: 10rem;
   width: 10rem;

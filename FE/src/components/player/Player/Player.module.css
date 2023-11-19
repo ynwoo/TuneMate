@@ -38,6 +38,23 @@
   justify-content: space-between;
 }
 
+/* 재생바 윗 부분 로고 */
+.player > div > div > div:first-child > div::after {
+  /* width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 0.3em;
+  border-radius: 50%;
+  content: "\00a0\00a0\00a0\00a0Tunemate";
+  color: var(--white-color);
+  background-image: url("/favicon.ico");
+  background-size: cover; */
+}
+
+/* 재생바 윗 부분 로고 */
+.player > div > div > div:first-child > div > a > svg {
+  /* display: none; */
+}
+
 /* 재생바 윗 부분 title */
 .player > div > div > div:first-child > div > div:first-child > div:first-child {
   text-overflow: ellipsis;
