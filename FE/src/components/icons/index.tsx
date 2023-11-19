@@ -14,6 +14,7 @@ import {
   faHeadphones,
   faMagnifyingGlass,
   faHandshake,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { faHouse } from "@fortawesome/free-solid-svg-icons/faHouse";
@@ -161,6 +162,14 @@ const Icon = {
     <FontAwesomeIcon
       className={classNameWrapper(styles.gray, className)}
       icon={faCirclePlay}
+      size={size}
+    />
+  ),
+
+  Xmark: ({ size = "2xl", className }: IconProps) => (
+    <FontAwesomeIcon
+      className={classNameWrapper(styles.icon, className)}
+      icon={faXmark}
       size={size}
     />
   ),

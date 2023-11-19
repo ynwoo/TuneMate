@@ -1,6 +1,23 @@
+@font-face {
+  font-family: "TAEBAEKmilkyway";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.body {
+  background: linear-gradient(140deg, #d5bdfa, #ffffff, #fff7cf);
+  height: 100vh;
+  font-weight: bold;
+  font-family: "TAEBAEKmilkyway";
+  padding: 10px;
+}
+
 .friend-list {
+  margin-top: 10px;
 }
 
 .friend-list__item {
-  margin-top: 0.5em;
+  margin-top: 1em;
 }

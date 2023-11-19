@@ -1,0 +1,44 @@
+.concert-search-modal__search-container {
+  display: flex;
+  height: 2.5em;
+  align-items: stretch;
+  margin-bottom: 2em;
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-top: 1em;
+
+  border: 1px var(--main-color) solid;
+
+  position: fixed;
+}
+
+.concert-search-modal__search {
+  flex-grow: 1;
+  height: inherit;
+}
+
+.concert-search-modal__select {
+  flex-shrink: 0;
+  text-align: center;
+  cursor: pointer;
+}
+
+.concert-search-modal__concert-item--title {
+  margin-bottom: 1em;
+}
+
+.concert-search-modal-container {
+}
+
+.concert-search-modal-container > div {
+  width: 90%;
+  height: 60%;
+  overflow-y: scroll;
+}
+
+.concert-search-modal__concert-list {
+  margin-top: 6em;
+
+  padding: 1em;
+  font-size: 0.8rem;
+}

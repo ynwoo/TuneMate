@@ -1,6 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Grandiflora+One&family=Leckerli+One&family=Nanum+Gothic&family=Nanum+Gothic+Coding&family=Nanum+Myeongjo:wght@700&family=Noto+Serif+KR:wght@200&family=Orbit&display=swap");
+
+@font-face {
+  font-family: "TAEBAEKmilkyway";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKmilkyway.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .body {
   background: linear-gradient(140deg, #d5bdfa, #ffffff, #fff7cf);
   height: 100vh;
+  font-weight: bold;
+  font-family: "TAEBAEKmilkyway";
 }
 
 .main-page {
@@ -25,4 +37,8 @@
 
 .main-page__content--item {
   margin-right: 1rem;
+}
+
+.reco {
+  color: rgb(43, 3, 220);
 }

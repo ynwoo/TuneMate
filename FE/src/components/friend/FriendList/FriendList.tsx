@@ -11,11 +11,17 @@ interface FriendListProps extends Props {
 
 const FriendList = ({ friends, className }: FriendListProps) => {
   return (
-    <ul className={classNameWrapper(styles["friend-list"], className)}>
-      {friends.map((friend) => (
-        <FriendItem key={friend.friendId} item={friend} className={styles["friend-list__item"]} />
-      ))}
-    </ul>
+    <div className={styles["body"]}>
+      <ul className={classNameWrapper(styles["friend-list"], className)}>
+        {friends.map((friend) => (
+          <FriendItem
+            key={friend.friendId}
+            item={friend}
+            className={styles["friend-list__item"]}
+          />
+        ))}
+      </ul>
+    </div>
   );
 };
 
