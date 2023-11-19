@@ -16,7 +16,7 @@
 .modal-box {
   display: block;
   background: white;
-  width: 22rem;
+  width: 20rem;
   max-width: var(--max-width);
   max-height: var(--max-height);
   border-radius: 1rem;
