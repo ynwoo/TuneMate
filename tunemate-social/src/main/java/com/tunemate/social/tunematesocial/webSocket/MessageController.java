@@ -29,6 +29,7 @@ public class MessageController {
     public void message(@Payload ChatDto message){
 //        headerAccessor.getSessionAttributes().put("username",message.getSenderName());
         log.info("{} 사용자, 채팅방 번호 : {}",message.getSenderNo(),message.getRelationId());
+        log.info(message.toString());
 //        message.setTime(LocalDateTime.now());
 //        message.setReadCount(1);
         simpMessageSendingOperations.convertAndSend("/topic/"+message.getRelationId(),chatService.getChat(message.getRelationId(),message));

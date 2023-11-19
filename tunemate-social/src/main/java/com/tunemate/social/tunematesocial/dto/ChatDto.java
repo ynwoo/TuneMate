@@ -3,11 +3,13 @@ package com.tunemate.social.tunematesocial.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@ToString
 public class ChatDto {
 
     @Schema(description = "채팅방(친구관계) 기본키",example = "3")
