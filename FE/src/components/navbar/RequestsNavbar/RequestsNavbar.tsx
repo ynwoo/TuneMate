@@ -9,14 +9,17 @@ interface RequestsNabvarProps extends Props {
   items: OptionType[];
 }
 
-const RequestsNabvar = ({ onSelect, className, items }: RequestsNabvarProps) => {
+const RequestsNabvar = ({
+  onSelect,
+  className,
+  items,
+}: RequestsNabvarProps) => {
   return (
     <nav className={classNameWrapper(styles["requests-navbar"], className)}>
       {items.map(({ name, value }) => (
         <Button
           className={styles["requests-navbar__item"]}
           onClick={() => onSelect(value)}
-          color="blue"
         >
           {name}
         </Button>

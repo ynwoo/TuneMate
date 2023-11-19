@@ -24,13 +24,21 @@ const GroupItem = ({ className, item }: GroupItemProps) => {
       className={classNameWrapper(styles["group-item"], className)}
       onClick={onGroupDetail}
     >
-      <p className={styles["group-item__user"]}>{item.hostName}</p>
-      <div className={styles["group-item__info"]}>
+      <div style={{ width: "300px" }}>
         <h1 className={styles["group-item__info--title"]}>{item.title}</h1>
-        <p className={styles["group-item__info--time"]}>
-          <hr />
-          {Time.period(item.startDateTime, item.deadline as string)}
-        </p>
+        <hr />
+        <div style={{ display: "flex" }}>
+          <div>
+            {" "}
+            <p className={styles["group-item__user"]}>
+              글쓴이 : {item.hostName}
+            </p>
+          </div>
+
+          <p className={styles["group-item__user"]}>
+            {Time.period(item.startDateTime, item.deadline as string)}
+          </p>
+        </div>
       </div>
     </li>
   );

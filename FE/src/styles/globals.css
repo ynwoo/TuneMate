@@ -38,8 +38,8 @@ body {
   margin: auto !important;
   height: 100%;
   max-height: var(--max-height);
-  font-weight: bold;
-  font-family: "TAEBAEKmilkyway";
+  font-weight: bold !important;
+  font-family: "TAEBAEKmilkyway" !important;
 }
 
 #__next {
