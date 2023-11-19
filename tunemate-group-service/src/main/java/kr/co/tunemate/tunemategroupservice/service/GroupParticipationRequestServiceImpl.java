@@ -102,7 +102,7 @@ public class GroupParticipationRequestServiceImpl implements GroupParticipationR
         List<Group> groups = groupRepository.getReferencesByHostId(userId);
 
         return groupParticipationRequestRepository.findAllByGroupIn(groups).stream().map(groupParticipationRequest -> {
-                    List<UserInfo> userInfos = userServiceClient.getUserInfo(List.of(userId));
+                    List<UserInfo> userInfos = userServiceClient.getUserInfo(List.of(groupParticipationRequest.getUserId()));
 
                     if (userInfos.isEmpty()) {
                         throw new BaseException("존재하지 않는 사용자입니다.", GroupErrorCode.NO_SUCH_ITEM_EXCEPTION.getHttpStatus());
