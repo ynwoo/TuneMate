@@ -18,13 +18,9 @@ export const createGroup = async (groupAnnouncement: GroupAnnouncement) => {
 };
 
 // 모집 공고 목록 조회
-export const getGroups = async (
-  groupSearchOptions: GroupSearchOptions
-): Promise<Group[]> => {
+export const getGroups = async (groupSearchOptions: GroupSearchOptions): Promise<Group[]> => {
   const keys = Object.keys(groupSearchOptions) as (keyof GroupSearchOptions)[];
-  const queryParams = keys
-    .map((key) => `${key}=${groupSearchOptions[key]}`)
-    .join("&");
+  const queryParams = keys.map((key) => `${key}=${groupSearchOptions[key]}`).join("&");
 
   const response = await api.get<Group[]>(`${GROUPS_URL}?${queryParams}`);
   return response.data;
@@ -63,9 +59,7 @@ export const participateGroup = async (groupId: Group["groupId"]) => {
 };
 
 // 받은 참여 요청 조회
-export const getGroupReceivedParticipations = async (): Promise<
-  GroupParticipation[]
-> => {
+export const getGroupReceivedParticipations = async (): Promise<GroupParticipation[]> => {
   const response = await api.get<GroupParticipation[]>(
     `${GROUP_SERVICE_URL}/me/received-participation-requests`
   );
@@ -73,9 +67,7 @@ export const getGroupReceivedParticipations = async (): Promise<
 };
 
 // 보낸 참여 요쳥 목록 조회
-export const getGroupSentParticipations = async (): Promise<
-  GroupParticipation[]
-> => {
+export const getGroupSentParticipations = async (): Promise<GroupParticipation[]> => {
   const response = await api.get<GroupParticipation[]>(
     `${GROUP_SERVICE_URL}/me/sent-participation-requests`
   );
@@ -84,20 +76,16 @@ export const getGroupSentParticipations = async (): Promise<
 
 // 참여 요청 수락
 export const acceptGroupParticipation = async (
-  groupParticipationId: GroupParticipation["groupParticipationId"]
+  groupParticipationId: GroupParticipation["groupParticipationRequestId"]
 ) => {
-  await api.post(
-    `${GROUP_SERVICE_URL}/group-participation-requests/${groupParticipationId}`
-  );
+  await api.post(`${GROUP_SERVICE_URL}/group-participation-requests/${groupParticipationId}`);
 };
 
 // 참여 요청 거절
 export const rejectGroupParticipation = async (
-  groupParticipationId: GroupParticipation["groupParticipationId"]
+  groupParticipationId: GroupParticipation["groupParticipationRequestId"]
 ) => {
-  await api.delete(
-    `${GROUP_SERVICE_URL}/group-participation-requests/${groupParticipationId}`
-  );
+  await api.delete(`${GROUP_SERVICE_URL}/group-participation-requests/${groupParticipationId}`);
 };
 
 // 참여중인 공고 조회
@@ -110,9 +98,7 @@ export const getMyGroups = async (): Promise<GroupParticipation[]> => {
 
 // 참여중인 공고 탈퇴
 export const leaveMyGroup = async (
-  groupParticipationId: GroupParticipation["groupParticipationId"]
+  groupParticipationId: GroupParticipation["groupParticipationRequestId"]
 ) => {
-  await api.post<void>(
-    `${GROUP_SERVICE_URL}/me/group-participations/${groupParticipationId}`
-  );
+  await api.post<void>(`${GROUP_SERVICE_URL}/me/group-participations/${groupParticipationId}`);
 };

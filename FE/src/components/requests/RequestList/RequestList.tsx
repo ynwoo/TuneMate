@@ -15,6 +15,7 @@ const RequestList = ({ items, onAccept, onDecline, className }: RequestListProps
     <ul className={classNameWrapper(styles["request-list"], className)}>
       {items.map((item) => (
         <RequestItem
+          key={item?.param ?? item.userId}
           className={styles["request-list__item"]}
           item={item}
           onAccept={onAccept}

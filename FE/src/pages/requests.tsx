@@ -11,8 +11,8 @@ export interface OptionType {
 }
 const items: OptionType[] = [
   { name: "친구", value: "friendRequests" },
-  { name: "친구알림", value: "friendRequestResults" },
   { name: "공고", value: "groupRequests" },
+  { name: "알림", value: "friendRequestResults" },
 ];
 
 const RequestsPage = () => {
