@@ -10,11 +10,102 @@
   flex-direction: column;
 }
 
-.playlist-details-container {
+.playlist-details {
   display: flex;
   flex-direction: column;
 }
 
 .playlist-details-item {
   flex: 1;
+}
+
+.player-page {
+  position: relative;
+  padding: 1em;
+}
+
+.player-page__image-container {
+  position: relative;
+  padding: 1.5em;
+}
+
+.player-page__image {
+  position: absolute;
+  width: 12em;
+  height: 12em;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.683); /* 그림자 추가 */
+  z-index: 2;
+}
+
+.player-page__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.player-page__rotate-image {
+  position: relative;
+  margin-left: 6.5em;
+  margin-top: 0.5em;
+  width: 11em;
+  height: 11em;
+  overflow: hidden;
+  background: linear-gradient(45deg, var(--black-color), rgba(0, 0, 0, 0.683));
+  /* filter: brightness(50%); */
+  border-radius: 50%; /* 동그랗게 만들기 */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.683); /* 그림자 추가 */
+  animation: rotate 5s linear infinite;
+}
+
+.player-page__rotate-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: rotate 5s linear infinite; /* 무한 회전 애니메이션 */
+}
+
+.player-page__rotate-image::before {
+  content: "";
+  position: absolute;
+  width: 5em; /* 원의 지름 설정 */
+  height: 5em; /* 원의 지름 설정 */
+  background-color: white; /* 투명한 흰색 원 */
+  border-radius: 50%;
+  filter: brightness(100%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.player-page__rotate-image--small {
+  position: absolute;
+  top: 6em;
+  left: 12em;
+  width: 3em;
+  height: 3em;
+  overflow: hidden;
+  background: linear-gradient(45deg, var(--black-color), rgba(0, 0, 0, 0.683));
+  /* filter: brightness(50%); */
+  border-radius: 50%; /* 동그랗게 만들기 */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.683); /* 그림자 추가 */
+  animation: rotate 5s linear infinite;
+  z-index: 1;
+}
+
+.player-page__rotate-image--small img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: rotate 5s linear infinite; /* 무한 회전 애니메이션 */
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
