@@ -14,9 +14,17 @@ const CommonProfile = ({ srcList, name }: CommonProfileProps) => {
   return (
     <div className={styles["common-profile"]}>
       <div className={styles["profile-img-zone"]}>
-        <ProfileImage src={srcList[0]} alt="profile-img" type={"common-profile"} />
+        <ProfileImage
+          src={srcList[0]}
+          alt="profile-img"
+          type={"common-profile"}
+        />
         <Icon.HeadPhone />
-        <ProfileImage src={srcList[1]} alt="profile-img" type={"common-profile"} />
+        <ProfileImage
+          src={srcList[1]}
+          alt="profile-img"
+          type={"common-profile"}
+        />
       </div>
       <NameBar name={name} />
     </div>
