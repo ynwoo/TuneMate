@@ -1,11 +1,11 @@
 import styles from "./FriendRequestResults.module.css";
 import useSocialFriendRequestsQuery from "@/hooks/queries/social/useSocialFriendRequestsQuery";
-import RecommendationList from "@/components/recommendation/RecommendationList/RecommendationList";
 import useFriendRequest from "@/hooks/useFriendRequest";
 import { useEffect, useMemo } from "react";
 import { Storage } from "@/utils/storage";
 import useSocialFriendIdsQuery from "@/hooks/queries/social/useSocialFriendIdsQuery";
 import Nothing from "@/components/nothing/Nothing/Nothing";
+import RequestList from "../RequestList/RequestList";
 
 const FriendRequestResults = () => {
   const { data: friendIds } = useSocialFriendIdsQuery();
@@ -19,9 +19,9 @@ const FriendRequestResults = () => {
   }, [refetch, friendRequestMessages]);
 
   const sendFriendsRequests = useMemo(() => {
-    return friendRequestMessages.filter(
-      ({ requestUserId }) => requestUserId === Storage.getUserId()
-    );
+    return friendRequestMessages
+      .filter(({ requestUserId }) => requestUserId === Storage.getUserId())
+      .map(({ receiveUserId }) => receiveUserId);
   }, [friendRequestMessages]);
 
   const receiveFriendsRequests = useMemo(() => {
@@ -30,13 +30,15 @@ const FriendRequestResults = () => {
     }
 
     if (!friendRequestMessages.length && friendIds) {
-      return friendRequestMessages.filter(
-        ({ requestUserId, receiveUserId }) =>
-          receiveUserId === Storage.getUserId() && !friendIds?.includes(requestUserId)
-      );
+      return friendRequestMessages
+        .filter(
+          ({ requestUserId, receiveUserId }) =>
+            receiveUserId === Storage.getUserId() && !friendIds?.includes(requestUserId)
+        )
+        .map(({ requestUserId }) => requestUserId);
     }
 
-    return friendRequestMessages;
+    return friendRequestMessages.map(({ requestUserId }) => requestUserId);
   }, [friendIds, friendRequestMessages, friendsRequests]);
 
   if (!friendsRequests?.length) {
@@ -45,7 +47,8 @@ const FriendRequestResults = () => {
 
   return (
     <div className={styles["friend-requests"]}>
-      {friendsRequests && <RecommendationList recommendations={friendsRequests} />}
+      {/* {sendFriendsRequests && <RequestList requestUserIds={sendFriendsRequests} />}
+      {receiveFriendsRequests && <RequestList requestUserIds={receiveFriendsRequests} />} */}
     </div>
   );
 };
