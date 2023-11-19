@@ -140,10 +140,6 @@ const CommonPlaylist = ({
             <Text type="title" content="노래 추가하기" />
           </div>
           <div className={styles["division-line"]} />
-          <div className={styles["modal-content"]}>
-            <Text type="title" content="플레이리스트 이름 바꾸기" />
-          </div>
-          <div className={styles["division-line"]} />
           <div className={styles["modal-content"]} onClick={handleDeleteMode}>
             <Text type="title" content="노래 삭제하기" />
           </div>
