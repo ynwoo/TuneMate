@@ -8,6 +8,12 @@
   margin-bottom: 1em;
 }
 
+.group-create__select-button {
+  align-self: flex-end;
+  margin: 0;
+  padding: 0.5em 1em;
+}
+
 .group-create__selected-concert {
   height: 5em;
   display: flex;

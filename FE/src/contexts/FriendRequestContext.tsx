@@ -27,9 +27,7 @@ const FriendRequestProvider = ({ children }: Props) => {
 
   const subscibeCallback = useCallback(
     (data: any) => {
-      // 새로운 chatroom
       const newFriendRequestMessage: FriendRequestMessage = JSON.parse(data.body);
-
       setFriendRequestMessages([...friendRequestMessages, newFriendRequestMessage]);
     },
     [friendRequestMessages]
