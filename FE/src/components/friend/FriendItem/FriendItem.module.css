@@ -35,11 +35,12 @@
 
 .friend-item__icon {
   flex: 1;
+  margin-top: 0.3em;
   margin-left: 0.5rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-end;
+  justify-content: flex-start;
   text-align: center;
   color: blueviolet;
 }
@@ -53,12 +54,13 @@
 
 .friend-item__icon--chat-count {
   background-color: var(--red-color);
-  border-radius: 4em;
+  border-radius: 5em;
   width: max-content;
   text-align: center;
   font-size: 0.6rem;
-  padding: 0.3em 0.5em;
+  padding: 0.25em 0.5em;
   color: var(--white-color);
+  margin-right: 0.2em;
 }
 
 .friend-item__user--content-container {
