@@ -40,11 +40,9 @@ const TopNavbar = () => {
 
       {/* <p>{pageTitleByPathname(pathname)}</p> */}
 
-      <Link href={"/friends/requests"} className={styles["top-navbar__item"]}>
+      <Link href="/requests" className={styles["top-navbar__item"]}>
         {unreadFriendRequestCount > 0 && (
-          <p className={styles["top-navbar__unread-count"]}>
-            {unreadFriendRequestCount}
-          </p>
+          <p className={styles["top-navbar__unread-count"]}>{unreadFriendRequestCount}</p>
         )}
         <Icon.Alarm />
       </Link>
