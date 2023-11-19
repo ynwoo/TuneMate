@@ -48,8 +48,11 @@ const Playlist = ({
   const [status, setStatus] = useState<ModalType>("menu");
   const { changePlayList } = usePlayList();
   const userInfo = useUserInfo();
-  const { data: playLists } = useIndividualPlayListsQuery(userInfo?.spotifyUserId);
-  const { mutate: updateIndividualPlayList } = useUpdateIndividualPlayListMutation();
+  const { data: playLists } = useIndividualPlayListsQuery(
+    userInfo?.spotifyUserId
+  );
+  const { mutate: updateIndividualPlayList } =
+    useUpdateIndividualPlayListMutation();
   useEffect(() => {
     if (data) {
       setPlaylistData(data);
@@ -200,7 +203,10 @@ const Playlist = ({
               <Text type="title" content="노래 삭제하기" />
             </div>
             <div className={styles["division-line"]} />
-            <div className={styles["modal-content"]} onClick={onChangePlayListModal}>
+            <div
+              className={styles["modal-content"]}
+              onClick={onChangePlayListModal}
+            >
               <Text type="title" content="대표 플레이리스트 변경" />
             </div>
           </div>
@@ -210,16 +216,24 @@ const Playlist = ({
           <ChangeName changeName={changeName} closeModal={closeModal} />
         </SimpleModal>
       )}
-      <Modal isOpen={changePlayListModal.isOpen} toggle={changePlayListModal.closeToggle}>
+      <Modal
+        isOpen={changePlayListModal.isOpen}
+        toggle={changePlayListModal.closeToggle}
+      >
         <ul>
-          {playLists?.map(({ name, id }) => (
-            <li className={styles["change-playList-modal-item"]}>
-              <p>{name}</p>
-              <Button color="blue" onClick={() => onChangePlayList(id)}>
-                변경
-              </Button>
-            </li>
-          ))}
+          <div style={{ margin: "15px" }}>
+            {playLists?.map(({ name, id }) => (
+              <li className={styles["change-playList-modal-item"]}>
+                <p>{name}</p>
+                <Button
+                  className={styles["bbtton"]}
+                  onClick={() => onChangePlayList(id)}
+                >
+                  변경
+                </Button>
+              </li>
+            ))}
+          </div>
         </ul>
       </Modal>
     </>
