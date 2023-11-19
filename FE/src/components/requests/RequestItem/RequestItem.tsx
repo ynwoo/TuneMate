@@ -14,6 +14,7 @@ interface RequestItem {
   param?: string;
   musicalTasteSimilarity?: string;
   accept?: boolean;
+  title?: string;
 }
 
 interface RequestItemProps extends Props {
@@ -53,6 +54,12 @@ const RequestItem = ({ item, onAccept, onDecline, className }: RequestItemProps)
               </span>
             </>
           )}
+          {item?.title && (
+            <>
+              [<span className={styles["request-item__title"]}>{item.title}</span>]
+            </>
+          )}
+
           <div className={styles["request-item__button-container"]}>
             {onAccept && (
               <Button
