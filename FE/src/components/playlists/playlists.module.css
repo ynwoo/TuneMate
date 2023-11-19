@@ -50,3 +50,7 @@
   width: 100%;
   margin: 1rem auto;
 }
+
+.change-playList-modal-item {
+  display: flex;
+}

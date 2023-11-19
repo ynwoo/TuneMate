@@ -25,6 +25,7 @@
 }
 
 .player-page__image-container {
+  padding: auto;
   position: relative;
   padding: 1.5em;
 }
@@ -55,12 +56,7 @@
   width: 11.5em;
   height: 11.5em;
   overflow-y: hidden;
-  background: linear-gradient(
-    180deg,
-    black 0%,
-    rgba(24, 24, 24, 0.654),
-    black 100%
-  );
+  background: linear-gradient(180deg, black 0%, rgba(24, 24, 24, 0.654), black 100%);
   border-radius: 50%; /* 동그랗게 만들기 */
   animation: rotate 5s linear infinite;
   transition: margin-left 0.5s; /* 마우스 호버에 대한 변화를 부드럽게 만들기 위한 트랜지션 속성 추가 */

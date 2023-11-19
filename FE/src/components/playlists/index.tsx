@@ -15,6 +15,9 @@ import usePlayList from "@/hooks/usePlayList";
 import { classNameWrapper } from "@/utils/className";
 import ChangeName from "./ChangeName/ChangeName";
 import SimpleModal from "../modal/SimpleModal";
+import useUserInfo from "@/hooks/useUserInfo";
+import Button from "../button/Button";
+import useUpdateIndividualPlayListMutation from "@/hooks/mutations/music/individual/useUpdateIndividualPlayListMutation";
 
 type ModalType = "menu" | "changeName";
 
@@ -39,11 +42,14 @@ const Playlist = ({
   changeName,
 }: PlaylistProps) => {
   const { closeToggle, isOpen, openToggle } = useModal();
+  const changePlayListModal = useModal();
   const [playlistData, setPlaylistData] = useState(data);
   const [deleteMode, setDeleteMode] = useState(false);
   const [status, setStatus] = useState<ModalType>("menu");
   const { changePlayList } = usePlayList();
-
+  const userInfo = useUserInfo();
+  const { data: playLists } = useIndividualPlayListsQuery(userInfo?.spotifyUserId);
+  const { mutate: updateIndividualPlayList } = useUpdateIndividualPlayListMutation();
   useEffect(() => {
     if (data) {
       setPlaylistData(data);
@@ -120,8 +126,17 @@ const Playlist = ({
   );
 
   const closeModal = () => {
-    closeToggle()
-  }
+    closeToggle();
+  };
+
+  const onChangePlayListModal = () => {
+    closeToggle();
+    changePlayListModal.openToggle();
+  };
+
+  const onChangePlayList = (playlistId: PlayList["id"]) => {
+    updateIndividualPlayList(playlistId);
+  };
 
   return (
     <>
@@ -183,6 +198,10 @@ const Playlist = ({
             <div className={styles["modal-content"]} onClick={handleDeleteMode}>
               <Text type="title" content="노래 삭제하기" />
             </div>
+            <div className={styles["division-line"]} />
+            <div className={styles["modal-content"]} onClick={onChangePlayListModal}>
+              <Text type="title" content="대표 플레이리스트 변경" />
+            </div>
           </div>
         </Modal>
       ) : (
@@ -190,6 +209,18 @@ const Playlist = ({
           <ChangeName changeName={changeName} closeModal={closeModal} />
         </SimpleModal>
       )}
+      <Modal isOpen={changePlayListModal.isOpen} toggle={changePlayListModal.closeToggle}>
+        <ul>
+          {playLists?.map(({ name, id }) => (
+            <li className={styles["change-playList-modal-item"]}>
+              <p>{name}</p>
+              <Button color="blue" onClick={() => onChangePlayList(id)}>
+                변경
+              </Button>
+            </li>
+          ))}
+        </ul>
+      </Modal>
     </>
   );
 };
