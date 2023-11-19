@@ -37,11 +37,9 @@ const LoginPage = () => {
   }, [router, setUserInfo]);
 
   const setCookie = () => {
-    const userId = "ab1b4b7f-abb2-4bf1-920f-b437233b4f47";
-    const accessToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhYjFiNGI3Zi1hYmIyLTRiZjEtOTIwZi1iNDM3MjMzYjRmNDciLCJleHAiOjE3MDAzOTc2NDcsImlzcyI6IlR1bmVtYXRlIn0.GXK0RN7340HmErVjxvV-d3MwbdH1IXvRSDuH9mFSDvmXaM5A3VC-63T3yn3vRM-L";
-    const refreshToken =
-      "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZWZyZXNoIFRva2VuIiwidXNlcklkIjoiYWIxYjRiN2YtYWJiMi00YmYxLTkyMGYtYjQzNzIzM2I0ZjQ3IiwiZXhwIjoxNzAxNjAwMDQ3LCJpc3MiOiJUdW5lbWF0ZSJ9.cuCsCu5mkCZF6vA8z_1Dd0fpiiIrwqx2hhxFxFGOb_K4-vFTPOuV9IrW0_Z1hAnP";
+    const userId = process.env.NEXT_PUBLIC_USER_ID as string;
+    const accessToken = process.env.NEXT_PUBLIC_ACCESS_TOKEN as string;
+    const refreshToken = process.env.NEXT_PUBLIC_REFRESH_TOKEN as string;
     Cookie.setTokenResponse({ userId, accessToken, refreshToken });
     location.reload();
   };
