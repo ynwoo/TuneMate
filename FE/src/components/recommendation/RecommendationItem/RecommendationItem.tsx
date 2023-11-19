@@ -105,28 +105,28 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
                     <Icon.Recommendation size="lg" />
                   </ButtonWithModal>
                 )}
+                {isFriendRequest && (
+                  <div className={styles["recommendation-item__button-container"]}>
+                    <ButtonWithModal
+                      className={styles["recommendation-item__button-item"]}
+                      onClick={onAccept}
+                      modalMessage="수락하시겠습니까?"
+                      color="blue"
+                    >
+                      수락
+                    </ButtonWithModal>
+                    <Button
+                      className={styles["recommendation-item__button-item"]}
+                      onClick={onDecline}
+                      color="red"
+                    >
+                      거절
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          {isFriendRequest && (
-            <div className={styles["recommendation-item__button-container"]}>
-              <ButtonWithModal
-                className={styles["recommendation-item__button-item"]}
-                onClick={onAccept}
-                modalMessage="수락하시겠습니까?"
-                color="blue"
-              >
-                수락
-              </ButtonWithModal>
-              <Button
-                className={styles["recommendation-item__button-item"]}
-                onClick={onDecline}
-                color="red"
-              >
-                거절
-              </Button>
-            </div>
-          )}
         </li>
       </div>
     </div>
