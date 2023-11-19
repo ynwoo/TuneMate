@@ -12,7 +12,12 @@ interface ConcertItemProps extends Props {
   type?: "list" | "small";
 }
 
-const ConcertItem = ({ className, item, onClick, type = "list" }: ConcertItemProps) => {
+const ConcertItem = ({
+  className,
+  item,
+  onClick,
+  type = "list",
+}: ConcertItemProps) => {
   const router = useRouter();
   const onConcertDetail = () => {
     if (onClick) {
@@ -23,7 +28,10 @@ const ConcertItem = ({ className, item, onClick, type = "list" }: ConcertItemPro
   };
 
   return (
-    <li className={classNameWrapper(styles["concert-item"], className)} onClick={onConcertDetail}>
+    <li
+      className={classNameWrapper(styles["concert-item"], className)}
+      onClick={onConcertDetail}
+    >
       <div className={styles["concert-item__image"]}>
         <ConcertImage src={item.imageUrl} alt={item.title} type={type} />
       </div>

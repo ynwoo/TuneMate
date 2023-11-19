@@ -63,8 +63,8 @@
 .group-detail-page__title {
   text-align: center;
   font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 2em;
+  font-weight: 900;
+  margin-bottom: 1em;
   /* background-color: rgb(233, 227, 248); */
   padding: 1em;
 }
@@ -73,7 +73,7 @@
   text-align: center;
   font-size: 1.2rem;
   font-weight: bold;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
   padding: 0.85em;
   border: 2px solid var(--main-color);
 }
@@ -106,13 +106,28 @@
   border-bottom: 0;
 }
 
+.body {
+  margin: 0;
+  padding: 0;
+  margin: auto !important;
+  height: 100%;
+  max-height: var(--max-height);
+  font-weight: bold;
+  font-family: "TAEBAEKmilkyway";
+}
+
 .group-detail-page__concert-title {
+  font-family: "TAEBAEKmilkyway";
   margin-bottom: 0.5em;
 }
 
 .group-detail-page__button-container {
+  font-weight: bold;
+  font-family: "TAEBAEKmilkyway";
   display: flex;
   justify-content: center;
 }
 .group-detail-page__button {
+  font-weight: bold;
+  font-family: "TAEBAEKmilkyway";
 }
