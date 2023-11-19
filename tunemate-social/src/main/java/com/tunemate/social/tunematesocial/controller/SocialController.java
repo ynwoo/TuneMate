@@ -62,6 +62,7 @@ public class SocialController {
 	public ResponseEntity<?> addFriendRequest(@RequestBody FriendRequestDto friendRequestDto,
 		@RequestHeader("UserId") String userId) {
 		log.debug("친구 요청");
+		log.debug("요청 정보" + friendRequestDto);
 		socialService.addFriendRequest(userId, friendRequestDto);
 
 		return ResponseEntity.ok().build();
