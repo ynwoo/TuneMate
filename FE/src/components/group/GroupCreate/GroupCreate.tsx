@@ -59,6 +59,10 @@ const GroupCreate = ({ className, onChange, group }: GroupCreateProps) => {
     });
   }, []);
 
+  const onClick = useCallback((id?: number) => {
+    openToggle();
+  }, []);
+
   const selectedConcert = useMemo(() => {
     return concerts?.find(({ id }) => id === group.concertId);
   }, [concerts, group.concertId]);
@@ -72,7 +76,7 @@ const GroupCreate = ({ className, onChange, group }: GroupCreateProps) => {
       <div className={classNameWrapper(styles["group-create"], className)}>
         <div className={styles["group-create__selected-concert"]}>
           {selectedConcert ? (
-            <ConcertItem item={selectedConcert} onClick={openToggle} />
+            <ConcertItem item={selectedConcert} onClick={onClick} />
           ) : (
             <>
               <h1 className={styles["group-create__empty-concert--title"]}>

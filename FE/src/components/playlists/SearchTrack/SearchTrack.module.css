@@ -9,7 +9,8 @@
 
 .nothing.nothing {
   max-width: 30vh;
-  max-height: 40vh;
+  max-height: 44vh;
+  overflow: hidden;
   margin: auto;
   flex: 1;
 }

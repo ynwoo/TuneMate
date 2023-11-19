@@ -83,10 +83,17 @@ const GroupDetail = () => {
       };
 
       let _value: string | number = "";
-      if (name === "capacity") {
-        _value = Number(value);
-      } else {
-        _value = value;
+
+      switch (name) {
+        case "capacity":
+          _value = Number(value);
+          break;
+        case "deadline":
+          _value = `${value}T00:00:00`;
+          break;
+        default:
+          _value = value;
+          break;
       }
 
       setNewGroup(
