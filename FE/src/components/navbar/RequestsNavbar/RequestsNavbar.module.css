@@ -1,0 +1,13 @@
+.requests-navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.requests-navbar__item {
+  flex: 1;
+  padding: 0.5em 1em;
+  margin: 0;
+  height: 3em;
+  text-align: center;
+}

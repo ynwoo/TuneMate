@@ -52,24 +52,28 @@
   white-space: nowrap;
 }
 
-.recommendation-item__ratio {
+.recommendation-item__info {
   flex: 1;
-  /* width: max-content; */
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0.5em 1em;
+}
+.recommendation-item__info--ratio {
+  flex: 1;
+  display: flex;
   justify-content: space-around;
   text-align: center;
 }
 
-.recommendation-item__button-container {
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 1rem;
+.recommendation-item__info--ratio-text {
+  text-align: center;
+  margin-top: 0.1em;
+  margin-left: 0.3em;
+  margin-right: 1em;
 }
 
-.recommendation-item__button-item {
+.recommendation-item__info--button {
   width: max-content;
-  margin-left: 1em;
-  padding: 1em 0.5em;
 }

@@ -21,7 +21,7 @@ interface Group extends GroupAnnouncement {
 }
 
 interface GroupParticipation {
-  groupParticipationId: Group["groupId"];
+  groupParticipationRequestId: Group["groupId"];
   responseGroup: Group;
   userInfo?: UserInfo;
   userId?: UserInfo["userId"];

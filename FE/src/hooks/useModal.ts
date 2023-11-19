@@ -1,15 +1,23 @@
 import { usePathname } from "next/navigation";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, MouseEvent } from "react";
 
 export default function useModal() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  const openToggle = useCallback(() => {
+  const openToggle = useCallback((e?: MouseEvent<HTMLElement>) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
     setIsOpen(true);
   }, []);
 
-  const closeToggle = useCallback(() => {
+  const closeToggle = useCallback((e?: MouseEvent<HTMLElement>) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
     setIsOpen(false);
     document.body.style.overflow = "auto";
   }, []);
