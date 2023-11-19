@@ -18,6 +18,7 @@ interface Group extends GroupAnnouncement {
   startDateTime: string;
   createdAt: string;
   lastModifiedAt: string;
+  userInfos: UserInfo[];
 }
 
 interface GroupParticipation {

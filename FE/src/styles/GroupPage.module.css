@@ -93,6 +93,20 @@
 .group-detail-page__description {
   margin-top: 1em;
   margin-bottom: 1em;
+  position: relative;
+}
+
+.group-detail-page__description-item--detail {
+  position: absolute;
+  font-size: 0.8rem;
+  top: 3.8rem;
+  left: 8rem;
+  max-width: 15em;
+  font-weight: 200;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .group-detail-page__description-item {

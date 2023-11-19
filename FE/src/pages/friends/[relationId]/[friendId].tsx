@@ -28,7 +28,7 @@ const ChatPage = ({}: ChatPageProps) => {
   const [messageRequest, setMessageRequest] = useState<MessageRequest>({} as MessageRequest);
 
   const { publish, chatRooms } = useChat();
-  const { data: prevChatRoom, refetch } = useChatsQuery(relationId);
+  const { data: prevChatRoom } = useChatsQuery(relationId);
 
   const { closeToggle, isOpen, openToggle } = useModal();
   const { mutate: deleteSocialFriend } = useDeleteSocialFriendMutation();
@@ -74,7 +74,6 @@ const ChatPage = ({}: ChatPageProps) => {
     };
 
     setMessageRequest(messageRequest);
-    refetch();
     connectChatRoom(relationId);
     publish(messageRequest);
     return () => {

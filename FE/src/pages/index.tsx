@@ -47,12 +47,7 @@ const LoginPage = () => {
   return (
     <div className={styles["login-page"]}>
       <div className={styles["login-page__title"]}>
-        <Image
-          src="/TuneMate.png"
-          alt="TuneMate Logo"
-          width={250}
-          height={40}
-        />
+        <Image src="/TuneMate.png" alt="TuneMate Logo" width={250} height={40} />
       </div>
       <div className={styles["login-page__button"]}>
         <a
@@ -67,11 +62,7 @@ const LoginPage = () => {
       </div>
       {process.env.NODE_ENV === "development" && (
         <>
-          <Button
-            className={styles["login-page__button"]}
-            onClick={setCookie}
-            color="white"
-          >
+          <Button className={styles["login-page__button"]} onClick={setCookie} color="white">
             쿠키 넣기!!!!!
           </Button>
           <Link href={"/main"}>메인 페이지 이동</Link>
