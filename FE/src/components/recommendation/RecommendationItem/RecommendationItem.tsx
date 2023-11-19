@@ -7,7 +7,6 @@ import ProfileImage from "@/components/image/ProfileImage/ProfileImage";
 import { useRouter } from "next/router";
 import Icon from "@/components/icons";
 import useSendSocialFriendRequestMutation from "@/hooks/mutations/social/useSendSocialFriendRequestMutation";
-import Modal from "@/components/modal/Modal";
 import useModal from "@/hooks/useModal";
 import Confirm from "@/components/modal/Confirm";
 

@@ -5,8 +5,19 @@
 
 .request-item__image {
 }
+
 .request-item__name {
   margin-left: 1em;
+  flex: 1;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 6em;
+}
+
+.request-item__similarity {
+  margin: 0 1em;
 }
 
 .request-item__button-container {
