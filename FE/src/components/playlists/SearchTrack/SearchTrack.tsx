@@ -65,7 +65,7 @@ const SearchTrack = ({ handleAdd, myPlaylist }: SearchTrackProps) => {
           width: "100%",
         }}
       />
-      <div style={{ overflowY: "auto" }}>
+      <div style={{ overflowY: "auto", margin: "1rem" }}>
         {searchResults?.map((trackInfo) => (
           <TrackData key={trackInfo.id} trackInfo={trackInfo} handleAdd={onAdd} />
         )) || <Nothing className={styles["nothing"]}>검색 결과 없음</Nothing>}

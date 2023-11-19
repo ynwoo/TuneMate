@@ -4,16 +4,13 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Playlist from "@/components/playlists/index";
 import {
-  createIndividualPlayList,
   createIndividualPlayListTrack,
   deleteIndividualPlayListTrack,
   getIndividualPlayListRepresentative,
-  getIndividualPlayLists,
-  updateIndividualPlayList,
-  getOthersProfile,
-  getOthersPlayList,
 } from "@/api/music/individual";
-import { getUserInfo } from "@/api/user";
+import Modal from "@/components/modal/Modal";
+import SearchTrack from "@/components/playlists/SearchTrack/SearchTrack";
+import Toast from "@/components/toast/Toast";
 import { Storage } from "@/utils/storage";
 import useMenu from "@/hooks/useMenu";
 import { AddTrack, DeleteTrack, TrackInfo } from "@/types/spotify";
@@ -72,39 +69,6 @@ const Player = () => {
   }, [myPlaylist]);
   const [isSameUser, setIsSameUser] = useState<boolean>(true);
 
-  const getSpotifyPlaylists = async () => {
-    const spotifyUserId = Storage.getSpotifyUserId();
-    const playlistList = await getIndividualPlayLists(spotifyUserId);
-    const dataset = [...playlistList];
-
-    dataset.forEach((data, index) => {
-      const newContent = [
-        {
-          imgSrc: data.images[2],
-          name: data.name,
-          id: data.id,
-          trackCnt: data.tracks.total,
-          index: index,
-        },
-      ];
-      setMenuContent([...menuContent, ...newContent]);
-    });
-    openMenu();
-  };
-
-  const setRepPlaylist = async (id: string) => {
-    updateIndividualPlayList(id);
-    closeMenu();
-    getUserPlaylist();
-  };
-
-  const getOtherUserPlaylist = async (playlistId: string) => {
-    const playList = await getOthersPlayList(playlistId);
-    setPlaylistName(playList.name);
-    const tmpData = Convert.playListToTrackInfos(playList);
-    setMyPlaylist(tmpData);
-  };
-
   const getUserPlaylist = async () => {
     const playList = await getIndividualPlayListRepresentative();
     if (playList.id !== null) {
@@ -112,45 +76,12 @@ const Player = () => {
       setPlaylistId(playList.id);
       const tmpData = Convert.playListToTrackInfos(playList);
       setMyPlaylist(tmpData);
-    } else {
-      const tempPlaylist = {
-        name: "개인 플레이리스트",
-        description: "",
-        open: false,
-      };
-      createIndividualPlayList(tempPlaylist);
-      getSpotifyPlaylists();
     }
   };
 
   useEffect(() => {
-    const userId = params?.userId as string;
-    if (!userId) return;
-    const getUserProfile = async () => {
-      if (!userId) return;
-
-      if (userId === userInfo?.userId) {
-        setIsSameUser(true);
-        const userData = await getUserInfo(userId);
-        if (userData?.imageUrl) {
-          setImgSrc(userData.imageUrl);
-        }
-        setName(userData.name);
-        getUserPlaylist();
-      } else {
-        setIsSameUser(false);
-        const userData = await getOthersProfile(userId);
-        setPlaylistId(userData.playlistId);
-        if (userData?.imageUrl) {
-          setImgSrc(userData.imageUrl);
-        }
-        setName(userData.name);
-        getOtherUserPlaylist(userData.playlistId);
-      }
-    };
-
-    getUserProfile();
-  }, [router.query.userId]);
+    getUserPlaylist();
+  }, []);
 
   const deleteTrack = async (index: number) => {
     const data: DeleteTrack = {
@@ -196,63 +127,65 @@ const Player = () => {
     setPlaylistName(name);
   };
   return (
-    <div className={styles["player-page"]}>
-      {currentTrack && (
-        <>
-          <div className="slides">
-            <div
-              id="slide-1"
-              className={`${styles["player-page__slide"]} ${
-                currentSlide === 1 ? styles.activeSlide : ""
-              }`}
-            >
-              <div style={{ height: "250px" }}>
-                <div className={styles["player-page__image-container"]}>
-                  <div className={styles["player-page__image"]}>
-                    <Image
-                      src={currentTrack.image}
-                      alt={currentTrack.name}
-                      width={100}
-                      height={100}
-                    />
+    <>
+      <div className={styles["player-page"]}>
+        {currentTrack && (
+          <>
+            <div className="slides">
+              <div
+                id="slide-1"
+                className={`${styles["player-page__slide"]} ${
+                  currentSlide === 1 ? styles.activeSlide : ""
+                }`}
+              >
+                <div style={{ height: "250px" }}>
+                  <div className={styles["player-page__image-container"]}>
+                    <div className={styles["player-page__image"]}>
+                      <Image
+                        src={currentTrack.image}
+                        alt={currentTrack.name}
+                        width={100}
+                        height={100}
+                      />
+                    </div>
+                    <div className={styles["player-page__rotate-image"]}></div>
                   </div>
-                  <div className={styles["player-page__rotate-image"]}></div>
+                </div>
+              </div>
+              <div
+                id="slide-2"
+                className={`${styles["player-page__slide"]} ${
+                  currentSlide === 2 ? styles.activeSlide : ""
+                }`}
+              >
+                <div className={styles["AlbumAtr"]}>
+                  <Image
+                    src={currentTrack.image}
+                    alt={currentTrack.name}
+                    width={240}
+                    height={240}
+                    className={styles["iimage"]}
+                  />
                 </div>
               </div>
             </div>
-            <div
-              id="slide-2"
-              className={`${styles["player-page__slide"]} ${
-                currentSlide === 2 ? styles.activeSlide : ""
-              }`}
+            <button
+              onClick={nextSlide}
+              style={{
+                backgroundColor: "transparent",
+                border: "1px solid transparent",
+              }}
             >
-              <div className={styles["AlbumAtr"]}>
-                <Image
-                  src={currentTrack.image}
-                  alt={currentTrack.name}
-                  width={240}
-                  height={240}
-                  className={styles["iimage"]}
-                />
-              </div>
-            </div>
-          </div>
-          <button
-            onClick={nextSlide}
-            style={{
-              backgroundColor: "transparent",
-              border: "1px solid transparent",
-            }}
-          >
-            <Image
-              src="/arrow.png" // public 폴더의 이미지 경로
-              alt="Arrow"
-              width={25}
-              height={25}
-            />
-          </button>
-        </>
-      )}
+              <Image
+                src="/arrow.png" // public 폴더의 이미지 경로
+                alt="Arrow"
+                width={25}
+                height={25}
+              />
+            </button>
+          </>
+        )}
+      </div>
       <Playlist
         className="playlist"
         isSameUser={isSameUser}
@@ -263,7 +196,11 @@ const Player = () => {
         setModalOpen={openToggle}
         changeName={changePlaylistName}
       />
-    </div>
+      <Modal className="modal" isOpen={isOpen} toggle={closeToggle}>
+        <SearchTrack myPlaylist={myPlaylist} handleAdd={handleAdd} />
+      </Modal>
+      {toastStatus && <Toast toastStatus={toastStatus} msg={toastMsg} />}
+    </>
   );
 };
 
