@@ -33,7 +33,7 @@ const nextConfig = {
         protocol: "https",
         hostname: "velog.velcdn.com",
         port: "",
-        pathname: "/img/**",
+        pathname: "/images/**",
       },
     ],
   },
