@@ -1,4 +1,6 @@
 .group-list {
+  font-weight: bold;
+  font-family: "TAEBAEKmilkyway";
 }
 .group-list__item {
   margin-bottom: 1rem;

@@ -48,13 +48,16 @@
   position: relative;
   margin-left: 6.5em;
   margin-top: 0.5em;
-  width: 11em;
-  height: 11em;
+  width: 11.5em;
+  height: 11.5em;
   overflow: hidden;
-  background: linear-gradient(45deg, var(--black-color), rgba(0, 0, 0, 0.683));
-  /* filter: brightness(50%); */
+  background: linear-gradient(
+    180deg,
+    black 0%,
+    rgba(24, 24, 24, 0.654),
+    black 100%
+  );
   border-radius: 50%; /* 동그랗게 만들기 */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.683); /* 그림자 추가 */
   animation: rotate 5s linear infinite;
 }
 
@@ -68,8 +71,8 @@
 .player-page__rotate-image::before {
   content: "";
   position: absolute;
-  width: 5em; /* 원의 지름 설정 */
-  height: 5em; /* 원의 지름 설정 */
+  width: 3em; /* 원의 지름 설정 */
+  height: 3em; /* 원의 지름 설정 */
   background-color: white; /* 투명한 흰색 원 */
   border-radius: 50%;
   filter: brightness(100%);

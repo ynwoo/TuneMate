@@ -1,5 +1,7 @@
 .concert-info-item {
   display: flex;
+  font-size: 15px;
+  color: rgb(39, 39, 39);
 }
 
 .concert-info-item__title {
@@ -10,4 +12,5 @@
 
 .concert-info-item__description {
   flex-grow: 1;
+  font-weight: 500;
 }

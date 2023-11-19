@@ -10,12 +10,22 @@ const Player = () => {
         <>
           <div className={styles["player-page__image-container"]}>
             <div className={styles["player-page__image"]}>
-              <Image src={currentTrack.image} alt={currentTrack.name} width={100} height={100} />
+              <Image
+                src={currentTrack.image}
+                alt={currentTrack.name}
+                width={100}
+                height={100}
+              />
             </div>
             <div className={styles["player-page__rotate-image"]}></div>
-            <div className={styles["player-page__rotate-image--small"]}>
-              <Image src={currentTrack.image} alt={currentTrack.name} width={100} height={100} />
-            </div>
+            {/* <div className={styles["player-page__rotate-image--small"]}>
+              <Image
+                src={currentTrack.image}
+                alt={currentTrack.name}
+                width={100}
+                height={100}
+              />
+            </div> */}
           </div>
         </>
       )}

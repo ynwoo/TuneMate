@@ -16,7 +16,9 @@ interface ConcertSearchModalProps extends Props {
   onSubmit: () => void;
   onSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
   onChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | number
+    e:
+      | ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+      | number
   ) => void;
 }
 
