@@ -8,8 +8,11 @@
   width: 100vw;
   max-height: var(--max-height);
   max-width: var(--max-width);
+  height: 60vh;
 }
 
 .nothing__text {
   margin-bottom: 6em;
+  font-family: "TAEBAEKmilkyway";
+  font-weight: bold;
 }

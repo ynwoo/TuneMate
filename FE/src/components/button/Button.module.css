@@ -70,12 +70,7 @@
 }
 
 .none {
-  border: 1px solid var(--main-color);
-  background-color: var(--main-color);
-  color: var(--blue-color);
 }
 
 .none:hover {
-  background-color: var(--light-gray-color);
-  color: var(--red-color);
 }

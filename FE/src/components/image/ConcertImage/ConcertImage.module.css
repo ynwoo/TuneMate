@@ -3,13 +3,14 @@
 }
 
 .concert-image img {
-  height: inherit;
-  width: inherit;
+  height: 100%;
+  width: 100%;
+  border: 2px solid white;
 }
 
 .small {
   height: 5rem;
-  width: 4rem;
+  width: 5rem;
 }
 
 .list {

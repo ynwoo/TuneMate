@@ -20,7 +20,12 @@ const ConcertCard = ({ className, item }: ConcertCardProps) => {
   return (
     <li className={classNameWrapper(styles["concert-card"], className)}>
       <div className={styles["concert-card__image"]}>
-        <ConcertImage src={item.imageUrl} alt={item.title} type="small" onClick={onConcert} />
+        <ConcertImage
+          src={item.imageUrl}
+          alt={item.title}
+          type="small"
+          onClick={onConcert}
+        />
       </div>
     </li>
   );

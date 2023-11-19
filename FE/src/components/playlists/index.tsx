@@ -13,6 +13,11 @@ import { PlayList } from "@/types/playList";
 import useIndividualPlayListsQuery from "@/hooks/queries/music/individual/useIndividualPlayListsQuery";
 import usePlayList from "@/hooks/usePlayList";
 import { classNameWrapper } from "@/utils/className";
+import ChangeName from "./ChangeName/ChangeName";
+import SimpleModal from "../modal/SimpleModal";
+
+type ModalType = "menu" | "changeName";
+
 interface PlaylistProps extends Props {
   data: TrackInfo[];
   playlistName: string;
@@ -20,6 +25,7 @@ interface PlaylistProps extends Props {
   isSameUser: boolean;
   onRequestDelete: (index: number) => void;
   setModalOpen: () => void;
+  changeName: (name: string) => Promise<void>;
 }
 
 const Playlist = ({
@@ -30,10 +36,12 @@ const Playlist = ({
   onRequestDelete,
   setModalOpen,
   className,
+  changeName,
 }: PlaylistProps) => {
   const { closeToggle, isOpen, openToggle } = useModal();
   const [playlistData, setPlaylistData] = useState(data);
   const [deleteMode, setDeleteMode] = useState(false);
+  const [status, setStatus] = useState<ModalType>("menu");
   const { changePlayList } = usePlayList();
 
   useEffect(() => {
@@ -82,6 +90,17 @@ const Playlist = ({
     [openToggle]
   );
 
+  const openMenu = (e: MouseEvent<HTMLDivElement>) => {
+    setStatus("menu");
+    onModal(e);
+  };
+
+  const openChangeName = (e: MouseEvent<HTMLDivElement>) => {
+    closeToggle();
+    setStatus("changeName");
+    onModal(e);
+  };
+
   const openSearch = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
       e.stopPropagation();
@@ -100,6 +119,10 @@ const Playlist = ({
     [closeToggle]
   );
 
+  const closeModal = () => {
+    closeToggle()
+  }
+
   return (
     <>
       <div className={classNameWrapper(styles["container"], className)}>
@@ -112,7 +135,7 @@ const Playlist = ({
                   <Icon.CircleCheck />
                 </div>
               ) : (
-                <div onClick={onModal}>
+                <div onClick={openMenu}>
                   <Icon.Menu />
                 </div>
               )}
@@ -146,21 +169,27 @@ const Playlist = ({
           </DragDropContext>
         </div>
       </div>
-      <Modal className="modal-w80" isOpen={isOpen} toggle={closeToggle}>
-        <div className={styles["modal-box"]}>
-          <div className={styles["modal-content"]} onClick={openSearch}>
-            <Text type="title" content="노래 추가하기" />
+      {status === "menu" ? (
+        <Modal className="modal-w80" isOpen={isOpen} toggle={closeToggle}>
+          <div className={styles["modal-box"]}>
+            <div className={styles["modal-content"]} onClick={openSearch}>
+              <Text type="title" content="노래 추가하기" />
+            </div>
+            <div className={styles["division-line"]} />
+            <div className={styles["modal-content"]} onClick={openChangeName}>
+              <Text type="title" content="플레이리스트 이름 바꾸기" />
+            </div>
+            <div className={styles["division-line"]} />
+            <div className={styles["modal-content"]} onClick={handleDeleteMode}>
+              <Text type="title" content="노래 삭제하기" />
+            </div>
           </div>
-          <div className={styles["division-line"]} />
-          <div className={styles["modal-content"]}>
-            <Text type="title" content="플레이리스트 이름 바꾸기" />
-          </div>
-          <div className={styles["division-line"]} />
-          <div className={styles["modal-content"]} onClick={handleDeleteMode}>
-            <Text type="title" content="노래 삭제하기" />
-          </div>
-        </div>
-      </Modal>
+        </Modal>
+      ) : (
+        <SimpleModal isOpen={isOpen} toggle={closeToggle}>
+          <ChangeName changeName={changeName} closeModal={closeModal} />
+        </SimpleModal>
+      )}
     </>
   );
 };

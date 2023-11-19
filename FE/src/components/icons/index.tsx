@@ -173,9 +173,12 @@ const Icon = {
       size={size}
     />
   ),
-
-  Delete: ({ size = "2xl" }: IconProps) => (
-    <FontAwesomeIcon className={styles.gray} icon={faTrash} size={size} />
+  Delete: ({ size = "2xl", className }: IconProps) => (
+    <FontAwesomeIcon
+      className={classNameWrapper(styles.Delete, className)}
+      icon={faTrash}
+      size={size}
+    />
   ),
   Handle: ({ size = "2xl" }: IconProps) => (
     <FontAwesomeIcon className={styles.gray} icon={faGripLines} size={size} />

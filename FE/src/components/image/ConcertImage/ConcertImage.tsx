@@ -11,13 +11,30 @@ interface ConcertImageProps extends Props {
   onClick?: () => void;
 }
 
-const ConcertImage = ({ src, alt, className, onClick, type }: ConcertImageProps) => {
+const ConcertImage = ({
+  src,
+  alt,
+  className,
+  onClick,
+  type,
+}: ConcertImageProps) => {
   return (
     <div
-      className={classNameWrapper(className, styles["concert-image"], styles[type])}
+      className={classNameWrapper(
+        className,
+        styles["concert-image"],
+        styles[type]
+      )}
       onClick={onClick}
     >
-      <Image src={src} alt={alt} width={200} height={200} priority style={{ objectFit: "cover" }} />
+      <Image
+        src={src}
+        alt={alt}
+        width={200}
+        height={200}
+        priority
+        style={{ objectFit: "cover" }}
+      />
     </div>
   );
 };

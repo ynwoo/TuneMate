@@ -10,11 +10,163 @@
   flex-direction: column;
 }
 
-.playlist-details-container {
+.playlist-details {
   display: flex;
   flex-direction: column;
 }
 
 .playlist-details-item {
   flex: 1;
+}
+
+.player-page {
+  position: relative;
+  padding: 1em;
+}
+
+.player-page__image-container {
+  position: relative;
+  padding: 1.5em;
+}
+
+.player-page__image {
+  position: absolute;
+  width: 12em;
+  height: 12em;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.683); /* 그림자 추가 */
+  z-index: 2;
+}
+
+.player-page__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.player-page__image img :hover {
+  margin-left: 5em; /* 마우스 호버 시 오른쪽으로 이동할 값 */
+}
+
+.player-page__rotate-image {
+  position: relative;
+  margin-left: 6.5em;
+  margin-top: 0.3em;
+  width: 11.5em;
+  height: 11.5em;
+  overflow-y: hidden;
+  background: linear-gradient(
+    180deg,
+    black 0%,
+    rgba(24, 24, 24, 0.654),
+    black 100%
+  );
+  border-radius: 50%; /* 동그랗게 만들기 */
+  animation: rotate 5s linear infinite;
+  transition: margin-left 0.5s; /* 마우스 호버에 대한 변화를 부드럽게 만들기 위한 트랜지션 속성 추가 */
+}
+
+.player-page__rotate-image:hover {
+  margin-left: 3.5em; /* 마우스 호버 시 오른쪽으로 이동할 값 */
+  overflow: hidden;
+}
+
+.player-page__rotate-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: rotate 5s linear infinite; /* 무한 회전 애니메이션 */
+}
+
+.player-page__rotate-image::before {
+  content: "";
+  position: absolute;
+  width: 3em; /* 원의 지름 설정 */
+  height: 3em; /* 원의 지름 설정 */
+  background-color: white; /* 투명한 흰색 원 */
+  border-radius: 50%;
+  filter: brightness(100%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.player-page__rotate-image--small {
+  position: absolute;
+  top: 6em;
+  left: 12em;
+  width: 3em;
+  height: 3em;
+  overflow: hidden;
+  background: linear-gradient(45deg, var(--black-color), rgba(0, 0, 0, 0.683));
+  /* filter: brightness(50%); */
+  border-radius: 50%; /* 동그랗게 만들기 */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.683); /* 그림자 추가 */
+  animation: rotate 5s linear infinite;
+  z-index: 1;
+}
+
+.player-page__rotate-image--small img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: rotate 5s linear infinite; /* 무한 회전 애니메이션 */
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.player-page__slide {
+  display: none;
+}
+
+.player-page__slide.activeSlide {
+  display: block;
+}
+
+/* .AlbumAtr {
+  border-radius: 50%;
+} */
+
+.iimage {
+  border-radius: 50%;
+  animation: rotate 5s linear infinite;
+  position: relative;
+  overflow: hidden; /* 요소 내의 내용이 넘치면 숨김 처리 */
+  background-color: white; /* 흰색 배경 */
+
+  box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.3); /* 오른쪽 아래 그림자 추가 */
+}
+.AlbumAtr {
+  display: flex;
+  justify-content: center;
+  border-radius: 50%;
+  width: 100%;
+  height: 250px;
+}
+
+.AlbumAtr::before {
+  content: "";
+  position: absolute;
+  width: 70px; /* 작은 원의 지름 설정 */
+  height: 70px; /* 작은 원의 지름 설정 */
+  background-color: white; /* 흰색 배경 */
+  border-radius: 50%;
+  top: 20.5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
 }

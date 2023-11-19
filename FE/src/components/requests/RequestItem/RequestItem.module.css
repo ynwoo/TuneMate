@@ -6,6 +6,13 @@
 .request-item__image {
 }
 
+.request-item__title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 4em;
+}
+
 .request-item__name {
   margin-left: 1em;
   flex: 1;
@@ -13,7 +20,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 6em;
+  max-width: 5em;
 }
 
 .request-item__similarity-container {

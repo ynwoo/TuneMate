@@ -1,6 +1,6 @@
 .container {
   background-color: var(--white-color);
-  width: inherit;
+  width: 16rem;
   height: inherit;
   padding: 0.5rem;
   position: relative;

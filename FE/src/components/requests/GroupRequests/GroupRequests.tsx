@@ -51,15 +51,16 @@ const GroupRequests = () => {
 
   const items = useMemo(
     () =>
-      groupReceivedParicipations?.map(({ userInfo, groupParticipationRequestId }) => ({
-        userId: userInfo?.userId ?? "",
-        name: userInfo?.name ?? "",
-        param: groupParticipationRequestId,
-      })) ?? [],
+      groupReceivedParicipations?.map(
+        ({ userInfo, groupParticipationRequestId, responseGroup: { title } }) => ({
+          userId: userInfo?.userId ?? "",
+          name: userInfo?.name ?? "",
+          param: groupParticipationRequestId,
+          title,
+        })
+      ) ?? [],
     [groupReceivedParicipations]
   );
-
-  console.log(items);
 
   if (!items?.length) {
     return <Nothing>받은 참가 요청이 없습니다.</Nothing>;

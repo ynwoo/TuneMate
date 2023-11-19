@@ -20,13 +20,13 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
   const { isOpen, closeToggle, openToggle } = useModal();
   const onAccept = useMemo(() => {
     const onAccept = () => {
-      const { userId, distance, musicalTasteSimilarity } = item;
+      const { userId, distance, similarity } = item;
 
       // 친구 요청 보내기
       sendSocialFriendRequest({
         userId,
         distance: distance,
-        musicalTasteSimilarity: String(musicalTasteSimilarity),
+        musicalTasteSimilarity: String(similarity),
       });
     };
     return onAccept;

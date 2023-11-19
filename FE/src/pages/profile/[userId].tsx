@@ -29,6 +29,7 @@ import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { Convert } from "@/utils/convert";
 import useUserInfo from "@/hooks/useUserInfo";
+import { spotifyApi } from "@/api";
 
 const ProfilePage = () => {
   const params = useParams();
@@ -45,12 +46,15 @@ const ProfilePage = () => {
   const { popToast, toastStatus, toastMsg } = useToast();
   const [mainplaylist, setMainplaylist] = useRecoilState(MainplaylistState);
   const [Album, setAlbum] = useRecoilState(AlbumState);
-  const { data: individualPlayListRepresentative } = useIndividualPlayListRepresentativeQuery();
+  const { data: individualPlayListRepresentative } =
+    useIndividualPlayListRepresentativeQuery();
   const userInfo = useUserInfo();
 
   useEffect(() => {
     if (individualPlayListRepresentative) {
-      const allUris = individualPlayListRepresentative.tracks.items.map((track) => track.track.uri);
+      const allUris = individualPlayListRepresentative.tracks.items.map(
+        (track) => track.track.uri
+      );
       setMainplaylist(allUris);
     }
   }, [individualPlayListRepresentative]);
@@ -180,6 +184,14 @@ const ProfilePage = () => {
     addTrack(data.uri);
   };
 
+  const changePlaylistName = async (name: string) => {
+    const data = {
+      name: name,
+    };
+    const response = await spotifyApi.put(`/playlists/${playlistId}`, data);
+    setPlaylistName(name);
+  };
+
   return (
     <div>
       <IndividualProfile name={name} src={imgSrc} />
@@ -191,6 +203,7 @@ const ProfilePage = () => {
         playlistId={playlistId}
         onRequestDelete={handleDelete}
         setModalOpen={openToggle}
+        changeName={changePlaylistName}
       />
       <NonCloseableMenu isMenuOpen={isMenuOpen}>
         <div>
