@@ -1,8 +1,10 @@
 package kr.co.tunemate.tunemategroupservice.dto.layertolayer;
 
+import kr.co.tunemate.tunemategroupservice.vo.UserInfo;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,6 +24,7 @@ public class GroupDto {
     private LocalDateTime deadline;
     private String content;
     private Boolean closedByHost = false;
+    private List<UserInfo> userInfos;
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
 }
