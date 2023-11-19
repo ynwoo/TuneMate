@@ -178,7 +178,7 @@ const GroupDetail = () => {
                     [{" "}
                     {group.userInfos
                       .map(({ name }) => name)
-                      .filter((name) => name !== userInfo.name)
+                      .filter((name) => name !== group.hostName)
                       .join(", ")}{" "}
                     ]
                   </p>

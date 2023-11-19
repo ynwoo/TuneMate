@@ -20,19 +20,14 @@ const GroupItem = ({ className, item }: GroupItemProps) => {
   //   const { data: userInfo } = useUserInfoQuery(item.hostId);
 
   return (
-    <li
-      className={classNameWrapper(styles["group-item"], className)}
-      onClick={onGroupDetail}
-    >
+    <li className={classNameWrapper(styles["group-item"], className)} onClick={onGroupDetail}>
       <div style={{ width: "300px" }}>
         <h1 className={styles["group-item__info--title"]}>{item.title}</h1>
         <hr />
         <div style={{ display: "flex" }}>
           <div>
             {" "}
-            <p className={styles["group-item__user"]}>
-              글쓴이 : {item.hostName}
-            </p>
+            <p className={styles["group-item__user"]}>글쓴이 : {item.hostName}</p>
           </div>
 
           <p className={styles["group-item__user"]}>
