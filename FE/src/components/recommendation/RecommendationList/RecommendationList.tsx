@@ -14,15 +14,19 @@ const RecommendationList = ({
   className,
 }: RecommendListProps) => {
   return (
-    <ul className={classNameWrapper(className, styles["recommendation-list"])}>
-      {recommendations.map((recommendation) => (
-        <RecommendationItem
-          key={recommendation.userId}
-          className={styles["recommendation-list__item"]}
-          item={recommendation}
-        />
-      ))}
-    </ul>
+    <div className={styles["body"]}>
+      <ul
+        className={classNameWrapper(className, styles["recommendation-list"])}
+      >
+        {recommendations.map((recommendation) => (
+          <RecommendationItem
+            key={recommendation.userId}
+            className={styles["recommendation-list__item"]}
+            item={recommendation}
+          />
+        ))}
+      </ul>
+    </div>
   );
 };
 

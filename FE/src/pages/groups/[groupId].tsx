@@ -127,7 +127,7 @@ const GroupDetail = () => {
                 <>
                   <Input
                     className={styles["group-detail-page__description-item--input"]}
-                    label="인원수"
+                    label="정원"
                     name="capacity"
                     onChange={onChange}
                     value={newGroup.capacity}

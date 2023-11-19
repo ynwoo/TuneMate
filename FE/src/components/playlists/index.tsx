@@ -146,7 +146,7 @@ const Playlist = ({
           </DragDropContext>
         </div>
       </div>
-      <Modal isOpen={isOpen} toggle={closeToggle}>
+      <Modal className="modal-w80" isOpen={isOpen} toggle={closeToggle}>
         <div className={styles["modal-box"]}>
           <div className={styles["modal-content"]} onClick={openSearch}>
             <Text type="title" content="노래 추가하기" />

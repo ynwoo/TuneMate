@@ -1,7 +1,9 @@
 .chat-navbar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   height: var(--top-navbar-height);
+  z-index: 1;
 }
 
 .chat-navbar__item {
