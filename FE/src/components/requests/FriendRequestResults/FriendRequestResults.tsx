@@ -6,11 +6,13 @@ import { Storage } from "@/utils/storage";
 import useSocialFriendIdsQuery from "@/hooks/queries/social/useSocialFriendIdsQuery";
 import Nothing from "@/components/nothing/Nothing/Nothing";
 import RequestList from "../RequestList/RequestList";
+import useUserInfo from "@/hooks/useUserInfo";
 
 const FriendRequestResults = () => {
   const { data: friendIds } = useSocialFriendIdsQuery();
   const { data: friendsRequests, refetch } = useSocialFriendRequestsQuery();
   const { friendRequestMessages } = useFriendRequest();
+  const userInfo = useUserInfo();
 
   useEffect(() => {
     if (refetch) {
@@ -20,8 +22,8 @@ const FriendRequestResults = () => {
 
   const sendFriendsRequests = useMemo(() => {
     return friendRequestMessages
-      .filter(({ requestUserId }) => requestUserId === Storage.getUserId())
-      .map(({ receiveUserId }) => receiveUserId);
+      .filter(({ requestUserId }) => requestUserId === userInfo?.userId)
+      .map(({ receiveUserId }) => ({ userId: receiveUserId }));
   }, [friendRequestMessages]);
 
   const receiveFriendsRequests = useMemo(() => {
@@ -33,22 +35,32 @@ const FriendRequestResults = () => {
       return friendRequestMessages
         .filter(
           ({ requestUserId, receiveUserId }) =>
-            receiveUserId === Storage.getUserId() && !friendIds?.includes(requestUserId)
+            receiveUserId === userInfo?.userId && !friendIds?.includes(requestUserId)
         )
-        .map(({ requestUserId }) => requestUserId);
+        .map(({ requestUserId }) => ({ userId: requestUserId }));
     }
 
-    return friendRequestMessages.map(({ requestUserId }) => requestUserId);
+    return friendRequestMessages.map(({ requestUserId }) => ({ userId: requestUserId }));
   }, [friendIds, friendRequestMessages, friendsRequests]);
 
-  if (!friendsRequests?.length) {
-    return <Nothing>받은 친구 요청이 없습니다.</Nothing>;
+  const items = useMemo(() => {
+    return friendRequestMessages
+      .filter(
+        ({ requestUserId, receiveUserId }) =>
+          requestUserId === userInfo?.userId || receiveUserId === userInfo?.userId
+      )
+      .map(({ receiveUserId }) => ({ userId: receiveUserId }));
+  }, []);
+
+  if (!sendFriendsRequests?.length && !receiveFriendsRequests?.length) {
+    return <Nothing>받은 알림이 없습니다.</Nothing>;
   }
 
   return (
     <div className={styles["friend-requests"]}>
-      {/* {sendFriendsRequests && <RequestList requestUserIds={sendFriendsRequests} />}
-      {receiveFriendsRequests && <RequestList requestUserIds={receiveFriendsRequests} />} */}
+      {sendFriendsRequests && <RequestList items={sendFriendsRequests} />}
+      {receiveFriendsRequests && <RequestList items={receiveFriendsRequests} />}
+      {items && <RequestList items={items} />}
     </div>
   );
 };

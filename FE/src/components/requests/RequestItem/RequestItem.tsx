@@ -11,7 +11,6 @@ import Icon from "@/components/icons";
 
 interface RequestItem {
   userId: UserInfo["userId"];
-  name: UserInfo["name"];
   param?: string;
   musicalTasteSimilarity?: string;
 }
@@ -42,7 +41,7 @@ const RequestItem = ({ item, onAccept, onDecline, className }: RequestItemProps)
             alt={userInfo.name}
             type="friend"
           />
-          <p className={styles["request-item__name"]}>{item.name}</p>
+          <p className={styles["request-item__name"]}>{userInfo.name}</p>
           {item?.musicalTasteSimilarity && (
             <span className={styles["request-item__similarity"]}>
               {(Number(item.musicalTasteSimilarity) * 100).toFixed(0)}

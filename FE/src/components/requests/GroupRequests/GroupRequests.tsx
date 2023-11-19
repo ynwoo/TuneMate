@@ -49,8 +49,6 @@ const GroupRequests = () => {
     [declineModal]
   );
 
-  console.log(groupParticipationRequestId);
-
   const items = useMemo(
     () =>
       groupReceivedParicipations?.map(({ userInfo, groupParticipationRequestId }) => ({
