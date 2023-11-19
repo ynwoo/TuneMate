@@ -64,7 +64,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = jwtTokenUtil.issueRefreshToken(userId);
 
         List<Map> images = (List<Map>) oAuth2User.getAttribute("images");
-        String imageUrl = images.isEmpty() ? null : (String) images.get(0).get("url");
+        String imageUrl = images.isEmpty() ? null : (String) images.get(images.size() - 1).get("url");
 
         MemberDto memberDto = MemberDto.builder()
                 .userId(userId)
