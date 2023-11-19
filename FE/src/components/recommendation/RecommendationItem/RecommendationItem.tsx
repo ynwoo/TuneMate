@@ -52,8 +52,6 @@ const RecommendationItem = ({ item, className }: RecommendItemProps) => {
     };
   }, [item, acceptFriendRequest, declineFriendRequest, sendSocialFriendRequest]);
 
-  console.log(isFriendRequest);
-
   const onMoveProfilePage = useCallback(() => {
     router.push(`/profile/${item.userId}`);
   }, [router, item.userId]);

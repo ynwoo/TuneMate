@@ -52,7 +52,7 @@ const authInterceptor = (instance: AxiosInstance) => {
       console.log(error);
 
       console.log("Storage.getRefreshToken()", Storage.getRefreshToken());
-      if (error.response.status === HttpStatusCode.Unauthorized) {
+      if (error?.response?.status === HttpStatusCode.Unauthorized) {
         if (Storage.getRefreshToken() && !loading) {
           loading = true;
           // token 재발급
@@ -120,7 +120,7 @@ const spotifyAuthInterceptor = (instance: AxiosInstance) => {
       return response;
     },
     async (error) => {
-      if (error.response.status === HttpStatusCode.Unauthorized) {
+      if (error?.response?.status === HttpStatusCode.Unauthorized) {
         const accessToken = Storage.getAccessToken();
         const userId = Storage.getUserId();
         if (accessToken && userId) {
