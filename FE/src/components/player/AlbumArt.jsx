@@ -40,20 +40,12 @@ const AlbumArt = ({ trackImg }) => {
     diskInnerElement.style.background = bgArray[pageNum][0];
   }
 
-  useEffect(() => {
-    pageChangeFunc();
-  }, [pageNum]);
-
   const handlePrevClick = () => {
-    setPageNum((prevPageNum) =>
-      prevPageNum > 0 ? prevPageNum - 1 : totalNum - 1
-    );
+    setPageNum((prevPageNum) => (prevPageNum > 0 ? prevPageNum - 1 : totalNum - 1));
   };
 
   const handleNextClick = () => {
-    setPageNum((prevPageNum) =>
-      prevPageNum < totalNum - 1 ? prevPageNum + 1 : 0
-    );
+    setPageNum((prevPageNum) => (prevPageNum < totalNum - 1 ? prevPageNum + 1 : 0));
   };
 
   return (
