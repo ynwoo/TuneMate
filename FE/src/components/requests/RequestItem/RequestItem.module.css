@@ -16,8 +16,14 @@
   max-width: 6em;
 }
 
-.request-item__similarity {
+.request-item__similarity-container {
   margin: 0 1em;
+}
+
+.request-item__similarity {
+  margin-left: 0.3em;
+  text-align: center;
+  margin-top: 0.1em;
 }
 
 .request-item__button-container {

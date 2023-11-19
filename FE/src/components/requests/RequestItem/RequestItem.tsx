@@ -13,6 +13,7 @@ interface RequestItem {
   userId: UserInfo["userId"];
   param?: string;
   musicalTasteSimilarity?: string;
+  accept?: boolean;
 }
 
 interface RequestItemProps extends Props {
@@ -43,10 +44,14 @@ const RequestItem = ({ item, onAccept, onDecline, className }: RequestItemProps)
           />
           <p className={styles["request-item__name"]}>{userInfo.name}</p>
           {item?.musicalTasteSimilarity && (
-            <span className={styles["request-item__similarity"]}>
-              {(Number(item.musicalTasteSimilarity) * 100).toFixed(0)}
-              <Icon.Music size="lg" />
-            </span>
+            <>
+              <span className={styles["request-item__similarity-container"]}>
+                <Icon.Music size="lg" />
+                <span className={styles["request-item__similarity"]}>
+                  {(Number(item.musicalTasteSimilarity) * 100).toFixed(0)}
+                </span>
+              </span>
+            </>
           )}
           <div className={styles["request-item__button-container"]}>
             {onAccept && (
@@ -72,6 +77,17 @@ const RequestItem = ({ item, onAccept, onDecline, className }: RequestItemProps)
               >
                 거절
               </Button>
+            )}
+            {item?.accept !== undefined && (
+              <p className={styles["request-item__button"]}>
+                요청을{" "}
+                {item.accept ? (
+                  <span className="blue">수락</span>
+                ) : (
+                  <span className="red">거절</span>
+                )}
+                하셨습니다.
+              </p>
             )}
           </div>
         </>
