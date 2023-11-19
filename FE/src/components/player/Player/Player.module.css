@@ -12,6 +12,7 @@
   bottom: 0.5em;
   left: 0.5em;
   z-index: 1;
+  cursor: pointer;
 }
 
 /* 곡 추가 버튼 */
@@ -21,6 +22,7 @@
   bottom: 2.7rem;
   left: 11.4rem;
   z-index: 1;
+  cursor: pointer;
 }
 
 .player__button--plus-icon {
@@ -62,6 +64,7 @@
 /* 재생바 윗 부분 로고 */
 .player > div > div > div:first-child > div > a > svg {
   /* display: none; */
+  cursor: default;
 }
 
 /* 재생바 윗 부분 title */
@@ -70,6 +73,7 @@
   overflow: hidden;
   white-space: nowrap;
   width: 80%;
+  cursor: default;
 }
 
 /* 재생바 윗 부분 좋아요 버튼 */
