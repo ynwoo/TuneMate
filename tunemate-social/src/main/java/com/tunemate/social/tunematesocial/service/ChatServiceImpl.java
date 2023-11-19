@@ -28,6 +28,17 @@ public class ChatServiceImpl implements ChatService{
         log.info("메시지 길이 {}",chatDto.getContent().length());
         if(chatDto.getContent().length()==0){
             log.info("빈 메시지 ==> 채팅 방 최초 접속 시 요청");
+            for(int i = msg.getMessages().size()-1; i>=0 ; i--){
+                if(msg.getMessages().get(i).getReadCount() == 0) break;
+                if(msg.getMessages().get(i).getSenderNo().equals(chatDto.getSenderNo())) break;
+                if(!msg.getMessages().get(i).getSenderNo().equals(chatDto.getSenderNo()) && msg.getMessages().get(i).getReadCount() == 1){
+                    msg.getMessages().get(i).setReadCount(0);
+                }
+            }
+            chattingRoomRepository.save(msg);
+            return msg;
+        }
+        else if(chatDto.getContent().equals("exit")){
             return msg;
         }
         if(chatPersonRepository.findByFriend(friendRepository.findById(relationId).get()).size() == 2){

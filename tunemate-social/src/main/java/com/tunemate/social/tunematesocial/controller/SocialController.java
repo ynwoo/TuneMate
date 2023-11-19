@@ -188,7 +188,7 @@ public class SocialController {
 		@PathVariable("relationId") Long relationId) {
 		log.info("{} 사람이 {} 번 채팅 방의 채팅 기록을 요청",userId,relationId);
 		socialService.checkUser(relationId, userId);
-		socialService.setChats(relationId, userId);
+//		socialService.setChats(relationId, userId);
 		return ResponseEntity.ok(socialService.getChats(relationId));
 	}
 
@@ -206,6 +206,7 @@ public class SocialController {
 	public void chatIn(@RequestHeader("UserId") String userId, @PathVariable("relationId") Long relationId ){
 		log.info("{} 사람이 {} 번 채팅 방을 입장하는 요청",userId,relationId);
 		socialService.checkUser(relationId, userId);
+		socialService.setChats(relationId, userId);
 		socialService.setChatPerson(relationId,userId);
 	}
 
