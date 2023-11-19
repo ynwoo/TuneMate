@@ -3,7 +3,7 @@ import { classNameWrapper } from "@/utils/className";
 import styles from "./Button.module.css";
 import { MouseEvent } from "react";
 
-export type ButtonColor = "red" | "blue" | "white";
+export type ButtonColor = "red" | "blue" | "white" | "none";
 
 interface ButtonProps extends Props {
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;

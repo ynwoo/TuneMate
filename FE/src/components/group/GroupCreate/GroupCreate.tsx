@@ -74,18 +74,14 @@ const GroupCreate = ({ className, onChange, group }: GroupCreateProps) => {
   return (
     <>
       <div className={classNameWrapper(styles["group-create"], className)}>
+        <Button className={styles["group-create__select-button"]} color="red" onClick={openToggle}>
+          공연 선택
+        </Button>
         <div className={styles["group-create__selected-concert"]}>
           {selectedConcert ? (
-            <ConcertItem item={selectedConcert} onClick={onClick} />
+            <ConcertItem item={selectedConcert} />
           ) : (
-            <>
-              <h1 className={styles["group-create__empty-concert--title"]}>
-                선택한 공연이 없습니다.
-              </h1>
-              <Button color="white" onClick={openToggle}>
-                공연 선택
-              </Button>
-            </>
+            <>{originalConcerts && <ConcertItem item={originalConcerts[0]} />}</>
           )}
         </div>
         <Input
