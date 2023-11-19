@@ -34,7 +34,7 @@ const ProfilePage = () => {
   const params = useParams();
   const router = useRouter();
 
-  const [name, setName] = useState("Name");
+  const [name, setName] = useState("");
   const [imgSrc, setImgSrc] = useState("/favicon.ico");
   const [menuContent, setMenuContent] = useState<any[]>([]);
   const { isMenuOpen, openMenu, closeMenu } = useMenu();
