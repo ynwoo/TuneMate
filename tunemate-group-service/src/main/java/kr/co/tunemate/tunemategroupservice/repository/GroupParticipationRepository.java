@@ -14,6 +14,8 @@ public interface GroupParticipationRepository extends JpaRepository<GroupPartici
 
     List<GroupParticipation> findAllByUserId(String userId);
 
+    List<GroupParticipation> findAllByGroup(Group group);
+
     void deleteByGroupParticipationId(String groupParticipationId);
 
     Long countByGroup(Group group);
