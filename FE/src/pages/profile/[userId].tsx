@@ -26,7 +26,6 @@ import { useRecoilState } from "recoil";
 import { MainplaylistState, AlbumState } from "@/store/atom";
 import useIndividualPlayListRepresentativeQuery from "@/hooks/queries/music/individual/useIndividualPlayListRepresentativeQuery";
 import { useParams } from "next/navigation";
-import { Cookie } from "@/utils/cookie";
 import { useRouter } from "next/router";
 import { Convert } from "@/utils/convert";
 import useUserInfo from "@/hooks/useUserInfo";
@@ -35,7 +34,7 @@ const ProfilePage = () => {
   const params = useParams();
   const router = useRouter();
 
-  const [name, setName] = useState("Name");
+  const [name, setName] = useState("");
   const [imgSrc, setImgSrc] = useState("/favicon.ico");
   const [menuContent, setMenuContent] = useState<any[]>([]);
   const { isMenuOpen, openMenu, closeMenu } = useMenu();
@@ -125,9 +124,7 @@ const ProfilePage = () => {
       if (userId === userInfo?.userId) {
         setIsSameUser(true);
         const userData = await getUserInfo(userId);
-        if (userData.imageUrl === undefined) {
-          setImgSrc("/favicon.ico");
-        } else {
+        if (userData?.imageUrl) {
           setImgSrc(userData.imageUrl);
         }
         setName(userData.name);
@@ -136,9 +133,7 @@ const ProfilePage = () => {
         setIsSameUser(false);
         const userData = await getOthersProfile(userId);
         setPlaylistId(userData.playlistId);
-        if (userData.imageUrl === undefined) {
-          setImgSrc("/favicon.ico");
-        } else {
+        if (userData?.imageUrl) {
           setImgSrc(userData.imageUrl);
         }
         setName(userData.name);
@@ -148,10 +143,6 @@ const ProfilePage = () => {
 
     getUserProfile();
   }, [router.query.userId]);
-
-  useEffect(() => {
-    if (Storage.getImageUrl()) setImgSrc(Storage.getImageUrl());
-  }, [setImgSrc]);
 
   const deleteTrack = async (index: number) => {
     const data: DeleteTrack = {
