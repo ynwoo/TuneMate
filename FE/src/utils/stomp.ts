@@ -26,6 +26,10 @@ export const Stomp = Object.freeze({
       },
     });
 
+    newClient.debug = (str) => {
+      console.log(str);
+    };
+
     newClient.activate();
     console.log("connect 실행", client.current);
   },
