@@ -17,6 +17,7 @@ import Input from "@/components/input/Input/Input";
 import { Group } from "@/types/group";
 import useUpdateGroupMutation from "@/hooks/mutations/group/useUpdateGroupMutation";
 import TextArea from "@/components/input/TextArea/TextArea";
+import { useRouter } from "next/router";
 
 const GroupDetail = () => {
   const params = useParams();
@@ -31,6 +32,7 @@ const GroupDetail = () => {
   const { data: mySentGroupIds } = useSentParticipationGroupIdsQuery();
   const [isModify, setIsModify] = useState<boolean>(false);
   const [newGroup, setNewGroup] = useState<Group>({} as Group);
+  const router = useRouter();
 
   const isParticipated = useMemo(() => {
     if (!myGroupIds || !group) return false;
@@ -138,6 +140,7 @@ const GroupDetail = () => {
                 className={styles["group-detail-page__description-item"]}
                 title="호스트"
                 description={group.hostName}
+                onClick={() => router.push(`/profile/${group.hostId}`)}
               />
               {isModify ? (
                 <>
@@ -198,12 +201,25 @@ const GroupDetail = () => {
                         styles["group-detail-page__description-item--detail"]
                       }
                     >
-                      [{" "}
-                      {group.userInfos
-                        .map(({ name }) => name)
-                        .filter((name) => name !== group.hostName)
-                        .join(", ")}{" "}
-                      ]
+                      <>
+                        [{" "}
+                        {group.userInfos
+                          .filter(({ name }) => name !== group.hostName)
+                          .map(({ name, userId }, index) => (
+                            <span
+                              className={
+                                styles[
+                                  "group-detail-page__description-item--detail-item"
+                                ]
+                              }
+                              onClick={() => router.push(`/profile/${userId}`)}
+                            >
+                              {name}
+                              {index !== group.userInfos.length - 2 && ", "}
+                            </span>
+                          ))}{" "}
+                        ]
+                      </>
                     </p>
                   )}
                 </>
