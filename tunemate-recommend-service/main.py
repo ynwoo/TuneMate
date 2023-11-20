@@ -267,12 +267,14 @@ def root(UserId: str | None = Header(default=None)):
         userOb = request(recommend[i])
         print(userOb)
         print(recommend[i], nameSet.get(recommend[i]), playlistId, similaritys[i])
+
         if(recommend[i] in nameSet.keys()):
             print("더미데이터!!")
             responseList.append(ReturnDto(userId=recommend[i], img="https://velog.velcdn.com/images/yoonwoo-kim/post/3060d189-1473-4a02-9658-28dc050d4c7e/image.png", name=nameSet.get(recommend[i]),
                                       playlist=playlistId, similarity=similaritys[i]))
         else:
             print("진짜 데이터!!")
+            if(nameSet.get(recommend[i]) == None): continue
             responseList.append(ReturnDto(userId=userOb.get("userId"), img=userOb.get("imageUrl"), name=userOb.get("name"),
                                         playlist=playlistId, similarity=similaritys[i]))
 
