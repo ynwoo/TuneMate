@@ -17,6 +17,7 @@
   background-color: white;
   border: 1px solid black;
   margin: 10px;
+  position: relative;
 }
 
 .requests-navbar__unread-count {
@@ -27,4 +28,6 @@
   font-size: 0.6rem;
   padding: 0.3em 0.5em;
   color: var(--white-color);
+  position: absolute;
+  margin-left: 0.2em;
 }

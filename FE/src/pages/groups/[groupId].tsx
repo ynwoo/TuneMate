@@ -66,7 +66,13 @@ const GroupDetail = () => {
   }, [group]);
 
   const onChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | number) => {
+    (
+      e:
+        | ChangeEvent<
+            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+          >
+        | number
+    ) => {
       if (typeof e === "number") {
         setNewGroup(
           (group) =>
@@ -121,7 +127,9 @@ const GroupDetail = () => {
                 value={newGroup.title}
               />
             ) : (
-              <h1 className={styles["group-detail-page__title"]}>{group.title}</h1>
+              <h1 className={styles["group-detail-page__title"]}>
+                {group.title}
+              </h1>
             )}
 
             {concert && <ConcertItem item={concert} />}
@@ -134,7 +142,9 @@ const GroupDetail = () => {
               {isModify ? (
                 <>
                   <Input
-                    className={styles["group-detail-page__description-item--input"]}
+                    className={
+                      styles["group-detail-page__description-item--input"]
+                    }
                     label="정원"
                     name="capacity"
                     onChange={onChange}
@@ -142,14 +152,18 @@ const GroupDetail = () => {
                     type="number"
                   />
                   <TextArea
-                    className={styles["group-detail-page__description-item--input"]}
+                    className={
+                      styles["group-detail-page__description-item--input"]
+                    }
                     label="내용"
                     name="content"
                     onChange={onChange}
                     value={newGroup.content}
                   />
                   <Input
-                    className={styles["group-detail-page__description-item--input"]}
+                    className={
+                      styles["group-detail-page__description-item--input"]
+                    }
                     label="마감일"
                     name="deadline"
                     onChange={onChange}
@@ -173,16 +187,25 @@ const GroupDetail = () => {
                   <ConcertInfoItem
                     className={styles["group-detail-page__description-item"]}
                     title="모집날짜"
-                    description={Time.period(group.startDateTime, group.deadline as string)}
+                    description={Time.period(
+                      group.startDateTime,
+                      group.deadline as string
+                    )}
                   />
-                  <p className={styles["group-detail-page__description-item--detail"]}>
-                    [{" "}
-                    {group.userInfos
-                      .map(({ name }) => name)
-                      .filter((name) => name !== group.hostName)
-                      .join(", ")}{" "}
-                    ]
-                  </p>
+                  {group.userInfos.length > 1 && (
+                    <p
+                      className={
+                        styles["group-detail-page__description-item--detail"]
+                      }
+                    >
+                      [{" "}
+                      {group.userInfos
+                        .map(({ name }) => name)
+                        .filter((name) => name !== group.hostName)
+                        .join(", ")}{" "}
+                      ]
+                    </p>
+                  )}
                 </>
               )}
             </div>

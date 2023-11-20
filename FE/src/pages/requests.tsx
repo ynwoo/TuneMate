@@ -24,7 +24,7 @@ const RequestsPage = () => {
   const items: OptionType[] = [
     { name: "친구", value: "friendRequests", count: unreadFriendRequestCount },
     { name: "공고", value: "groupRequests", count: unreadGroupRequestCount },
-    { name: "알림", value: "friendRequestResults" },
+    // { name: "알림", value: "friendRequestResults" },
   ];
 
   const onSelect = (value: RequestsState) => {
