@@ -3,7 +3,6 @@ import Props from "@/types";
 import { Friend } from "@/types/social";
 import styles from "./FriendItem.module.css";
 import Icon from "@/components/icons";
-import Link from "next/link";
 import ProfileImage from "@/components/image/ProfileImage/ProfileImage";
 import { classNameWrapper } from "@/utils/className";
 import useChatRoom from "@/hooks/chat/useChatRoom";
@@ -34,8 +33,16 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
   }, []);
 
   return (
-    <li className={[styles["friend-item-container"], className].join(" ")} onClick={onChat}>
-      <div className={classNameWrapper(styles["friend-item"], styles["friend-item__user"])}>
+    <li
+      className={[styles["friend-item-container"], className].join(" ")}
+      onClick={onChat}
+    >
+      <div
+        className={classNameWrapper(
+          styles["friend-item"],
+          styles["friend-item__user"]
+        )}
+      >
         <ProfileImage
           onClick={onProfile}
           className={styles["friend-item__user--image"]}
@@ -45,11 +52,16 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
         />
         <div className={styles["friend-item__user--content-container"]}>
           <p className={styles["friend-item__user--name"]}>{item.name}</p>
-          <p className={styles["friend-item__user--message"]}>{lastMessage?.content}</p>
+          <p className={styles["friend-item__user--message"]}>
+            {lastMessage?.content}
+          </p>
         </div>
       </div>
       <div
-        className={classNameWrapper(styles["friend-item"], styles["friend-item__icon-container"])}
+        className={classNameWrapper(
+          styles["friend-item"],
+          styles["friend-item__icon-container"]
+        )}
       >
         <div className={classNameWrapper(styles["friend-item__icon"])}>
           {lastMessage && (
@@ -58,7 +70,9 @@ const FriendItem = ({ item, className }: FriendItemProps) => {
             </p>
           )}
           {unReadCount > 0 && (
-            <p className={styles["friend-item__icon--chat-count"]}>{unReadCount}</p>
+            <p className={styles["friend-item__icon--chat-count"]}>
+              {unReadCount}
+            </p>
           )}
         </div>
         <div className={styles["friend-item__icon"]} onClick={onSharedProfile}>

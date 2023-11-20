@@ -50,3 +50,16 @@
   width: 100%;
   margin: 1rem auto;
 }
+
+.change-playList-modal-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+}
+
+.bbtton {
+  background-color: white;
+  border: 1px solid rgb(149, 138, 255);
+  width: 100px;
+}

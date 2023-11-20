@@ -13,4 +13,6 @@
 .concert-info-item__description {
   flex-grow: 1;
   font-weight: 500;
+  word-break: break-all;
+  white-space: normal;
 }
