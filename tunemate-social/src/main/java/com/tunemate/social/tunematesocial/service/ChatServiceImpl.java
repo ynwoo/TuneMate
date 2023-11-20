@@ -26,7 +26,7 @@ public class ChatServiceImpl implements ChatService{
     public ChattingRoom getChat(long relationId, ChatDto chatDto){
         ChattingRoom msg = chattingRoomRepository.findByChatRoomId(relationId);
         log.info("메시지 길이 {}",chatDto.getContent().length());
-        if(chatDto.getContent().length()==0){
+        if(chatDto.getContent().equals("in")){
             log.info("빈 메시지 ==> 채팅 방 최초 접속 시 요청");
             for(int i = msg.getMessages().size()-1; i>=0 ; i--){
                 if(msg.getMessages().get(i).getReadCount() == 0) break;
