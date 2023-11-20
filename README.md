@@ -32,25 +32,32 @@
 ## 🖥️ 서비스 화면
 
 <p align="center">  
+<img src="/uploads/09225bab11f03f692ea7bee5bb29cfbb/KakaoTalk_20231120_151933572.png"  width="200" height="400"/>
+<img src="/uploads/318f4f4a953039c4cc7a8a39fb444cb9/KakaoTalk_20231120_151955626.png"  width="200" height="400"/>
+<img src="/uploads/edf4b2583f63aafb5f2c9db002d75eac/KakaoTalk_20231120_152010120.png"  width="200" height="400"/>
+<figcaption align="center">1. 로그인 화면   2. 메인화면    3. 내 프로필 화면</figcaption>
+</p>
 
-<img src="/uploads/cd16a0396c4df7dde68729f4870c45b0/image.png"  width="200" height="400"/>
-<img src="/uploads/34121431763481bd3c3d563801273d4a/image.png"  width="200" height="400"/>
-<img src="/uploads/f0bf0b5d928267ed6bf4c60142eff45d/image.png"  width="200" height="400"/>
-<figcaption align="center">1. 메인화면   2. 공연 상세 화면    3. 내 프로필 화면</figcaption>
+<p align="center">  
+<img src="/uploads/d4998969c6225ea890d9634de23b4ac8/KakaoTalk_20231120_152027611.png"  width="200" height="400"/>
+<img src="/uploads/168b6891f32606bff37bc5ba9c9f7e94/KakaoTalk_20231120_152049220.png"  width="200" height="400"/>
+<img src="/uploads/4f01998ba5c87ef4bd8f5bee07e7bf88/KakaoTalk_20231120_152123131.png"  width="200" height="400"/>
+<figcaption align="center">4. 플레이리스트 설정   5. 곡 추가    6. 플레이리스트 순서 변경</figcaption>
 </p>
 
 <p align="center">
-<img src="/uploads/8b9a581d4d85943411df1f4886446f53/image.png"  width="200" height="400"/>
-<img src="/uploads/2a9f495cc4176f4fddfd396a94519d3d/image.png"  width="200" height="400"/>
-<img src="/uploads/5217f1968f3740e4cb534a04d97a70d2/image.png"  width="200" height="400"/>
-<figcaption align="center">4. 친구목록 화면   5. 채팅 화면    6. 친구추천 화면</figcaption>
+<img src="/uploads/5d23dcc409e711f161a7799122010e1d/KakaoTalk_20231120_152152304.png"  width="200" height="400"/>
+<img src="/uploads/5b45ca072c7c03e9c0b88a2bba5fa352/KakaoTalk_20231120_152215791.png"  width="200" height="400"/>
+<img src="/uploads/a5cffd3b3c87571e71c5be7e1fefa65c/Architecture.png"  width="200" height="400"/>
+<figcaption align="center">7. 친구목록 화면   8. 친구 추천 화면    9. 공고 모집 목록</figcaption>
 </p>
 
 <p align="center">
-<img src="/uploads/16e8f40f196184b0dccc869253498f54/image.png"  width="200" height="400"/>
-<img src="/uploads/6cf0754895933682beff99b9e676d173/image.png"  width="200" height="400"/>
-<img src="/uploads/a4c684a48f585a6731c0cb93464a1531/image.png"  width="200" height="400"/>
-<figcaption align="center">7. 공고 화면   8. 공고 상세 화면    9. 공고 생성 화면</figcaption>
+<img src="/uploads/372c891f4bdfaf0dec7ae74a74813c59/KakaoTalk_20231120_152246967.png"  width="200" height="400"/>
+<img src="/uploads/28fd622d9bdeced0ead61c3dedd4cada/KakaoTalk_20231120_152303063.png"  width="200" height="400"/>
+<img src="/uploads/b994867abdd4b33d41637acdedb84fe9/KakaoTalk_20231120_152317391.png"  width="200" height="400"/>
+<img src="/uploads/2d53c3f47082855fba542683401b7ecf/KakaoTalk_20231120_152339130.png"  width="200" height="400"/>
+<figcaption align="center">10. 공고 상세 화면   11. 공고 요청 화면    12. 플레이리스트 화면1 13. 플레이리스트 화면2</figcaption>
 </p>
 
 <!-- ### 메인 화면
