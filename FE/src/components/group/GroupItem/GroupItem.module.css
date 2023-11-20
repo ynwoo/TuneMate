@@ -39,15 +39,25 @@
   /* border: 1px solid rgb(195, 191, 252); */
 }
 
-.group-item__info--title {
+.group-item__info-container {
   display: flex;
-  margin: 0 auto;
   justify-content: center;
+}
+
+.group-item__info--title {
+  flex: 1;
+  /* margin: 0 auto; */
   font-size: 18px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   font-weight: 900;
+  max-width: 10em;
+  text-align: center;
+}
+
+.group-item__info--capacity {
+  margin-left: 1em;
 }
 
 .group-item__info--time {
