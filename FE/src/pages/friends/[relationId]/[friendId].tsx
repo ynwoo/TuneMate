@@ -16,6 +16,7 @@ import ChatMenu from "@/components/chat/ChatMenu/ChatMenu";
 import useDeleteSocialFriendMutation from "@/hooks/mutations/social/useDeleteSocialFriendMutation";
 import useDisconnectChatRoomMutation from "@/hooks/mutations/social/useDisconnectChatRoomMutation";
 import useConnectChatRoomMutation from "@/hooks/mutations/social/useConnectChatRoomMutation";
+import Confirm from "@/components/modal/Confirm";
 
 interface ChatPageProps extends Props {}
 
@@ -25,19 +26,24 @@ const ChatPage = ({}: ChatPageProps) => {
   const relationId = Number(params?.relationId ?? -1);
 
   const friendId = params?.friendId as string;
-  const [messageRequest, setMessageRequest] = useState<MessageRequest>({} as MessageRequest);
+  const [messageRequest, setMessageRequest] = useState<MessageRequest>(
+    {} as MessageRequest
+  );
 
   const { publish, chatRooms } = useChat();
   const { data: prevChatRoom } = useChatsQuery(relationId);
 
   const { closeToggle, isOpen, openToggle } = useModal();
+  const deleteModal = useModal();
   const { mutate: deleteSocialFriend } = useDeleteSocialFriendMutation();
   const { mutate: connectChatRoom } = useConnectChatRoomMutation();
   const { mutate: disconnectChatRoom } = useDisconnectChatRoomMutation();
 
   // 현재 채팅방 정보 (채팅기록)
   const chatRoom = useMemo(() => {
-    const newChatRoom = chatRooms.find(({ chatRoomId }) => chatRoomId === relationId);
+    const newChatRoom = chatRooms.find(
+      ({ chatRoomId }) => chatRoomId === relationId
+    );
     if (!newChatRoom) return prevChatRoom;
     return ChatFilter.chatRoom(newChatRoom);
   }, [prevChatRoom, chatRooms, relationId]);
@@ -84,7 +90,10 @@ const ChatPage = ({}: ChatPageProps) => {
   return (
     <>
       <div className={styles["chat-page"]}>
-        <ChatNavbar className={styles["chat-page__chat-navbar"]} onModal={openToggle} />
+        <ChatNavbar
+          className={styles["chat-page__chat-navbar"]}
+          onModal={openToggle}
+        />
         {/* <div className={styles["chat-page__button--scroll-down"]} onClick={moveScrollDown}>
         <Icon.Down />
       </div> */}
@@ -94,24 +103,30 @@ const ChatPage = ({}: ChatPageProps) => {
             chatRoom={ChatFilter.chatRoom(chatRoom)}
           />
         )}
-
-        <Modal
-          isOpen={isOpen}
-          toggle={closeToggle}
-          className={styles["chat-page__modal-container"]}
-        >
-          <ChatMenu
-            className={styles["chat-page__modal"]}
-            onDelete={() => deleteSocialFriend(friendId)}
-          />
-        </Modal>
       </div>
+      <Modal
+        isOpen={isOpen}
+        toggle={closeToggle}
+        className={styles["chat-page__modal-container"]}
+      >
+        <ChatMenu
+          className={styles["chat-page__modal"]}
+          onDelete={deleteModal.openToggle}
+          // onDelete={() => deleteSocialFriend(friendId)}
+        />
+      </Modal>
       <Search
         className={styles["chat-page__search"]}
         value={content}
         onInput={onInput}
         onSubmit={onSubmit}
         type="chat"
+      />
+      <Confirm
+        closeToggle={deleteModal.closeToggle}
+        isOpen={deleteModal.isOpen}
+        modalMessage="친구 삭제 하시겠습니까?"
+        onClick={() => deleteSocialFriend(friendId)}
       />
     </>
   );
