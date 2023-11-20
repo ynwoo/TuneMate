@@ -149,14 +149,13 @@ def song(UserId: str | None = Header(default=None)):
             recommendList.append(i["spotify_uri"])
 
         songs.append(song["track_spotify_id"])
-
+    print(recommendList)
     sql = "SELECT track_spotify_id FROM MUSIC.track where playlist_id = (select id from playlist where user_id = %s)"
     cursor.execute(sql, UserId)
     myMusicList = []
 
     for i in cursor.fetchall():
         myMusicList.append(i["track_spotify_id"])
-    print(myMusicList)
     for mysong in songs:
         sql = "select * from tracks where spotify_uri = %s"
         cursor.execute(sql, mysong)
