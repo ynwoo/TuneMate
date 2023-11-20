@@ -274,6 +274,12 @@ def root(UserId: str | None = Header(default=None)):
                                       playlist=playlistId, similarity=similaritys[i]))
         else:
             print("진짜 데이터!!")
+            print(userOb.get("userId"))
+            print(userOb.get("imageUrl"))
+            print(userOb.get("name"))
+            print(playlistId)
+            print(similaritys[i])
+
             #if(nameSet.get(recommend[i]) == None): continue
             responseList.append(ReturnDto(userId=userOb.get("userId"), img=userOb.get("imageUrl"), name=userOb.get("name"),
                                         playlist=playlistId, similarity=similaritys[i]))
