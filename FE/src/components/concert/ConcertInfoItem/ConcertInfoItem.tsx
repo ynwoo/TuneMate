@@ -7,15 +7,10 @@ interface ConcertInfoItemProps extends Props {
   description: string | number;
 }
 
-const ConcertInfoItem = ({
-  className,
-  title,
-  description,
-}: ConcertInfoItemProps) => {
+const ConcertInfoItem = ({ className, title, description }: ConcertInfoItemProps) => {
   return (
     <li className={classNameWrapper(styles["concert-info-item"], className)}>
       <div className={styles["concert-info-item__title"]}>{title}</div>
-
       <p className={styles["concert-info-item__description"]}>{description}</p>
     </li>
   );

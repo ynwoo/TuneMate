@@ -5,6 +5,7 @@ import Icon from "@/components/icons";
 import Link from "next/link";
 import useFriendRequest from "@/hooks/useFriendRequest";
 import Image from "next/image";
+import useGroupRequest from "@/hooks/useGroupRequest";
 // import { usePathname } from "next/navigation";
 
 // const pageTitleByPathname = (pathname: string) => {
@@ -29,6 +30,7 @@ import Image from "next/image";
 const TopNavbar = () => {
   const router = useRouter();
   const { unreadFriendRequestCount } = useFriendRequest();
+  const { unreadGroupRequestCount } = useGroupRequest();
   // const pathname = usePathname();
 
   return (
@@ -41,8 +43,10 @@ const TopNavbar = () => {
       {/* <p>{pageTitleByPathname(pathname)}</p> */}
 
       <Link href="/requests" className={styles["top-navbar__item"]}>
-        {unreadFriendRequestCount > 0 && (
-          <p className={styles["top-navbar__unread-count"]}>{unreadFriendRequestCount}</p>
+        {unreadFriendRequestCount + unreadGroupRequestCount > 0 && (
+          <p className={styles["top-navbar__unread-count"]}>
+            {unreadFriendRequestCount + unreadGroupRequestCount}
+          </p>
         )}
         <Icon.Alarm />
       </Link>
