@@ -156,6 +156,7 @@ def song(UserId: str | None = Header(default=None)):
 
     for i in cursor.fetchall():
         myMusicList.append(i["track_spotify_id"])
+    print(myMusicList)
     for mysong in songs:
         sql = "select * from tracks where spotify_uri = %s"
         cursor.execute(sql, mysong)
