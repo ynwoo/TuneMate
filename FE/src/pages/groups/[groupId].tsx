@@ -140,6 +140,7 @@ const GroupDetail = () => {
                 className={styles["group-detail-page__description-item"]}
                 title="호스트"
                 description={group.hostName}
+                onClick={() => router.push(`/profile/${group.hostId}`)}
               />
               {isModify ? (
                 <>

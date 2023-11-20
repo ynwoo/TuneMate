@@ -15,4 +15,8 @@
   font-weight: 500;
   word-break: break-all;
   white-space: normal;
+  cursor: pointer;
+}
+.concert-info-item__description:hover {
+  color: var(--blue-color);
 }

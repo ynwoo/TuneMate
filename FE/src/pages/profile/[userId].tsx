@@ -30,6 +30,10 @@ import { useRouter } from "next/router";
 import { Convert } from "@/utils/convert";
 import useUserInfo from "@/hooks/useUserInfo";
 import { spotifyApi } from "@/api";
+import Icon from "@/components/icons";
+import Confirm from "@/components/modal/Confirm";
+import useSendSocialFriendRequestMutation from "@/hooks/mutations/social/useSendSocialFriendRequestMutation";
+import useSocialFriendIdsQuery from "@/hooks/queries/social/useSocialFriendIdsQuery";
 
 const ProfilePage = () => {
   const params = useParams();
@@ -46,14 +50,23 @@ const ProfilePage = () => {
   const { popToast, toastStatus, toastMsg } = useToast();
   const [mainplaylist, setMainplaylist] = useRecoilState(MainplaylistState);
   const [Album, setAlbum] = useRecoilState(AlbumState);
-  const { data: individualPlayListRepresentative } = useIndividualPlayListRepresentativeQuery();
+  const { data: individualPlayListRepresentative } =
+    useIndividualPlayListRepresentativeQuery();
   const userInfo = useUserInfo();
+  const requestModal = useModal();
+  const { mutate: sendSocialFriendRequest } =
+    useSendSocialFriendRequestMutation();
+  const { data: socialFriendIds } = useSocialFriendIdsQuery();
 
   useEffect(() => {
     if (individualPlayListRepresentative) {
-      const allUris = individualPlayListRepresentative.tracks.items.map((track) => track.track.uri);
+      const allUris = individualPlayListRepresentative.tracks.items.map(
+        (track) => track.track.uri
+      );
       setMainplaylist(allUris);
-      setMyPlaylist(Convert.playListToTrackInfos(individualPlayListRepresentative));
+      setMyPlaylist(
+        Convert.playListToTrackInfos(individualPlayListRepresentative)
+      );
       setPlaylistName(individualPlayListRepresentative.name);
     }
   }, [individualPlayListRepresentative]);
@@ -191,9 +204,32 @@ const ProfilePage = () => {
     setPlaylistName(name);
   };
 
+  const sendFriendRequest = () => {
+    const userId = params?.userId as string;
+    const messageRequest = {
+      userId,
+      distance: "0",
+      musicalTasteSimilarity: "10",
+    };
+    sendSocialFriendRequest(messageRequest);
+  };
+
+  const isNotFriend =
+    !isSameUser &&
+    (socialFriendIds
+      ? !socialFriendIds.includes(params.userId as string)
+      : true);
+
+  console.log(isSameUser, socialFriendIds);
+
   return (
     <div>
       <IndividualProfile name={name} src={imgSrc} />
+      {isNotFriend && (
+        <div className="request-button" onClick={requestModal.openToggle}>
+          <Icon.Recommendation size="lg" />
+        </div>
+      )}
       <Playlist
         className="playlist"
         isSameUser={isSameUser}
@@ -223,6 +259,12 @@ const ProfilePage = () => {
         <SearchTrack myPlaylist={myPlaylist} handleAdd={handleAdd} />
       </Modal>
       {toastStatus && <Toast toastStatus={toastStatus} msg={toastMsg} />}
+      <Confirm
+        modalMessage="친구 요청을 보내시겠습니까?"
+        onClick={sendFriendRequest}
+        closeToggle={requestModal.closeToggle}
+        isOpen={requestModal.isOpen}
+      />
     </div>
   );
 };
