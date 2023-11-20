@@ -59,7 +59,6 @@ const authInterceptor = (instance: AxiosInstance) => {
           try {
             await reissueToken();
             loading = false;
-            location.reload();
             return Promise.resolve();
           } catch (error) {
             Storage.clear();
