@@ -1,6 +1,8 @@
 import { FRIEND_SOCKET_URL } from "@/constants/url";
+import useChat from "@/hooks/chat/useChat";
 import useSendSocialFriendRequestsQuery from "@/hooks/queries/social/useSendSocialFriendRequestsQuery";
 import useStompClient from "@/hooks/useStompClient";
+import useUserInfo from "@/hooks/useUserInfo";
 import Props from "@/types";
 import { Friend, FriendRequestMessage } from "@/types/social";
 import { Stomp } from "@/utils/stomp";
@@ -10,7 +12,10 @@ export interface FriendRequestContextState {
   connect: (userIds?: string[]) => void;
   subscribe: (userId: Friend["friendId"]) => void;
   unsubscribe: (userId: Friend["friendId"]) => void;
-  publish: (userId: Friend["userId"], friendRequestMessage: FriendRequestMessage) => void;
+  publish: (
+    userId: Friend["userId"],
+    friendRequestMessage: FriendRequestMessage
+  ) => void;
   friendRequestMessages: FriendRequestMessage[];
 }
 
@@ -21,14 +26,30 @@ export const FriendRequestContext = createContext<FriendRequestContextState>(
 const FriendRequestProvider = ({ children }: Props) => {
   const { stompClient, connect: defaultConnect } = useStompClient();
   const [subscribes, setSubscribes] = useState<string[]>([]);
-  const [friendRequestMessages, setFriendRequestMessages] = useState<FriendRequestMessage[]>([]);
-
+  const [friendRequestMessages, setFriendRequestMessages] = useState<
+    FriendRequestMessage[]
+  >([]);
+  const userInfo = useUserInfo();
   const { data: sendSocialFriendRequests } = useSendSocialFriendRequestsQuery();
-
+  const { subscribe: chatSubscribe } = useChat();
   const subscibeCallback = useCallback(
     (data: any) => {
-      const newFriendRequestMessage: FriendRequestMessage = JSON.parse(data.body);
-      setFriendRequestMessages([...friendRequestMessages, newFriendRequestMessage]);
+      const newFriendRequestMessage: FriendRequestMessage = JSON.parse(
+        data.body
+      );
+      setFriendRequestMessages([
+        ...friendRequestMessages,
+        newFriendRequestMessage,
+      ]);
+
+      const { receiveUserId, accept } = newFriendRequestMessage;
+      if (
+        receiveUserId === userInfo?.userId &&
+        accept &&
+        newFriendRequestMessage?.relationId
+      ) {
+        chatSubscribe(newFriendRequestMessage.relationId);
+      }
     },
     [friendRequestMessages]
   );
@@ -51,7 +72,10 @@ const FriendRequestProvider = ({ children }: Props) => {
     (userId: Friend["friendId"]) => {
       if (stompClient.current && subscribes.includes(userId)) {
         setSubscribes((subscribes) => [...subscribes, userId]);
-        Stomp.unsubscribe(stompClient.current, FRIEND_SOCKET_URL.subscribeURL(userId));
+        Stomp.unsubscribe(
+          stompClient.current,
+          FRIEND_SOCKET_URL.subscribeURL(userId)
+        );
       }
     },
     [stompClient, subscribes, setSubscribes]
