@@ -75,6 +75,16 @@
   white-space: nowrap;
 }
 
+@media screen and (max-width: 370px) {
+  .friend-item__user--content-container {
+    width: 5em;
+    max-width: 5em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
 .friend-item__user--name {
   font-weight: bold;
 }
