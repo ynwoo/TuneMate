@@ -274,9 +274,8 @@ def root(UserId: str | None = Header(default=None)):
                                       playlist=playlistId, similarity=similaritys[i]))
         else:
             print("진짜 데이터!!")
-            if(nameSet.get(recommend[i]) == None): continue
+            #if(nameSet.get(recommend[i]) == None): continue
             responseList.append(ReturnDto(userId=userOb.get("userId"), img=userOb.get("imageUrl"), name=userOb.get("name"),
                                         playlist=playlistId, similarity=similaritys[i]))
-    print(UserId + "의 추천 친구 리스트 ")
-    print(responseList)
+
     return responseList
