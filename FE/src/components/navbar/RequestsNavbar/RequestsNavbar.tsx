@@ -9,16 +9,27 @@ interface RequestsNabvarProps extends Props {
   items: OptionType[];
 }
 
-const RequestsNabvar = ({ onSelect, className, items }: RequestsNabvarProps) => {
+const RequestsNabvar = ({
+  onSelect,
+  className,
+  items,
+}: RequestsNabvarProps) => {
   return (
     <nav className={classNameWrapper(styles["requests-navbar"], className)}>
-      {items.map(({ name, value }) => (
+      {items.map(({ name, value, count = 0 }) => (
         <Button
           className={styles["requests-navbar__item"]}
           onClick={() => onSelect(value)}
           color="none"
         >
-          {name}
+          <>
+            {name}
+            {count > 0 && (
+              <span className={styles["requests-navbar__unread-count"]}>
+                {count}
+              </span>
+            )}
+          </>
         </Button>
       ))}
     </nav>
