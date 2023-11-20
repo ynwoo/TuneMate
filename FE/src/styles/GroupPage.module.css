@@ -109,6 +109,14 @@
   white-space: nowrap;
 }
 
+.group-detail-page__description-item--detail-item {
+  cursor: pointer;
+}
+
+.group-detail-page__description-item--detail-item:hover {
+  color: var(--blue-color);
+}
+
 .group-detail-page__description-item {
   border-bottom: 1px solid var(--black-color);
   padding: 1em 0.5em;
