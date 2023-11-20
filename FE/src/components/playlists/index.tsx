@@ -228,6 +228,7 @@ const Playlist = ({
                 <Button
                   className={styles["bbtton"]}
                   onClick={() => onChangePlayList(id)}
+                  color="none"
                 >
                   변경
                 </Button>
