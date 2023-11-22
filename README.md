@@ -117,6 +117,9 @@
 <img src="/uploads/16bf320e249aa2c88237ba50c8cbb49c/공동플리2곡삭제.gif"  width="200" height="400"/>
 
 </p>
+
+---
+
 ## 🐳 아키텍처
 
 ![Architecture](/uploads/d75e66e5ae9c438314ddd03f7fe2f006/Architecture.png)
