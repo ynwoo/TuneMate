@@ -31,33 +31,91 @@
 
 ## 🖥️ 서비스 화면
 
+- 로그인 화면
+- 메인화면
+- 내 프로필
+
 <p align="center">  
 <img src="/uploads/09225bab11f03f692ea7bee5bb29cfbb/KakaoTalk_20231120_151933572.png"  width="200" height="400"/>
 <img src="/uploads/318f4f4a953039c4cc7a8a39fb444cb9/KakaoTalk_20231120_151955626.png"  width="200" height="400"/>
 <img src="/uploads/edf4b2583f63aafb5f2c9db002d75eac/KakaoTalk_20231120_152010120.png"  width="200" height="400"/>
-<figcaption align="center">1. 로그인 화면   2. 메인화면    3. 내 프로필 화면</figcaption>
 </p>
 
+---
+<br>
+
+- 플레이리스트 설정
+- 곡 추가
+- 플레이리스트 순서 변경
 <p align="center">  
 <img src="/uploads/d4998969c6225ea890d9634de23b4ac8/KakaoTalk_20231120_152027611.png"  width="200" height="400"/>
 <img src="/uploads/168b6891f32606bff37bc5ba9c9f7e94/KakaoTalk_20231120_152049220.png"  width="200" height="400"/>
 <img src="/uploads/4f01998ba5c87ef4bd8f5bee07e7bf88/KakaoTalk_20231120_152123131.png"  width="200" height="400"/>
-<figcaption align="center">4. 플레이리스트 설정   5. 곡 추가    6. 플레이리스트 순서 변경</figcaption>
+
 </p>
 
+---
+<br>
+
+- 친구목록 화면
+- 친구 추천 화면
+- 공고 모집 목록
 <p align="center">
 <img src="/uploads/5d23dcc409e711f161a7799122010e1d/KakaoTalk_20231120_152152304.png"  width="200" height="400"/>
 <img src="/uploads/5b45ca072c7c03e9c0b88a2bba5fa352/KakaoTalk_20231120_152215791.png"  width="200" height="400"/>
 <img src="/uploads/a5cffd3b3c87571e71c5be7e1fefa65c/Architecture.png"  width="200" height="400"/>
-<figcaption align="center">7. 친구목록 화면   8. 친구 추천 화면    9. 공고 모집 목록</figcaption>
 </p>
 
+---
+<br>
+
+- 공고 상세 화면
+- 공고 요청 화면
+- 플레이리스트 화면
+- 플레이리스트 화면 2
 <p align="center">
 <img src="/uploads/372c891f4bdfaf0dec7ae74a74813c59/KakaoTalk_20231120_152246967.png"  width="200" height="400"/>
 <img src="/uploads/28fd622d9bdeced0ead61c3dedd4cada/KakaoTalk_20231120_152303063.png"  width="200" height="400"/>
 <img src="/uploads/b994867abdd4b33d41637acdedb84fe9/KakaoTalk_20231120_152317391.png"  width="200" height="400"/>
 <img src="/uploads/2d53c3f47082855fba542683401b7ecf/KakaoTalk_20231120_152339130.png"  width="200" height="400"/>
-<figcaption align="center">10. 공고 상세 화면   11. 공고 요청 화면    12. 플레이리스트 화면1 13. 플레이리스트 화면2</figcaption>
+</p>
+
+---
+<br>
+
+- 채팅 화면
+- 공동 플레이리스트 곡 추가(유저 1)
+- 공동 플레이리스트 곡 추가(유저 2)
+
+<p align="center">
+<img src="/uploads/8ccb68796f0d306df4ef5f0bf55bc784/채팅2.gif"  width="200" height="400"/>
+<img src="/uploads/16b7de3819b281d3215d1f2a60256451/공동플리1곡추가.gif"  width="200" height="400"/>
+<img src="/uploads/79f2d4d234a369e3a4e9357d8d488a95/공동플리2곡추가.gif"  width="200" height="400"/>
+
+</p>
+
+---
+<br>
+
+- 공동 플레이리스트 곡 위치 변경(유저 1)
+- 공동 플레이리스트 곡 위치 변경(유저 2)
+
+<p align="center">
+<img src="/uploads/429e056b8e8f23ddf76d8a4a253a507f/공동플리1곡위치변경.gif"  width="200" height="400"/>
+<img src="/uploads/761c020b28ab0a627312bacd4edd8e86/공동플리2곡위치변경.gif"  width="200" height="400"/>
+
+</p>
+
+---
+<br>
+
+- 공동 플레이리스트 곡 삭제(유저 1)
+- 공동 플레이리스트 곡 삭제(유저 2)
+
+<p align="center">
+<img src="/uploads/c463220d9bcc7d776b0799220651c4c7/공동플리1곡삭제.gif"  width="200" height="400"/>
+<img src="/uploads/16bf320e249aa2c88237ba50c8cbb49c/공동플리2곡삭제.gif"  width="200" height="400"/>
+
 </p>
 
 
