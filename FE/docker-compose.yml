@@ -3,5 +3,5 @@ services:
   frontend:
     image: ynwoo/tunemate-front-master:latest
     build:
-      context: ./FE
+      context: ./
       dockerfile: Dockerfile
