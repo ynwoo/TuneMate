@@ -4,4 +4,8 @@ services:
     image: ynwoo/tunemate-front-dev:latest
     build:
       context: ./FE
+  backend:
+    image: ynwoo/tunemate-user:latest
+    build:
+      context: ./tunemate-user-service
       dockerfile: Dockerfile
