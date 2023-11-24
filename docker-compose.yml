@@ -23,3 +23,8 @@ services:
       dockerfile: Dockerfile
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+  gateway:
+    image: ynwoo/tunemate-gateway:latest
+    build:
+      context: ./tunemate-api-gateway
+      dockerfile: Dockerfile
