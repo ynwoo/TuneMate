@@ -40,3 +40,10 @@ services:
       dockerfile: Dockerfile
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+  recommend:
+    image: ynwoo/tunemate-recommend:latest
+    build:
+      context: ./tunemate-recommend-service
+      dockerfile: Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
