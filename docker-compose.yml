@@ -28,3 +28,8 @@ services:
     build:
       context: ./tunemate-api-gateway
       dockerfile: Dockerfile
+  group:
+    image: ynwoo/tunemate-group:latest
+    build:
+      context: ./tunemate-group-service
+      dockerfile: Dockerfile
