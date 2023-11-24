@@ -1,0 +1,83 @@
+server:
+  port: 8083
+
+authentication:
+  success-redirect-url: ${authentication-success-redirect-url}
+cookie:
+  domain: ${cookie-domain}
+
+spring:
+  application:
+    name: ${spring-application-name}
+  datasource:
+    url: ${datasource-url}
+    username: ${datasource-username}
+    password: ${datasource-password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    oauth2:
+      client:
+        registration:
+          spotify:
+            client-id: ${client-id}
+            client-secret: ${client-secret}
+            authorization-grant-type: authorization_code
+            redirect-uri: ${redirect-uri}
+            scope:
+              - user-read-private
+              - user-read-email
+              - playlist-modify-public
+              - playlist-modify-private
+              - playlist-read-private
+              - playlist-read-collaborative
+              - user-read-playback-state
+              - user-modify-playback-state
+              - user-library-read
+              - user-library-modify
+              - streaming
+        provider:
+          spotify:
+            authorization-uri: https://accounts.spotify.com/authorize
+            token-uri: https://accounts.spotify.com/api/token
+            user-info-uri: https://api.spotify.com/v1/me
+            user-name-attribute: display_name
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+  data:
+    redis:
+      host: ${redis-url}
+      port: ${redis-port}
+      password: ${redis-password}
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${eureka-service-url}
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance.id:${random.value}}
+    hostname: k9A603.p.ssafy.io
+
+jwt:
+  private-key: ${jwt-private-key}
+  access-token:
+    expiration-epoch: 7200000 # 2 hours
+  refresh-token:
+    expiration-epoch: 1209600000 # 2 weeks
+
+openapi:
+  service:
+    version: ${openapi-service-version}
+    url: ${openapi-service-url} # api gateway url
+
+logging:
+  level:
+    com.example.com.example.tunemateuserservice: debug
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

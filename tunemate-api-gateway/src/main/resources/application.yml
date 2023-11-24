@@ -1,0 +1,143 @@
+server:
+  port: ${gateway-server-port}
+spring:
+  application:
+    name: api-gateway-service
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "https://tunemate.co.kr"
+              - "http://localhost:3000"
+            allowedHeaders: "*"
+            allowedMethods:
+              - PUT
+              - GET
+              - POST
+              - DELETE
+              - OPTIONS
+      routes:
+        - id: user-service-login
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user-service/login/oauth2/**
+          filters:
+            - RewritePath=/api/v1/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service-authorization
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user-service/oauth2/authorization/**
+          filters:
+            - RewritePath=/api/v1/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user-service/users/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service-api-docs
+          uri: lb://user-service
+          predicates:
+            - Path=/user-service/v3/api-docs
+          filters:
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: music-service
+          uri: lb://music-service
+          predicates:
+            - Path=/api/v1/music-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/music-service/(?<segment>.*), /$\{segment}
+        - id: music-service-api-docs
+          uri: lb://music-service
+          predicates:
+            - Path=/music-service/v3/api-docs
+          filters:
+            - RewritePath=/music-service/(?<segment>.*), /$\{segment}
+        - id: social-service
+          uri: lb://social-service
+          order: 1
+          predicates:
+            - Path=/api/v1/social-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/social-service/(?<segment>.*), /$\{segment}
+        - id: social-service-api-docs
+          uri: lb://social-service
+          predicates:
+            - Path=/social-service/v3/api-docs
+          filters:
+            - RewritePath=/social-service/(?<segment>.*), /$\{segment}
+        - id: group-service
+          uri: lb://group-service
+          predicates:
+            - Path=/api/v1/group-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/group-service/(?<segment>.*), /$\{segment}
+        - id: group-service-api-docs
+          uri: lb://group-service
+          predicates:
+            - Path=/group-service/v3/api-docs
+          filters:
+            - RewritePath=/group-service/(?<segment>.*), /$\{segment}
+        - id: meeting-service
+          uri: lb://meeting-service
+          predicates:
+            - Path=/api/v1/meeting-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/meeting-service/(?<segment>.*), /$\{segment}
+        - id: meeting-service-api-docs
+          uri: lb://meeting-service
+          predicates:
+            - Path=/meeting-service/v3/api-docs
+          filters:
+            - RewritePath=/meeting-service/(?<segment>.*), /$\{segment}
+        - id: recommend-service
+          uri: lb://recommendation-service
+          predicates:
+            - Path=/api/v1/recommendation-service/**
+          filters:
+            - AuthorizationHeaderFilter
+            - RewritePath=/api/v1/recommendation-service/(?<segment>.*), /$\{segment}
+      default-filters:
+        - name: GlobalFilter
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${eureka-service-url}
+
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: API Gateway Service
+      - url: /user-service/v3/api-docs
+        name: User Service
+      - url: /social-service/v3/api-docs
+        name: Social Service
+      - url: /music-service/v3/api-docs
+        name: Music Service
+      - url: /group-service/v3/api-docs
+        name: Group Service
+      - url: /meeting-service/v3/api-docs
+        name: Meeting Service
+
+jwt:
+  private-key: ${jwt-private-key}
+  access-token:
+    expiration-epoch: 7200000 # 2 hours

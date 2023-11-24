@@ -3,5 +3,47 @@ services:
   frontend:
     image: ynwoo/tunemate-front-master:latest
     build:
-      context: ./
+      context: ./FE
+  user:
+    image: ynwoo/tunemate-user:latest
+    build:
+      context: ./tunemate-user-service
       dockerfile: Dockerfile
+  social:
+    image: ynwoo/tunemate-social:latest
+    build:
+      context: ./tunemate-social
+      dockerfile: Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  discovery:
+    image: ynwoo/tunemate-discovery:latest
+    build:
+      context: ./tunemate-discovery-service
+      dockerfile: Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  gateway:
+    image: ynwoo/tunemate-gateway:latest
+    build:
+      context: ./tunemate-api-gateway
+      dockerfile: Dockerfile
+  group:
+    image: ynwoo/tunemate-group:latest
+    build:
+      context: ./tunemate-group-service
+      dockerfile: Dockerfile
+  music:
+    image: ynwoo/tunemate-music:latest
+    build:
+      context: ./tunemate-playlist
+      dockerfile: Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  recommend:
+    image: ynwoo/tunemate-recommend:latest
+    build:
+      context: ./tunemate-recommend-service
+      dockerfile: Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
