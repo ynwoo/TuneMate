@@ -4,8 +4,15 @@ services:
     image: ynwoo/tunemate-front-dev:latest
     build:
       context: ./FE
-  backend:
+  user:
     image: ynwoo/tunemate-user:latest
     build:
       context: ./tunemate-user-service
       dockerfile: Dockerfile
+  social:
+    image: ynwoo/tunemate-social:latest
+    build:
+      context: ./tunemate-social
+      dockerfile: Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
