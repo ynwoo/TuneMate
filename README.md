@@ -10,7 +10,8 @@
 
 친구를 사귀고 함께 플레이리스트를 만들어 나가 보세요
 
-![TuneMate_](/uploads/9a5a9570ee779fffbcb0e5a57fcd9333/TuneMate_.png)
+![image](https://github.com/yoonwoo-kim/TuneMate/assets/59324129/658a5193-0f09-4276-83e1-3048557b00c6)
+
 
 ## 💡 주요기능
 
@@ -36,9 +37,9 @@
 - 내 프로필
 
 <p align="center">  
-<img src="/uploads/09225bab11f03f692ea7bee5bb29cfbb/KakaoTalk_20231120_151933572.png"  width="200" height="400"/>
-<img src="/uploads/318f4f4a953039c4cc7a8a39fb444cb9/KakaoTalk_20231120_151955626.png"  width="200" height="400"/>
-<img src="/uploads/edf4b2583f63aafb5f2c9db002d75eac/KakaoTalk_20231120_152010120.png"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/c0847c90-4f63-411e-b1c2-634c4a2e7adc"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/f58be4ee-5f34-48c1-a71c-9ffff718d2cb"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/6a2fa3ba-607b-4cbd-9861-b83d15bcd19b"  width="200" height="400"/>
 </p>
 
 ---
@@ -48,9 +49,9 @@
 - 곡 추가
 - 플레이리스트 순서 변경
 <p align="center">  
-<img src="/uploads/d4998969c6225ea890d9634de23b4ac8/KakaoTalk_20231120_152027611.png"  width="200" height="400"/>
-<img src="/uploads/168b6891f32606bff37bc5ba9c9f7e94/KakaoTalk_20231120_152049220.png"  width="200" height="400"/>
-<img src="/uploads/4f01998ba5c87ef4bd8f5bee07e7bf88/KakaoTalk_20231120_152123131.png"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/e38627ad-2a0a-4b19-8c7d-ec1b2738f289"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/c70354b8-6e57-4d83-a0da-b3f77a87613b"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/8c51d96a-4363-4ffa-ae87-d70bde5535e4"  width="200" height="400"/>
 
 </p>
 
@@ -61,9 +62,9 @@
 - 친구 추천 화면
 - 공고 모집 목록
 <p align="center">
-<img src="/uploads/5d23dcc409e711f161a7799122010e1d/KakaoTalk_20231120_152152304.png"  width="200" height="400"/>
-<img src="/uploads/5b45ca072c7c03e9c0b88a2bba5fa352/KakaoTalk_20231120_152215791.png"  width="200" height="400"/>
-<img src="/uploads/a5cffd3b3c87571e71c5be7e1fefa65c/Architecture.png"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/abb249d1-e4f3-4463-88fc-882e31bae2e3"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/46fd7bfb-689a-45ac-b36a-150beaaf9dec"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/6e6076e9-885b-499e-b510-d49431dcd5f9"  width="200" height="400"/>
 </p>
 
 ---
@@ -74,10 +75,10 @@
 - 플레이리스트 화면
 - 플레이리스트 화면 2
 <p align="center">
-<img src="/uploads/372c891f4bdfaf0dec7ae74a74813c59/KakaoTalk_20231120_152246967.png"  width="200" height="400"/>
-<img src="/uploads/28fd622d9bdeced0ead61c3dedd4cada/KakaoTalk_20231120_152303063.png"  width="200" height="400"/>
-<img src="/uploads/b994867abdd4b33d41637acdedb84fe9/KakaoTalk_20231120_152317391.png"  width="200" height="400"/>
-<img src="/uploads/2d53c3f47082855fba542683401b7ecf/KakaoTalk_20231120_152339130.png"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/59d9c101-e0d2-4e11-867a-a4d5076ee955"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/622ae456-644e-42c1-b220-6dfc5ed04682"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/bf18eef3-7e35-4fcb-9e60-e268b54a8d28"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/c30ba65f-feb6-43e0-8334-b01d4870e15e"  width="200" height="400"/>
 </p>
 
 ---
@@ -88,10 +89,9 @@
 - 공동 플레이리스트 곡 추가(유저 2)
 
 <p align="center">
-<img src="/uploads/8ccb68796f0d306df4ef5f0bf55bc784/채팅2.gif"  width="200" height="400"/>
-<img src="/uploads/16b7de3819b281d3215d1f2a60256451/공동플리1곡추가.gif"  width="200" height="400"/>
-<img src="/uploads/79f2d4d234a369e3a4e9357d8d488a95/공동플리2곡추가.gif"  width="200" height="400"/>
-
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/9c3349bc-4ae7-4b0a-b7c6-90867715841d"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/78acfc3c-5b2e-48ba-bea9-459588a882da"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/ec37f6a2-973f-43a4-bd5e-02dfa764c3fb"  width="200" height="400"/>
 </p>
 
 ---
@@ -101,8 +101,8 @@
 - 공동 플레이리스트 곡 위치 변경(유저 2)
 
 <p align="center">
-<img src="/uploads/429e056b8e8f23ddf76d8a4a253a507f/공동플리1곡위치변경.gif"  width="200" height="400"/>
-<img src="/uploads/761c020b28ab0a627312bacd4edd8e86/공동플리2곡위치변경.gif"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/640b2a43-1b74-4bf9-950b-c85afee00128"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/e3249d3d-28e5-4fe5-a7f5-23dbee463071"  width="200" height="400"/>
 
 </p>
 
@@ -113,15 +113,15 @@
 - 공동 플레이리스트 곡 삭제(유저 2)
 
 <p align="center">
-<img src="/uploads/c463220d9bcc7d776b0799220651c4c7/공동플리1곡삭제.gif"  width="200" height="400"/>
-<img src="/uploads/16bf320e249aa2c88237ba50c8cbb49c/공동플리2곡삭제.gif"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/b0adac43-9264-4364-99e4-77ffacdd3155"  width="200" height="400"/>
+<img src="https://github.com/yoonwoo-kim/TuneMate/assets/59324129/b13435bb-fbb5-4437-ac7e-135defe18275"  width="200" height="400"/>
 
 </p>
 
 
 ## 🐳 아키텍처
 
-![Architecture](/uploads/d75e66e5ae9c438314ddd03f7fe2f006/Architecture.png)
+![image](https://github.com/yoonwoo-kim/TuneMate/assets/59324129/bf370ef3-e7b9-4a2a-a6bb-472378120d5d)
 
 ## 🛠️ 기술스택
 
@@ -181,5 +181,5 @@
 
 ## 👨‍💻 팀원 소개
 
-![image](/uploads/a10a32cf6b48dafaa84ead1a1b0310c4/image.png)
-![image](/uploads/53ac98bc0062883b649ed000f4216774/image.png)
+![image](https://github.com/yoonwoo-kim/TuneMate/assets/59324129/dded2a5a-f00f-4dfa-ae29-19f19d4067ed)
+![image](https://github.com/yoonwoo-kim/TuneMate/assets/59324129/3f343c76-ba3d-4214-87c8-92097ee342c3)
