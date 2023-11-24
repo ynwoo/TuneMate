@@ -33,3 +33,10 @@ services:
     build:
       context: ./tunemate-group-service
       dockerfile: Dockerfile
+  music:
+    image: ynwoo/tunemate-music:latest
+    build:
+      context: ./tunemate-playlist
+      dockerfile: Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
